@@ -36,8 +36,6 @@ namespace iBuki
             set { SetValue(CircleColorProperty, value); }
         }
 
-
-
         public CircleMeter()
         {
             this.InitializeComponent();

@@ -7,30 +7,78 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="500" Height="500" Visibility="Visible">
+    <Page.Resources>
+        <local:BoolToEnumConverter x:Key="Enum" />
+    </Page.Resources>
 
     <Grid Width="500" Height="500">
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,37,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
-        <Ellipse Width="490" Height="490" Stroke="Black" Fill="White" Grid.Row="3"/>
-        <Path x:Name="secondHand" Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
-              Fill="#FF153555" HorizontalAlignment="Center" Margin="0,14,0,236" Stretch="Fill" StrokeThickness="0" Width="2" Height="236" UseLayoutRounding="False">
-            <Path.RenderTransform>
-                <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="229" Angle="0" />
-            </Path.RenderTransform>
-        </Path>
-        <Path x:Name="hourHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
-              Fill="#FF153555" HorizontalAlignment="Center" Margin="0,120,0,0" Stretch="Fill" StrokeThickness="0" Width="9" Height="130" VerticalAlignment="Top" UseLayoutRounding="False">
-            <Path.RenderTransform>
-                <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="315" />
-            </Path.RenderTransform>
-        </Path>
-        <Path x:Name="minuteHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
-              Fill="#FF153555" HorizontalAlignment="Center" Margin="0,50,0,0" Stretch="Fill" StrokeThickness="0" Width="8" Height="200" VerticalAlignment="Top" UseLayoutRounding="False">
-            <Path.RenderTransform>
-                <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
-            </Path.RenderTransform>
-        </Path>
-        <local:CircleMeter HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" 
+
+        <SplitView x:Name="Splitter" DisplayMode="CompactOverlay"
+               CompactPaneLength="0" OpenPaneLength="320" 
+               IsPaneOpen="{Binding ElementName=HamburgerButton,
+                            Path=IsChecked, Mode=TwoWay}"
+               PaneBackground="DarkSeaGreen"
+               >
+            <!-- Paneプロパティにはハンバーガーメニューとなるコンテンツを入れる -->
+            <SplitView.Pane>
+                <Grid Margin="10,30,10,10" VerticalAlignment="Top">
+                    <StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Movement"/>
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Content="Quartz"
+                                             IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, Mode=TwoWay, ConverterParameter=Quartz}" />
+                                <RadioButton Content="Mechanical"
+                                             IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, Mode=TwoWay, ConverterParameter=Mechanical}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <ToggleSwitch x:Name="imageToggle" Header="Movement" 
+                                  OffContent="Quartz" OnContent="Mechanical"/>
+                        <!--IsOn="{x:Bind AppConfig.Movement}"-->
+                        <StackPanel>
+                            <TextBlock x:Name="bgImgButton" Text="Background Image"/>
+                            <Button x:Name="imagePicker" Content="Select Image" Tapped="ImagePicker_Tapped"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Image x:Name="bgImage" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" 
+                           Height="500" Width="500"/>
+                    <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,37,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+                    <!--<Ellipse Width="490" Height="490" Stroke="Black" Fill="White" Grid.Row="3"/>-->
+                    <Path x:Name="secondHand" Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
+                        Fill="#FF153555" HorizontalAlignment="Center" Margin="0,14,0,236" Stretch="Fill" StrokeThickness="0" Width="2" Height="236" UseLayoutRounding="False">
+                        <Path.RenderTransform>
+                            <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="229" Angle="0" />
+                        </Path.RenderTransform>
+                    </Path>
+                    <Path x:Name="hourHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
+                        Fill="#FF153555" HorizontalAlignment="Center" Margin="0,120,0,0" Stretch="Fill" StrokeThickness="0" Width="9" Height="130" VerticalAlignment="Top" UseLayoutRounding="False">
+                        <Path.RenderTransform>
+                            <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="315" />
+                        </Path.RenderTransform>
+                    </Path>
+                    <Path x:Name="minuteHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
+                        Fill="#FF153555" HorizontalAlignment="Center" Margin="0,50,0,0" Stretch="Fill" StrokeThickness="0" Width="8" Height="200" VerticalAlignment="Top" UseLayoutRounding="False">
+                        <Path.RenderTransform>
+                            <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
+                        </Path.RenderTransform>
+                    </Path>
+                    <local:CircleMeter HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" 
                            Height="500" Width="500" />
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+        
+        <!--ハンバーガーボタン-->
+        <ToggleButton x:Name="HamburgerButton" VerticalAlignment="Top">
+            <ToggleButton.Content>
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
+            </ToggleButton.Content>
+        </ToggleButton>
+        
     </Grid>
 
 
