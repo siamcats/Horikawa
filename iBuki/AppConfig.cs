@@ -14,7 +14,25 @@ namespace iBuki
 {
     public class AppConfig : INotifyPropertyChanged
     {
-        private Movement _movement;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private double _windowSize = 500;
+        public double WindowSize
+        {
+            get { return _windowSize; }
+            set
+            {
+                if (value == _windowSize) return;
+                _windowSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Movement _movement = Movement.Mechanical;
         public Movement Movement
         {
             get { return _movement; }
@@ -26,47 +44,11 @@ namespace iBuki
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            Debug.WriteLine("PropertyChange");
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
     }
 
     public enum Movement
     {
         Quartz,
         Mechanical
-    }
-
-    public class BoolToEnumConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            var ParameterString = parameter as string;
-            if (ParameterString == null)
-            {
-                return DependencyProperty.UnsetValue;
-            }
-
-            if (Enum.IsDefined(value.GetType(), value) == false)
-            {
-                return DependencyProperty.UnsetValue;
-            }
-
-            object paramvalue = Enum.Parse(value.GetType(), ParameterString);
-
-            return (int)paramvalue == (int)value;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            var ParameterString = parameter as string;
-            return ParameterString == null
-                ? DependencyProperty.UnsetValue 
-                : Enum.Parse(targetType, ParameterString);
-        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -28,46 +29,60 @@ namespace iBuki
     {
 
         public AppConfig AppConfig { get; set; } = new AppConfig();
+        public DesignConfig DesignConfig { get; set; } = new DesignConfig();
+
+        private DispatcherTimer _timer;
 
         public MainPage()
         {
-            this.InitializeComponent();
-            ApplicationView.PreferredLaunchViewSize = new Size(500, 500);
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            InitializeComponent();
             DataContext = AppConfig;
+            DataContext = DesignConfig;
+
+            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            ApplicationView.PreferredLaunchViewSize = size;
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            var view = ApplicationView.GetForCurrentView();
+            view.SetPreferredMinSize(size);
 
             Debug.WriteLine("run");
         }
 
-
-        private DispatcherTimer _timer;
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this._timer = new DispatcherTimer();
+            _timer = new DispatcherTimer();
 
             // タイマーイベントの間隔を指定。
             // ここでは1秒おきに実行する
-            this._timer.Interval = TimeSpan.FromSeconds(0.125);
+            _timer.Interval = TimeSpan.FromSeconds(0.125);
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
+        }
 
-            this._timer.Tick += _timer_Tick;
+        private void WindowSizeChange()
+        {
+            var view = ApplicationView.GetForCurrentView();
+            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            if (!view.TryResizeView(size))
+            {
+                Debug.WriteLine("Try Resize Window 失敗");
+            }
+        }
 
-            this._timer.Start();
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WindowSizeChange();
         }
 
         private void _timer_Tick(object sender, object e)
         {
-            // カウントを1加算
             DateTime localDate = DateTime.Now;
-
-            // TextBlockにカウントを表示
             textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
             minuteHandAngle.Angle = CalcAngleMinute(localDate);
             secondHandAngle.Angle = CalcAngleSecond(localDate);
-
-            Debug.WriteLine(AppConfig.Movement.ToString());
+            dateDisplay.Text = CalcDate(localDate);
         }
 
         private double CalcAngleHour(DateTime now)
@@ -102,13 +117,19 @@ namespace iBuki
             return decimal.ToDouble(angle);
         }
 
+        private string CalcDate(DateTime now)
+        {
+            var ss = now.ToString(DesignConfig.DateDisplayFormat,new CultureInfo("en-US"));
+            return ss;
+        }
+
         private async void ImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
 
             filePicker.FileTypeFilter.Add(".jpg");
-            filePicker.FileTypeFilter.Add(".bmp");
-            filePicker.FileTypeFilter.Add("*");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
 
             // 単一ファイルの選択
             var file = await filePicker.PickSingleFileAsync();
@@ -124,6 +145,11 @@ namespace iBuki
                 }
                 bgImage.Source = bitmap;
             }
+        }
+
+        private void windowSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            WindowSizeChange();
         }
     }
 }
