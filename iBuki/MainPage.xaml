@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Visible" SizeChanged="Page_SizeChanged" >
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged" >
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
         <local:BoolToVisibilityConverter x:Key="Visibility" />
@@ -15,55 +16,63 @@
     <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
         <SplitView x:Name="Splitter"
                 DisplayMode="CompactOverlay"
-                CompactPaneLength="0" OpenPaneLength="340" 
+                CompactPaneLength="0" OpenPaneLength="300" 
                 IsPaneOpen="{Binding ElementName=HamburgerButton,Path=IsChecked, Mode=TwoWay}"
                 PaneBackground="{ThemeResource AppBarBackground}"
             >
-            <!-- ビューパネル -->
+            <!-- 設定パネル -->
 
             <SplitView.Pane>
-                <Grid Margin="10,30,10,10" VerticalAlignment="Top">
-                    <StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="Movement"/>
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton Content="Quartz"
+                <Grid>
+                    <Pivot Margin="0" x:Name="rootPivot">
+                        <PivotItem Header="Theme">
+                            <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
+                                <x:String>Porto</x:String>
+                                <x:String>Volks</x:String>
+                                <x:String>Station</x:String>
+                            </ListView>
+                        </PivotItem>
+                        <PivotItem Header="General">
+                            <StackPanel>
+                                <TextBlock Text="Movement"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="Quartz"
                                             IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
-                                <RadioButton Content="Mechanical"
+                                    <RadioButton Content="Mechanical"
                                             IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                        <!--<StackPanel>
-                            <Slider x:Name="windowSizeSlider"
-                                Header="Window Size" Minimum="300" Maximum="800"
-                                StepFrequency="100" TickFrequency="100" 
-                                Value="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" ValueChanged="windowSizeSlider_ValueChanged"/>
-                            <TextBlock Text="{Binding Value, ElementName=windowSizeSlider}" />
-                        </StackPanel>-->
-                        <ToggleSwitch x:Name="dateDisplayToggle" 
+                        </PivotItem>
+                        <PivotItem Header="Design">
+                            <StackPanel>
+                                <ToggleSwitch x:Name="dateDisplayToggle" 
                                     Header="Date Display" OffContent="Off" OnContent="On"
                                     IsOn="{x:Bind DesignConfig.IsDateDisplay, Mode=TwoWay}" />
-                        <StackPanel>
-                            <TextBlock Text="Date Format"/>
-                            <TextBox x:Name="dateDisplayFormatTextBox"
-                                Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="Background Image"/>
-                            <Button x:Name="imagePicker"
+                                <StackPanel>
+                                    <TextBlock Text="Date Format"/>
+                                    <TextBox x:Name="dateDisplayFormatTextBox"
+                                Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}" IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=TwoWay}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Background Image"/>
+                                    <Button x:Name="imagePicker"
                                 Content="Select Image" Tapped="ImagePicker_Tapped"/>
-                        </StackPanel>
-                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </PivotItem>
+                    </Pivot>
                 </Grid>
             </SplitView.Pane>
 
             <!-- コンテンツビュー -->
+            
             <SplitView.Content>
-                <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" >
                     <!--背景-->
                     <Image x:Name="bgImage"
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                        Height="{x:Bind AppConfig.WindowSize}" Width="{x:Bind AppConfig.WindowSize}"/>
+                        Height="{x:Bind AppConfig.WindowSize}" Width="{x:Bind AppConfig.WindowSize}"
+                        Source="ms-appx:///Assets/bgimg.png"/>
                     <TextBlock x:Name="textBlock"
                             Margin="10" TextWrapping="Wrap" Text="0"
                             HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -74,37 +83,37 @@
                             Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=TwoWay}"/>
                     <!--短針-->
                     <Path x:Name="hourHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
-                    Fill="#FF153555" HorizontalAlignment="Center" Margin="0,120,0,0" Stretch="Fill" StrokeThickness="0" Width="9" Height="130" VerticalAlignment="Top" UseLayoutRounding="False">
+                    Fill="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,120,0,0" Stretch="Fill" StrokeThickness="0" Width="9" Height="130" VerticalAlignment="Top" UseLayoutRounding="False">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="315" />
                         </Path.RenderTransform>
                     </Path>
                     <!--長針-->
-                    <Path x:Name="secondHand" Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
-                          Fill="#FF153555" HorizontalAlignment="Center" Margin="0,14,0,236" Stretch="Fill" StrokeThickness="0" Width="2" Height="236" UseLayoutRounding="False">
+                    <Path x:Name="minuteHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
+                    Fill="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,50,0,0" Stretch="Fill" StrokeThickness="0" Width="8" Height="200" VerticalAlignment="Top" UseLayoutRounding="False">
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="229" Angle="0" />
+                            <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
                         </Path.RenderTransform>
                     </Path>
                     <!--秒針-->
-                    <Path x:Name="minuteHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
-                    Fill="#FF153555" HorizontalAlignment="Center" Margin="0,50,0,0" Stretch="Fill" StrokeThickness="0" Width="8" Height="200" VerticalAlignment="Top" UseLayoutRounding="False">
+                    <Path x:Name="secondHand" Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
+                          Fill="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}" HorizontalAlignment="center" VerticalAlignment="Top" Margin="0,40,0,0" Stretch="Fill" StrokeThickness="0" Width="2" Height="250" UseLayoutRounding="False" >
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
+                            <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="210" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
                     <!--中央-->
                     <Ellipse Width="30" Height="30"
                             Stroke="#FF153555" StrokeThickness="10" 
                             Fill="White" Grid.Row="3"/>
-                    <local:CircleMeter HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" 
-                        Height="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" />
+                    <!--<local:CircleMeter HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" 
+                        Height="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" />-->
                 </Grid>
             </SplitView.Content>
         </SplitView>
 
         <!--設定-->
-        <ToggleButton x:Name="HamburgerButton" VerticalAlignment="Top">
+        <ToggleButton x:Name="HamburgerButton" VerticalAlignment="Bottom">
             <ToggleButton.Content>
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
             </ToggleButton.Content>

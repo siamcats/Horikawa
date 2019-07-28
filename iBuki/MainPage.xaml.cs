@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Diagnostics;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -31,6 +32,7 @@ namespace iBuki
         public AppConfig AppConfig { get; set; } = new AppConfig();
         public DesignConfig DesignConfig { get; set; } = new DesignConfig();
 
+        private StorageFolder _storageFolder = ApplicationData.Current.LocalFolder;
         private DispatcherTimer _timer;
 
         public MainPage()
@@ -147,9 +149,50 @@ namespace iBuki
             }
         }
 
+        private async void ImportSetting(string name)
+        {
+            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".json");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                // ファイルの読み込み
+                var settings = new Settings();
+                string json = await FileIO.ReadTextAsync(file);
+                using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)))
+                {
+                    // List<Prefecture>に変換できるシリアライザーを作成
+                    var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Settings));
+                    // クラスにデータを読み込む
+                    settings = serializer.ReadObject(stream) as Settings;
+                    Debug.WriteLine(settings);
+                }
+
+                DesignConfig.IsDateDisplay = settings.IsDateDisplay;
+                DesignConfig.DateDisplayFormat = settings.DateDisplayFormat;
+                DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
+            }
+        }
+
+        private async void SaveSetting()
+        {
+            
+            StorageFile currentSetting = await _storageFolder.CreateFileAsync("CurrentSetting.json",CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(currentSetting, "");
+        }
+
         private void windowSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             WindowSizeChange();
+        }
+
+        private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ImportSetting("Porto");
         }
     }
 }

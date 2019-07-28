@@ -6,6 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
+using System.Runtime.Serialization;
 
 namespace iBuki
 {
@@ -40,6 +43,17 @@ namespace iBuki
                 OnPropertyChanged();
             }
         }
-    
+
+        private Brush _handsColor = new SolidColorBrush(Color.FromArgb(255,21,53,85));
+        public Brush HandsColor
+        {
+            get { return _handsColor; }
+            set
+            {
+                if (value == _handsColor) return;
+                _handsColor = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
