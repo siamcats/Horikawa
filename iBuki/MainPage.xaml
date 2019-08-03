@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged" >
+    Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged"
+    RequestedTheme="{x:Bind AppConfig.SystemTheme,Mode=TwoWay}">
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
         <local:BoolToVisibilityConverter x:Key="Visibility" />
@@ -17,48 +17,73 @@
         <SplitView x:Name="Splitter"
                 DisplayMode="CompactOverlay"
                 CompactPaneLength="0" OpenPaneLength="300" 
+                PaneBackground="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}"
                 IsPaneOpen="{Binding ElementName=HamburgerButton,Path=IsChecked, Mode=TwoWay}"
-                PaneBackground="{ThemeResource AppBarBackground}"
-            >
+                >
+            
             <!-- 設定パネル -->
 
             <SplitView.Pane>
-                <Grid>
+                <Grid Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}">
                     <Pivot Margin="0" x:Name="rootPivot">
-                        <PivotItem Header="Theme">
+                        <PivotItem Header="General">
+                            <StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Theme"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton Content="Dark"
+                                                IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
+                                        <RadioButton Content="Light"
+                                                IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Movement"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton Content="Quartz"
+                                                IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
+                                        <RadioButton Content="Mechanical"
+                                                IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="Clock face">
+                            <StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Dial Image"/>
+                                    <Button x:Name="DialImagePicker"
+                                            Content="Select Image" Tapped="DialImagePicker_Tapped"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="Hands">
+                            <StackPanel>
+                                <TextBlock Text="Color"/>
+                                <TextBox x:Name="handsColor"
+                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=OneWay}"
+                                             Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="Date Display">
+                            <StackPanel>
+                                <ToggleSwitch x:Name="dateDisplayToggle" 
+                                              Header="Date Display" OffContent="Off" OnContent="On"
+                                              IsOn="{x:Bind DesignConfig.IsDateDisplay, Mode=TwoWay}" />
+                                <StackPanel>
+                                    <TextBlock Text="Date Format"/>
+                                    <TextBox x:Name="dateDisplayFormatTextBox"
+                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=OneWay}"
+                                             Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="Template">
                             <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
                                 <x:String>Porto</x:String>
                                 <x:String>Volks</x:String>
                                 <x:String>Station</x:String>
                             </ListView>
-                        </PivotItem>
-                        <PivotItem Header="General">
-                            <StackPanel>
-                                <TextBlock Text="Movement"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton Content="Quartz"
-                                            IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
-                                    <RadioButton Content="Mechanical"
-                                            IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
-                                </StackPanel>
-                            </StackPanel>
-                        </PivotItem>
-                        <PivotItem Header="Design">
-                            <StackPanel>
-                                <ToggleSwitch x:Name="dateDisplayToggle" 
-                                    Header="Date Display" OffContent="Off" OnContent="On"
-                                    IsOn="{x:Bind DesignConfig.IsDateDisplay, Mode=TwoWay}" />
-                                <StackPanel>
-                                    <TextBlock Text="Date Format"/>
-                                    <TextBox x:Name="dateDisplayFormatTextBox"
-                                Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}" IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=TwoWay}"/>
-                                </StackPanel>
-                                <StackPanel>
-                                    <TextBlock Text="Background Image"/>
-                                    <Button x:Name="imagePicker"
-                                Content="Select Image" Tapped="ImagePicker_Tapped"/>
-                                </StackPanel>
-                            </StackPanel>
                         </PivotItem>
                     </Pivot>
                 </Grid>
@@ -68,46 +93,66 @@
             
             <SplitView.Content>
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" >
-                    <!--背景-->
-                    <Image x:Name="bgImage"
+                    <!-- 文字盤 -->
+                    <Image
+                        x:Name="bgImage"
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                        Source="{x:Bind DesignConfig.DialImage,Mode=OneWay}"
                         Height="{x:Bind AppConfig.WindowSize}" Width="{x:Bind AppConfig.WindowSize}"
-                        Source="ms-appx:///Assets/bgimg.png"/>
-                    <TextBlock x:Name="textBlock"
-                            Margin="10" TextWrapping="Wrap" Text="0"
-                            HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                           />
+                    <local:CircleMeter
+                        HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"
+                        Height="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" />
+                    <!--<TextBlock
+                        x:Name="textBlock"
+                        Margin="10" TextWrapping="Wrap" Text="0"
+                        HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
                     <!-- デイト -->
                     <TextBlock x:Name="dateDisplay"
-                            Margin="300,300,0,0"
-                            Text="31" FontSize="48"
-                            Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=TwoWay}"/>
+                               Margin="300,300,0,0" Text="31"
+                               Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                               FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
+                               FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
+                               Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}"
+                               />
                     <!--短針-->
-                    <Path x:Name="hourHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
-                    Fill="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,120,0,0" Stretch="Fill" StrokeThickness="0" Width="9" Height="130" VerticalAlignment="Top" UseLayoutRounding="False">
+                    <Path x:Name="hourHand" 
+                          Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
+                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                          Margin="0,120,0,0" Stretch="Fill"
+                          Width="9" Height="130"
+                          Fill="{x:Bind DesignConfig.HandsColor,Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="315" />
                         </Path.RenderTransform>
                     </Path>
                     <!--長針-->
-                    <Path x:Name="minuteHand" Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
-                    Fill="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,50,0,0" Stretch="Fill" StrokeThickness="0" Width="8" Height="200" VerticalAlignment="Top" UseLayoutRounding="False">
+                    <Path x:Name="minuteHand"
+                          Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
+                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                          Margin="0,50,0,0" Stretch="Fill" 
+                          Width="8" Height="200"
+                          Fill="{x:Bind DesignConfig.HandsColor,Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
                         </Path.RenderTransform>
                     </Path>
                     <!--秒針-->
-                    <Path x:Name="secondHand" Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
-                          Fill="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}" HorizontalAlignment="center" VerticalAlignment="Top" Margin="0,40,0,0" Stretch="Fill" StrokeThickness="0" Width="2" Height="250" UseLayoutRounding="False" >
+                    <Path x:Name="secondHand"
+                          Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
+                          HorizontalAlignment="center" VerticalAlignment="Top"
+                          Margin="0,40,0,0" Stretch="Fill"
+                          Width="2" Height="250"
+                          Fill="{x:Bind DesignConfig.HandsColor,Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="210" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
                     <!--中央-->
-                    <Ellipse Width="30" Height="30"
-                            Stroke="#FF153555" StrokeThickness="10" 
-                            Fill="White" Grid.Row="3"/>
-                    <!--<local:CircleMeter HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" 
-                        Height="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" />-->
+                    <!--<Ellipse Width="30" Height="30"
+                            StrokeThickness="10" 
+                            Stroke="{x:Bind DesignConfig.HandsColor,Mode=OneWay}"
+                            Fill="White" Grid.Row="3"/>-->
                 </Grid>
             </SplitView.Content>
         </SplitView>

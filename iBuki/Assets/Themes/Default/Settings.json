@@ -1,0 +1,21 @@
+{
+  "Name": "DefaultSetting",
+  "Author": "siamcats",
+  "Version": "0.01",
+  "TargetAppVersion": "0.01",
+  "HandsType": 0,
+  "HandsColor": "#FFFFFFFF",
+  "BackgroundColor": "#",
+  "ClockScaleType": 0,
+  "ClockScaleColor": "#FFFFFFFF",
+  "ClockIndexType": 0,
+  "ClockIndexColor": "#FFFFFFFF",
+  "ClockDialImage": null,
+  "DateDisplay": true,
+  "DateFontSize": 38,
+  "DateFontFamily": "Century Gothic",
+  "DateFormat": "d ddd",
+  "DateColor": "#FFFFFFFF",
+  "DateCoordinateX": 10,
+  "DateCoordinateY": 100
+}

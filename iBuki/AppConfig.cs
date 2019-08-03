@@ -32,6 +32,18 @@ namespace iBuki
             }
         }
 
+        private ElementTheme _systemTheme = ElementTheme.Light;
+        public ElementTheme SystemTheme
+        {
+            get { return _systemTheme; }
+            set
+            {
+                if (value == _systemTheme) return;
+                _systemTheme = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Movement _movement = Movement.Mechanical;
         public Movement Movement
         {
@@ -46,9 +58,4 @@ namespace iBuki
 
     }
 
-    public enum Movement
-    {
-        Quartz,
-        Mechanical
-    }
 }

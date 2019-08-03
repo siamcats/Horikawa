@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 
@@ -16,6 +12,21 @@ namespace iBuki
         public string Name { get; set; }
 
         [DataMember]
+        public string Author { get; set; }
+
+        [DataMember]
+        public string Version { get; set; }
+
+        [DataMember]
+        public string TargetAppVersion { get; set; }
+
+        [DataMember]
+        public Hands HandsType { get; set; }
+
+        [DataMember]
+        public string HandsColor { get; set; }
+
+        [DataMember]
         public bool IsDateDisplay { get; set; }
 
         [DataMember]
@@ -23,9 +34,6 @@ namespace iBuki
 
         [DataMember]
         public string BackgroundImage { get; set; }
-
-        [DataMember]
-        public string HandsColor { get; set; }
 
         public SolidColorBrush GetBrush(string hex)
         {

@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Globalization;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Diagnostics;
-using Windows.UI.Popups;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage;
+using System.Threading.Tasks;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -35,6 +31,9 @@ namespace iBuki
         private StorageFolder _storageFolder = ApplicationData.Current.LocalFolder;
         private DispatcherTimer _timer;
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public MainPage()
         {
             InitializeComponent();
@@ -50,6 +49,10 @@ namespace iBuki
             Debug.WriteLine("run");
         }
 
+        /// <summary>
+        /// 遷移時
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             _timer = new DispatcherTimer();
@@ -57,34 +60,69 @@ namespace iBuki
             // タイマーイベントの間隔を指定。
             // ここでは1秒おきに実行する
             _timer.Interval = TimeSpan.FromSeconds(0.125);
-            _timer.Tick += _timer_Tick;
+            _timer.Tick += Timer_Tick;
             _timer.Start();
         }
 
-        private void WindowSizeChange()
-        {
-            var view = ApplicationView.GetForCurrentView();
-            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
-            if (!view.TryResizeView(size))
-            {
-                Debug.WriteLine("Try Resize Window 失敗");
-            }
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            WindowSizeChange();
-        }
-
-        private void _timer_Tick(object sender, object e)
+        /// <summary>
+        /// チック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Tick(object sender, object e)
         {
             DateTime localDate = DateTime.Now;
-            textBlock.Text = localDate.ToString("hh:mm:ss.fff");
+            //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
             minuteHandAngle.Angle = CalcAngleMinute(localDate);
             secondHandAngle.Angle = CalcAngleSecond(localDate);
             dateDisplay.Text = CalcDate(localDate);
+        }
+
+
+        private async void DialImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                DesignConfig.DialImage = bitmap;
+            }
+        }
+
+        public async Task GetZipFileInformation(Stream stream)
+        {
+           ZipArchive zip = new ZipArchive(stream);
+            var firstFile = zip.Entries.FirstOrDefault();
+            if (firstFile != null)
+            { }
+        }
+
+        private void WindowSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            WindowSizeChange();
+        }
+
+        private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ImportSetting("Porto");
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WindowSizeChange();
         }
 
         private double CalcAngleHour(DateTime now)
@@ -101,7 +139,7 @@ namespace iBuki
         {
             var mm = Convert.ToDecimal(now.ToString("mm"));
             var ss = Convert.ToDecimal(now.ToString("ss"));
-            var angle = mm * 360 / 60 + ss * 360 / 60 / 60 ;
+            var angle = mm * 360 / 60 + ss * 360 / 60 / 60;
             //Debug.WriteLine(angle.ToString());
             return decimal.ToDouble(angle);
         }
@@ -121,32 +159,24 @@ namespace iBuki
 
         private string CalcDate(DateTime now)
         {
-            var ss = now.ToString(DesignConfig.DateDisplayFormat,new CultureInfo("en-US"));
+            var ss = now.ToString(DesignConfig.DateDisplayFormat, new CultureInfo("en-US"));
             return ss;
         }
 
-        private async void ImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        private void WindowSizeChange()
         {
-            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
-
-            filePicker.FileTypeFilter.Add(".jpg");
-            filePicker.FileTypeFilter.Add(".png");
-            //filePicker.FileTypeFilter.Add("*");
-
-            // 単一ファイルの選択
-            var file = await filePicker.PickSingleFileAsync();
-            if (file != null)
+            var view = ApplicationView.GetForCurrentView();
+            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            if (!view.TryResizeView(size))
             {
-                //var dlg = new MessageDialog(file.Name);
-                //await dlg.ShowAsync();
-
-                var bitmap = new BitmapImage();
-                using (var stream = await file.OpenReadAsync())
-                {
-                    await bitmap.SetSourceAsync(stream);
-                }
-                bgImage.Source = bitmap;
+                Debug.WriteLine("Try Resize Window 失敗");
             }
+        }
+
+        private async void SaveSetting()
+        {
+            StorageFile currentSetting = await _storageFolder.CreateFileAsync("CurrentSetting.json", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(currentSetting, "");
         }
 
         private async void ImportSetting(string name)
@@ -165,7 +195,7 @@ namespace iBuki
                 string json = await FileIO.ReadTextAsync(file);
                 using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)))
                 {
-                    // List<Prefecture>に変換できるシリアライザーを作成
+                    // 変換できるシリアライザーを作成
                     var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Settings));
                     // クラスにデータを読み込む
                     settings = serializer.ReadObject(stream) as Settings;
@@ -176,23 +206,6 @@ namespace iBuki
                 DesignConfig.DateDisplayFormat = settings.DateDisplayFormat;
                 DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
             }
-        }
-
-        private async void SaveSetting()
-        {
-            
-            StorageFile currentSetting = await _storageFolder.CreateFileAsync("CurrentSetting.json",CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(currentSetting, "");
-        }
-
-        private void windowSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            WindowSizeChange();
-        }
-
-        private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ImportSetting("Porto");
         }
     }
 }
