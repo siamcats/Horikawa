@@ -14,6 +14,10 @@ using System.Diagnostics;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.Core;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -31,6 +35,7 @@ namespace iBuki
         private StorageFolder _storageFolder = ApplicationData.Current.LocalFolder;
         private DispatcherTimer _timer;
 
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -40,13 +45,39 @@ namespace iBuki
             DataContext = AppConfig;
             DataContext = DesignConfig;
 
+            // デフォルトサイズは500です
             var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
             ApplicationView.PreferredLaunchViewSize = size;
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             var view = ApplicationView.GetForCurrentView();
             view.SetPreferredMinSize(size);
 
-            Debug.WriteLine("run");
+
+            // ウインドウが初めてアクティブになったとき、 CompactOverlay にする。
+            bool isFirstActivate = true;
+            Window.Current.Activated += async (s, e) =>
+            {
+                if (e.WindowActivationState == CoreWindowActivationState.CodeActivated && isFirstActivate)
+                {
+                    isFirstActivate = false;
+                    StartOverlay();
+                }
+            };
+        }
+
+        private async void StartOverlay()
+        {
+            var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
+            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            compactOptions.CustomSize = size;
+            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
+            if (result) AppConfig.IsTopMost = true;
+        }
+
+        private async void StopOverlay()
+        {
+            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+            if (result) AppConfig.IsTopMost = true; AppConfig.IsTopMost = false;
         }
 
         /// <summary>
@@ -55,13 +86,55 @@ namespace iBuki
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _timer = new DispatcherTimer();
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
 
-            // タイマーイベントの間隔を指定。
-            // ここでは1秒おきに実行する
+            // タイトルバーの領域までアプリの表示を拡張する
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            // ［×］ボタンなどの背景色を設定する
+            appTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonForegroundColor = Colors.White;
+
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+
+            Window.Current.SetTitleBar(moveButton);
+            Window.Current.Activated += Current_Activated;
+
+            // タイマーイベントの間隔を指定します。。
+            _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(0.125);
             _timer.Tick += Timer_Tick;
             _timer.Start();
+
+        }
+
+        private void Current_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState != Windows.UI.Core.CoreWindowActivationState.Deactivated)
+            {
+                // フォーカスイン
+                myTitleBar.Visibility = Visibility.Visible;
+                myTitleBar.Background.Opacity = 1.0;
+            }
+            else
+            {
+                // フォーカスアウト
+                myTitleBar.Visibility = Visibility.Collapsed;
+                myTitleBar.Background.Opacity = 0.0;
+            }
+        }
+
+        // タイトルバーの寸法が変わったとき
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            // タイトルバーの高さ
+            myTitleBar.Height = sender.Height;
+
+            // タイトルバーの左右に確保するスペース
+            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset,0.0, sender.SystemOverlayRightInset, 0.0);
+            ConfigPanel.Margin = new Thickness(0,sender.Height,0,0);
         }
 
         /// <summary>
@@ -102,13 +175,13 @@ namespace iBuki
             }
         }
 
-        public async Task GetZipFileInformation(Stream stream)
-        {
-           ZipArchive zip = new ZipArchive(stream);
-            var firstFile = zip.Entries.FirstOrDefault();
-            if (firstFile != null)
-            { }
-        }
+        //public async Task GetZipFileInformation(Stream stream)
+        //{
+        //   ZipArchive zip = new ZipArchive(stream);
+        //    var firstFile = zip.Entries.FirstOrDefault();
+        //    if (firstFile != null)
+        //    { }
+        //}
 
         private void WindowSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
@@ -117,12 +190,14 @@ namespace iBuki
 
         private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
             ImportSetting("Porto");
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             WindowSizeChange();
+            Serialize();
         }
 
         private double CalcAngleHour(DateTime now)
@@ -179,6 +254,26 @@ namespace iBuki
             await FileIO.WriteTextAsync(currentSetting, "");
         }
 
+
+        private void Serialize()
+        {
+
+            var setting = new Settings()
+            {
+                Author = "aaa",
+                //BackgroundColor = new SolidColorBrush(Windows.UI.Colors.Blue)
+            };
+
+            var serializer2 = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Settings));
+
+            using (var stream = new MemoryStream())
+            {
+                serializer2.WriteObject(stream, setting);
+                string jsonData = System.Text.Encoding.UTF8.GetString(stream.ToArray());
+                Debug.WriteLine(jsonData);
+            }
+        }
+
         private async void ImportSetting(string name)
         {
             var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
@@ -207,5 +302,21 @@ namespace iBuki
                 DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
             }
         }
+
+        private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (AppConfig.IsTopMost)
+            {
+                StartOverlay();
+            }
+            else
+            {
+                StopOverlay();
+            }
+        }
+
+        //private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+        //{
+        //}
     }
 }

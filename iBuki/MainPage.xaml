@@ -7,29 +7,33 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged"
-    RequestedTheme="{x:Bind AppConfig.SystemTheme,Mode=TwoWay}">
+    HorizontalAlignment="Left" VerticalAlignment="Top"
+    RequestedTheme="{x:Bind AppConfig.SystemTheme,Mode=TwoWay}"
+    Background="{x:Bind DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
         <local:BoolToVisibilityConverter x:Key="Visibility" />
+        <local:ColorToBrushConverter x:Key="ColorBrush" />
     </Page.Resources>
 
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+
         <SplitView x:Name="Splitter"
                 DisplayMode="CompactOverlay"
-                CompactPaneLength="0" OpenPaneLength="300" 
-                PaneBackground="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}"
-                IsPaneOpen="{Binding ElementName=HamburgerButton,Path=IsChecked, Mode=TwoWay}"
+                CompactPaneLength="0" OpenPaneLength="300"
+                IsPaneOpen="{Binding ElementName=configButton,Path=IsChecked, Mode=TwoWay}"
                 >
-            
+
             <!-- 設定パネル -->
 
             <SplitView.Pane>
-                <Grid Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}">
-                    <Pivot Margin="0" x:Name="rootPivot">
+                <Grid x:Name="ConfigPanel">
+                    <Pivot>
+                        <!--全般-->
                         <PivotItem Header="General">
                             <StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="Theme"/>
+                                    <TextBlock Text="Window Theme"/>
                                     <StackPanel Orientation="Horizontal">
                                         <RadioButton Content="Dark"
                                                 IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
@@ -48,22 +52,57 @@
                                 </StackPanel>
                             </StackPanel>
                         </PivotItem>
-                        <PivotItem Header="Clock face">
-                            <StackPanel>
+                        <!--背景-->
+                        <PivotItem Header="Background">
+                            <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock Text="Dial Image"/>
-                                    <Button x:Name="DialImagePicker"
+                                    <TextBlock Text="Background Color"/>
+                                    <Viewbox Margin="5" MaxWidth="250" Stretch="Fill">
+                                        <ColorPicker x:Name="backgroundColorPicker"
+                                             IsColorPreviewVisible="False"
+                                             IsColorChannelTextInputVisible="False"
+                                             Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                    </Viewbox>
+                                    <StackPanel>
+                                        <TextBlock Text="Background Image"/>
+                                        <Button x:Name="DialImagePicker"
                                             Content="Select Image" Tapped="DialImagePicker_Tapped"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
+                            </ScrollViewer>
                         </PivotItem>
-                        <PivotItem Header="Hands">
-                            <StackPanel>
-                                <TextBlock Text="Color"/>
-                                <TextBox x:Name="handsColor"
-                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=OneWay}"
-                                             Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
-                            </StackPanel>
+                        <!--文字盤-->
+                        <PivotItem Header="Clock face">
+                            <ScrollViewer>
+                                <StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        <!--針-->
+                        </PivotItem>
+                        <PivotItem Header="Hour/Minute Hands">
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Hour/Minute Hands Color"/>
+                                        <Viewbox Margin="5" MaxWidth="250" Stretch="Fill">
+                                            <ColorPicker x:Name="hourMinuteHandsColorPicker"
+                                                 IsColorPreviewVisible="False"
+                                                 IsColorChannelTextInputVisible="False"
+                                                 Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                        </Viewbox>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Second Hand Color"/>
+                                        <Viewbox Margin="5" MaxWidth="250" Stretch="Fill">
+                                            <ColorPicker x:Name="secondHandColorPicker"
+                                                 IsColorPreviewVisible="False"
+                                                 IsColorChannelTextInputVisible="False"
+                                                 Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                        </Viewbox>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        <!--デイト-->
                         </PivotItem>
                         <PivotItem Header="Date Display">
                             <StackPanel>
@@ -90,7 +129,7 @@
             </SplitView.Pane>
 
             <!-- コンテンツビュー -->
-            
+
             <SplitView.Content>
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" >
                     <!-- 文字盤 -->
@@ -109,11 +148,11 @@
                         HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
                     <!-- デイト -->
                     <TextBlock x:Name="dateDisplay"
-                               Margin="300,300,0,0" Text="31"
-                               Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                               FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
-                               FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
-                               Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}"
+                            Margin="300,300,0,0" Text="31"
+                            Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                            FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
+                            FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
+                            Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}"
                                />
                     <!--短針-->
                     <Path x:Name="hourHand" 
@@ -157,13 +196,38 @@
             </SplitView.Content>
         </SplitView>
 
-        <!--設定-->
-        <ToggleButton x:Name="HamburgerButton" VerticalAlignment="Bottom">
-            <ToggleButton.Content>
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
-            </ToggleButton.Content>
-        </ToggleButton>
-        
+        <!--タイトルバー-->
+        <Grid x:Name="myTitleBar"
+            Height="30" VerticalAlignment="Top" Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <ToggleButton x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        <ToggleButton.Content>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                </StackPanel>
+                <StackPanel>
+                    <ToggleButton x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                        IsChecked="{x:Bind AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
+                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        <ToggleButton.Content>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                </StackPanel>
+                <StackPanel>
+                    <ToggleButton x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        <ToggleButton.Content>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE759;" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                </StackPanel> 
+            </StackPanel>
+        </Grid>
+
     </Grid>
 
 

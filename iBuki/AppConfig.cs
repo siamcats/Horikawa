@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml;
 using System.Runtime.CompilerServices;
+using Windows.UI.ViewManagement;
 
 namespace iBuki
 {
@@ -56,6 +57,16 @@ namespace iBuki
             }
         }
 
+        private bool _isTopMost = true;
+        public bool IsTopMost
+        {
+            get { return _isTopMost; }
+            set
+            {
+                if (value == _isTopMost) return;
+                _isTopMost = value;
+                OnPropertyChanged();
+            }
+        }
     }
-
 }

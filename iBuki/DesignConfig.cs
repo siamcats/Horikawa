@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
 using System.Runtime.Serialization;
+using Windows.UI.ViewManagement;
 
 namespace iBuki
 {
@@ -42,6 +43,18 @@ namespace iBuki
             {
                 if (value == _handsColor) return;
                 _handsColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Brush _secondHandColor = new SolidColorBrush(Color.FromArgb(255, 21, 53, 85));
+        public Brush SecondHandColor
+        {
+            get { return _secondHandColor; }
+            set
+            {
+                if (value == _secondHandColor) return;
+                _secondHandColor = value;
                 OnPropertyChanged();
             }
         }
@@ -110,8 +123,24 @@ namespace iBuki
             }
         }
 
+        private Color _backgroundColor = Color.FromArgb(255,20,20,20);
+        public Color BackgroundColor
+        {
+            get { return _backgroundColor; }
+            set
+            {
+                if (value == _backgroundColor) return;
+                _backgroundColor = value;
+
+                //×ボタンとかの文字色も合わせる
+                var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+                appTitleBar.ButtonForegroundColor = value;
+                appTitleBar.ButtonInactiveForegroundColor = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
-        
+
         #region Date Display
 
         private bool _isDateDisplay = true;

@@ -31,10 +31,7 @@ namespace iBuki
 
         [DataMember]
         public string DateDisplayFormat { get; set; }
-
-        [DataMember]
-        public string BackgroundImage { get; set; }
-
+        
         public SolidColorBrush GetBrush(string hex)
         {
             hex = hex.Replace("#", string.Empty);
