@@ -31,33 +31,43 @@
                     <Pivot>
                         <!--全般-->
                         <PivotItem Header="General">
-                            <StackPanel>
+                            <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock Text="Window Theme"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <RadioButton Content="Dark"
+                                    <StackPanel>
+                                        <TextBlock Text="Window Theme"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <RadioButton Content="Dark"
                                                 IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
-                                        <RadioButton Content="Light"
+                                            <RadioButton Content="Light"
                                                 IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                                <StackPanel>
-                                    <TextBlock Text="Movement"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <RadioButton Content="Quartz"
+                                    <StackPanel>
+                                        <TextBlock Text="Movement"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <RadioButton Content="Quartz"
                                                 IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
-                                        <RadioButton Content="Mechanical"
+                                            <RadioButton Content="Mechanical"
                                                 IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
+                            </ScrollViewer>
+                        </PivotItem>
+                        <!--テンプレート-->
+                        <PivotItem Header="Design Template">
+                            <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
+                                <x:String>Porto</x:String>
+                                <x:String>Volks</x:String>
+                                <x:String>Station</x:String>
+                            </ListView>
                         </PivotItem>
                         <!--背景-->
                         <PivotItem Header="Background">
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock Text="Background Color"/>
-                                    <Viewbox Margin="5" MaxWidth="250" Stretch="Fill">
+                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
                                         <ColorPicker x:Name="backgroundColorPicker"
                                              IsColorPreviewVisible="False"
                                              IsColorChannelTextInputVisible="False"
@@ -79,25 +89,36 @@
                             </ScrollViewer>
                         <!--針-->
                         </PivotItem>
-                        <PivotItem Header="Hour/Minute Hands">
+                        <PivotItem Header="Hands">
                             <ScrollViewer>
                                 <StackPanel>
+                                    <TextBlock FontSize="18">Hour/Minute Hands</TextBlock>
                                     <StackPanel>
-                                        <TextBlock Text="Hour/Minute Hands Color"/>
-                                        <Viewbox Margin="5" MaxWidth="250" Stretch="Fill">
+                                        <TextBlock Text="Type" />
+                                        <ComboBox />
+
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Color"/>
+                                        <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
                                             <ColorPicker x:Name="hourMinuteHandsColorPicker"
                                                  IsColorPreviewVisible="False"
                                                  IsColorChannelTextInputVisible="False"
-                                                 Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                                 Color="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}"/>
                                         </Viewbox>
                                     </StackPanel>
+                                    <TextBlock FontSize="18">Second Hand</TextBlock>
                                     <StackPanel>
-                                        <TextBlock Text="Second Hand Color"/>
-                                        <Viewbox Margin="5" MaxWidth="250" Stretch="Fill">
+                                        <TextBlock Text="Type" />
+                                        <ComboBox />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Color"/>
+                                        <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
                                             <ColorPicker x:Name="secondHandColorPicker"
                                                  IsColorPreviewVisible="False"
                                                  IsColorChannelTextInputVisible="False"
-                                                 Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                                 Color="{x:Bind DesignConfig.SecondHandColor,Mode=TwoWay}"/>
                                         </Viewbox>
                                     </StackPanel>
                                 </StackPanel>
@@ -116,13 +137,6 @@
                                              Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
                                 </StackPanel>
                             </StackPanel>
-                        </PivotItem>
-                        <PivotItem Header="Template">
-                            <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
-                                <x:String>Porto</x:String>
-                                <x:String>Volks</x:String>
-                                <x:String>Station</x:String>
-                            </ListView>
                         </PivotItem>
                     </Pivot>
                 </Grid>
@@ -160,7 +174,7 @@
                           HorizontalAlignment="Center" VerticalAlignment="Top"
                           Margin="0,120,0,0" Stretch="Fill"
                           Width="9" Height="130"
-                          Fill="{x:Bind DesignConfig.HandsColor,Mode=OneWay}">
+                          Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="315" />
                         </Path.RenderTransform>
@@ -171,7 +185,7 @@
                           HorizontalAlignment="Center" VerticalAlignment="Top"
                           Margin="0,50,0,0" Stretch="Fill" 
                           Width="8" Height="200"
-                          Fill="{x:Bind DesignConfig.HandsColor,Mode=OneWay}">
+                          Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
                         </Path.RenderTransform>
@@ -182,7 +196,7 @@
                           HorizontalAlignment="center" VerticalAlignment="Top"
                           Margin="0,40,0,0" Stretch="Fill"
                           Width="2" Height="250"
-                          Fill="{x:Bind DesignConfig.HandsColor,Mode=OneWay}">
+                          Fill="{x:Bind DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="210" Angle="0" />
                         </Path.RenderTransform>

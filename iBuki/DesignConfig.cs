@@ -35,8 +35,8 @@ namespace iBuki
             }
         }
         
-        private Brush _handsColor = new SolidColorBrush(Color.FromArgb(255, 21, 53, 85));
-        public Brush HandsColor
+        private Color _handsColor = Color.FromArgb(255, 21, 53, 85);
+        public Color HandsColor
         {
             get { return _handsColor; }
             set
@@ -47,8 +47,8 @@ namespace iBuki
             }
         }
 
-        private Brush _secondHandColor = new SolidColorBrush(Color.FromArgb(255, 21, 53, 85));
-        public Brush SecondHandColor
+        private Color _secondHandColor = Color.FromArgb(255, 21, 53, 85);
+        public Color SecondHandColor
         {
             get { return _secondHandColor; }
             set

@@ -299,7 +299,7 @@ namespace iBuki
 
                 DesignConfig.IsDateDisplay = settings.IsDateDisplay;
                 DesignConfig.DateDisplayFormat = settings.DateDisplayFormat;
-                DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
+                //DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
             }
         }
 
