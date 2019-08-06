@@ -14,8 +14,10 @@ namespace iBuki
 
     public enum Hands
     {
-        Arabic,
-        Roman
+        Bar,
+        Leaf,
+        Dolphin,
+        Breguet
     }
 
     public enum Scale

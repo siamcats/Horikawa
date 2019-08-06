@@ -116,8 +116,8 @@
                                 <StackPanel>
                                     <TextBlock FontSize="18">Hour/Minute Hands</TextBlock>
                                     <StackPanel>
-                                        <TextBlock Text="Type" />
-                                        <ComboBox />
+                                        <TextBlock x:Uid="configHandsType" Text="Type" />
+                                        <ComboBox/>
                                     </StackPanel>
                                     <StackPanel>
                                         <TextBlock Text="Color"/>
@@ -187,46 +187,44 @@
                             Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                             FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
                             FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
-                            Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}"
-                               />
+                            Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}" />
+                    
                     <!--短針-->
-                    <Path x:Name="hourHand" 
-                          Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
-                          HorizontalAlignment="Center" VerticalAlignment="Top"
-                          Margin="0,120,0,0" Stretch="Fill"
-                          Width="9" Height="130"
-                          Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                    <Path
+                        x:Name="hourHand"
+                        Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
+                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,120,0,0" Stretch="Fill" Width="9" Height="130"
+                        Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="315" />
+                            <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
                     <!--長針-->
-                    <Path x:Name="minuteHand"
-                          Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
-                          HorizontalAlignment="Center" VerticalAlignment="Top"
-                          Margin="0,50,0,0" Stretch="Fill" 
-                          Width="8" Height="200"
-                          Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                    <Path
+                        x:Name="minuteHand"
+                        Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
+                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Stretch="Fill"  Width="8" Height="200"
+                        Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="45" />
+                            <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
+                    <Ellipse
+                        Width="18" Height="18" 
+                        Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <!--秒針-->
-                    <Path x:Name="secondHand"
-                          Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
-                          HorizontalAlignment="center" VerticalAlignment="Top"
-                          Margin="0,40,0,0" Stretch="Fill"
-                          Width="2" Height="250"
-                          Fill="{x:Bind DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                    <Path 
+                        x:Name="secondHand"
+                        Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
+                        HorizontalAlignment="center" VerticalAlignment="Top" Margin="0,40,0,0" Stretch="Fill" Width="2" Height="250"
+                        Fill="{x:Bind DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="210" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
                     <!--中央-->
-                    <!--<Ellipse Width="30" Height="30"
-                            StrokeThickness="10" 
-                            Stroke="{x:Bind DesignConfig.HandsColor,Mode=OneWay}"
-                            Fill="White" Grid.Row="3"/>-->
+                    <Ellipse Width="8" Height="8"
+                            Fill="{x:Bind DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                 </Grid>
             </SplitView.Content>
         </SplitView>
