@@ -18,6 +18,8 @@ using Windows.UI.Xaml.Media;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.Core;
+using Windows.Globalization;
+using Windows.ApplicationModel.Resources.Core;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -133,8 +135,8 @@ namespace iBuki
             myTitleBar.Height = sender.Height;
 
             // タイトルバーの左右に確保するスペース
-            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset,0.0, sender.SystemOverlayRightInset, 0.0);
-            ConfigPanel.Margin = new Thickness(0,sender.Height,0,0);
+            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
+            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
         }
 
         /// <summary>
@@ -190,7 +192,7 @@ namespace iBuki
 
         private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             ImportSetting("Porto");
         }
 
@@ -315,8 +317,24 @@ namespace iBuki
             }
         }
 
-        //private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
-        //{
-        //}
+        private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
+        }
+
+        private void LanguageComboBox_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            restartLink.Visibility = Visibility.Visible;
+        }
+
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            restartLink.Visibility = Visibility.Visible;
+        }
+
+        private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            restartLink.Visibility = Visibility.Collapsed;
+        }
     }
 }

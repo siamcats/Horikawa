@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Core;
+using System.Globalization;
+using Windows.Globalization;
+using Windows.Storage;
 
 namespace iBuki
 {
@@ -40,6 +43,21 @@ namespace iBuki
         /// <param name="e">起動の要求とプロセスの詳細を表示します。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+
+            //ローカライズ設定
+            var dataContainer = ApplicationData.Current.LocalSettings;
+            string language;
+            if (dataContainer.Values.ContainsKey("Language"))
+            {
+                language = (string)dataContainer.Values["Language"];
+            }
+            else
+            {
+                language = "en-US";
+            }
+            ApplicationLanguages.PrimaryLanguageOverride = language;
+
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、

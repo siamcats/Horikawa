@@ -10,6 +10,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml;
 using System.Runtime.CompilerServices;
 using Windows.UI.ViewManagement;
+using Windows.Globalization;
+using Windows.UI.Xaml.Controls;
+using Windows.Storage;
 
 namespace iBuki
 {
@@ -19,6 +22,34 @@ namespace iBuki
         private void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private ApplicationDataContainer DataContainer { get; set; }
+
+        public AppConfig()
+        {
+            DataContainer = ApplicationData.Current.LocalSettings;
+        }
+
+        private void Save(object value, [CallerMemberName]string key = null)
+        {
+            Debug.WriteLine("Save - " + key + " : " + value);
+            DataContainer.Values[key] = value;
+        }
+
+        private T Load<T>(T defaultValue, [CallerMemberName]string key = null)
+        {
+            if (DataContainer.Values.ContainsKey(key))
+            {
+                return (T)DataContainer.Values[key];
+            }
+            Debug.WriteLine("Cannot Load - " + key);
+            // キーがなければ指定したデフォルト値を返す
+            if (null != defaultValue)
+            {
+                return defaultValue;
+            }
+            return default(T);
         }
 
         private double _windowSize = 500;
@@ -33,38 +64,48 @@ namespace iBuki
             }
         }
 
-        private ElementTheme _systemTheme = ElementTheme.Light;
         public ElementTheme SystemTheme
         {
-            get { return _systemTheme; }
+            get { return (ElementTheme)Load((int)ElementTheme.Dark); }
             set
             {
-                if (value == _systemTheme) return;
-                _systemTheme = value;
+                if ((int)value == Load((int)ElementTheme.Dark)) return;
+                Save((int)value);
                 OnPropertyChanged();
             }
         }
 
-        private Movement _movement = Movement.Mechanical;
         public Movement Movement
         {
-            get { return _movement; }
+            get { return (Movement)Load((int)Movement.Quartz); }
             set
             {
-                if (value == _movement) return;
-                _movement = value;
+                if ((int)value == Load((int)Movement.Quartz)) return;
+                Save((int)value);
                 OnPropertyChanged();
             }
         }
 
-        private bool _isTopMost = true;
         public bool IsTopMost
         {
-            get { return _isTopMost; }
+            get { return Load(false); }
             set
             {
-                if (value == _isTopMost) return;
-                _isTopMost = value;
+                if (value == Load(false)) return;
+                Save(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public List<string> LanguageList = new List<string> { "en-US", "jp-JP" };
+
+        public string Language
+        {
+            get { return Load("en-US"); }
+            set
+            {
+                if (value == Load("en-US")) return;
+                Save(value);
                 OnPropertyChanged();
             }
         }

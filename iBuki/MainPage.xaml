@@ -18,11 +18,11 @@
 
     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
 
-        <SplitView x:Name="Splitter"
-                DisplayMode="CompactOverlay"
-                CompactPaneLength="0" OpenPaneLength="300"
-                IsPaneOpen="{Binding ElementName=configButton,Path=IsChecked, Mode=TwoWay}"
-                >
+        <SplitView
+            x:Name="Splitter"
+            DisplayMode="CompactOverlay"
+            CompactPaneLength="0" OpenPaneLength="300"
+            IsPaneOpen="{Binding ElementName=configButton,Path=IsChecked, Mode=TwoWay}" >
 
             <!-- 設定パネル -->
 
@@ -30,24 +30,46 @@
                 <Grid x:Name="ConfigPanel">
                     <Pivot>
                         <!--全般-->
-                        <PivotItem Header="General">
+                        <PivotItem x:Uid="pivotGeneral">
                             <ScrollViewer>
                                 <StackPanel>
                                     <StackPanel>
-                                        <TextBlock Text="Window Theme"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <RadioButton Content="Dark"
+                                        <TextBlock
+                                            x:Uid="configTheme" Text="Window Theme"/>
+                                        <StackPanel
+                                            Orientation="Horizontal">
+                                            <RadioButton
+                                                x:Uid="configThemeRadioDark" Content="Dark"
                                                 IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
-                                            <RadioButton Content="Light"
+                                            <RadioButton
+                                                x:Uid="configThemeRadioLight" Content="Light"
                                                 IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                     <StackPanel>
-                                        <TextBlock Text="Movement"/>
+                                        <TextBlock
+                                            x:Uid="configLanguage" Text="Language" />
                                         <StackPanel Orientation="Horizontal">
-                                            <RadioButton Content="Quartz"
+                                            <ComboBox
+                                                x:Name="languageComboBox" Width="100"
+                                                ItemsSource="{x:Bind AppConfig.LanguageList}"
+                                                SelectedItem="{x:Bind AppConfig.Language,Mode=TwoWay}"
+                                                SelectionChanged="LanguageComboBox_SelectionChanged" />
+                                            <HyperlinkButton
+                                                x:Uid="restart" Content="Restart App to Apply "
+                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"
+                                                Tapped="HyperlinkButton_Tapped"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock x:Uid="configMovement" Text="Movement"/>
+                                        <StackPanel
+                                            Orientation="Horizontal">
+                                            <RadioButton
+                                                x:Uid="configMovementRadioQuartz" Content="Quartz"
                                                 IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
-                                            <RadioButton Content="Mechanical"
+                                            <RadioButton
+                                                x:Uid="configMovementRadioMechanical" Content="Mechanical"
                                                 IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
@@ -55,7 +77,7 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--テンプレート-->
-                        <PivotItem Header="Design Template">
+                        <PivotItem x:Uid="pivotTemplate">
                             <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
                                 <x:String>Porto</x:String>
                                 <x:String>Volks</x:String>
@@ -63,7 +85,7 @@
                             </ListView>
                         </PivotItem>
                         <!--背景-->
-                        <PivotItem Header="Background">
+                        <PivotItem x:Uid="pivotBackground">
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock Text="Background Color"/>
@@ -82,21 +104,20 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--文字盤-->
-                        <PivotItem Header="Clock face">
+                        <PivotItem x:Uid="pivotClockFace">
                             <ScrollViewer>
                                 <StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
                         <!--針-->
                         </PivotItem>
-                        <PivotItem Header="Hands">
+                        <PivotItem x:Uid="pivotHands">
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock FontSize="18">Hour/Minute Hands</TextBlock>
                                     <StackPanel>
                                         <TextBlock Text="Type" />
                                         <ComboBox />
-
                                     </StackPanel>
                                     <StackPanel>
                                         <TextBlock Text="Color"/>
@@ -125,7 +146,7 @@
                             </ScrollViewer>
                         <!--デイト-->
                         </PivotItem>
-                        <PivotItem Header="Date Display">
+                        <PivotItem x:Uid="pivotDateDisplay">
                             <StackPanel>
                                 <ToggleSwitch x:Name="dateDisplayToggle" 
                                               Header="Date Display" OffContent="Off" OnContent="On"
@@ -211,19 +232,24 @@
         </SplitView>
 
         <!--タイトルバー-->
-        <Grid x:Name="myTitleBar"
-            Height="30" VerticalAlignment="Top" Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}">
+        
+        <Grid
+            x:Name="myTitleBar" Height="30" VerticalAlignment="Top"
+            Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}">
             <StackPanel Orientation="Horizontal">
                 <StackPanel>
-                    <ToggleButton x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                    <ToggleButton
+                        x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                        Tapped="ConfigButton_Tapped" >
                         <ToggleButton.Content>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
                         </ToggleButton.Content>
                     </ToggleButton>
                 </StackPanel>
                 <StackPanel>
-                    <ToggleButton x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    <ToggleButton
+                        x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
                         IsChecked="{x:Bind AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
                         Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <ToggleButton.Content>
@@ -232,7 +258,8 @@
                     </ToggleButton>
                 </StackPanel>
                 <StackPanel>
-                    <ToggleButton x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    <ToggleButton
+                        x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
                         Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <ToggleButton.Content>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE759;" />
