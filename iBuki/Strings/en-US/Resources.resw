@@ -138,6 +138,27 @@
   <data name="configThemeRadioLight.Content" xml:space="preserve">
     <value>Light</value>
   </data>
+  <data name="HandBar" xml:space="preserve">
+    <value>Bar</value>
+  </data>
+  <data name="HandBreguet" xml:space="preserve">
+    <value>Breguet</value>
+  </data>
+  <data name="HandDolphin" xml:space="preserve">
+    <value>Dolphin</value>
+  </data>
+  <data name="HandLeaf" xml:space="preserve">
+    <value>Leaf</value>
+  </data>
+  <data name="IndexArabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="IndexBar" xml:space="preserve">
+    <value>Bar</value>
+  </data>
+  <data name="IndexRoman" xml:space="preserve">
+    <value>Roman</value>
+  </data>
   <data name="pivotBackground.Header" xml:space="preserve">
     <value>Background</value>
   </data>

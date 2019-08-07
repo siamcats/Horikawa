@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI;
 using System.Runtime.Serialization;
 using Windows.UI.ViewManagement;
+using Windows.UI.Xaml.Markup;
 
 namespace iBuki
 {
@@ -22,6 +23,8 @@ namespace iBuki
         }
 
         #region Hands
+
+        public List<string> HandsTypeList = EnumExtension.GetLocalizeList<Hands>();
 
         private Hands _handsType;
         public Hands HandsType
@@ -55,6 +58,18 @@ namespace iBuki
             {
                 if (value == _secondHandColor) return;
                 _secondHandColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Geometry _hourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
+        public Geometry HourHandGeometry
+        {
+            get => _hourHandGeometry;
+            set
+            {
+                if (value == _hourHandGeometry) return;
+                _hourHandGeometry = value;
                 OnPropertyChanged();
             }
         }

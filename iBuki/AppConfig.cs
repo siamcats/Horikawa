@@ -31,12 +31,22 @@ namespace iBuki
             DataContainer = ApplicationData.Current.LocalSettings;
         }
 
+        /// <summary>
+        /// LocalSetting保存
+        /// </summary>
+        /// <param name="value">値</param>
+        /// <param name="key">キーは指定不要、呼出し元のプロパティ名を使う</param>
         private void Save(object value, [CallerMemberName]string key = null)
         {
             Debug.WriteLine("Save - " + key + " : " + value);
             DataContainer.Values[key] = value;
         }
 
+        /// <summary>
+        /// LocalSetting取得
+        /// </summary>
+        /// <param name="defaultValue">キーが存在しない場合の返却値</param>
+        /// <param name="key">キーは指定不要、呼出し元のプロパティ名を使う</param>
         private T Load<T>(T defaultValue, [CallerMemberName]string key = null)
         {
             if (DataContainer.Values.ContainsKey(key))

@@ -36,8 +36,7 @@
                                     <StackPanel>
                                         <TextBlock
                                             x:Uid="configTheme" Text="Window Theme"/>
-                                        <StackPanel
-                                            Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
                                             <RadioButton
                                                 x:Uid="configThemeRadioDark" Content="Dark"
                                                 IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
@@ -62,9 +61,9 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <StackPanel>
-                                        <TextBlock x:Uid="configMovement" Text="Movement"/>
-                                        <StackPanel
-                                            Orientation="Horizontal">
+                                        <TextBlock
+                                            x:Uid="configMovement" Text="Movement"/>
+                                        <StackPanel Orientation="Horizontal">
                                             <RadioButton
                                                 x:Uid="configMovementRadioQuartz" Content="Quartz"
                                                 IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
@@ -88,12 +87,14 @@
                         <PivotItem x:Uid="pivotBackground">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock Text="Background Color"/>
+                                    <TextBlock
+                                        x:Uid="configBackgroundColor" Text="Background Color"/>
                                     <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                        <ColorPicker x:Name="backgroundColorPicker"
-                                             IsColorPreviewVisible="False"
-                                             IsColorChannelTextInputVisible="False"
-                                             Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                        <ColorPicker
+                                            x:Name="backgroundColorPicker"
+                                            IsColorChannelTextInputVisible="False"
+                                            IsColorSliderVisible="True"
+                                            Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
                                     </Viewbox>
                                     <StackPanel>
                                         <TextBlock Text="Background Image"/>
@@ -114,48 +115,52 @@
                         <PivotItem x:Uid="pivotHands">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock FontSize="18">Hour/Minute Hands</TextBlock>
                                     <StackPanel>
-                                        <TextBlock x:Uid="configHandsType" Text="Type" />
-                                        <ComboBox/>
+                                        <TextBlock
+                                            x:Uid="configHandsType" Text="Hands Type" />
+                                        <ComboBox
+                                            x:Name="handsTypeComboBox" Width="150"
+                                            ItemsSource="{x:Bind DesignConfig.HandsTypeList}"
+                                            SelectionChanged="HandsTypeComboBox_SelectionChanged" />
                                     </StackPanel>
                                     <StackPanel>
-                                        <TextBlock Text="Color"/>
+                                        <TextBlock
+                                            x:Uid="configHandsColor" Text="Color"/>
                                         <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                            <ColorPicker x:Name="hourMinuteHandsColorPicker"
-                                                 IsColorPreviewVisible="False"
-                                                 IsColorChannelTextInputVisible="False"
-                                                 Color="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}"/>
+                                            <ColorPicker
+                                                x:Name="handsColorPicker"
+                                                IsColorChannelTextInputVisible="False"
+                                                Color="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}"/>
                                         </Viewbox>
                                     </StackPanel>
-                                    <TextBlock FontSize="18">Second Hand</TextBlock>
                                     <StackPanel>
-                                        <TextBlock Text="Type" />
-                                        <ComboBox />
-                                    </StackPanel>
-                                    <StackPanel>
-                                        <TextBlock Text="Color"/>
+                                        <TextBlock
+                                            x:Uid="configSecondHandColor" Text="Color (Second Hand)"/>
                                         <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                            <ColorPicker x:Name="secondHandColorPicker"
-                                                 IsColorPreviewVisible="False"
-                                                 IsColorChannelTextInputVisible="False"
-                                                 Color="{x:Bind DesignConfig.SecondHandColor,Mode=TwoWay}"/>
+                                            <ColorPicker
+                                                x:Name="secondHandColorPicker"
+                                                IsColorChannelTextInputVisible="False"
+                                                Color="{x:Bind DesignConfig.SecondHandColor,Mode=TwoWay}"/>
                                         </Viewbox>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
-                        <!--デイト-->
+                            <!--デイト-->
                         </PivotItem>
                         <PivotItem x:Uid="pivotDateDisplay">
                             <StackPanel>
-                                <ToggleSwitch x:Name="dateDisplayToggle" 
-                                              Header="Date Display" OffContent="Off" OnContent="On"
-                                              IsOn="{x:Bind DesignConfig.IsDateDisplay, Mode=TwoWay}" />
+                                <ToggleSwitch 
+                                    x:Uid="configDateDisplay"
+                                    x:Name="dateDisplayToggle" 
+                                    Header="Date Display" OffContent="Off" OnContent="On"
+                                    IsOn="{x:Bind DesignConfig.IsDateDisplay, Mode=TwoWay}" />
                                 <StackPanel>
-                                    <TextBlock Text="Date Format"/>
-                                    <TextBox x:Name="dateDisplayFormatTextBox"
-                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=OneWay}"
-                                             Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
+                                    <TextBlock
+                                        x:Uid="configDateDisplayFormat" Text="Date Format"/>
+                                    <TextBox
+                                        x:Name="dateDisplayFormatTextBox"
+                                        IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=OneWay}"
+                                        Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
                                 </StackPanel>
                             </StackPanel>
                         </PivotItem>
@@ -172,29 +177,25 @@
                         x:Name="bgImage"
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                         Source="{x:Bind DesignConfig.DialImage,Mode=OneWay}"
-                        Height="{x:Bind AppConfig.WindowSize}" Width="{x:Bind AppConfig.WindowSize}"
-                           />
+                        Height="{x:Bind AppConfig.WindowSize}" Width="{x:Bind AppConfig.WindowSize}" />
                     <local:CircleMeter
                         HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"
                         Height="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" />
-                    <!--<TextBlock
-                        x:Name="textBlock"
-                        Margin="10" TextWrapping="Wrap" Text="0"
-                        HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
                     <!-- デイト -->
-                    <TextBlock x:Name="dateDisplay"
-                            Margin="300,300,0,0" Text="31"
-                            Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                            FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
-                            FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
-                            Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}" />
-                    
+                    <TextBlock 
+                        x:Name="dateDisplay"
+                        Margin="300,300,0,0" Text="31"
+                        Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
+                        FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
+                        Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}" />
                     <!--短針-->
                     <Path
                         x:Name="hourHand"
-                        Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z" 
                         HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,120,0,0" Stretch="Fill" Width="9" Height="130"
+                        Data="{x:Bind DesignConfig.HourHandGeometry,Mode=OneWay}"
                         Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        <!--Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z"-->
                         <Path.RenderTransform>
                             <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="0" />
                         </Path.RenderTransform>
@@ -204,14 +205,14 @@
                         x:Name="minuteHand"
                         Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
                         HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Stretch="Fill"  Width="8" Height="200"
-                        Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        Fill="{x:Bind hourHand.Fill,Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
                     <Ellipse
                         Width="18" Height="18" 
-                        Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
+                        Fill="{x:Bind hourHand.Fill,Mode=OneWay}"/>
                     <!--秒針-->
                     <Path 
                         x:Name="secondHand"
@@ -222,30 +223,34 @@
                             <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="210" Angle="0" />
                         </Path.RenderTransform>
                     </Path>
-                    <!--中央-->
-                    <Ellipse Width="8" Height="8"
-                            Fill="{x:Bind DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
+                    <Ellipse
+                        Width="8" Height="8"
+                        Fill="{x:Bind secondHand.Fill,Mode=OneWay}"/>
                 </Grid>
             </SplitView.Content>
         </SplitView>
 
         <!--タイトルバー-->
-        
+
         <Grid
             x:Name="myTitleBar" Height="30" VerticalAlignment="Top"
             Background="{ThemeResource SystemControlAltMediumLowAcrylicElementMediumBrush}">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel>
-                    <ToggleButton
-                        x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
-                        Tapped="ConfigButton_Tapped" >
-                        <ToggleButton.Content>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                </StackPanel>
-                <StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <ToggleButton
+                    x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                    Tapped="ConfigButton_Tapped" >
+                    <ToggleButton.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
+                    </ToggleButton.Content>
+                </ToggleButton>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
                     <ToggleButton
                         x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
                         IsChecked="{x:Bind AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
@@ -254,16 +259,15 @@
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
                         </ToggleButton.Content>
                     </ToggleButton>
-                </StackPanel>
-                <StackPanel>
-                    <ToggleButton
-                        x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
-                        <ToggleButton.Content>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE759;" />
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                </StackPanel> 
+            </StackPanel>
+            <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent">
+                <!--<ToggleButton
+                    x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                    <ToggleButton.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE759;" />
+                    </ToggleButton.Content>
+                </ToggleButton>-->
             </StackPanel>
         </Grid>
 

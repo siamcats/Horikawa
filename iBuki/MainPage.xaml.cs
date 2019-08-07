@@ -20,6 +20,7 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.Globalization;
 using Windows.ApplicationModel.Resources.Core;
+using Windows.UI.Xaml.Markup;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -54,17 +55,6 @@ namespace iBuki
             var view = ApplicationView.GetForCurrentView();
             view.SetPreferredMinSize(size);
 
-
-            // ウインドウが初めてアクティブになったとき、 CompactOverlay にする。
-            bool isFirstActivate = true;
-            Window.Current.Activated += async (s, e) =>
-            {
-                if (e.WindowActivationState == CoreWindowActivationState.CodeActivated && isFirstActivate)
-                {
-                    isFirstActivate = false;
-                    StartOverlay();
-                }
-            };
         }
 
         private async void StartOverlay()
@@ -83,7 +73,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// 遷移時
+        /// （イベント）初期遷移時
         /// </summary>
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -110,25 +100,34 @@ namespace iBuki
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
+            // Debug..
+            //var test = Hands.Bar;
+            //Debug.WriteLine(test.ToString());
+            //Debug.WriteLine(test.GetLocalizeName());
+
+            EnumExtension.GetLocalizeList<Hands>().ForEach(i => Debug.WriteLine(i));
         }
 
+        /// <summary>
+        /// （イベント）ウィンドウのアクティブ状態変化
+        /// </summary>
         private void Current_Activated(object sender, WindowActivatedEventArgs e)
         {
-            if (e.WindowActivationState != Windows.UI.Core.CoreWindowActivationState.Deactivated)
+            if (e.WindowActivationState != CoreWindowActivationState.Deactivated)
             {
-                // フォーカスイン
+                // アクティブ
                 myTitleBar.Visibility = Visibility.Visible;
-                myTitleBar.Background.Opacity = 1.0;
             }
             else
             {
-                // フォーカスアウト
+                // 非アクティブ
                 myTitleBar.Visibility = Visibility.Collapsed;
-                myTitleBar.Background.Opacity = 0.0;
             }
         }
 
-        // タイトルバーの寸法が変わったとき
+        /// <summary>
+        /// （イベント）タイトルバーの大きさが変わった時
+        /// </summary>
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
             // タイトルバーの高さ
@@ -136,14 +135,12 @@ namespace iBuki
 
             // タイトルバーの左右に確保するスペース
             myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
-            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
+            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);            
         }
 
         /// <summary>
         /// チック
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Timer_Tick(object sender, object e)
         {
             DateTime localDate = DateTime.Now;
@@ -193,7 +190,7 @@ namespace iBuki
         private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            ImportSetting("Porto");
+            //ImportSetting("Porto");
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -305,6 +302,9 @@ namespace iBuki
             }
         }
 
+        /// <summary>
+        /// クリップボタン
+        /// </summary>
         private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (AppConfig.IsTopMost)
@@ -335,6 +335,14 @@ namespace iBuki
         private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             restartLink.Visibility = Visibility.Collapsed;
+        }
+
+        private void HandsTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+            
+            //< !--Data = "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z"-- >
+            DesignConfig.HourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M 100,200 C 100,25 400,350 400,175 H 280");
         }
     }
 }

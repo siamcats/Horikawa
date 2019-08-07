@@ -138,6 +138,27 @@
   <data name="configThemeRadioLight.Content" xml:space="preserve">
     <value>ライト</value>
   </data>
+  <data name="HandBar" xml:space="preserve">
+    <value>バー針</value>
+  </data>
+  <data name="HandBreguet" xml:space="preserve">
+    <value>ブレゲ針</value>
+  </data>
+  <data name="HandDolphin" xml:space="preserve">
+    <value>ドルフィン針</value>
+  </data>
+  <data name="HandLeaf" xml:space="preserve">
+    <value>リーフ針</value>
+  </data>
+  <data name="IndexArabic" xml:space="preserve">
+    <value>アラビア数字</value>
+  </data>
+  <data name="IndexBar" xml:space="preserve">
+    <value>バーインデックス</value>
+  </data>
+  <data name="IndexRoman" xml:space="preserve">
+    <value>ローマ数字</value>
+  </data>
   <data name="pivotBackground.Header" xml:space="preserve">
     <value>背景</value>
   </data>
@@ -154,7 +175,7 @@
     <value>針</value>
   </data>
   <data name="pivotTemplate.Header" xml:space="preserve">
-    <value>デザインテンプレート</value>
+    <value>テンプレート</value>
   </data>
   <data name="restart.Content" xml:space="preserve">
     <value>再起動で反映します</value>
