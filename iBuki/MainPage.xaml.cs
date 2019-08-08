@@ -308,13 +308,9 @@ namespace iBuki
         private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (AppConfig.IsTopMost)
-            {
-                StartOverlay();
-            }
+            { StartOverlay(); }
             else
-            {
-                StopOverlay();
-            }
+            { StopOverlay(); }
         }
 
         private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -341,8 +337,8 @@ namespace iBuki
         {
             var comboBox = (ComboBox)sender;
             
-            //< !--Data = "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z"-- >
-            DesignConfig.HourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M 100,200 C 100,25 400,350 400,175 H 280");
+            //"M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z">
+            //DesignConfig.HourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M 100,200 C 100,25 400,350 400,175 H 280");
         }
     }
 }

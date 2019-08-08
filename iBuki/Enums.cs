@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Markup;
 
 namespace iBuki
 {
@@ -77,5 +80,24 @@ namespace iBuki
             }
             return list;
         }
+    }
+
+    public class EnumSourceProvider<T> : MarkupExtension
+    {
+        private static string DisplayName(T value)
+        {
+            var fileInfo = value.GetType().GetField(value.ToString());
+            var descriptionAttribute = (DescriptionAttribute)fileInfo
+                .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                .FirstOrDefault();
+            return descriptionAttribute.Description;
+        }
+
+        public IEnumerable Source { get; }
+            = typeof(T).GetEnumValues()
+                .Cast<T>()
+                .Select(value => new { Code = value, Name = DisplayName(value) });
+
+        //public override object ProvideValue(IServiceProvider serviceProvider) => this;
     }
 }

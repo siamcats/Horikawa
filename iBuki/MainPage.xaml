@@ -191,13 +191,18 @@
                         Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}" />
                     <!--短針-->
                     <Path
-                        x:Name="hourHand"
-                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,120,0,0" Stretch="Fill" Width="9" Height="130"
-                        Data="{x:Bind DesignConfig.HourHandGeometry,Mode=OneWay}"
+                        x:Name="hourHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill" 
+                        Margin="{x:Bind DesignConfig.HourHand.Margin,Mode=OneWay}"
+                        Width="{x:Bind DesignConfig.HourHand.Width,Mode=OneWay}"
+                        Height="{x:Bind DesignConfig.HourHand.Height,Mode=OneWay}"
+                        Data="{x:Bind DesignConfig.HourHand.Data,Mode=OneWay}"
                         Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <!--Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z"-->
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="hourHandAngle" CenterX="4.5" CenterY="130" Angle="0" />
+                            <RotateTransform
+                                x:Name="hourHandAngle"
+                                CenterX="{x:Bind DesignConfig.HourHand.CenterX,Mode=OneWay}"
+                                CenterY="{x:Bind DesignConfig.HourHand.CenterY,Mode=OneWay}"/>
                         </Path.RenderTransform>
                     </Path>
                     <!--長針-->

@@ -11,6 +11,7 @@ using Windows.UI;
 using System.Runtime.Serialization;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Markup;
+using Windows.UI.Xaml;
 
 namespace iBuki
 {
@@ -62,14 +63,14 @@ namespace iBuki
             }
         }
 
-        private Geometry _hourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
-        public Geometry HourHandGeometry
+        private HandObject _hourHand = new HandObject();
+        public HandObject HourHand
         {
-            get => _hourHandGeometry;
+            get => _hourHand;
             set
             {
-                if (value == _hourHandGeometry) return;
-                _hourHandGeometry = value;
+                if (value == _hourHand) return;
+                _hourHand = value;
                 OnPropertyChanged();
             }
         }
@@ -220,4 +221,63 @@ namespace iBuki
 
         #endregion
     }
+
+    public class HandObject
+    {
+        private Hands _type = Hands.Bar;
+        public Hands Type
+        {
+            get => _type;
+            set
+            {
+                if(value == _type) return;
+                _type = value;
+                switch (_type)
+                {
+                    case Hands.Bar:
+                        Margin = new Thickness(0, 130, 0, 0);
+                        Width = 9;
+                        Height = 130;
+                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
+                        CenterX = 4.5;
+                        CenterY = 130;
+                        break;
+                    case Hands.Leaf:
+                        Margin = new Thickness(0, 0, 0, 0);
+                        Width = 9;
+                        Height = 130;
+                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
+                        CenterX = 4.5;
+                        CenterY = 130;
+                        break;
+                    case Hands.Dolphin:
+                        Margin = new Thickness(0, 0, 0, 0);
+                        Width = 9;
+                        Height = 130;
+                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
+                        CenterX = 4.5;
+                        CenterY = 130;
+                        break;
+                    case Hands.Breguet:
+                        Margin = new Thickness(0, 0, 0, 0);
+                        Width = 9;
+                        Height = 130;
+                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
+                        CenterX = 4.5;
+                        CenterY = 130;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public Thickness Margin;
+        public double Width;
+        public double Height;
+        public Geometry Data;
+        public double CenterX;
+        public double CenterY;
+    }
+
 }
