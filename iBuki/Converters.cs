@@ -12,12 +12,11 @@ namespace iBuki
 {
     public class BoolToEnumConverter : IValueConverter
     {
-        /// <param name="value">enum</param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="language"></param>
-        /// <returns>bool</returns>
-        public object Convert(object value, Type targetType, object parameter, string language)
+
+        /// <summary>
+        /// Enum->Bool
+        /// </summary>
+         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var parameterString = parameter as string;
             if (parameterString == null)
@@ -46,9 +45,13 @@ namespace iBuki
 
     public class BoolToVisibilityConverter : IValueConverter
     {
+        /// <summary>
+        /// Bool->Visibility
+        /// </summary>
         public object Convert(object value, Type targetType, object parameter, string language) =>
             (bool)value ^ (parameter as string ?? string.Empty).Equals("Reverse") ?
-                Visibility.Visible : Visibility.Collapsed;
+                Visibility.Visible :
+                Visibility.Collapsed ;
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) =>
             (Visibility)value == Visibility.Visible ^ (parameter as string ?? string.Empty).Equals("Reverse");
@@ -58,16 +61,51 @@ namespace iBuki
     public class ColorToBrushConverter : IValueConverter
     {
         /// <summary>
-        /// Color⇒brush
+        /// Color->Brush
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return new SolidColorBrush((value is Color) ? (Color)value : Colors.Black);
+            var color = value is Color ?
+                (Color)value :
+                Colors.Black;
+            return new SolidColorBrush(color);
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            var brush = value is SolidColorBrush ?
+                (SolidColorBrush)value :
+                new SolidColorBrush(Colors.Black);
+            return brush.Color;
+        }
+    }
+
+    /// <summary>
+    /// EnumとIntの相互変換
+    /// </summary>
+    public class EnumToIntConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if(value is null) return DependencyProperty.UnsetValue;
+
+            //Int->Enum
+            if (targetType.IsEnum)
+            {
+                return Enum.ToObject(targetType, value);
+            }
+
+            //Enum->Int
+            if (value.GetType().IsEnum)
+            {
+                return (int)value;
+            }
+
+            return DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            return (value is SolidColorBrush) ? (value as SolidColorBrush).Color : Colors.Black;
+            return Convert(value, targetType, parameter, language);
         }
     }
 }

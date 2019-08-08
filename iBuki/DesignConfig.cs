@@ -35,6 +35,7 @@ namespace iBuki
             {
                 if (value == _handsType) return;
                 _handsType = value;
+                HourHand.Type = value;
                 OnPropertyChanged();
             }
         }
@@ -224,13 +225,20 @@ namespace iBuki
 
     public class HandObject
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private Hands _type = Hands.Bar;
         public Hands Type
         {
             get => _type;
             set
             {
-                if(value == _type) return;
+                if (value == _type) return;
                 _type = value;
                 switch (_type)
                 {
@@ -269,15 +277,83 @@ namespace iBuki
                     default:
                         break;
                 }
+
+                OnPropertyChanged();
             }
         }
 
-        public Thickness Margin;
-        public double Width;
-        public double Height;
-        public Geometry Data;
-        public double CenterX;
-        public double CenterY;
+
+        private Thickness _margin;
+        public Thickness Margin
+        {
+            get => _margin;
+            set
+            {
+                if (value == _margin) return;
+                _margin = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _width;
+        public double Width
+        {
+            get => _width;
+            set
+            {
+                if (value == _width) return;
+                _width = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _height;
+        public double Height
+        {
+            get => _height;
+            set
+            {
+                if (value == _height) return;
+                _height = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Geometry _data;
+        public Geometry Data
+        {
+            get => _data;
+            set
+            {
+                if (value == _data) return;
+                _data = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _centerX;
+        public double CenterX
+        {
+            get => _centerX;
+            set
+            {
+                if (value == _centerX) return;
+                _centerX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _centerY;
+        public double CenterY
+        {
+            get => _centerY;
+            set
+            {
+                if (value == _centerY) return;
+                _centerY = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
 }
