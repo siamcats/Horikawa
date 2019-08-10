@@ -58,47 +58,51 @@ namespace iBuki
     }
 
 
-    public class ColorToBrushConverter : IValueConverter
+    /// <summary>
+    /// ColorとSolidColorBrushの相互変換
+    /// </summary>
+    public class ColorAndBrushInterConverter : IValueConverter
     {
-        /// <summary>
-        /// Color->Brush
-        /// </summary>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var color = value is Color ?
-                (Color)value :
-                Colors.Black;
-            return new SolidColorBrush(color);
+            if (value is null) return DependencyProperty.UnsetValue;
+            
+            //color->Brush
+            if (value is Color)
+            {
+                var colorValue = (Color)value;
+                return new SolidColorBrush(colorValue);
+            }
+
+            //brush->color
+            if (value is SolidColorBrush)
+            {
+                var brushValue = (SolidColorBrush)value;
+                return brushValue.Color;
+            }
+
+            return DependencyProperty.UnsetValue; 
         }
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            var brush = value is SolidColorBrush ?
-                (SolidColorBrush)value :
-                new SolidColorBrush(Colors.Black);
-            return brush.Color;
+            return Convert(value, targetType, parameter, language);
         }
     }
 
     /// <summary>
     /// EnumとIntの相互変換
     /// </summary>
-    public class EnumToIntConverter : IValueConverter
+    public class EnumAndIntInterConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if(value is null) return DependencyProperty.UnsetValue;
+            if (value is null) return DependencyProperty.UnsetValue;
 
             //Int->Enum
-            if (targetType.IsEnum)
-            {
-                return Enum.ToObject(targetType, value);
-            }
+            if (targetType.IsEnum) return Enum.ToObject(targetType, value);
 
             //Enum->Int
-            if (value.GetType().IsEnum)
-            {
-                return (int)value;
-            }
+            if (value.GetType().IsEnum) return (int)value;
 
             return DependencyProperty.UnsetValue;
         }

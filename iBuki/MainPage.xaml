@@ -13,8 +13,8 @@
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
         <local:BoolToVisibilityConverter x:Key="Visibility" />
-        <local:ColorToBrushConverter x:Key="ColorBrush" />
-        <local:EnumToIntConverter x:Key="EnumInt" />
+        <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
+        <local:EnumAndIntInterConverter x:Key="EnumInt" />
     </Page.Resources>
 
     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -147,7 +147,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
-                            <!--デイト-->
+                        <!--デイト-->
                         </PivotItem>
                         <PivotItem x:Uid="pivotDateDisplay">
                             <StackPanel>
