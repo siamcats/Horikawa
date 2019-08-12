@@ -10,6 +10,8 @@ using Windows.UI.Xaml.Media;
 
 namespace iBuki
 {
+    // Convert: ModelProperty -> View
+
     public class BoolToEnumConverter : IValueConverter
     {
 
@@ -110,6 +112,21 @@ namespace iBuki
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             return Convert(value, targetType, parameter, language);
+        }
+    }
+
+    public class DecimalTruncateConveter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is null) return DependencyProperty.UnsetValue;
+            var doubleValue = (double)value;
+            return (Math.Floor(doubleValue * 10)/10).ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
         }
     }
 }

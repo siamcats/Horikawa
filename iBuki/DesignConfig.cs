@@ -23,19 +23,173 @@ namespace iBuki
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Background
+
+        private Color _backgroundColor = Color.FromArgb(255, 20, 20, 20);
+        public Color BackgroundColor
+        {
+            get { return _backgroundColor; }
+            set
+            {
+                if (value == _backgroundColor) return;
+                _backgroundColor = value;
+
+                //×ボタンとかの文字色も合わせる
+                var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+                appTitleBar.ButtonForegroundColor = value;
+                appTitleBar.ButtonInactiveForegroundColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isBackgroundImageDisplay = false;
+        public bool IsBackgroundImageDisplay
+        {
+            get { return _isBackgroundImageDisplay; }
+            set
+            {
+                if (value == _isBackgroundImageDisplay) return;
+                _isBackgroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ImageSource _backgroundImage;
+        public ImageSource BackgroundImage
+        {
+            get { return _backgroundImage; }
+            set
+            {
+                if (value == _backgroundImage) return;
+                _backgroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Dial
+
+        private bool _isScaleDisplay = true;
+        public bool IsScaleDisplay
+        {
+            get { return _isScaleDisplay; }
+            set
+            {
+                if (value == _isScaleDisplay) return;
+                _isScaleDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _scaleCount = 60;
+        public int ScaleCount
+        {
+            get { return _scaleCount; }
+            set
+            {
+                if (value == _scaleCount) return;
+                _scaleCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _scaleLength = 3;
+        public double ScaleLength
+        {
+            get { return _scaleLength; }
+            set
+            {
+                if (value == _scaleLength) return;
+                _scaleLength = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _scaleThickness = 0.7;
+        public double ScaleThickness
+        {
+            get { return _scaleThickness; }
+            set
+            {
+                if (value == _scaleThickness) return;
+                _scaleThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _scaleColor = Color.FromArgb(255, 21, 53, 85);
+        public Color ScaleColor
+        {
+            get { return _scaleColor; }
+            set
+            {
+                if (value == _scaleColor) return;
+                _scaleColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isIndexDisplay = true;
+        public bool IsIndexDisplay
+        {
+            get { return _isIndexDisplay; }
+            set
+            {
+                if (value == _isIndexDisplay) return;
+                _isIndexDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private IndexType _indexType;
+        public IndexType IndexType
+        {
+            get { return _indexType; }
+            set
+            {
+                if (value == _indexType) return;
+                _indexType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _indexColor = Color.FromArgb(255, 21, 53, 85);
+        public Color IndexColor
+        {
+            get { return _indexColor; }
+            set
+            {
+                if (value == _indexColor) return;
+                _indexColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Hands
 
-        public List<string> HandsTypeList = EnumExtension.GetLocalizeList<Hands>();
-
-        private Hands _handsType;
-        public Hands HandsType
+        private HandsType _handsType;
+        public HandsType HandsType
         {
             get { return _handsType; }
             set
             {
                 if (value == _handsType) return;
                 _handsType = value;
-                HourHand.Type = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isHandsDisplay = true;
+        public bool IsHandsDisplay
+        {
+            get { return _isHandsDisplay; }
+            set
+            {
+                if (value == _isHandsDisplay) return;
+                _isHandsDisplay = value;
                 OnPropertyChanged();
             }
         }
@@ -52,6 +206,18 @@ namespace iBuki
             }
         }
 
+        private bool _isSecondHandDisplay = true;
+        public bool IsSecondHandDisplay
+        {
+            get { return _isSecondHandDisplay; }
+            set
+            {
+                if (value == _isSecondHandDisplay) return;
+                _isSecondHandDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Color _secondHandColor = Color.FromArgb(255, 21, 53, 85);
         public Color SecondHandColor
         {
@@ -64,98 +230,6 @@ namespace iBuki
             }
         }
 
-        private HandObject _hourHand = new HandObject();
-        public HandObject HourHand
-        {
-            get => _hourHand;
-            set
-            {
-                if (value == _hourHand) return;
-                _hourHand = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Clock Dial
-
-        private Scale _scaleType;
-        public Scale ScaleType
-        {
-            get { return _scaleType; }
-            set
-            {
-                if (value == _scaleType) return;
-                _scaleType = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Brush _scaleColor;
-        public Brush ScaleColor
-        {
-            get { return _scaleColor; }
-            set
-            {
-                if (value == _scaleColor) return;
-                _scaleColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Index _indexType;
-        public Index IndexType
-        {
-            get { return _indexType; }
-            set
-            {
-                if (value == _indexType) return;
-                _indexType = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Brush _indexColor;
-        public Brush IndexColor
-        {
-            get { return _indexColor; }
-            set
-            {
-                if (value == _indexColor) return;
-                _indexColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ImageSource _dialImage;
-        public ImageSource DialImage
-        {
-            get { return _dialImage; }
-            set
-            {
-                if (value == _dialImage) return;
-                _dialImage = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Color _backgroundColor = Color.FromArgb(255,20,20,20);
-        public Color BackgroundColor
-        {
-            get { return _backgroundColor; }
-            set
-            {
-                if (value == _backgroundColor) return;
-                _backgroundColor = value;
-
-                //×ボタンとかの文字色も合わせる
-                var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
-                appTitleBar.ButtonForegroundColor = value;
-                appTitleBar.ButtonInactiveForegroundColor = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         #region Date Display
@@ -222,138 +296,4 @@ namespace iBuki
 
         #endregion
     }
-
-    public class HandObject
-    {
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private Hands _type = Hands.Bar;
-        public Hands Type
-        {
-            get => _type;
-            set
-            {
-                if (value == _type) return;
-                _type = value;
-                switch (_type)
-                {
-                    case Hands.Bar:
-                        Margin = new Thickness(0, 130, 0, 0);
-                        Width = 9;
-                        Height = 130;
-                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
-                        CenterX = 4.5;
-                        CenterY = 130;
-                        break;
-                    case Hands.Leaf:
-                        Margin = new Thickness(0, 0, 0, 0);
-                        Width = 9;
-                        Height = 130;
-                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
-                        CenterX = 4.5;
-                        CenterY = 130;
-                        break;
-                    case Hands.Dolphin:
-                        Margin = new Thickness(0, 0, 0, 0);
-                        Width = 9;
-                        Height = 130;
-                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
-                        CenterX = 4.5;
-                        CenterY = 130;
-                        break;
-                    case Hands.Breguet:
-                        Margin = new Thickness(0, 0, 0, 0);
-                        Width = 9;
-                        Height = 130;
-                        Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z");
-                        CenterX = 4.5;
-                        CenterY = 130;
-                        break;
-                    default:
-                        break;
-                }
-
-                OnPropertyChanged();
-            }
-        }
-
-
-        private Thickness _margin;
-        public Thickness Margin
-        {
-            get => _margin;
-            set
-            {
-                if (value == _margin) return;
-                _margin = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _width;
-        public double Width
-        {
-            get => _width;
-            set
-            {
-                if (value == _width) return;
-                _width = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _height;
-        public double Height
-        {
-            get => _height;
-            set
-            {
-                if (value == _height) return;
-                _height = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Geometry _data;
-        public Geometry Data
-        {
-            get => _data;
-            set
-            {
-                if (value == _data) return;
-                _data = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _centerX;
-        public double CenterX
-        {
-            get => _centerX;
-            set
-            {
-                if (value == _centerX) return;
-                _centerX = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _centerY;
-        public double CenterY
-        {
-            get => _centerY;
-            set
-            {
-                if (value == _centerY) return;
-                _centerY = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
 }

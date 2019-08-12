@@ -8,13 +8,14 @@
     mc:Ignorable="d"
     Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged"
     HorizontalAlignment="Left" VerticalAlignment="Top"
-    RequestedTheme="{x:Bind AppConfig.SystemTheme,Mode=TwoWay}"
-    Background="{x:Bind DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
+    RequestedTheme="{x:Bind vm.AppConfig.SystemTheme,Mode=TwoWay}"
+    Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
         <local:BoolToVisibilityConverter x:Key="Visibility" />
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
+        <local:DecimalTruncateConveter x:Key="Truncate" />
     </Page.Resources>
 
     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -40,10 +41,10 @@
                                         <StackPanel Orientation="Horizontal">
                                             <RadioButton
                                                 x:Uid="configThemeRadioDark" Content="Dark"
-                                                IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
+                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
                                             <RadioButton
                                                 x:Uid="configThemeRadioLight" Content="Light"
-                                                IsChecked="{x:Bind AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
+                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                     <StackPanel>
@@ -52,8 +53,8 @@
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox
                                                 x:Name="languageComboBox" Width="100"
-                                                ItemsSource="{x:Bind AppConfig.LanguageList}"
-                                                SelectedItem="{x:Bind AppConfig.Language,Mode=TwoWay}"
+                                                ItemsSource="{x:Bind vm.AppConfig.LanguageList}"
+                                                SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
                                                 SelectionChanged="LanguageComboBox_SelectionChanged" />
                                             <HyperlinkButton
                                                 x:Uid="restart" Content="Restart App to Apply "
@@ -67,10 +68,10 @@
                                         <StackPanel Orientation="Horizontal">
                                             <RadioButton
                                                 x:Uid="configMovementRadioQuartz" Content="Quartz"
-                                                IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
+                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
                                             <RadioButton
                                                 x:Uid="configMovementRadioMechanical" Content="Mechanical"
-                                                IsChecked="{x:Bind AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
+                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -79,91 +80,270 @@
                         <!--テンプレート-->
                         <PivotItem x:Uid="pivotTemplate">
                             <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
+                                <x:String>Station</x:String>
                                 <x:String>Porto</x:String>
                                 <x:String>Volks</x:String>
-                                <x:String>Station</x:String>
                             </ListView>
                         </PivotItem>
                         <!--背景-->
                         <PivotItem x:Uid="pivotBackground">
-                            <ScrollViewer>
-                                <StackPanel>
-                                    <TextBlock
-                                        x:Uid="configBackgroundColor" Text="Background Color"/>
-                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                        <ColorPicker
-                                            x:Name="backgroundColorPicker"
-                                            IsColorChannelTextInputVisible="False"
-                                            IsColorSliderVisible="True"
-                                            Color="{x:Bind DesignConfig.BackgroundColor,Mode=TwoWay}"/>
-                                    </Viewbox>
-                                    <StackPanel>
-                                        <TextBlock Text="Background Image"/>
-                                        <Button x:Name="DialImagePicker"
-                                            Content="Select Image" Tapped="DialImagePicker_Tapped"/>
-                                    </StackPanel>
+                            <ScrollViewer><StackPanel>
+                                <TextBlock
+                                    x:Uid="configBackgroundColor" Text="Color"/>
+                                <Rectangle
+                                        x:Name="backgroundColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                        Stroke="{ThemeResource SystemBaseMediumColor}" StrokeThickness="2"
+                                        Fill="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                        Tapped="ColorRectangle_Tapped">
+                                    <FlyoutBase.AttachedFlyout>
+                                        <Flyout Placement="Right">
+                                            <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                <ColorPicker
+                                                    x:Name="backgroundColorPicker"
+                                                    IsColorChannelTextInputVisible="False"
+                                                    IsColorSliderVisible="True"
+                                                    Color="{x:Bind vm.DesignConfig.BackgroundColor,Mode=TwoWay}"/>
+                                            </Viewbox>
+                                        </Flyout>
+                                    </FlyoutBase.AttachedFlyout>
+                                </Rectangle>
+                                <ToggleSwitch 
+                                    x:Uid="configBackgroundImageDisplay" x:Name="backgroundImageDisplayToggle" 
+                                    Header="Image" OffContent="Off" OnContent="On"
+                                    IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
+                                <StackPanel Margin="10,0,0,0">
+                                    <Button
+                                        x:Uid="configImageSelect" Content="Select Image" 
+                                        x:Name="DialImagePicker" Tapped="DialImagePicker_Tapped"
+                                        IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
+                                        />
                                 </StackPanel>
-                            </ScrollViewer>
+                            </StackPanel></ScrollViewer>
                         </PivotItem>
                         <!--文字盤-->
                         <PivotItem x:Uid="pivotClockFace">
                             <ScrollViewer>
                                 <StackPanel>
+                                    <ToggleSwitch
+                                        x:Uid="configScaleDisplay"
+                                        x:Name="scaleDisplayToggle" 
+                                        Header="Scale" OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsScaleDisplay, Mode=TwoWay}" />
+                                    <StackPanel Margin="10,0,0,20">
+                                        <TextBlock
+                                            x:Uid="configCount" Text="Count" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleCountSlider"
+                                                Minimum="0" Maximum="240" Width="200"
+                                                TickPlacement="Outside" TickFrequency="12" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleCount,Mode=TwoWay}" />
+                                            <TextBlock
+                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                Text="{x:Bind scaleCountSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <TextBlock
+                                            x:Uid="configLength" Text="Length" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleLengthSlider"
+                                                Minimum="0.1" Maximum="4" Width="200"
+                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleLength,Mode=TwoWay}" />
+                                            <TextBlock
+                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                Text="{x:Bind scaleLengthSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <TextBlock
+                                            x:Uid="configThickness" Text="Thickness" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleThicknessSlider"
+                                                Minimum="0.1" Maximum="2" Width="200"
+                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleThickness,Mode=TwoWay}" />
+                                            <TextBlock
+                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                Text="{x:Bind scaleThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <TextBlock
+                                            x:Uid="configColor" Text="Color"/>
+                                        <Rectangle
+                                            x:Name="scaleColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Stroke="{ThemeResource SystemBaseMediumColor}" StrokeThickness="2"
+                                            IsTapEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                            Fill="{x:Bind vm.DesignConfig.ScaleColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorRectangle_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                            x:Name="scaleColorPicker"
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            Color="{x:Bind vm.DesignConfig.ScaleColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Rectangle>
+                                    </StackPanel>
+                                    <ToggleSwitch
+                                        x:Uid="configIndexDisplay"
+                                        x:Name="indexDisplayToggle" 
+                                        Header="Index" OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsIndexDisplay, Mode=TwoWay}" />
+                                    <StackPanel Margin="10,0,0,0">
+                                        <TextBlock
+                                            x:Uid="configType" Text="Type" />
+                                        <ComboBox
+                                            x:Name="indexTypeComboBox" Width="150"
+                                            IsEnabled="{x:Bind indexDisplayToggle.IsOn, Mode=OneWay}"
+                                            ItemsSource="{x:Bind vm.IndexTypeList}"
+                                            SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
+                                        <TextBlock
+                                            x:Uid="configColor" Text="Color"/>
+                                        <Rectangle
+                                            x:Name="indexColorRectangle" Height="32" Width="64" HorizontalAlignment="Left"
+                                            Stroke="{ThemeResource SystemBaseMediumColor}" StrokeThickness="2"
+                                            IsTapEnabled="{x:Bind indexDisplayToggle.IsOn,Mode=OneWay}"
+                                            Fill="{x:Bind vm.DesignConfig.IndexColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorRectangle_Tapped">
+                                        <FlyoutBase.AttachedFlyout>
+                                            <Flyout Placement="Right">
+                                                <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                    <ColorPicker
+                                                    x:Name="indexColorPicker"
+                                                    IsColorChannelTextInputVisible="False"
+                                                    IsColorSliderVisible="True"
+                                                    Color="{x:Bind vm.DesignConfig.IndexColor,Mode=TwoWay}"/>
+                                                </Viewbox>
+                                            </Flyout>
+                                        </FlyoutBase.AttachedFlyout>
+                                        </Rectangle>
+                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
-                        <!--針-->
                         </PivotItem>
+                        <!--針-->
                         <PivotItem x:Uid="pivotHands">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <StackPanel>
+                                    <TextBlock
+                                        x:Uid="configType" Text="Type" />
+                                    <ComboBox
+                                        x:Name="handsTypeComboBox" Width="150"
+                                        ItemsSource="{x:Bind vm.HandsTypeList}"
+                                        SelectedIndex="{x:Bind vm.HandsType,Converter={StaticResource EnumInt} ,Mode=TwoWay}"
+                                        SelectionChanged="HandsTypeComboBox_SelectionChanged" />
+                                    <ToggleSwitch
+                                        x:Uid="configHandsDisplay" x:Name="handsDisplayToggle" 
+                                        Header="Hour / Minute Hands" OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
+                                    <StackPanel Margin="10,0,0,20">
                                         <TextBlock
-                                            x:Uid="configHandsType" Text="Hands Type" />
-                                        <ComboBox
-                                            x:Name="handsTypeComboBox" Width="150"
-                                            ItemsSource="{x:Bind DesignConfig.HandsTypeList}"
-                                            SelectedIndex="{x:Bind DesignConfig.HandsType, Converter={StaticResource EnumInt} ,Mode=TwoWay}"
-                                            SelectionChanged="HandsTypeComboBox_SelectionChanged" />
+                                            x:Uid="configColor" Text="Color"/>
+                                        <Rectangle
+                                            x:Name="handsColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Stroke="{ThemeResource SystemBaseMediumColor}" StrokeThickness="2"
+                                            IsTapEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
+                                            Fill="{x:Bind vm.DesignConfig.HandsColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorRectangle_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                            x:Name="handsColorPicker"
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            Color="{x:Bind vm.DesignConfig.HandsColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Rectangle>
                                     </StackPanel>
-                                    <StackPanel>
+                                    <ToggleSwitch
+                                        x:Uid="configHandsDisplay" x:Name="secondHandDisplayToggle" 
+                                        Header="Second Hand" OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
+                                    <StackPanel Margin="10,0,0,20">
                                         <TextBlock
-                                            x:Uid="configHandsColor" Text="Color"/>
-                                        <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                            <ColorPicker
-                                                x:Name="handsColorPicker"
-                                                IsColorChannelTextInputVisible="False"
-                                                Color="{x:Bind DesignConfig.HandsColor,Mode=TwoWay}"/>
-                                        </Viewbox>
-                                    </StackPanel>
-                                    <StackPanel>
-                                        <TextBlock
-                                            x:Uid="configSecondHandColor" Text="Color (Second Hand)"/>
-                                        <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                            <ColorPicker
-                                                x:Name="secondHandColorPicker"
-                                                IsColorChannelTextInputVisible="False"
-                                                Color="{x:Bind DesignConfig.SecondHandColor,Mode=TwoWay}"/>
-                                        </Viewbox>
+                                            x:Uid="configColor" Text="Color"/>
+                                        <Rectangle
+                                            x:Name="secondHandColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Stroke="{ThemeResource SystemBaseMediumColor}" StrokeThickness="2"
+                                            IsTapEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
+                                            Fill="{x:Bind vm.DesignConfig.SecondHandColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorRectangle_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                        x:Name="secondHandColorPicker"
+                                                        IsColorChannelTextInputVisible="False"
+                                                        IsColorSliderVisible="True"
+                                                        Color="{x:Bind vm.DesignConfig.SecondHandColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Rectangle>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
-                        <!--デイト-->
                         </PivotItem>
+                        <!--デイト-->
                         <PivotItem x:Uid="pivotDateDisplay">
                             <StackPanel>
                                 <ToggleSwitch 
                                     x:Uid="configDateDisplay"
                                     x:Name="dateDisplayToggle" 
                                     Header="Date Display" OffContent="Off" OnContent="On"
-                                    IsOn="{x:Bind DesignConfig.IsDateDisplay, Mode=TwoWay}" />
+                                    IsOn="{x:Bind vm.DesignConfig.IsDateDisplay, Mode=TwoWay}" />
                                 <StackPanel>
                                     <TextBlock
-                                        x:Uid="configDateDisplayFormat" Text="Date Format"/>
+                                        x:Uid="configDateFormat" Text="Date Format"/>
                                     <TextBox
                                         x:Name="dateDisplayFormatTextBox"
                                         IsEnabled="{x:Bind dateDisplayToggle.IsOn, Mode=OneWay}"
-                                        Text="{x:Bind DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
+                                        Text="{x:Bind vm.DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
                                 </StackPanel>
+                                <StackPanel>
+                                    <TextBlock
+                                        x:Uid="configDateDisplayFormat" Text="Font Size"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Slider
+                                                x:Name="dateFontSizeSlider"
+                                                Minimum="1" Maximum="80" Width="200"
+                                                TickPlacement="Outside" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.DateFontSize,Mode=TwoWay}" />
+                                        <TextBlock
+                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                Text="{x:Bind dateFontSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <TextBlock
+                                    x:Uid="configColor" Text="Color"/>
+                                <Rectangle
+                                    x:Name="dateDisplayColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                    Stroke="{ThemeResource SystemBaseMediumColor}" StrokeThickness="2"
+                                    IsTapEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
+                                    Fill="{x:Bind vm.DesignConfig.DateColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                    Tapped="ColorRectangle_Tapped">
+                                    <FlyoutBase.AttachedFlyout>
+                                        <Flyout Placement="Right">
+                                            <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                <ColorPicker
+                                                    x:Name="dateDisplayColorPicker"
+                                                    IsColorChannelTextInputVisible="False"
+                                                    IsColorSliderVisible="True"
+                                                    Color="{x:Bind vm.DesignConfig.DateColor,Mode=TwoWay}"/>
+                                            </Viewbox>
+                                        </Flyout>
+                                    </FlyoutBase.AttachedFlyout>
+                                </Rectangle>
                             </StackPanel>
                         </PivotItem>
                     </Pivot>
@@ -176,62 +356,87 @@
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" >
                     <!-- 文字盤 -->
                     <Image
-                        x:Name="bgImage"
+                        x:Name="backgroundImage"
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                        Source="{x:Bind DesignConfig.DialImage,Mode=OneWay}"
-                        Height="{x:Bind AppConfig.WindowSize}" Width="{x:Bind AppConfig.WindowSize}" />
+                        Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
+                        Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
+                        Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
                     <local:CircleMeter
-                        HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"
-                        Height="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind AppConfig.WindowSize,Mode=TwoWay}" />
+                        x:Name="dialScale"
+                        HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Radius="45.3"
+                        Visibility="{x:Bind vm.DesignConfig.IsScaleDisplay,Mode=OneWay}"
+                        Length="{x:Bind vm.DesignConfig.ScaleLength,Mode=OneWay}"
+                        Thickness="{x:Bind vm.DesignConfig.ScaleThickness,Mode=OneWay}"
+                        Count="{x:Bind vm.DesignConfig.ScaleCount,Mode=OneWay}"
+                        Color="{x:Bind vm.DesignConfig.ScaleColor,Mode=OneWay}"
+                        Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />
+                    <local:CircleMeter
+                        x:Name="dialIndexBar"
+                        HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Count="12" Thickness="2" Length="10"
+                        Visibility="{x:Bind vm.DesignConfig.IsIndexDisplay,Mode=OneWay}"
+                        Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}"
+                        Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />
                     <!-- デイト -->
                     <TextBlock 
                         x:Name="dateDisplay"
                         Margin="300,300,0,0" Text="31"
-                        Visibility="{x:Bind DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                        FontSize="{x:Bind DesignConfig.DateFontSize,Mode=OneWay}"
-                        FontFamily="{x:Bind DesignConfig.DateFontFamily,Mode=OneWay}"
-                        Foreground="{x:Bind DesignConfig.DateColor,Mode=OneWay}" />
-                    <!--短針-->
+                        Visibility="{x:Bind vm.DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        FontSize="{x:Bind vm.DesignConfig.DateFontSize,Mode=OneWay}"
+                        FontFamily="{x:Bind vm.DesignConfig.DateFontFamily,Mode=OneWay}"
+                        Foreground="{x:Bind vm.DesignConfig.DateColor,Mode=OneWay}" />
+                    <!--時針-->
                     <Path
-                        x:Name="hourHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill" 
-                        Margin="{x:Bind DesignConfig.HourHand.Margin,Mode=OneWay}"
-                        Width="{x:Bind DesignConfig.HourHand.Width,Mode=OneWay}"
-                        Height="{x:Bind DesignConfig.HourHand.Height,Mode=OneWay}"
-                        Data="{x:Bind DesignConfig.HourHand.Data,Mode=OneWay}"
-                        Fill="{x:Bind DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
-                        <!--Data="M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z"-->
+                        x:Name="HourHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill" 
+                        Margin="{x:Bind vm.HourHand.Margin,Mode=OneWay}"
+                        Width="{x:Bind vm.HourHand.Width,Mode=OneWay}"
+                        Height="{x:Bind vm.HourHand.Height,Mode=OneWay}"
+                        Data="{x:Bind vm.HourHand.Data,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Fill="{x:Bind vm.DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform
                                 x:Name="hourHandAngle"
-                                CenterX="{x:Bind DesignConfig.HourHand.CenterX,Mode=OneWay}"
-                                CenterY="{x:Bind DesignConfig.HourHand.CenterY,Mode=OneWay}"/>
+                                CenterX="{x:Bind vm.HourHand.CenterX,Mode=OneWay}"
+                                CenterY="{x:Bind vm.HourHand.CenterY,Mode=OneWay}"/>
                         </Path.RenderTransform>
                     </Path>
-                    <!--長針-->
+                    <!--分針-->
                     <Path
-                        x:Name="minuteHand"
-                        Data="M259.42356,3.5819738 C254.42137,3.5819738 254.42206,147.08292 259.42384,208.58333 264.42529,147.08292 264.4254,3.5819738 259.42356,3.5819738 z" 
-                        HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Stretch="Fill"  Width="8" Height="200"
-                        Fill="{x:Bind hourHand.Fill,Mode=OneWay}">
+                        x:Name="minuteHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
+                        Margin="{x:Bind vm.MinuteHand.Margin,Mode=OneWay}"
+                        Width="{x:Bind vm.MinuteHand.Width,Mode=OneWay}"
+                        Height="{x:Bind vm.MinuteHand.Height,Mode=OneWay}"
+                        Data="{x:Bind vm.MinuteHand.Data,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Fill="{x:Bind vm.DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="minuteHandAngle"  CenterX="4" CenterY="200" Angle="0" />
+                            <RotateTransform x:Name="minuteHandAngle"
+                                CenterX="{x:Bind vm.MinuteHand.CenterX,Mode=OneWay}"
+                                CenterY="{x:Bind vm.MinuteHand.CenterY,Mode=OneWay}"/>
                         </Path.RenderTransform>
                     </Path>
                     <Ellipse
-                        Width="18" Height="18" 
-                        Fill="{x:Bind hourHand.Fill,Mode=OneWay}"/>
+                        Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Width="{x:Bind vm.MinuteHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.MinuteHand.Pivot,Mode=OneWay}"
+                        Fill="{x:Bind HourHand.Fill,Mode=OneWay}"/>
                     <!--秒針-->
                     <Path 
-                        x:Name="secondHand"
-                        Data="M240,45 C239.34443,45 239.43768,211.66667 239.15652,295 L240.8435,295 C240.56233,211.66667 240.65557,45 240,45 z"
-                        HorizontalAlignment="center" VerticalAlignment="Top" Margin="0,40,0,0" Stretch="Fill" Width="2" Height="250"
-                        Fill="{x:Bind DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        x:Name="secondHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
+                        Margin="{x:Bind vm.SecondHand.Margin,Mode=OneWay}"
+                        Width="{x:Bind vm.SecondHand.Width,Mode=OneWay}"
+                        Height="{x:Bind vm.SecondHand.Height,Mode=OneWay}"
+                        Data="{x:Bind vm.SecondHand.Data,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Fill="{x:Bind vm.DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
-                            <RotateTransform x:Name="secondHandAngle" CenterX="1" CenterY="210" Angle="0" />
+                            <RotateTransform x:Name="secondHandAngle"
+                                CenterX="{x:Bind vm.SecondHand.CenterX,Mode=OneWay}"
+                                CenterY="{x:Bind vm.SecondHand.CenterY,Mode=OneWay}"/>
                         </Path.RenderTransform>
                     </Path>
                     <Ellipse
-                        Width="8" Height="8"
+                        Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Width="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}"
                         Fill="{x:Bind secondHand.Fill,Mode=OneWay}"/>
                 </Grid>
             </SplitView.Content>
@@ -250,7 +455,7 @@
             <StackPanel Grid.Column="0">
                 <ToggleButton
                     x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                    Foreground="{x:Bind vm.DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
                     Tapped="ConfigButton_Tapped" >
                     <ToggleButton.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
@@ -260,8 +465,8 @@
             <StackPanel Grid.Column="1">
                     <ToggleButton
                         x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                        IsChecked="{x:Bind AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
-                        Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        IsChecked="{x:Bind vm.AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
+                        Foreground="{x:Bind vm.DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <ToggleButton.Content>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
                         </ToggleButton.Content>
@@ -270,7 +475,7 @@
             <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent">
                 <!--<ToggleButton
                     x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    Foreground="{x:Bind DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                    Foreground="{x:Bind vm.DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                     <ToggleButton.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE759;" />
                     </ToggleButton.Content>

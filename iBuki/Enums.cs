@@ -14,8 +14,13 @@ namespace iBuki
         Quartz,
         Mechanical
     }
+    
+    public enum Clock
+    {
+        Hour,Minute,Second
+    }
 
-    public enum Hands
+    public enum HandsType
     {
         [LocalizeName("HandBar")]
         Bar,
@@ -27,12 +32,12 @@ namespace iBuki
         Breguet
     }
 
-    public enum Scale
+    public enum ScaleType
     {
         PerSecond
     }
 
-    public enum Index
+    public enum IndexType
     {
         [LocalizeName("IndexBar")]
         Bar,

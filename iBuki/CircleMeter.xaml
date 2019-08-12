@@ -9,8 +9,10 @@
     d:DesignHeight="100"
     d:DesignWidth="100">
 
-    <Viewbox Stretch="Uniform">
-        <Canvas x:Name="mainCanvas" Width="100" Height="100" >
-        </Canvas>
+    <Viewbox Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+        <Viewbox.RenderTransform>
+            <CompositeTransform x:Name="transform" Rotation="1" />
+        </Viewbox.RenderTransform>
+        <Canvas x:Name="mainCanvas" Width="100" Height="100" />
     </Viewbox>
 </UserControl>

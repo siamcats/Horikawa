@@ -125,9 +125,11 @@
     <Compile Include="Converters.cs" />
     <Compile Include="DesignConfig.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="HandModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
@@ -172,6 +174,7 @@
   <ItemGroup>
     <None Include="Assets\Themes\Default\Settings.json" />
     <None Include="Assets\Themes\Porto\Settings.json" />
+    <None Include="Assets\Themes\Station\Settings.json" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
     <PRIResource Include="Strings\ja-JP\Resources.resw" />
   </ItemGroup>

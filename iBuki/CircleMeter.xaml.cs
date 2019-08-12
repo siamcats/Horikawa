@@ -21,58 +21,82 @@ namespace iBuki
 {
     public sealed partial class CircleMeter : UserControl
     {
-
-        public static readonly DependencyProperty CircleColorProperty =
-            DependencyProperty.Register(
-                "CircleColor", // プロパティ名を指定
-                typeof(Color), // プロパティの型を指定
-                typeof(CircleMeter), // プロパティを所有する型を指定
-                new PropertyMetadata(Color.FromArgb(255, 90, 117, 153),
-                    (d, e) => { (d as CircleMeter).OnCircleColorPropertyChanged(e); }));
-
-        public Color CircleColor
+        public Color Color
         {
-            get { return (Color)GetValue(CircleColorProperty); }
-            set { SetValue(CircleColorProperty, value); }
+            get { return (Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
         }
+
+        public double Radius
+        {
+            get { return (double)GetValue(RadiusProperty); }
+            set { SetValue(RadiusProperty, value); }
+        }
+
+        public int Count
+        {
+            get { return (int)GetValue(CountProperty); }
+            set { SetValue(CountProperty, value); }
+        }
+        public double Thickness
+        {
+            get { return (double)GetValue(ThicknessProperty); }
+            set { SetValue(ThicknessProperty, value); }
+        }
+        public double Length
+        {
+            get { return (double)GetValue(LengthProperty); }
+            set { SetValue(LengthProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
+            "Color", // プロパティ名を指定
+            typeof(Color), // プロパティの型を指定
+            typeof(CircleMeter), // プロパティを所有する型を指定
+            new PropertyMetadata(Color.FromArgb(255, 90, 117, 153),
+                (d, e) => { (d as CircleMeter).OnColorPropertyChanged(e); })
+            );
+
+        public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
+            "Count", 
+            typeof(int),
+            typeof(CircleMeter),
+            new PropertyMetadata(12,
+                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+            );
+
+        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
+            "Radius",
+            typeof(double),
+            typeof(CircleMeter),
+            new PropertyMetadata((double)42,
+                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+            );
+
+        public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
+            "Thickness",
+            typeof(double),
+            typeof(CircleMeter),
+            new PropertyMetadata((double)1,
+                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+            );
+
+        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
+            "Length",
+            typeof(double),
+            typeof(CircleMeter),
+            new PropertyMetadata((double)8,
+                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+            );
 
         public CircleMeter()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            double cx = 50.0;
-            double cy = 50.0;
-            double r = 45.0; //半径
-            int cnt = 240; //線の数
-            double deg = 360.0 / (double)cnt;
-            double degS = deg * 0.8; //間隔
-            for (int i = 0; i < cnt; ++i)
-            {
-                var si1 = Math.Sin((270.0 - (double)i * deg) / 180.0 * Math.PI);
-                var co1 = Math.Cos((270.0 - (double)i * deg) / 180.0 * Math.PI);
-                var si2 = Math.Sin((270.0 - (double)(i + 1) * deg + degS) / 180.0 * Math.PI);
-                var co2 = Math.Cos((270.0 - (double)(i + 1) * deg + degS) / 180.0 * Math.PI);
-                var x1 = r * co1 + cx;
-                var y1 = r * si1 + cy;
-                var x2 = r * co2 + cx;
-                var y2 = r * si2 + cy;
-
-                var pathStr = string.Format("M {0},{1} A {2},{2} 0 0 0 {3},{4}", x1, y1, r, x2, y2);
-                Path path = XamlReader.Load($"<Path xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'><Path.Data>{pathStr}</Path.Data></Path>") as Path;
-                path.Stroke = new SolidColorBrush(Color.FromArgb(CircleColor.A, CircleColor.R, CircleColor.G, CircleColor.B));
-                if (i % 4 == 0)
-                {
-                    path.StrokeThickness = 4.0;
-                }
-                else
-                {
-                    path.StrokeThickness = 2.0;
-                }
-                mainCanvas.Children.Add(path);
-            }
+            Draw();
         }
 
-        public void OnCircleColorPropertyChanged(DependencyPropertyChangedEventArgs e)
+        private void OnColorPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             if (null == mainCanvas) return;
             if (null == mainCanvas.Children) return;
@@ -82,8 +106,50 @@ namespace iBuki
                 var shp = child as Shape;
                 var sb = shp.Stroke as SolidColorBrush;
                 var a = sb.Color.A;
-                shp.Stroke = new SolidColorBrush(Color.FromArgb(CircleColor.A, CircleColor.R, CircleColor.G, CircleColor.B));
+                shp.Stroke = new SolidColorBrush(Color.FromArgb(Color.A, Color.R, Color.G, Color.B));
             }
+        }
+
+        private void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            mainCanvas.Children.Clear();
+            Draw();
+        }
+
+        private void Draw()
+        {
+            double cx = 50.0;
+            double cy = 50.0;
+            double c = 2 * Radius * Math.PI;
+            double deg = 360.0 / Count;
+            double degS = deg * (1 - (Count * Thickness / (c - Count * Thickness))); //間隔
+            //double degS = deg * 0.9; //間隔
+            for (int i = 0; i < Count; ++i)
+            {
+                var si1 = Math.Sin((270.0 - (double)i * deg) / 180.0 * Math.PI);
+                var co1 = Math.Cos((270.0 - (double)i * deg) / 180.0 * Math.PI);
+                var si2 = Math.Sin((270.0 - (double)(i + 1) * deg + degS) / 180.0 * Math.PI);
+                var co2 = Math.Cos((270.0 - (double)(i + 1) * deg + degS) / 180.0 * Math.PI);
+                var x1 = Radius * co1 + cx;
+                var y1 = Radius * si1 + cy;
+                var x2 = Radius * co2 + cx;
+                var y2 = Radius * si2 + cy;
+
+                var pathStr = string.Format("M {0},{1} A {2},{2} 0 0 0 {3},{4}", x1, y1, Radius, x2, y2);
+                Path path = XamlReader.Load($"<Path xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'><Path.Data>{pathStr}</Path.Data></Path>") as Path;
+                path.Stroke = new SolidColorBrush(Color.FromArgb(Color.A, Color.R, Color.G, Color.B));
+                path.StrokeThickness = Length;
+                //if (i % 4 == 0)
+                //{
+                //    path.StrokeThickness = 4.0;
+                //}
+                //else
+                //{
+                //    path.StrokeThickness = 2.0;
+                //}
+                mainCanvas.Children.Add(path);
+            }
+            transform.Rotation = Thickness;
         }
     }
 }

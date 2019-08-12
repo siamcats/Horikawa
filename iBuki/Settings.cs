@@ -21,7 +21,7 @@ namespace iBuki
         public string TargetAppVersion { get; set; }
 
         [DataMember]
-        public Hands HandsType { get; set; }
+        public HandsType HandsType { get; set; }
 
         [DataMember]
         public string HandsColor { get; set; }

@@ -31,9 +31,7 @@ namespace iBuki
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
-        public AppConfig AppConfig { get; set; } = new AppConfig();
-        public DesignConfig DesignConfig { get; set; } = new DesignConfig();
+        private MainPageViewModel vm = new MainPageViewModel();
 
         private StorageFolder _storageFolder = ApplicationData.Current.LocalFolder;
         private DispatcherTimer _timer;
@@ -45,11 +43,10 @@ namespace iBuki
         public MainPage()
         {
             InitializeComponent();
-            DataContext = AppConfig;
-            DataContext = DesignConfig;
+            DataContext = vm.AppConfig;
 
             // デフォルトサイズは500です
-            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             ApplicationView.PreferredLaunchViewSize = size;
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             var view = ApplicationView.GetForCurrentView();
@@ -60,16 +57,16 @@ namespace iBuki
         private async void StartOverlay()
         {
             var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
-            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             compactOptions.CustomSize = size;
             var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
-            if (result) AppConfig.IsTopMost = true;
+            if (result) vm.AppConfig.IsTopMost = true;
         }
 
         private async void StopOverlay()
         {
             var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
-            if (result) AppConfig.IsTopMost = true; AppConfig.IsTopMost = false;
+            if (result) vm.AppConfig.IsTopMost = true; vm.AppConfig.IsTopMost = false;
         }
 
         /// <summary>
@@ -105,7 +102,7 @@ namespace iBuki
             //Debug.WriteLine(test.ToString());
             //Debug.WriteLine(test.GetLocalizeName());
 
-            EnumExtension.GetLocalizeList<Hands>().ForEach(i => Debug.WriteLine(i));
+            EnumExtension.GetLocalizeList<HandsType>().ForEach(i => Debug.WriteLine(i));
         }
 
         /// <summary>
@@ -170,7 +167,7 @@ namespace iBuki
                 {
                     await bitmap.SetSourceAsync(stream);
                 }
-                DesignConfig.DialImage = bitmap;
+                vm.DesignConfig.BackgroundImage = bitmap;
             }
         }
 
@@ -225,7 +222,7 @@ namespace iBuki
             //var angle = 6 * ss;
             //var angle2 = Convert.ToDouble(fff)/1000*6;
             //Debug.WriteLine(angle + angle2);
-            var angle = AppConfig.Movement == Movement.Quartz
+            var angle = vm.AppConfig.Movement == Movement.Quartz
                 ? 6 * ss
                 : 6 * ss + fff / 1000 * 6;
             return decimal.ToDouble(angle);
@@ -233,14 +230,14 @@ namespace iBuki
 
         private string CalcDate(DateTime now)
         {
-            var ss = now.ToString(DesignConfig.DateDisplayFormat, new CultureInfo("en-US"));
+            var ss = now.ToString(vm.DesignConfig.DateDisplayFormat, new CultureInfo("en-US"));
             return ss;
         }
 
         private void WindowSizeChange()
         {
             var view = ApplicationView.GetForCurrentView();
-            var size = new Size(AppConfig.WindowSize, AppConfig.WindowSize);
+            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             if (!view.TryResizeView(size))
             {
                 Debug.WriteLine("Try Resize Window 失敗");
@@ -296,8 +293,8 @@ namespace iBuki
                     Debug.WriteLine(settings);
                 }
 
-                DesignConfig.IsDateDisplay = settings.IsDateDisplay;
-                DesignConfig.DateDisplayFormat = settings.DateDisplayFormat;
+                vm.DesignConfig.IsDateDisplay = settings.IsDateDisplay;
+                vm.DesignConfig.DateDisplayFormat = settings.DateDisplayFormat;
                 //DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
             }
         }
@@ -307,7 +304,7 @@ namespace iBuki
         /// </summary>
         private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (AppConfig.IsTopMost)
+            if (vm.AppConfig.IsTopMost)
             { StartOverlay(); }
             else
             { StopOverlay(); }
@@ -336,9 +333,16 @@ namespace iBuki
         private void HandsTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var comboBox = (ComboBox)sender;
-            Debug.WriteLine(comboBox.SelectedValue.ToString());
+            //ViewModel.HourHand.Type = (Hands)Enum.ToObject(typeof(Hands),comboBox.SelectedIndex);
+            //ViewModel.HourHand = ViewModel.HourHand;
+            //Debug.WriteLine(comboBox.SelectedValue.ToString());
             //"M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z">
             //DesignConfig.HourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M 100,200 C 100,25 400,350 400,175 H 280");
+        }
+
+        private void ColorRectangle_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
     }
 }
