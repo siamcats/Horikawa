@@ -117,67 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="configLanguage.Text" xml:space="preserve">
-    <value>言語</value>
-  </data>
-  <data name="configMovement.Text" xml:space="preserve">
-    <value>ムーブメント</value>
-  </data>
-  <data name="configMovementRadioMechanical.Content" xml:space="preserve">
-    <value>機械式</value>
-  </data>
-  <data name="configMovementRadioQuartz.Content" xml:space="preserve">
-    <value>クォーツ式</value>
-  </data>
-  <data name="configTheme.Text" xml:space="preserve">
-    <value>Windowテーマ</value>
-  </data>
-  <data name="configThemeRadioDark.Content" xml:space="preserve">
-    <value>ダーク</value>
-  </data>
-  <data name="configThemeRadioLight.Content" xml:space="preserve">
-    <value>ライト</value>
-  </data>
-  <data name="HandBar" xml:space="preserve">
+  <data name="EnumHandBar" xml:space="preserve">
     <value>バー針</value>
   </data>
-  <data name="HandBreguet" xml:space="preserve">
+  <data name="EnumHandBreguet" xml:space="preserve">
     <value>ブレゲ針</value>
   </data>
-  <data name="HandDolphin" xml:space="preserve">
+  <data name="EnumHandDolphin" xml:space="preserve">
     <value>ドルフィン針</value>
   </data>
-  <data name="HandLeaf" xml:space="preserve">
+  <data name="EnumHandLeaf" xml:space="preserve">
     <value>リーフ針</value>
   </data>
-  <data name="IndexArabic" xml:space="preserve">
+  <data name="EnumIndexArabic" xml:space="preserve">
     <value>アラビア数字</value>
   </data>
-  <data name="IndexBar" xml:space="preserve">
+  <data name="EnumIndexBar" xml:space="preserve">
     <value>バーインデックス</value>
   </data>
-  <data name="IndexRoman" xml:space="preserve">
+  <data name="EnumIndexRoman" xml:space="preserve">
     <value>ローマ数字</value>
-  </data>
-  <data name="pivotBackground.Header" xml:space="preserve">
-    <value>背景</value>
-  </data>
-  <data name="pivotClockFace.Header" xml:space="preserve">
-    <value>文字盤</value>
-  </data>
-  <data name="pivotDateDisplay.Header" xml:space="preserve">
-    <value>デイト</value>
-  </data>
-  <data name="pivotGeneral.Header" xml:space="preserve">
-    <value>全般</value>
-  </data>
-  <data name="pivotHands.Header" xml:space="preserve">
-    <value>針</value>
-  </data>
-  <data name="pivotTemplate.Header" xml:space="preserve">
-    <value>テンプレート</value>
-  </data>
-  <data name="restart.Content" xml:space="preserve">
-    <value>再起動で反映します</value>
   </data>
 </root>

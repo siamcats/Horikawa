@@ -340,7 +340,7 @@ namespace iBuki
             //DesignConfig.HourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M 100,200 C 100,25 400,350 400,175 H 280");
         }
 
-        private void ColorRectangle_Tapped(object sender, TappedRoutedEventArgs e)
+        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }

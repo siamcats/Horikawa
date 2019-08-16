@@ -22,13 +22,13 @@ namespace iBuki
 
     public enum HandsType
     {
-        [LocalizeName("HandBar")]
+        [LocalizeName("EnumHandBar")]
         Bar,
-        [LocalizeName("HandLeaf")]
+        [LocalizeName("EnumHandLeaf")]
         Leaf,
-        [LocalizeName("HandDolphin")]
+        [LocalizeName("EnumHandDolphin")]
         Dolphin,
-        [LocalizeName("HandBreguet")]
+        [LocalizeName("EnumHandBreguet")]
         Breguet
     }
 
@@ -39,11 +39,11 @@ namespace iBuki
 
     public enum IndexType
     {
-        [LocalizeName("IndexBar")]
+        [LocalizeName("EnumIndexBar")]
         Bar,
-        [LocalizeName("IndexArabic")]
+        [LocalizeName("EnumIndexArabic")]
         Arabic,
-        [LocalizeName("IndexRomen")]
+        [LocalizeName("EnumIndexRomen")]
         Roman
     }
 

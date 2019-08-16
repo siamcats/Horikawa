@@ -94,6 +94,18 @@ namespace iBuki
             }
         }
 
+        private double _scaleRadius = 45.3;
+        public double ScaleRadius
+        {
+            get { return _scaleRadius; }
+            set
+            {
+                if (value == _scaleRadius) return;
+                _scaleRadius = value;
+                OnPropertyChanged();
+            }
+        }
+
         private double _scaleLength = 3;
         public double ScaleLength
         {
@@ -126,6 +138,66 @@ namespace iBuki
             {
                 if (value == _scaleColor) return;
                 _scaleColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isAlterScale = true;
+        public bool IsAlterScale
+        {
+            get { return _isAlterScale; }
+            set
+            {
+                if (value == _isAlterScale) return;
+                _isAlterScale = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _alterScaleInterval = 60;
+        public int AlterScaleInterval
+        {
+            get { return _alterScaleInterval; }
+            set
+            {
+                if (value == _alterScaleInterval) return;
+                _alterScaleInterval = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _alterScaleRadius = 45.3;
+        public double AlterScaleRadius
+        {
+            get { return _alterScaleRadius; }
+            set
+            {
+                if (value == _alterScaleRadius) return;
+                _alterScaleRadius = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _alterScaleLength = 3;
+        public double AlterScaleLength
+        {
+            get { return _alterScaleLength; }
+            set
+            {
+                if (value == _alterScaleLength) return;
+                _alterScaleLength = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _alterScaleThickness = 0.7;
+        public double AlterScaleThickness
+        {
+            get { return _alterScaleThickness; }
+            set
+            {
+                if (value == _alterScaleThickness) return;
+                _alterScaleThickness = value;
                 OnPropertyChanged();
             }
         }
@@ -270,7 +342,31 @@ namespace iBuki
             }
         }
 
-        private string _dateDisplayFormat = "d ddd";
+        private double _dateX = 50;
+        public double DateX
+        {
+            get { return _dateX; }
+            set
+            {
+                if (value == _dateX) return;
+                _dateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateY = 50;
+        public double DateY
+        {
+            get { return _dateY; }
+            set
+            {
+                if (value == _dateY) return;
+                _dateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _dateDisplayFormat = "dd";
         public string DateDisplayFormat
         {
             get { return _dateDisplayFormat; }
@@ -282,14 +378,74 @@ namespace iBuki
             }
         }
 
-        private Brush _dateColor = new SolidColorBrush(Color.FromArgb(255, 21, 53, 85));
-        public Brush DateColor
+        private Color _dateColor = Color.FromArgb(255, 21, 53, 85);
+        public Color DateColor
         {
             get { return _dateColor; }
             set
             {
                 if (value == _dateColor) return;
                 _dateColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateBorderWidth = 100;
+        public double DateBorderWith
+        {
+            get { return _dateBorderWidth; }
+            set
+            {
+                if (value == _dateBorderWidth) return;
+                _dateBorderWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateBorderHeight = 50;
+        public double DateBorderHeight
+        {
+            get { return _dateBorderHeight; }
+            set
+            {
+                if (value == _dateBorderHeight) return;
+                _dateBorderHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateBorderThickness = 2;
+        public double DateBorderThickness
+        {
+            get { return _dateBorderThickness; }
+            set
+            {
+                if (value == _dateBorderThickness) return;
+                _dateBorderThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _dateBorderColor = Color.FromArgb(255, 20, 20, 20);
+        public Color DateBorderColor
+        {
+            get { return _dateBorderColor; }
+            set
+            {
+                if (value == _dateBorderColor) return;
+                _dateBorderColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _dateBackgroundColor = Color.FromArgb(255, 255, 255, 255);
+        public Color DateBackgroundColor
+        {
+            get { return _dateBackgroundColor; }
+            set
+            {
+                if (value == _dateBackgroundColor) return;
+                _dateBackgroundColor = value;
                 OnPropertyChanged();
             }
         }

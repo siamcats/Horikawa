@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas.Text;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace iBuki
 {
@@ -115,6 +117,56 @@ namespace iBuki
             }
         }
 
+
+        #endregion
+
+        #region Date
+
+        public string[] FontList = CanvasTextFormat.GetSystemFontFamilies();
+
+        private Thickness _dateCoordinate = new Thickness(300,300,0,0);
+        public Thickness DateCoordinate
+        {
+            get => _dateCoordinate;
+            set
+            {
+                if (value == _dateCoordinate) return;
+                _dateCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateX = 300;
+        public double DateX
+        {
+            get { return _dateX; }
+            set
+            {
+                if (value == _dateX) return;
+                DesignConfig.DateX = value;
+                var Y = DateCoordinate.Top;
+                var coordinate = new Thickness(value, Y, 0, 0);
+                DateCoordinate = coordinate;
+                _dateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateY = 300;
+        public double DateY
+        {
+            get { return _dateY; }
+            set
+            {
+                if (value == _dateY) return;
+                DesignConfig.DateY = value;
+                var X = DateCoordinate.Left;
+                var coordinate = new Thickness(X, value, 0, 0);
+                DateCoordinate = coordinate;
+                _dateY = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
     }

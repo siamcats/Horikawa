@@ -18,7 +18,7 @@ namespace iBuki
         /// <summary>
         /// Enum->Bool
         /// </summary>
-         public object Convert(object value, Type targetType, object parameter, string language)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             var parameterString = parameter as string;
             if (parameterString == null)
@@ -53,7 +53,7 @@ namespace iBuki
         public object Convert(object value, Type targetType, object parameter, string language) =>
             (bool)value ^ (parameter as string ?? string.Empty).Equals("Reverse") ?
                 Visibility.Visible :
-                Visibility.Collapsed ;
+                Visibility.Collapsed;
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) =>
             (Visibility)value == Visibility.Visible ^ (parameter as string ?? string.Empty).Equals("Reverse");
@@ -68,7 +68,7 @@ namespace iBuki
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is null) return DependencyProperty.UnsetValue;
-            
+
             //color->Brush
             if (value is Color)
             {
@@ -83,7 +83,7 @@ namespace iBuki
                 return brushValue.Color;
             }
 
-            return DependencyProperty.UnsetValue; 
+            return DependencyProperty.UnsetValue;
         }
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
@@ -121,7 +121,27 @@ namespace iBuki
         {
             if (value is null) return DependencyProperty.UnsetValue;
             var doubleValue = (double)value;
-            return (Math.Floor(doubleValue * 10)/10).ToString();
+            return (Math.Floor(doubleValue * 10) / 10).ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DoubleToThickness : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is null) return DependencyProperty.UnsetValue;
+            if (value is double)
+            {
+                var doubleValue = (double)value;
+                return new Thickness(doubleValue);
+            }
+
+            return DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
