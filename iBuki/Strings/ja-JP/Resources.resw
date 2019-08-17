@@ -117,25 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EnumHandBar" xml:space="preserve">
-    <value>バー針</value>
+  <data name="alterScaleToggle.Header" xml:space="preserve">
+    <value>一部の目盛りを変える</value>
   </data>
-  <data name="EnumHandBreguet" xml:space="preserve">
-    <value>ブレゲ針</value>
-  </data>
-  <data name="EnumHandDolphin" xml:space="preserve">
-    <value>ドルフィン針</value>
-  </data>
-  <data name="EnumHandLeaf" xml:space="preserve">
-    <value>リーフ針</value>
-  </data>
-  <data name="EnumIndexArabic" xml:space="preserve">
+  <data name="arabicIndexEnum" xml:space="preserve">
     <value>アラビア数字</value>
   </data>
-  <data name="EnumIndexBar" xml:space="preserve">
+  <data name="backgroundTitle.Header" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="barHandEnum" xml:space="preserve">
+    <value>バー針</value>
+  </data>
+  <data name="barIndexEnum" xml:space="preserve">
     <value>バーインデックス</value>
   </data>
-  <data name="EnumIndexRoman" xml:space="preserve">
+  <data name="borderLabel.Text" xml:space="preserve">
+    <value>境界線</value>
+  </data>
+  <data name="breguetHandEnum" xml:space="preserve">
+    <value>ブレゲ針</value>
+  </data>
+  <data name="clockFaceTitle.Header" xml:space="preserve">
+    <value>文字盤</value>
+  </data>
+  <data name="clockHandsTitle.Header" xml:space="preserve">
+    <value>針</value>
+  </data>
+  <data name="colorLabel.Text" xml:space="preserve">
+    <value>色</value>
+  </data>
+  <data name="coordinateLabel.Text" xml:space="preserve">
+    <value>座標</value>
+  </data>
+  <data name="countLabel.Text" xml:space="preserve">
+    <value>数</value>
+  </data>
+  <data name="darkButton.Content" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="dateDisplayToggle.Header" xml:space="preserve">
+    <value>デイト表示</value>
+  </data>
+  <data name="dayDateTitle.Header" xml:space="preserve">
+    <value>デイト</value>
+  </data>
+  <data name="dolphinHandEnum" xml:space="preserve">
+    <value>ドルフィン針</value>
+  </data>
+  <data name="fontFamilyLabel.Text" xml:space="preserve">
+    <value>フォントファミリー</value>
+  </data>
+  <data name="fontLabel.Text" xml:space="preserve">
+    <value>フォント</value>
+  </data>
+  <data name="fontSizeLabel.Text" xml:space="preserve">
+    <value>フォントサイズ</value>
+  </data>
+  <data name="formatLabel.Text" xml:space="preserve">
+    <value>フォーマット</value>
+  </data>
+  <data name="generalTitle.Header" xml:space="preserve">
+    <value>全般</value>
+  </data>
+  <data name="handsLabel.Text" xml:space="preserve">
+    <value>時針・分針</value>
+  </data>
+  <data name="imageSelectButton.Content" xml:space="preserve">
+    <value>画像を選択</value>
+  </data>
+  <data name="imageToggle.Header" xml:space="preserve">
+    <value>画像</value>
+  </data>
+  <data name="indexLabel.Text" xml:space="preserve">
+    <value>インデックス</value>
+  </data>
+  <data name="intervalLabel.Text" xml:space="preserve">
+    <value>間隔</value>
+  </data>
+  <data name="languageLabel.Text" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="leafHandEnum" xml:space="preserve">
+    <value>リーフ針</value>
+  </data>
+  <data name="lengthLabel.Text" xml:space="preserve">
+    <value>長さ</value>
+  </data>
+  <data name="lightButton.Content" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="mechanicalButton.Content" xml:space="preserve">
+    <value>機械式</value>
+  </data>
+  <data name="movementLabel.Text" xml:space="preserve">
+    <value>ムーブメント</value>
+  </data>
+  <data name="quartzButton.Content" xml:space="preserve">
+    <value>クォーツ式</value>
+  </data>
+  <data name="restartButton.Content" xml:space="preserve">
+    <value>再起動で反映します</value>
+  </data>
+  <data name="romanIndexEnum" xml:space="preserve">
     <value>ローマ数字</value>
+  </data>
+  <data name="scaleLabel.Text" xml:space="preserve">
+    <value>目盛り</value>
+  </data>
+  <data name="secondHandLabel.Text" xml:space="preserve">
+    <value>秒針</value>
+  </data>
+  <data name="sizeLabel.Text" xml:space="preserve">
+    <value>サイズ</value>
+  </data>
+  <data name="templateTitle.Header" xml:space="preserve">
+    <value>テンプレート</value>
+  </data>
+  <data name="themeLabel.Text" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="thicknessLabel.Text" xml:space="preserve">
+    <value>太さ</value>
+  </data>
+  <data name="typeLabel.Text" xml:space="preserve">
+    <value>タイプ</value>
   </data>
 </root>

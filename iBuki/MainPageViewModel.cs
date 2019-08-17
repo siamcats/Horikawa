@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace iBuki
 {
@@ -44,7 +46,45 @@ namespace iBuki
         }
 
         #region Dial
-        
+
+        public bool IsScaleDisplay
+        {
+            get => DesignConfig.IsScaleDisplay;
+            set
+            {
+                if (value == DesignConfig.IsScaleDisplay) return;
+                {
+                    DesignConfig.IsScaleDisplay = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged("IsAlterScaleEnable");
+                }
+            }
+        }
+
+        public bool IsAlterScale
+        {
+            get => DesignConfig.IsAlterScale;
+            set
+            {
+                if (value == DesignConfig.IsAlterScale) return;
+                {
+                    DesignConfig.IsAlterScale = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged("IsAlterScaleEnable");
+                }
+            }
+        }
+
+        public bool IsAlterScaleEnable
+        {
+            get
+            {
+                if (DesignConfig.IsScaleDisplay && DesignConfig.IsAlterScale) return true;
+                return false;
+            }
+        }
+
+
         public List<string> IndexTypeList = EnumExtension.GetLocalizeList<IndexType>();
         public IndexType IndexType
         {
@@ -55,11 +95,47 @@ namespace iBuki
                 {
                     DesignConfig.IndexType = value;
                     OnPropertyChanged();
+                    OnPropertyChanged("IndexBarVisible");
+                    OnPropertyChanged("IndexVisible");
                 }
             }
         }
 
+        public bool IsIndexDisplay
+        {
+            get => DesignConfig.IsIndexDisplay;
+            set
+            {
+                if (value == DesignConfig.IsIndexDisplay) return;
+                {
+                    DesignConfig.IsIndexDisplay = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged("IndexBarVisible");
+                    OnPropertyChanged("IndexVisible");
+                }
+            }
+        }
+
+        public Visibility IndexBarVisible
+        {
+            get
+            {
+                if (DesignConfig.IsIndexDisplay && IndexType == IndexType.Bar) return Visibility.Visible;
+                return Visibility.Collapsed;
+            }
+        }
+
+        public Visibility IndexVisible
+        {
+            get
+            {
+                if (DesignConfig.IsIndexDisplay && IndexType != IndexType.Bar) return Visibility.Visible;
+                return Visibility.Collapsed;
+            }
+        }
+        
         #endregion
+
 
         #region Hands
 
@@ -169,5 +245,6 @@ namespace iBuki
         }
 
         #endregion
+
     }
 }

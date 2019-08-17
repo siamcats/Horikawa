@@ -119,8 +119,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppConfig.cs" />
-    <Compile Include="CircleMeter.xaml.cs">
-      <DependentUpon>CircleMeter.xaml</DependentUpon>
+    <Compile Include="CircleIndex.xaml.cs">
+      <DependentUpon>CircleIndex.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CircleScale.xaml.cs">
+      <DependentUpon>CircleScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
     <Compile Include="DesignConfig.cs" />
@@ -154,7 +157,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CircleMeter.xaml">
+    <Page Include="CircleIndex.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CircleScale.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,6 +171,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Cimbalino.Toolkit">
+      <Version>2.5.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>

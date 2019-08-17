@@ -344,5 +344,18 @@ namespace iBuki
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
+
+        private void IndexTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           var selected =  (IndexType)Enum.ToObject(typeof(IndexType), indexTypeComboBox.SelectedIndex);
+            switch (selected)
+            {
+                case IndexType.Bar:
+                    break;
+                default:
+                    dialIndex.Type = selected;
+                    break;
+            }
+        }
     }
 }

@@ -117,25 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EnumHandBar" xml:space="preserve">
-    <value>Bar</value>
+  <data name="alterScaleToggle.Header" xml:space="preserve">
+    <value>Alter Scale</value>
   </data>
-  <data name="EnumHandBreguet" xml:space="preserve">
-    <value>Breguet</value>
-  </data>
-  <data name="EnumHandDolphin" xml:space="preserve">
-    <value>Dolphin</value>
-  </data>
-  <data name="EnumHandLeaf" xml:space="preserve">
-    <value>Leaf</value>
-  </data>
-  <data name="EnumIndexArabic" xml:space="preserve">
+  <data name="arabicIndexEnum" xml:space="preserve">
     <value>Arabic</value>
   </data>
-  <data name="EnumIndexBar" xml:space="preserve">
+  <data name="backgroundTitle.Header" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="barHandEnum" xml:space="preserve">
     <value>Bar</value>
   </data>
-  <data name="EnumIndexRoman" xml:space="preserve">
+  <data name="barIndexEnum" xml:space="preserve">
+    <value>Bar</value>
+  </data>
+  <data name="borderLabel.Text" xml:space="preserve">
+    <value>Border</value>
+  </data>
+  <data name="breguetHandEnum" xml:space="preserve">
+    <value>Breguet</value>
+  </data>
+  <data name="clockFaceTitle.Header" xml:space="preserve">
+    <value>Clock Face</value>
+  </data>
+  <data name="clockHandsTitle.Header" xml:space="preserve">
+    <value>Clock Hands</value>
+  </data>
+  <data name="colorLabel.Text" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="coordinateLabel.Text" xml:space="preserve">
+    <value>Coordinate</value>
+  </data>
+  <data name="countLabel.Text" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="darkButton.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="dateDisplayToggle.Header" xml:space="preserve">
+    <value>Date Display</value>
+  </data>
+  <data name="dayDateTitle.Header" xml:space="preserve">
+    <value>Day Date</value>
+  </data>
+  <data name="dolphinHandEnum" xml:space="preserve">
+    <value>Dolphin</value>
+  </data>
+  <data name="fontFamilyLabel.Text" xml:space="preserve">
+    <value>Font Family</value>
+  </data>
+  <data name="fontLabel.Text" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="fontSizeLabel.Text" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="formatLabel.Text" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="generalTitle.Header" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="handsLabel.Text" xml:space="preserve">
+    <value>Hour / Minute Hands</value>
+  </data>
+  <data name="imageSelectButton.Content" xml:space="preserve">
+    <value>Select Image</value>
+  </data>
+  <data name="imageToggle.Header" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="indexLabel.Text" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="intervalLabel.Text" xml:space="preserve">
+    <value>Interval</value>
+  </data>
+  <data name="languageLabel.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="leafHandEnum" xml:space="preserve">
+    <value>Leaf</value>
+  </data>
+  <data name="lengthLabel.Text" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="lightButton.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="mechanicalButton.Content" xml:space="preserve">
+    <value>Mechanical</value>
+  </data>
+  <data name="movementLabel.Text" xml:space="preserve">
+    <value>Movement</value>
+  </data>
+  <data name="quartzButton.Content" xml:space="preserve">
+    <value>Quartz</value>
+  </data>
+  <data name="restartButton.Content" xml:space="preserve">
+    <value>Restart App to Apply</value>
+  </data>
+  <data name="romanIndexEnum" xml:space="preserve">
     <value>Roman</value>
+  </data>
+  <data name="scaleLabel.Text" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="secondHandLabel.Text" xml:space="preserve">
+    <value>Second Hand</value>
+  </data>
+  <data name="sizeLabel.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="templateTitle.Header" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="themeLabel.Text" xml:space="preserve">
+    <value>Windows Theme</value>
+  </data>
+  <data name="thicknessLabel.Text" xml:space="preserve">
+    <value>Thickness</value>
+  </data>
+  <data name="typeLabel.Text" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

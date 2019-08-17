@@ -142,7 +142,7 @@ namespace iBuki
             }
         }
 
-        private bool _isAlterScale = true;
+        private bool _isAlterScale = false;
         public bool IsAlterScale
         {
             get { return _isAlterScale; }
@@ -226,7 +226,7 @@ namespace iBuki
             }
         }
 
-        private Color _indexColor = Color.FromArgb(255, 21, 53, 85);
+        private Color _indexColor = Color.FromArgb(255, 255, 255, 255);
         public Color IndexColor
         {
             get { return _indexColor; }
@@ -234,6 +234,66 @@ namespace iBuki
             {
                 if (value == _indexColor) return;
                 _indexColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _indexRadius = 43;
+        public double IndexRadius
+        {
+            get { return _indexRadius; }
+            set
+            {
+                if (value == _indexRadius) return;
+                _indexRadius = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _indexLength = 10;
+        public double IndexLength
+        {
+            get { return _indexLength; }
+            set
+            {
+                if (value == _indexLength) return;
+                _indexLength = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _indexThickness = 2;
+        public double IndexThickness
+        {
+            get { return _indexThickness; }
+            set
+            {
+                if (value == _indexThickness) return;
+                _indexThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _indexFontFamily = "Verdana";
+        public string IndexFontFamily
+        {
+            get { return _indexFontFamily; }
+            set
+            {
+                if (value == _indexFontFamily) return;
+                _indexFontFamily = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _indexFontSize = 5;
+        public double IndexFontSize
+        {
+            get { return _indexFontSize; }
+            set
+            {
+                if (value == _indexFontSize) return;
+                _indexFontSize = value;
                 OnPropertyChanged();
             }
         }

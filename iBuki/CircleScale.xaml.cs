@@ -20,7 +20,7 @@ using System.Diagnostics;
 
 namespace iBuki
 {
-    public sealed partial class CircleMeter : UserControl
+    public sealed partial class CircleScale : UserControl
     {
         public Color Color
         {
@@ -83,84 +83,84 @@ namespace iBuki
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
             "Color", // プロパティ名を指定
             typeof(Color), // プロパティの型を指定
-            typeof(CircleMeter), // プロパティを所有する型を指定
+            typeof(CircleScale), // プロパティを所有する型を指定
             new PropertyMetadata(Color.FromArgb(255, 90, 117, 153),
-                (d, e) => { (d as CircleMeter).OnColorPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnColorPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty CountProperty = DependencyProperty.Register(
             "Count", 
             typeof(int),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata(12,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
             "Radius",
             typeof(double),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((double)42,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness",
             typeof(double),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((double)1,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
             "Length",
             typeof(double),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((double)8,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty IsAlterScaleProperty = DependencyProperty.Register(
             "IsAlterScale",
             typeof(bool),
-            typeof(CircleMeter),
-            new PropertyMetadata(true,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+            typeof(CircleScale),
+            new PropertyMetadata(false,
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty AlterIntervalProperty = DependencyProperty.Register(
             "AlterInterval",
             typeof(int),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((int)60,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty AlterRadiusProperty = DependencyProperty.Register(
             "AlterRadius",
             typeof(double),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((double)42,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty AlterThicknessProperty = DependencyProperty.Register(
             "AlterThickness",
             typeof(double),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((double)2,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
         public static readonly DependencyProperty AlterLengthProperty = DependencyProperty.Register(
             "AlterLength",
             typeof(double),
-            typeof(CircleMeter),
+            typeof(CircleScale),
             new PropertyMetadata((double)8,
-                (d, e) => { (d as CircleMeter).OnPropertyChanged(e); })
+                (d, e) => { (d as CircleScale).OnPropertyChanged(e); })
             );
 
-        public CircleMeter()
+        public CircleScale()
         {
             InitializeComponent();
 

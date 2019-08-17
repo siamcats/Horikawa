@@ -50,13 +50,31 @@ namespace iBuki
         /// <summary>
         /// Bool->Visibility
         /// </summary>
-        public object Convert(object value, Type targetType, object parameter, string language) =>
-            (bool)value ^ (parameter as string ?? string.Empty).Equals("Reverse") ?
-                Visibility.Visible :
-                Visibility.Collapsed;
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is null) return DependencyProperty.UnsetValue;
+            if (value is bool)
+            {
+                var visibilityValue = (bool)value ?
+                    Visibility.Visible :
+                    Visibility.Collapsed;
+                return visibilityValue;
+            }
+            else if (value is Visibility)
+            {
+                var boolValue = (Visibility)value == Visibility.Visible ?
+                    true :
+                    false;
+                return boolValue;
+            }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language) =>
-            (Visibility)value == Visibility.Visible ^ (parameter as string ?? string.Empty).Equals("Reverse");
+            return DependencyProperty.UnsetValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return Convert(value, targetType, parameter, language);
+        }
     }
 
 
@@ -75,9 +93,8 @@ namespace iBuki
                 var colorValue = (Color)value;
                 return new SolidColorBrush(colorValue);
             }
-
-            //brush->color
-            if (value is SolidColorBrush)
+            //Brush->Color
+            else if (value is SolidColorBrush)
             {
                 var brushValue = (SolidColorBrush)value;
                 return brushValue.Color;

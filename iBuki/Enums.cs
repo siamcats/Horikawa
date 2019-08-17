@@ -22,13 +22,13 @@ namespace iBuki
 
     public enum HandsType
     {
-        [LocalizeName("EnumHandBar")]
+        [LocalizeName("barHandEnum")]
         Bar,
-        [LocalizeName("EnumHandLeaf")]
+        [LocalizeName("leafHandEnum")]
         Leaf,
-        [LocalizeName("EnumHandDolphin")]
+        [LocalizeName("dolphinHandEnum")]
         Dolphin,
-        [LocalizeName("EnumHandBreguet")]
+        [LocalizeName("breguetHandEnum")]
         Breguet
     }
 
@@ -39,11 +39,11 @@ namespace iBuki
 
     public enum IndexType
     {
-        [LocalizeName("EnumIndexBar")]
+        [LocalizeName("barIndexEnum")]
         Bar,
-        [LocalizeName("EnumIndexArabic")]
+        [LocalizeName("arabicIndexEnum")]
         Arabic,
-        [LocalizeName("EnumIndexRomen")]
+        [LocalizeName("RomanIndexEnum")]
         Roman
     }
 
@@ -87,22 +87,22 @@ namespace iBuki
         }
     }
 
-    public class EnumSourceProvider<T> : MarkupExtension
-    {
-        private static string DisplayName(T value)
-        {
-            var fileInfo = value.GetType().GetField(value.ToString());
-            var descriptionAttribute = (DescriptionAttribute)fileInfo
-                .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                .FirstOrDefault();
-            return descriptionAttribute.Description;
-        }
+    //public class EnumSourceProvider<T> : MarkupExtension
+    //{
+    //    private static string DisplayName(T value)
+    //    {
+    //        var fileInfo = value.GetType().GetField(value.ToString());
+    //        var descriptionAttribute = (DescriptionAttribute)fileInfo
+    //            .GetCustomAttributes(typeof(DescriptionAttribute), false)
+    //            .FirstOrDefault();
+    //        return descriptionAttribute.Description;
+    //    }
 
-        public IEnumerable Source { get; }
-            = typeof(T).GetEnumValues()
-                .Cast<T>()
-                .Select(value => new { Code = value, Name = DisplayName(value) });
+    //    public IEnumerable Source { get; }
+    //        = typeof(T).GetEnumValues()
+    //            .Cast<T>()
+    //            .Select(value => new { Code = value, Name = DisplayName(value) });
 
-        //public override object ProvideValue(IServiceProvider serviceProvider) => this;
-    }
+    //    //public override object ProvideValue(IServiceProvider serviceProvider) => this;
+    //}
 }

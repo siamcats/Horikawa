@@ -33,34 +33,34 @@
                 <Grid x:Name="ConfigPanel">
                     <Pivot>
                         <!--全般-->
-                        <PivotItem x:Uid="pivotGeneral" Header="General">
+                        <PivotItem x:Uid="generalTitle" Header="General">
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--ウィンドウテーマ-->
                                     <StackPanel>
                                         <TextBlock
-                                            x:Uid="configTheme" Text="Window Theme"/>
+                                            x:Uid="themeLabel" Text="Window Theme"/>
                                         <StackPanel Orientation="Horizontal">
                                             <RadioButton
-                                                x:Uid="configThemeRadioDark" Content="Dark"
+                                                x:Uid="darkButton" Content="Dark"
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
                                             <RadioButton
-                                                x:Uid="configThemeRadioLight" Content="Light"
+                                                x:Uid="lightButton" Content="Light"
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                     <!--言語-->
                                     <StackPanel>
                                         <TextBlock
-                                            x:Uid="configLanguage" Text="Language" />
+                                            x:Uid="languageLabel" Text="Language" />
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox
-                                                x:Name="languageComboBox" Width="100"
+                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
                                                 ItemsSource="{x:Bind vm.AppConfig.LanguageList}"
                                                 SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
                                                 SelectionChanged="LanguageComboBox_SelectionChanged" />
                                             <HyperlinkButton
-                                                x:Uid="restart" Content="Restart App to Apply "
+                                                x:Uid="restartButton" Content="Restart App to Apply"
                                                 x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"
                                                 Tapped="HyperlinkButton_Tapped"/>
                                         </StackPanel>
@@ -68,13 +68,13 @@
                                     <!--ムーブメント-->
                                     <StackPanel>
                                         <TextBlock
-                                            x:Uid="configMovement" Text="Movement"/>
+                                            x:Uid="movementLabel" Text="Movement"/>
                                         <StackPanel Orientation="Horizontal">
                                             <RadioButton
-                                                x:Uid="configMovementRadioQuartz" Content="Quartz"
+                                                x:Uid="quartzButton" Content="Quartz"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
                                             <RadioButton
-                                                x:Uid="configMovementRadioMechanical" Content="Mechanical"
+                                                x:Uid="mechanicalButton" Content="Mechanical"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
@@ -82,7 +82,7 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--テンプレート-->
-                        <PivotItem x:Uid="pivotTemplate" Header="Template">
+                        <PivotItem x:Uid="templateTitle" Header="Template">
                             <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
                                 <x:String>Station</x:String>
                                 <x:String>Porto</x:String>
@@ -90,17 +90,18 @@
                             </ListView>
                         </PivotItem>
                         <!--背景-->
-                        <PivotItem x:Uid="pivotBackground" Header="Background">
+                        <PivotItem x:Uid="backgroundTitle" Header="Background">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <!--背景色-->
+                                    <!--色-->
                                     <StackPanel>
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
-                                            Tapped="ColorButton_Tapped">
+                                            Tapped="ColorButton_Tapped" >
                                             <FlyoutBase.AttachedFlyout>
                                                 <Flyout Placement="Right">
                                                     <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
@@ -115,13 +116,13 @@
                                     </StackPanel>
                                     <!--画像-->
                                     <ToggleSwitch 
-                                        x:Uid="configImage" Header="Image"
+                                        x:Uid="imageToggle" Header="Image"
                                         x:Name="backgroundImageDisplayToggle" OffContent="Off" OnContent="On"
                                         IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
                                     <!--画像インポート-->
-                                    <StackPanel Margin="20,0,0,0">
+                                    <StackPanel Margin="0">
                                         <Button
-                                            x:Uid="configImageSelect" Content="Select Image" 
+                                            x:Uid="imageSelectButton" Content="Select Image" 
                                             x:Name="DialImagePicker" Tapped="DialImagePicker_Tapped"
                                             IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
                                             />
@@ -130,85 +131,22 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--文字盤-->
-                        <PivotItem x:Uid="pivotClockFace" Header="Clock Face">
+                        <PivotItem x:Uid="clockFaceTitle" Header="Clock Face">
                             <ScrollViewer>
                                 <StackPanel>
+                                    <TextBlock x:Uid="scaleLabel" Text="Scale" FontSize="20" />
                                     <!--目盛り-->
                                     <ToggleSwitch
-                                        x:Uid="configScaleDisplay"
                                         x:Name="scaleDisplayToggle" 
-                                        Header="Scale" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsScaleDisplay, Mode=TwoWay}" />
-                                    <!--目盛りの数-->
-                                    <StackPanel Margin="20,0,0,0">
-                                        <TextBlock
-                                            x:Uid="configCount" Text="Count" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Slider
-                                                x:Name="scaleCountSlider"
-                                                Minimum="0" Maximum="240" Width="200"
-                                                TickPlacement="Outside" TickFrequency="12" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.ScaleCount,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind scaleCountSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--目盛りの半径-->
-                                    <StackPanel Margin="20,0,0,0">
-                                        <TextBlock
-                                            x:Uid="configSize" Text="Size" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Slider
-                                                x:Name="scaleRadiusSlider"
-                                                Minimum="30" Maximum="50" Width="200"
-                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.ScaleRadius,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind scaleRadiusSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--目盛りの長さ-->
-                                    <StackPanel Margin="20,0,0,0">
-                                        <TextBlock
-                                            x:Uid="configLength" Text="Length" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Slider
-                                                x:Name="scaleLengthSlider"
-                                                Minimum="0.1" Maximum="4" Width="200"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.ScaleLength,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind scaleLengthSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--目盛りの太さ-->
-                                    <StackPanel Margin="20,0,0,0">
-                                        <TextBlock
-                                            x:Uid="configThickness" Text="Thickness" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Slider
-                                                x:Name="scaleThicknessSlider"
-                                                Minimum="0.1" Maximum="4" Width="200"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.ScaleThickness,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind scaleThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                    </StackPanel>
+                                        OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
                                     <!--目盛りの色-->
-                                    <StackPanel Margin="20,0,0,10">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.ScaleColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -225,99 +163,165 @@
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
+                                    <!--目盛りの数-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="countLabel" Text="Count" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleCountSlider"
+                                                Minimum="1" Maximum="240" Width="230"
+                                                TickPlacement="Outside" TickFrequency="12" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleCount,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind scaleCountSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--目盛りの半径-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="sizeLabel" Text="Size" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleRadiusSlider"
+                                                Minimum="30" Maximum="50" Width="230"
+                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleRadius,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind scaleRadiusSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--目盛りの長さ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="lengthLabel" Text="Length" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleLengthSlider"
+                                                Minimum="0.1" Maximum="4" Width="230"
+                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleLength,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind scaleLengthSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--目盛りの太さ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="thicknessLabel" Text="Thickness" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="scaleThicknessSlider"
+                                                Minimum="0.1" Maximum="4" Width="230"
+                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.ScaleThickness,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind scaleThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                     <!--一部目盛り-->
                                     <ToggleSwitch
-                                        x:Uid="configAlterScaleDisplay" Header="Alter Scale" 
+                                        x:Uid="alterScaleToggle" Header="Alter Scale" 
                                         x:Name="alterScaleDisplayToggle" 
-                                        OffContent="Off" OnContent="On" Margin="20,0,0,0"
+                                        OffContent="Off" OnContent="On"
                                         IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                        IsOn="{x:Bind vm.DesignConfig.IsAlterScale, Mode=TwoWay}" />
+                                        IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
                                     <!--一部目盛り間隔-->
-                                    <StackPanel Margin="40,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configInterval" Text="Interval" />
+                                            x:Uid="intervalLabel" Text="Interval" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
                                                 x:Name="alterScaleIntervalSlider"
-                                                Minimum="0" Maximum="{x:Bind vm.DesignConfig.ScaleCount,Mode=OneWay}" Width="200"
+                                                Minimum="0" Maximum="{x:Bind vm.DesignConfig.ScaleCount,Mode=OneWay}" Width="230"
                                                 TickPlacement="none" TickFrequency="1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind alterScaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleInterval,Mode=TwoWay}" />
                                             <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind alterScaleIntervalSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛りの半径-->
-                                    <StackPanel Margin="40,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configSize" Text="Size" />
+                                            x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
                                                 x:Name="alterScaleRadiusSlider"
-                                                Minimum="30" Maximum="50" Width="200"
+                                                Minimum="30" Maximum="50" Width="230"
                                                 TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind alterScaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleRadius,Mode=TwoWay}" />
                                             <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind alterScaleRadiusSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛りの長さ-->
-                                    <StackPanel Margin="40,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configLength" Text="Length" />
+                                            x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
                                                 x:Name="alterScaleLengthSlider"
-                                                Minimum="0.1" Maximum="4" Width="200"
+                                                Minimum="0.1" Maximum="4" Width="230"
                                                 TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind alterScaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleLength,Mode=TwoWay}" />
                                             <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind alterScaleLengthSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛りの太さ-->
-                                    <StackPanel Margin="40,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configThickness" Text="Thickness" />
+                                            x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
                                                 x:Name="alterScaleThicknessSlider"
-                                                Minimum="0.1" Maximum="4" Width="200"
+                                                Minimum="0.1" Maximum="3" Width="230"
                                                 TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind alterScaleDisplayToggle.IsOn,Mode=OneWay}"
+                                                IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleThickness,Mode=TwoWay}" />
                                             <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind alterScaleThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--インデックス-->
+                                    <TextBlock x:Uid="indexLabel" Text="Index" FontSize="20" />
                                     <ToggleSwitch
-                                        x:Uid="configIndexDisplay"
                                         x:Name="indexDisplayToggle" 
-                                        Header="Index" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsIndexDisplay, Mode=TwoWay}" />
+                                        OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
                                     <!--インデックスタイプ-->
-                                    <StackPanel Margin="20,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configType" Text="Type" />
+                                            x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
                                             x:Name="indexTypeComboBox" Width="150"
                                             IsEnabled="{x:Bind indexDisplayToggle.IsOn, Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.IndexTypeList}"
-                                            SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
+                                            SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}"
+                                            SelectionChanged="IndexTypeComboBox_SelectionChanged" />
                                     </StackPanel>
                                     <!--インデックスの色-->
-                                    <StackPanel Margin="20,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="64" HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind indexDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.IndexColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -334,17 +338,91 @@
                                         </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
+                                    <!--インデックスの半径-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="sizeLabel" Text="Size" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="indexRadiusSlider"
+                                                Minimum="20" Maximum="50" Width="230"
+                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind indexDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.IndexRadius,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind indexRadiusSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--インデックスの長さ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="lengthLabel" Text="Length" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="indexLengthSlider"
+                                                Minimum="1" Maximum="10" Width="230"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind vm.IndexBarVisible,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.IndexLength,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind indexLengthSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--インデックスの太さ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="thicknessLabel" Text="Thickness" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="indexThicknessSlider"
+                                                Minimum="0.1" Maximum="4" Width="230"
+                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind vm.IndexBarVisible,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.IndexThickness,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind indexThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--フォントファミリ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="fontFamilyLabel" Text="Font Family" />
+                                        <ComboBox
+                                            Width="250"
+                                            IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
+                                            ItemsSource="{x:Bind vm.FontList}"
+                                            SelectedValue ="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=TwoWay}"/>
+                                    </StackPanel>
+                                    <!--フォントのサイズ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="fontSizeLabel" Text="Font Size"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="indexFontSizeSlider"
+                                                Minimum="1" Maximum="20" Width="200"
+                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.IndexFontSize,Mode=TwoWay}" />
+                                            <TextBlock
+                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
+                                                Text="{x:Bind indexFontSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
                         <!--針-->
-                        <PivotItem x:Uid="pivotHands" Header="Hands">
+                        <PivotItem x:Uid="clockHandsTitle" Header="Clock Hands">
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--タイプ-->
                                     <StackPanel>
                                         <TextBlock
-                                            x:Uid="configType" Text="Type" />
+                                            x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
                                             x:Name="handsTypeComboBox" Width="150"
                                             ItemsSource="{x:Bind vm.HandsTypeList}"
@@ -352,16 +430,17 @@
                                             SelectionChanged="HandsTypeComboBox_SelectionChanged" />
                                     </StackPanel>
                                     <!--時針分針-->
+                                    <TextBlock x:Uid="handsLabel" Text="Hour / Minute Hands" FontSize="20" />
                                     <ToggleSwitch
-                                        x:Uid="configHandsDisplay" Header="Hour / Minute Hands"
                                         x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
                                         IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
                                     <!--時針分針の色-->
-                                    <StackPanel Margin="20,0,0,20">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            x:Name="handsColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.HandsColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -379,16 +458,17 @@
                                         </Button>
                                     </StackPanel>
                                     <!--秒針-->
+                                    <TextBlock x:Uid="secondHandLabel" Text="Second Hand" FontSize="20" />
                                     <ToggleSwitch
-                                        x:Uid="configSecondHandDisplay" x:Name="secondHandDisplayToggle" 
-                                        Header="Second Hand" OffContent="Off" OnContent="On"
+                                        x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
                                         IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
                                     <!--秒針の色-->
-                                    <StackPanel Margin="10,0,0,20">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            x:Name="secondHandColorRectangle" Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.SecondHandColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -409,82 +489,21 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--デイト-->
-                        <PivotItem x:Uid="pivotDateDisplay" Header="Date Display">
+                        <PivotItem x:Uid="dayDateTitle" Header="Day Date">
                             <ScrollViewer>
                                 <StackPanel>
                                     <ToggleSwitch 
-                                        x:Uid="configDateDisplay"
+                                        x:Uid="dateDisplayToggle" Header="Date Display" 
                                         x:Name="dateDisplayToggle" 
-                                        Header="Date Display" OffContent="Off" OnContent="On"
+                                        OffContent="Off" OnContent="On"
                                         IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
-                                    <!--座標-->
+                                    <!--色-->
                                     <StackPanel>
                                         <TextBlock
-                                            x:Uid="configCoordinate" Text="Coordinate"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
-                                            <Slider
-                                                x:Name="dateXSlider"
-                                                Minimum="1" Maximum="500" Width="185"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateX,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind dateXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
-                                            <Slider
-                                                x:Name="dateYSlider"
-                                                Minimum="1" Maximum="500" Width="185"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateY,Mode=TwoWay}" />
-                                            <TextBlock
-                                            HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                            Text="{x:Bind dateYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--サイズ-->
-                                    <StackPanel>
-                                        <TextBlock
-                                            x:Uid="configSize" Text="Size"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
-                                            <Slider
-                                                x:Name="dateBorderSizeXSlider"
-                                                Minimum="1" Maximum="500" Width="185"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.DateBorderWith,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind dateBorderSizeXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                    Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
-                                            <Slider
-                                                x:Name="dateBorderSizeYSlider"
-                                                Minimum="1" Maximum="500" Width="185"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.DateBorderHeight,Mode=TwoWay}" />
-                                            <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind dateBorderSizeYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--背景の色-->
-                                    <StackPanel>
-                                        <TextBlock
-                                            x:Uid="configBackgroundColor" Text="Background Color" FontWeight="Normal"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateBackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -501,30 +520,77 @@
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
-                                    <!--境界線の太さ-->
-                                    <!--<TextBlock
-                                        x:Uid="configBorder" Text="Border" Margin="0,20,0,10"/>-->
-                                    <StackPanel Margin="20,0,0,0">
+                                    <!--座標-->
+                                    <StackPanel>
                                         <TextBlock
-                                                x:Uid="configThickness" Text="Thickness"/>
+                                            x:Uid="coordinateLabel" Text="Coordinate"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <Slider
-                                                x:Name="dateBorderThicknessSlider"
-                                                Minimum="0" Maximum="20" Width="200"
-                                                TickPlacement="Outside" TickFrequency="1" SnapsTo="Ticks"
-                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.DateBorderThickness,Mode=TwoWay}" />
                                             <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind dateBorderThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                            <Slider
+                                                x:Name="dateXSlider"
+                                                Minimum="1" Maximum="500" Width="215"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DateX,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind dateXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                            <Slider
+                                                x:Name="dateYSlider"
+                                                Minimum="1" Maximum="500" Width="215"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DateY,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                            Text="{x:Bind dateYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <!--境界線の色-->
-                                    <StackPanel Margin="20,0,0,0">
+                                    <!--サイズ-->
+                                    <StackPanel>
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="sizeLabel" Text="Size"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                            <Slider
+                                                x:Name="dateBorderSizeXSlider"
+                                                Minimum="1" Maximum="500" Width="215"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.DateBorderWith,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind dateBorderSizeXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                    Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                            <Slider
+                                                x:Name="dateBorderSizeYSlider"
+                                                Minimum="1" Maximum="500" Width="215"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.DateBorderHeight,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind dateBorderSizeYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--境界線-->
+                                    <TextBlock x:Uid="borderLabel" Text="Border" FontSize="20" />
+                                    <!--境界線の色-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateBorderColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -541,49 +607,31 @@
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
-                                    <!--フォーマット-->
-                                    <!--<TextBlock
-                                        x:Uid="configText" Text="Text" Margin="0,20,0,10"/>-->
-                                    <StackPanel Margin="20,0,0,0" HorizontalAlignment="Left">
+                                    <!--境界線の太さ-->
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configDateFormat" Text="Format"/>
-                                        <TextBox
-                                            x:Name="dateDisplayFormatTextBox" Width="250"
-                                            IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                            Text="{x:Bind vm.DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
-                                    </StackPanel>
-                                    <!--フォントファミリ-->
-                                    <StackPanel Margin="20,0,0,0">
-                                        <TextBlock
-                                            x:Uid="configFont" Text="Font Family" />
-                                        <ComboBox
-                                            x:Name="dateFontComboBox" Width="250"
-                                            IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                            ItemsSource="{x:Bind vm.FontList}"
-                                            SelectedValue ="{x:Bind vm.DesignConfig.DateFontFamily,Mode=TwoWay}"/>
-                                    </StackPanel>
-                                    <!--フォントのサイズ-->
-                                    <StackPanel Margin="20,0,0,0">
-                                        <TextBlock
-                                            x:Uid="configSize" Text="Size"/>
+                                                x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
-                                                x:Name="dateFontSizeSlider"
-                                                Minimum="1" Maximum="80" Width="200"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                x:Name="dateBorderThicknessSlider"
+                                                Minimum="0" Maximum="20" Width="230"
+                                                TickPlacement="Outside" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.DateFontSize,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateBorderThickness,Mode=TwoWay}" />
                                             <TextBlock
-                                                HorizontalAlignment="Center" VerticalAlignment="Center" Width="60"
-                                                Text="{x:Bind dateFontSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind dateBorderThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
+                                    <!--フォント-->
+                                    <TextBlock x:Uid="fontLabel" Text="Font" FontSize="20" />
                                     <!--フォントの色-->
-                                    <StackPanel Margin="20,0,0,0">
+                                    <StackPanel Margin="0">
                                         <TextBlock
-                                            x:Uid="configColor" Text="Color"/>
+                                            x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="64"  HorizontalAlignment="Left"
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -600,6 +648,41 @@
                                                 </Flyout>
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
+                                    </StackPanel>
+                                    <!--フォーマット-->
+                                    <StackPanel Margin="0" HorizontalAlignment="Left">
+                                        <TextBlock
+                                            x:Uid="formatLabel" Text="Format"/>
+                                        <TextBox
+                                            x:Name="dateDisplayFormatTextBox" Width="250"
+                                            IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                            Text="{x:Bind vm.DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
+                                    </StackPanel>
+                                    <!--フォントファミリ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="fontFamilyLabel" Text="Font Family" />
+                                        <ComboBox
+                                            x:Name="dateFontComboBox" Width="250"
+                                            IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                            ItemsSource="{x:Bind vm.FontList}"
+                                            SelectedValue ="{x:Bind vm.DesignConfig.DateFontFamily,Mode=TwoWay}"/>
+                                    </StackPanel>
+                                    <!--フォントのサイズ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="sizeLabel" Text="Size" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="dateFontSizeSlider"
+                                                Minimum="1" Maximum="80" Width="230"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.DateFontSize,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind dateFontSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -619,7 +702,7 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
-                    <local:CircleMeter
+                    <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"
                         Visibility="{x:Bind vm.DesignConfig.IsScaleDisplay,Mode=OneWay}"
@@ -634,12 +717,25 @@
                         AlterThickness="{x:Bind vm.DesignConfig.AlterScaleThickness,Mode=OneWay}"
                         Color="{x:Bind vm.DesignConfig.ScaleColor,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />
-                    <local:CircleMeter
+                    <local:CircleScale
                         x:Name="dialIndexBar"
-                        HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Count="12" Thickness="2" Length="10"
-                        Visibility="{x:Bind vm.DesignConfig.IsIndexDisplay,Mode=OneWay}"
+                        HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Count="12"
+                        Visibility="{x:Bind vm.IndexBarVisible,Mode=OneWay}"
+                        Radius="{x:Bind vm.DesignConfig.IndexRadius,Mode=OneWay}"
+                        Length="{x:Bind vm.DesignConfig.IndexLength,Mode=OneWay}"
+                        Thickness="{x:Bind vm.DesignConfig.IndexThickness,Mode=OneWay}"
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />
+                    <local:CircleIndex
+                        x:Name="dialIndex"
+                        HorizontalAlignment="Left" 
+                        Visibility="{x:Bind vm.IndexVisible,Mode=OneWay}"
+                        Radius="{x:Bind vm.DesignConfig.IndexRadius,Mode=OneWay}"
+                        FontSize="{x:Bind vm.DesignConfig.IndexFontSize,Mode=OneWay}"
+                        FontFamily="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=OneWay}"
+                        Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
+                    <!--Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />-->
+                    <!--Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}"-->
                     <!-- デイト -->
                     <Border
                         HorizontalAlignment="Left" VerticalAlignment="Top"
