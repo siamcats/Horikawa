@@ -21,6 +21,9 @@ using Windows.UI.Core;
 using Windows.Globalization;
 using Windows.ApplicationModel.Resources.Core;
 using Windows.UI.Xaml.Markup;
+using Windows.Storage.Pickers;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -261,9 +264,25 @@ namespace iBuki
             }
         }
 
+        private async void ImportAssetsSetting(string name)
+        {
+            // Assetsからのファイル取り出し
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Themes/Station/Settings.json"));
+            string json = await FileIO.ReadTextAsync(file);
+
+            Settings settings;
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                // List<Prefecture>に変換できるシリアライザーを作成
+                var serializer = new DataContractJsonSerializer(typeof(Settings));
+                // クラスにデータを読み込む
+                settings = serializer.ReadObject(stream) as Settings;
+            }
+        }
+
         private async void ImportSetting(string name)
         {
-            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
+            var filePicker = new FileOpenPicker();
 
             filePicker.FileTypeFilter.Add(".json");
             //filePicker.FileTypeFilter.Add("*");
@@ -284,8 +303,8 @@ namespace iBuki
                     Debug.WriteLine(settings);
                 }
 
-                vm.DesignConfig.IsDateDisplay = settings.IsDateDisplay;
-                vm.DesignConfig.DateFormat = settings.DateDisplayFormat;
+                //vm.DesignConfig.IsDateDisplay = settings.IsDateDisplay;
+                //vm.DesignConfig.DateFormat = settings.DateDisplayFormat;
                 //DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
             }
         }
@@ -321,32 +340,9 @@ namespace iBuki
             restartLink.Visibility = Visibility.Collapsed;
         }
 
-        private void HandsTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var comboBox = (ComboBox)sender;
-            //ViewModel.HourHand.Type = (Hands)Enum.ToObject(typeof(Hands),comboBox.SelectedIndex);
-            //ViewModel.HourHand = ViewModel.HourHand;
-            //Debug.WriteLine(comboBox.SelectedValue.ToString());
-            //"M259.42356,3.5819738 C254.42137,3.5819738 252.54609,145.50599 259.42384,208.58333 266.30133,145.50599 264.4254,3.5819738 259.42356,3.5819738 z">
-            //DesignConfig.HourHandGeometry = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M 100,200 C 100,25 400,350 400,175 H 280");
-        }
-
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-        }
-
-        private void IndexTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           var selected =  (IndexType)Enum.ToObject(typeof(IndexType), indexTypeComboBox.SelectedIndex);
-            switch (selected)
-            {
-                case IndexType.Bar:
-                    break;
-                default:
-                    dialIndex.Type = selected;
-                    break;
-            }
         }
     }
 }

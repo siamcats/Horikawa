@@ -21,17 +21,124 @@ namespace iBuki
         public string TargetAppVersion { get; set; }
 
         [DataMember]
-        public HandsType HandsType { get; set; }
+        public string BackgroundColor { get; set; }
+
+        [DataMember]
+        public bool BackgroundImageDisplay { get; set; }
+
+        [DataMember]
+        public string BackgroundImage { get; set; }
+
+        [DataMember]
+        public bool ScaleDisplay { get; set; }
+
+        [DataMember]
+        public string ScaleColor { get; set; }
+
+        [DataMember]
+        public double ScaleCont { get; set; }
+
+        [DataMember]
+        public double ScaleRadius { get; set; }
+
+        [DataMember]
+        public double ScaleLength { get; set; }
+
+        [DataMember]
+        public double ScaleThickness { get; set; }
+
+        [DataMember]
+        public bool AlterScale { get; set; }
+
+        [DataMember]
+        public double AlterScaleInterval { get; set; }
+
+        [DataMember]
+        public double AlterScaleRadius { get; set; }
+
+        [DataMember]
+        public double AlterScaleLength { get; set; }
+
+        [DataMember]
+        public double AlterScaleThickness { get; set; }
+
+        [DataMember]
+        public bool IndexDisplay { get; set; }
+
+        [DataMember]
+        public string IndexType { get; set; }
+
+        [DataMember]
+        public string IndexColor { get; set; }
+
+        [DataMember]
+        public double IndexRadius { get; set; }
+
+        [DataMember]
+        public double IndexLength { get; set; }
+
+        [DataMember]
+        public double IndexThickness { get; set; }
+
+        [DataMember]
+        public string IndexFontFamily { get; set; }
+
+        [DataMember]
+        public double IndexFontSize { get; set; }
+
+        [DataMember]
+        public string HandsType { get; set; }
+
+        [DataMember]
+        public bool HandsDisplay { get; set; }
 
         [DataMember]
         public string HandsColor { get; set; }
 
         [DataMember]
-        public bool IsDateDisplay { get; set; }
+        public bool SecondHandDisplay { get; set; }
 
         [DataMember]
-        public string DateDisplayFormat { get; set; }
-        
+        public string SecondHandColor { get; set; }
+
+        [DataMember]
+        public bool DateDisplay { get; set; }
+
+        [DataMember]
+        public string DateBackgroundColor { get; set; }
+
+        [DataMember]
+        public double DateCoordinateX { get; set; }
+
+        [DataMember]
+        public double DateCoordinateY { get; set; }
+
+        [DataMember]
+        public double DateWidth { get; set; }
+
+        [DataMember]
+        public double DateHeight { get; set; }
+
+        [DataMember]
+        public string DateBorderColor { get; set; }
+
+        [DataMember]
+        public double DateBorderThickness { get; set; }
+
+        [DataMember]
+        public string DateFontColor { get; set; }
+
+        [DataMember]
+        public string DateFormat { get; set; }
+
+        [DataMember]
+        public string DateFontFamily { get; set; }
+
+        [DataMember]
+        public double DateFontSize { get; set; }
+
+
+
         public SolidColorBrush GetBrush(string hex)
         {
             hex = hex.Replace("#", string.Empty);

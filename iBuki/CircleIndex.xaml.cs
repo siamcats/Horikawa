@@ -107,7 +107,7 @@ namespace iBuki
         public CircleIndex()
         {
             InitializeComponent();
-            Draw();
+            VerifyDrawing();
         }
 
         readonly string[] ARABIC = { "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2" };
@@ -115,7 +115,7 @@ namespace iBuki
 
         private void OnFontPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(canvas); i++)
             {
                 var container = (Border)VisualTreeHelper.GetChild(canvas, i);
                 var text = (TextBlock)VisualTreeHelper.GetChild(container, 0);
@@ -128,15 +128,36 @@ namespace iBuki
 
         private void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            Draw();
+            VerifyDrawing();
         }
 
-        private void Draw()
+        private void VerifyDrawing()
         {
-            var index = Type == IndexType.Arabic ?
-               ARABIC :
-               ROMAN ;
+            switch (Type)
+            {
+                case IndexType.Bar:
+                    Undraw();
+                    break;
+                default:
+                    var index = Type == IndexType.Arabic ?
+                        ARABIC :
+                        ROMAN;
+                    Draw(index);
+                    break;
+            }
+        }
 
+        private void Undraw()
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(canvas); i++)
+            {
+                var container = (Border)VisualTreeHelper.GetChild(canvas, i);
+                container.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Draw(string[] index)
+        {            
             double deg = 360.0 / index.Length;
             double cx = 50;
             double cy = 50;
@@ -147,8 +168,9 @@ namespace iBuki
             for (int i = 0; i < index.Length; i++)
             {
                 var container = (Border)VisualTreeHelper.GetChild(canvas, i);
-                var text = (TextBlock)VisualTreeHelper.GetChild(container, 0);
+                container.Visibility = Visibility.Visible;
 
+                var text = (TextBlock)VisualTreeHelper.GetChild(container, 0);
                 text.Text = index[i];
                 text.FontSize = FontSize;
                 text.FontFamily = new FontFamily(FontFamily);

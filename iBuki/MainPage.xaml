@@ -312,8 +312,7 @@
                                             x:Name="indexTypeComboBox" Width="150"
                                             IsEnabled="{x:Bind indexDisplayToggle.IsOn, Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.IndexTypeList}"
-                                            SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}"
-                                            SelectionChanged="IndexTypeComboBox_SelectionChanged" />
+                                            SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
                                     </StackPanel>
                                     <!--インデックスの色-->
                                     <StackPanel Margin="0">
@@ -426,8 +425,7 @@
                                         <ComboBox
                                             x:Name="handsTypeComboBox" Width="150"
                                             ItemsSource="{x:Bind vm.HandsTypeList}"
-                                            SelectedIndex="{x:Bind vm.HandsType,Converter={StaticResource EnumInt} ,Mode=TwoWay}"
-                                            SelectionChanged="HandsTypeComboBox_SelectionChanged" />
+                                            SelectedIndex="{x:Bind vm.HandsType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
                                     </StackPanel>
                                     <!--時針分針-->
                                     <TextBlock x:Uid="handsLabel" Text="Hour / Minute Hands" FontSize="20" />
@@ -730,6 +728,7 @@
                         x:Name="dialIndex"
                         HorizontalAlignment="Left" 
                         Visibility="{x:Bind vm.IndexVisible,Mode=OneWay}"
+                        Type="{x:Bind vm.DesignConfig.IndexType,Mode=OneWay}"
                         Radius="{x:Bind vm.DesignConfig.IndexRadius,Mode=OneWay}"
                         FontSize="{x:Bind vm.DesignConfig.IndexFontSize,Mode=OneWay}"
                         FontFamily="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=OneWay}"

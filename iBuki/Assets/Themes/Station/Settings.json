@@ -3,7 +3,7 @@
   "Author": "siamcats",
   "Version": "0.01",
   "TargetAppVersion": "0.01",
-  "BackgroundColor": "FFFFFFFF",
+  "BackgroundColor": "#FFFFFFFF",
   "BackgroundImageDisplay": false,
   "BackgroundImage": null,
   "ScaleDisplay": true,
