@@ -212,34 +212,34 @@ namespace iBuki
             }
         }
 
-        private double _dateX = 300;
-        public double DateX
+        private double _dateCoordinateX = 300;
+        public double DateCoordinateX
         {
-            get { return _dateX; }
+            get { return _dateCoordinateX; }
             set
             {
-                if (value == _dateX) return;
-                DesignConfig.DateX = value;
+                if (value == _dateCoordinateX) return;
+                DesignConfig.DateCoordinateX = value;
                 var Y = DateCoordinate.Top;
                 var coordinate = new Thickness(value, Y, 0, 0);
                 DateCoordinate = coordinate;
-                _dateX = value;
+                _dateCoordinateX = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _dateY = 300;
-        public double DateY
+        private double _dateCoordinateY = 300;
+        public double DateCoordinateY
         {
-            get { return _dateY; }
+            get { return _dateCoordinateY; }
             set
             {
-                if (value == _dateY) return;
-                DesignConfig.DateY = value;
+                if (value == _dateCoordinateY) return;
+                DesignConfig.DateCoordinateY = value;
                 var X = DateCoordinate.Left;
                 var coordinate = new Thickness(X, value, 0, 0);
                 DateCoordinate = coordinate;
-                _dateY = value;
+                _dateCoordinateY = value;
                 OnPropertyChanged();
             }
         }

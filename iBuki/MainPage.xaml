@@ -83,7 +83,7 @@
                         </PivotItem>
                         <!--テンプレート-->
                         <PivotItem x:Uid="templateTitle" Header="Template">
-                            <ListView x:Name="listView1" SelectionChanged="ListView1_SelectionChanged">
+                            <ListView x:Name="listView1">
                                 <x:String>Station</x:String>
                                 <x:String>Porto</x:String>
                                 <x:String>Volks</x:String>
@@ -532,7 +532,7 @@
                                                 Minimum="1" Maximum="500" Width="215"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateX,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DateCoordinateX,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind dateXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -545,7 +545,7 @@
                                                 Minimum="1" Maximum="500" Width="215"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateY,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DateCoordinateY,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                             Text="{x:Bind dateYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -563,7 +563,7 @@
                                                 Minimum="1" Maximum="500" Width="215"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.DateBorderWith,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateWidth,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind dateBorderSizeXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -576,7 +576,7 @@
                                                 Minimum="1" Maximum="500" Width="215"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DesignConfig.DateBorderHeight,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateHeight,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind dateBorderSizeYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -633,7 +633,7 @@
                                             Height="32" Width="120" Margin="0,0,0,8"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                            Background="{x:Bind vm.DesignConfig.DateColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Background="{x:Bind vm.DesignConfig.DateFontColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
                                             <FlyoutBase.AttachedFlyout>
                                                 <Flyout Placement="Right">
@@ -643,7 +643,7 @@
                                                             IsColorChannelTextInputVisible="False"
                                                             IsColorSliderVisible="True"
                                                             IsAlphaEnabled="True"
-                                                            Color="{x:Bind vm.DesignConfig.DateColor,Mode=TwoWay}"/>
+                                                            Color="{x:Bind vm.DesignConfig.DateFontColor,Mode=TwoWay}"/>
                                                     </Viewbox>
                                                 </Flyout>
                                             </FlyoutBase.AttachedFlyout>
@@ -656,7 +656,7 @@
                                         <TextBox
                                             x:Name="dateDisplayFormatTextBox" Width="250"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                            Text="{x:Bind vm.DesignConfig.DateDisplayFormat,Mode=TwoWay}"/>
+                                            Text="{x:Bind vm.DesignConfig.DateFormat,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel Margin="0">
@@ -740,8 +740,8 @@
                     <Border
                         HorizontalAlignment="Left" VerticalAlignment="Top"
                         Margin="{x:Bind vm.DateCoordinate,Mode=OneWay}"
-                        Width="{x:Bind vm.DesignConfig.DateBorderWith,Mode=OneWay}"
-                        Height="{x:Bind vm.DesignConfig.DateBorderHeight,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.DateWidth,Mode=OneWay}"
+                        Height="{x:Bind vm.DesignConfig.DateHeight,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                         Background="{x:Bind vm.DesignConfig.DateBackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
                         BorderThickness="{x:Bind vm.DesignConfig.DateBorderThickness,Converter={StaticResource Thickness},Mode=OneWay}"
@@ -751,7 +751,7 @@
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             FontSize="{x:Bind vm.DesignConfig.DateFontSize,Mode=OneWay}"
                             FontFamily="{x:Bind vm.DesignConfig.DateFontFamily,Mode=OneWay}"
-                            Foreground="{x:Bind vm.DesignConfig.DateColor,Converter={StaticResource ColorBrush},Mode=OneWay}" />
+                            Foreground="{x:Bind vm.DesignConfig.DateFontColor,Converter={StaticResource ColorBrush},Mode=OneWay}" />
                     </Border>
                     <!--時針-->
                     <Path
@@ -841,15 +841,7 @@
                         </ToggleButton.Content>
                     </ToggleButton>
             </StackPanel>
-            <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent">
-                <!--<ToggleButton
-                    x:Name="moveButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    Foreground="{x:Bind vm.DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
-                    <ToggleButton.Content>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE759;" />
-                    </ToggleButton.Content>
-                </ToggleButton>-->
-            </StackPanel>
+            <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent"/>
         </Grid>
 
     </Grid>

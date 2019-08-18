@@ -82,6 +82,18 @@ namespace iBuki
             }
         }
 
+        private Color _scaleColor = Color.FromArgb(255, 21, 53, 85);
+        public Color ScaleColor
+        {
+            get { return _scaleColor; }
+            set
+            {
+                if (value == _scaleColor) return;
+                _scaleColor = value;
+                OnPropertyChanged();
+            }
+        }
+
         private int _scaleCount = 60;
         public int ScaleCount
         {
@@ -126,18 +138,6 @@ namespace iBuki
             {
                 if (value == _scaleThickness) return;
                 _scaleThickness = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Color _scaleColor = Color.FromArgb(255, 21, 53, 85);
-        public Color ScaleColor
-        {
-            get { return _scaleColor; }
-            set
-            {
-                if (value == _scaleColor) return;
-                _scaleColor = value;
                 OnPropertyChanged();
             }
         }
@@ -378,110 +378,62 @@ namespace iBuki
             }
         }
 
-        private double _dateFontSize = 50;
-        public double DateFontSize
+        private Color _dateBackgroundColor = Color.FromArgb(255, 255, 255, 255);
+        public Color DateBackgroundColor
         {
-            get { return _dateFontSize; }
+            get { return _dateBackgroundColor; }
             set
             {
-                if (value == _dateFontSize) return;
-                _dateFontSize = value;
+                if (value == _dateBackgroundColor) return;
+                _dateBackgroundColor = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _dateFontFamily = "Verdana";
-        public string DateFontFamily
+        private double _dateCoordinateX = 50;
+        public double DateCoordinateX
         {
-            get { return _dateFontFamily; }
+            get { return _dateCoordinateX; }
             set
             {
-                if (value == _dateFontFamily) return;
-                _dateFontFamily = value;
+                if (value == _dateCoordinateX) return;
+                _dateCoordinateX = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _dateX = 50;
-        public double DateX
+        private double _dateCoordinateY = 50;
+        public double DateCoordinateY
         {
-            get { return _dateX; }
+            get { return _dateCoordinateY; }
             set
             {
-                if (value == _dateX) return;
-                _dateX = value;
+                if (value == _dateCoordinateY) return;
+                _dateCoordinateY = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _dateY = 50;
-        public double DateY
+        private double _dateWidth = 100;
+        public double DateWidth
         {
-            get { return _dateY; }
+            get { return _dateWidth; }
             set
             {
-                if (value == _dateY) return;
-                _dateY = value;
+                if (value == _dateWidth) return;
+                _dateWidth = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _dateDisplayFormat = "dd";
-        public string DateDisplayFormat
+        private double _dateHeight = 50;
+        public double DateHeight
         {
-            get { return _dateDisplayFormat; }
+            get { return _dateHeight; }
             set
             {
-                if (value == _dateDisplayFormat) return;
-                _dateDisplayFormat = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Color _dateColor = Color.FromArgb(255, 21, 53, 85);
-        public Color DateColor
-        {
-            get { return _dateColor; }
-            set
-            {
-                if (value == _dateColor) return;
-                _dateColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _dateBorderWidth = 100;
-        public double DateBorderWith
-        {
-            get { return _dateBorderWidth; }
-            set
-            {
-                if (value == _dateBorderWidth) return;
-                _dateBorderWidth = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _dateBorderHeight = 50;
-        public double DateBorderHeight
-        {
-            get { return _dateBorderHeight; }
-            set
-            {
-                if (value == _dateBorderHeight) return;
-                _dateBorderHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _dateBorderThickness = 2;
-        public double DateBorderThickness
-        {
-            get { return _dateBorderThickness; }
-            set
-            {
-                if (value == _dateBorderThickness) return;
-                _dateBorderThickness = value;
+                if (value == _dateHeight) return;
+                _dateHeight = value;
                 OnPropertyChanged();
             }
         }
@@ -498,14 +450,62 @@ namespace iBuki
             }
         }
 
-        private Color _dateBackgroundColor = Color.FromArgb(255, 255, 255, 255);
-        public Color DateBackgroundColor
+        private double _dateBorderThickness = 2;
+        public double DateBorderThickness
         {
-            get { return _dateBackgroundColor; }
+            get { return _dateBorderThickness; }
             set
             {
-                if (value == _dateBackgroundColor) return;
-                _dateBackgroundColor = value;
+                if (value == _dateBorderThickness) return;
+                _dateBorderThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _dateFontColor = Color.FromArgb(255, 21, 53, 85);
+        public Color DateFontColor
+        {
+            get { return _dateFontColor; }
+            set
+            {
+                if (value == _dateFontColor) return;
+                _dateFontColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _dateFormat = "dd";
+        public string DateFormat
+        {
+            get { return _dateFormat; }
+            set
+            {
+                if (value == _dateFormat) return;
+                _dateFormat = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _dateFontFamily = "Verdana";
+        public string DateFontFamily
+        {
+            get { return _dateFontFamily; }
+            set
+            {
+                if (value == _dateFontFamily) return;
+                _dateFontFamily = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dateFontSize = 50;
+        public double DateFontSize
+        {
+            get { return _dateFontSize; }
+            set
+            {
+                if (value == _dateFontSize) return;
+                _dateFontSize = value;
                 OnPropertyChanged();
             }
         }

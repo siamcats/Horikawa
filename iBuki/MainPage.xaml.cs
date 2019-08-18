@@ -45,7 +45,7 @@ namespace iBuki
             InitializeComponent();
             DataContext = vm.AppConfig;
 
-            // デフォルトサイズは500です
+            // デフォルトサイズは500固定
             var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             ApplicationView.PreferredLaunchViewSize = size;
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
@@ -136,7 +136,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// チック
+        /// （イベント）チックで針描画
         /// </summary>
         private void Timer_Tick(object sender, object e)
         {
@@ -147,53 +147,6 @@ namespace iBuki
             minuteHandAngle.Angle = CalcAngleMinute(localDate);
             secondHandAngle.Angle = CalcAngleSecond(localDate);
             dateDisplay.Text = CalcDate(localDate);
-        }
-
-
-        private async void DialImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
-
-            filePicker.FileTypeFilter.Add(".jpg");
-            filePicker.FileTypeFilter.Add(".png");
-            //filePicker.FileTypeFilter.Add("*");
-
-            // 単一ファイルの選択
-            var file = await filePicker.PickSingleFileAsync();
-            if (file != null)
-            {
-                var bitmap = new BitmapImage();
-                using (var stream = await file.OpenReadAsync())
-                {
-                    await bitmap.SetSourceAsync(stream);
-                }
-                vm.DesignConfig.BackgroundImage = bitmap;
-            }
-        }
-
-        //public async Task GetZipFileInformation(Stream stream)
-        //{
-        //   ZipArchive zip = new ZipArchive(stream);
-        //    var firstFile = zip.Entries.FirstOrDefault();
-        //    if (firstFile != null)
-        //    { }
-        //}
-
-        private void WindowSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            WindowSizeChange();
-        }
-
-        private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            //ImportSetting("Porto");
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            WindowSizeChange();
-            Serialize();
         }
 
         private double CalcAngleHour(DateTime now)
@@ -230,8 +183,46 @@ namespace iBuki
 
         private string CalcDate(DateTime now)
         {
-            var ss = now.ToString(vm.DesignConfig.DateDisplayFormat, new CultureInfo("en-US"));
+            var ss = now.ToString(vm.DesignConfig.DateFormat, new CultureInfo("en-US"));
             return ss;
+        }
+
+        /// <summary>
+        ///（イベント）画像取り込みボタンタップ
+        /// </summary>
+        private async void DialImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                vm.DesignConfig.BackgroundImage = bitmap;
+            }
+        }
+
+        //public async Task GetZipFileInformation(Stream stream)
+        //{
+        //   ZipArchive zip = new ZipArchive(stream);
+        //    var firstFile = zip.Entries.FirstOrDefault();
+        //    if (firstFile != null)
+        //    { }
+        //}
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WindowSizeChange();
+            Serialize();
         }
 
         private void WindowSizeChange()
@@ -294,7 +285,7 @@ namespace iBuki
                 }
 
                 vm.DesignConfig.IsDateDisplay = settings.IsDateDisplay;
-                vm.DesignConfig.DateDisplayFormat = settings.DateDisplayFormat;
+                vm.DesignConfig.DateFormat = settings.DateDisplayFormat;
                 //DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
             }
         }
