@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Media;
+using Windows.ApplicationModel;
 
 namespace iBuki
 {
@@ -33,6 +37,8 @@ namespace iBuki
             }
         }
 
+        public List<string> LanguageList = new List<string> { "en-US", "jp-JP" };
+
         private DesignConfig _designConfig = new DesignConfig();
         public DesignConfig DesignConfig
         {
@@ -43,6 +49,159 @@ namespace iBuki
                 _designConfig = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void ImportSettings(Settings settings)
+        {
+            // background
+            DesignConfig.BackgroundColor = ConvertHexColor(settings.BackgroundColor);
+            DesignConfig.IsBackgroundImageDisplay = settings.BackgroundImageDisplay;
+            if (DesignConfig.IsBackgroundImageDisplay)
+            {
+                DesignConfig.BackgroundImage = ConvertImage(settings.BackgroundImage);
+            }
+            // scale
+            IsScaleDisplay = settings.ScaleDisplay;
+            if (IsScaleDisplay)
+            {
+                DesignConfig.ScaleColor = ConvertHexColor(settings.ScaleColor);
+                DesignConfig.ScaleCount = settings.ScaleCount;
+                DesignConfig.ScaleRadius = settings.ScaleRadius;
+                DesignConfig.ScaleLength = settings.ScaleLength;
+                DesignConfig.ScaleThickness = settings.ScaleThickness;
+                IsAlterScale = settings.AlterScale;
+                if (IsAlterScale)
+                {
+                    DesignConfig.AlterScaleInterval = settings.AlterScaleInterval;
+                    DesignConfig.AlterScaleRadius = settings.AlterScaleRadius;
+                    DesignConfig.AlterScaleLength = settings.AlterScaleLength;
+                    DesignConfig.AlterScaleThickness = settings.AlterScaleThickness;
+                }
+            }
+            // index
+            IsIndexDisplay = settings.IndexDisplay;
+            if (IsIndexDisplay)
+            {
+                IndexType = (IndexType)Enum.Parse(typeof(IndexType),settings.IndexType);
+                DesignConfig.IndexColor = ConvertHexColor(settings.IndexColor);
+                DesignConfig.IndexRadius = settings.IndexRadius;
+                if (DesignConfig.IndexType == IndexType.Bar)
+                {
+                    DesignConfig.IndexLength = settings.IndexLength;
+                    DesignConfig.IndexThickness = settings.IndexThickness;
+                }
+                else
+                {
+                    DesignConfig.IndexFontFamily = settings.IndexFontFamily;
+                    DesignConfig.IndexFontSize = settings.IndexFontSize;
+                }
+            }
+            // hands
+            HandsType = (HandsType)Enum.Parse(typeof(HandsType),settings.HandsType);
+            DesignConfig.IsHandsDisplay = settings.HandsDisplay;
+            if (DesignConfig.IsHandsDisplay)
+            {
+                DesignConfig.HandsColor = ConvertHexColor(settings.HandsColor);
+            }
+            DesignConfig.IsSecondHandDisplay = settings.SecondHandDisplay;
+            if (DesignConfig.IsSecondHandDisplay)
+            {
+                DesignConfig.SecondHandColor = ConvertHexColor(settings.SecondHandColor);
+            }
+            // day date
+            DesignConfig.IsDateDisplay = settings.DateDisplay;
+            if (DesignConfig.IsDateDisplay)
+            {
+                DesignConfig.DateBackgroundColor = ConvertHexColor(settings.DateBackgroundColor);
+                DateCoordinateX = settings.DateCoordinateX;
+                DateCoordinateY = settings.DateCoordinateY;
+                DesignConfig.DateWidth = settings.DateWidth;
+                DesignConfig.DateHeight = settings.DateHeight;
+                DesignConfig.DateBorderColor = ConvertHexColor(settings.DateBorderColor);
+                DesignConfig.DateFontColor = ConvertHexColor(settings.DateFontColor);
+                DesignConfig.DateFormat = settings.DateFormat;
+                DesignConfig.DateFontFamily = settings.DateFontFamily;
+                DesignConfig.DateFontSize = settings.DateFontSize;
+            }
+        }
+
+        public Settings ExportSettings(string name, string author, string version)
+        {
+            var settings = new Settings();
+            settings.Name = name;
+            settings.Author = author;
+            settings.Version = version;
+            settings.TargetAppVersion = GetAppVersion();
+            settings.BackgroundColor = DesignConfig.BackgroundColor.ToString();
+            settings.BackgroundImageDisplay = DesignConfig.IsBackgroundImageDisplay;
+            if (DesignConfig.IsBackgroundImageDisplay)
+            {
+
+            }
+            settings.ScaleDisplay = DesignConfig.IsScaleDisplay;
+            if (DesignConfig.IsScaleDisplay)
+            {
+                settings.ScaleColor = DesignConfig.ScaleColor.ToString();
+                settings.ScaleCount = DesignConfig.ScaleCount;
+                settings.ScaleRadius = DesignConfig.ScaleRadius;
+                settings.ScaleLength = DesignConfig.ScaleLength;
+                settings.ScaleThickness = DesignConfig.ScaleThickness;
+                settings.AlterScale = DesignConfig.IsAlterScale;
+                if (DesignConfig.IsAlterScale)
+                {
+                    settings.AlterScaleInterval = DesignConfig.AlterScaleInterval;
+                    settings.AlterScaleRadius = DesignConfig.AlterScaleRadius;
+                    settings.AlterScaleLength = DesignConfig.AlterScaleLength;
+                    settings.AlterScaleThickness = DesignConfig.AlterScaleThickness;
+                }
+            }
+            // index
+            settings.IndexDisplay = DesignConfig.IsIndexDisplay;
+            if (DesignConfig.IsIndexDisplay)
+            {
+                settings.IndexType = Enum.GetName(typeof(IndexType), DesignConfig.IndexType);
+                settings.IndexColor = DesignConfig.IndexColor.ToString();
+                settings.IndexRadius = DesignConfig.IndexRadius;
+                if (DesignConfig.IndexType == IndexType.Bar)
+                {
+                    settings.IndexLength = DesignConfig.IndexLength;
+                    settings.IndexThickness = DesignConfig.IndexThickness;
+                }
+                else
+                {
+                    settings.IndexFontFamily = DesignConfig.IndexFontFamily;
+                    settings.IndexFontSize = DesignConfig.IndexFontSize;
+                }
+            }
+            // hands
+            settings.HandsType = Enum.GetName(typeof(HandsType),DesignConfig.HandsType);
+            settings.HandsDisplay = DesignConfig.IsHandsDisplay;
+            if (DesignConfig.IsHandsDisplay)
+            {
+                settings.HandsColor =DesignConfig.HandsColor.ToString();
+            }
+            settings.SecondHandDisplay = DesignConfig.IsSecondHandDisplay;
+            if (DesignConfig.IsSecondHandDisplay)
+            {
+                settings.SecondHandColor = DesignConfig.SecondHandColor.ToString();
+            }
+            // day date
+            settings.DateDisplay = DesignConfig.IsDateDisplay;
+            if (DesignConfig.IsDateDisplay)
+            {
+                settings.DateBackgroundColor = DesignConfig.DateBackgroundColor.ToString();
+                DateCoordinateX = DesignConfig.DateCoordinateX;
+                DateCoordinateY = DesignConfig.DateCoordinateY;
+                settings.DateWidth = DesignConfig.DateWidth;
+                settings.DateHeight = DesignConfig.DateHeight;
+                settings.DateBorderColor = DesignConfig.DateBorderColor.ToString();
+                settings.DateFontColor = DesignConfig.DateFontColor.ToString();
+                settings.DateFormat = DesignConfig.DateFormat;
+                settings.DateFontFamily = DesignConfig.DateFontFamily;
+                settings.DateFontSize = DesignConfig.DateFontSize;
+            }
+
+            return settings;
         }
 
         #region Dial
@@ -136,7 +295,6 @@ namespace iBuki
         
         #endregion
 
-
         #region Hands
 
         public List<string> HandsTypeList = EnumExtension.GetLocalizeList<HandsType>();
@@ -146,14 +304,12 @@ namespace iBuki
             get => DesignConfig.HandsType;
             set
             {
-                if (value == DesignConfig.HandsType) return;
-                {
-                    DesignConfig.HandsType = value;
-                    HourHand.Type = value;
-                    MinuteHand.Type = value;
-                    SecondHand.Type = value;
-                    OnPropertyChanged();
-                }
+                //if (value == DesignConfig.HandsType) return;
+                DesignConfig.HandsType = value;
+                HourHand.Type = value;
+                MinuteHand.Type = value;
+                SecondHand.Type = value;
+                OnPropertyChanged();
             }
         }
 
@@ -161,36 +317,18 @@ namespace iBuki
         public HandModel HourHand
         {
             get => _hourHand;
-            set
-            {
-                if (value == _hourHand) return;
-                _hourHand = value;
-                OnPropertyChanged();
-            }
         }
 
         private HandModel _minuteHand = new HandModel(Clock.Minute);
         public HandModel MinuteHand
         {
             get => _minuteHand;
-            set
-            {
-                if (value == _minuteHand) return;
-                _minuteHand = value;
-                OnPropertyChanged();
-            }
         }
 
         private HandModel _secondHand = new HandModel(Clock.Second);
         public HandModel SecondHand
         {
             get => _secondHand;
-            set
-            {
-                if (value == _secondHand) return;
-                _secondHand = value;
-                OnPropertyChanged();
-            }
         }
 
 
@@ -246,5 +384,27 @@ namespace iBuki
 
         #endregion
 
+        private Color ConvertHexColor(string hexCode)
+        {
+            hexCode = hexCode.Replace("#", string.Empty);
+            byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
+            byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
+            byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
+            byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
+            return Color.FromArgb(a, r, g, b);
+        }
+
+
+        private ImageSource ConvertImage(string path)
+        {
+            var bitmap = new BitmapImage(new Uri(path));
+            return bitmap;
+        }
+
+        private string GetAppVersion()
+        {
+            var version = Package.Current.Id.Version;
+            return version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
+        }
     }
 }

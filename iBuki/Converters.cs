@@ -20,36 +20,40 @@ namespace iBuki
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var parameterString = parameter as string;
-            if (parameterString == null)
+            // ConverterParameterの指定がない
+            var stringParam = (string)parameter;
+            if (string.IsNullOrEmpty(stringParam))
             {
                 return DependencyProperty.UnsetValue;
             }
+            var intParam = (int)Enum.Parse(value.GetType(), stringParam);
 
+            // Enumでない
+            if (value is null) return DependencyProperty.UnsetValue;
             if (Enum.IsDefined(value.GetType(), value) == false)
             {
                 return DependencyProperty.UnsetValue;
             }
+            var intValue = (int)value;
 
-            object paramvalue = Enum.Parse(value.GetType(), parameterString);
-
-            return (int)paramvalue == (int)value;
+            return intParam == intValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            var ParameterString = parameter as string;
-            return ParameterString == null
+            // ConverterParameterの指定がない
+            var stringParam = (string)parameter;
+            return string.IsNullOrEmpty(stringParam)
                 ? DependencyProperty.UnsetValue
-                : Enum.Parse(targetType, ParameterString);
+                : Enum.Parse(targetType, stringParam);
         }
     }
 
-    public class BoolToVisibilityConverter : IValueConverter
+    /// <summary>
+    /// BoolとVisibilityの相互変換
+    /// </summary>
+    public class BoolAndVisibilityInterConverter : IValueConverter
     {
-        /// <summary>
-        /// Bool->Visibility
-        /// </summary>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is null) return DependencyProperty.UnsetValue;
@@ -132,6 +136,9 @@ namespace iBuki
         }
     }
 
+    /// <summary>
+    /// Decimalの小数点2桁以下を切り捨てる
+    /// </summary>
     public class DecimalTruncateConveter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
@@ -147,6 +154,9 @@ namespace iBuki
         }
     }
 
+    /// <summary>
+    /// Double->Thickness
+    /// </summary>
     public class DoubleToThickness : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

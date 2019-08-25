@@ -38,7 +38,7 @@ namespace iBuki
         /// <param name="key">キーは指定不要、呼出し元のプロパティ名を使う</param>
         private void Save(object value, [CallerMemberName]string key = null)
         {
-            Debug.WriteLine("Save - " + key + " : " + value);
+            //Debug.WriteLine("Save - " + key + " : " + value);
             DataContainer.Values[key] = value;
         }
 
@@ -51,6 +51,7 @@ namespace iBuki
         {
             if (DataContainer.Values.ContainsKey(key))
             {
+                //Debug.WriteLine("Load - " + key + " : " + DataContainer.Values[key].ToString());
                 return (T)DataContainer.Values[key];
             }
             Debug.WriteLine("Cannot Load - " + key);
@@ -106,8 +107,6 @@ namespace iBuki
                 OnPropertyChanged();
             }
         }
-
-        public List<string> LanguageList = new List<string> { "en-US", "jp-JP" };
 
         public string Language
         {

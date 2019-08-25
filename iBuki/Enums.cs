@@ -32,18 +32,13 @@ namespace iBuki
         Breguet
     }
 
-    public enum ScaleType
-    {
-        PerSecond
-    }
-
     public enum IndexType
     {
         [LocalizeName("barIndexEnum")]
         Bar,
         [LocalizeName("arabicIndexEnum")]
         Arabic,
-        [LocalizeName("RomanIndexEnum")]
+        [LocalizeName("romanIndexEnum")]
         Roman
     }
 
@@ -66,9 +61,9 @@ namespace iBuki
             var attrType = typeof(LocalizeNameAttribute);
             var attribute = Attribute.GetCustomAttribute(field, attrType);
             var key = (attribute as LocalizeNameAttribute)?.Name;
+            if (string.IsNullOrEmpty(key)) return null; //LocalizeNameの定義が無ければnull文字を返却
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
             return resourceLoader.GetString(key);
-            //return resourceLoader.GetString(enumValue.ToString());
         }
 
         public static List<string> GetLocalizeList<T>()
@@ -86,23 +81,4 @@ namespace iBuki
             return list;
         }
     }
-
-    //public class EnumSourceProvider<T> : MarkupExtension
-    //{
-    //    private static string DisplayName(T value)
-    //    {
-    //        var fileInfo = value.GetType().GetField(value.ToString());
-    //        var descriptionAttribute = (DescriptionAttribute)fileInfo
-    //            .GetCustomAttributes(typeof(DescriptionAttribute), false)
-    //            .FirstOrDefault();
-    //        return descriptionAttribute.Description;
-    //    }
-
-    //    public IEnumerable Source { get; }
-    //        = typeof(T).GetEnumValues()
-    //            .Cast<T>()
-    //            .Select(value => new { Code = value, Name = DisplayName(value) });
-
-    //    //public override object ProvideValue(IServiceProvider serviceProvider) => this;
-    //}
 }

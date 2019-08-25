@@ -57,21 +57,6 @@ namespace iBuki
 
         }
 
-        private async void StartOverlay()
-        {
-            var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
-            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
-            compactOptions.CustomSize = size;
-            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
-            if (result) vm.AppConfig.IsTopMost = true;
-        }
-
-        private async void StopOverlay()
-        {
-            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
-            if (result) vm.AppConfig.IsTopMost = true; vm.AppConfig.IsTopMost = false;
-        }
-
         /// <summary>
         /// （イベント）初期遷移時
         /// </summary>
@@ -94,18 +79,60 @@ namespace iBuki
             Window.Current.SetTitleBar(moveButton);
             Window.Current.Activated += Current_Activated;
 
+            // Suspending・Resumingイベントハンドラ
+            Application.Current.Suspending += OnSuspending;
+            Application.Current.Resuming += OnResuming;
+
             // タイマーイベントの間隔を指定します。。
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(0.125);
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
-            // Debug..
-            //var test = Hands.Bar;
-            //Debug.WriteLine(test.ToString());
-            //Debug.WriteLine(test.GetLocalizeName());
 
-            EnumExtension.GetLocalizeList<HandsType>().ForEach(i => Debug.WriteLine(i));
+            // デフォルトのクリップ状態を反映
+            if (vm.AppConfig.IsTopMost)
+            { StartOverlay(); }
+            else
+            { StopOverlay(); }
+
+            // 前回設定を読み込み反映
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("CurrentSettings"))
+            {
+                var json = (string)ApplicationData.Current.LocalSettings.Values["CurrentSettings"];
+                vm.ImportSettings(Deserialize(json));
+                Debug.WriteLine("起動時復元 - " + json);
+            }
+            else
+            {
+                // 保存された設定がなければAssetsのデフォルトテーマを使用
+                ImportAssetsSetting("Default");
+                Debug.WriteLine("起動時初期値");
+            }
+        }
+
+        /// <summary>
+        /// （イベント）復帰
+        /// </summary>
+        private void OnResuming(object sender, object e)
+        {
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("CurrentSettings"))
+            {
+                var json = (string)ApplicationData.Current.LocalSettings.Values["CurrentSettings"];
+                vm.ImportSettings(Deserialize(json));
+            }
+            // 設定がなければAssetsのデフォルトテーマを使用
+            ImportAssetsSetting("Default");
+        }
+
+        /// <summary>
+        /// （イベント）停止
+        /// </summary>
+        private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            var json = Serialize(vm.ExportSettings("local","local","1.0.0"));
+            Debug.WriteLine("終了時保存 - " + json);
+            ApplicationData.Current.LocalSettings.Values["CurrentSettings"] = json;
         }
 
         /// <summary>
@@ -178,9 +205,10 @@ namespace iBuki
             //var angle = 6 * ss;
             //var angle2 = Convert.ToDouble(fff)/1000*6;
             //Debug.WriteLine(angle + angle2);
-            var angle = vm.AppConfig.Movement == Movement.Quartz
-                ? 6 * ss
-                : 6 * ss + fff / 1000 * 6;
+            var angle = 6 * ss;
+            //var angle = vm.AppConfig.Movement == Movement.Quartz
+            //    ? 6 * ss
+            //    : 6 * ss + fff / 1000 * 6;
             return decimal.ToDouble(angle);
         }
 
@@ -214,18 +242,9 @@ namespace iBuki
             }
         }
 
-        //public async Task GetZipFileInformation(Stream stream)
-        //{
-        //   ZipArchive zip = new ZipArchive(stream);
-        //    var firstFile = zip.Entries.FirstOrDefault();
-        //    if (firstFile != null)
-        //    { }
-        //}
-
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             WindowSizeChange();
-            Serialize();
         }
 
         private void WindowSizeChange()
@@ -244,73 +263,61 @@ namespace iBuki
             await FileIO.WriteTextAsync(currentSetting, "");
         }
 
-
-        private void Serialize()
-        {
-
-            var setting = new Settings()
-            {
-                Author = "aaa",
-                //BackgroundColor = new SolidColorBrush(Windows.UI.Colors.Blue)
-            };
-
-            var serializer2 = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Settings));
-
-            using (var stream = new MemoryStream())
-            {
-                serializer2.WriteObject(stream, setting);
-                string jsonData = System.Text.Encoding.UTF8.GetString(stream.ToArray());
-                Debug.WriteLine(jsonData);
-            }
-        }
-
+        /// <summary>
+        /// Assetからの設定ファイル読み込み
+        /// </summary>
+        /// <param name="name"></param>
         private async void ImportAssetsSetting(string name)
         {
-            // Assetsからのファイル取り出し
-            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Themes/Station/Settings.json"));
-            string json = await FileIO.ReadTextAsync(file);
+            var uri = "ms-appx:///Assets/Themes/" + name + "/Settings.json";
 
-            Settings settings;
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            try
             {
-                // List<Prefecture>に変換できるシリアライザーを作成
-                var serializer = new DataContractJsonSerializer(typeof(Settings));
-                // クラスにデータを読み込む
-                settings = serializer.ReadObject(stream) as Settings;
-            }
-        }
-
-        private async void ImportSetting(string name)
-        {
-            var filePicker = new FileOpenPicker();
-
-            filePicker.FileTypeFilter.Add(".json");
-            //filePicker.FileTypeFilter.Add("*");
-
-            // 単一ファイルの選択
-            var file = await filePicker.PickSingleFileAsync();
-            if (file != null)
-            {
-                // ファイルの読み込み
-                var settings = new Settings();
+                // Assetsからのファイル取り出し
+                var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
                 string json = await FileIO.ReadTextAsync(file);
-                using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)))
-                {
-                    // 変換できるシリアライザーを作成
-                    var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(Settings));
-                    // クラスにデータを読み込む
-                    settings = serializer.ReadObject(stream) as Settings;
-                    Debug.WriteLine(settings);
-                }
-
-                //vm.DesignConfig.IsDateDisplay = settings.IsDateDisplay;
-                //vm.DesignConfig.DateFormat = settings.DateDisplayFormat;
-                //DesignConfig.HandsColor = settings.GetBrush(settings.HandsColor);
+                // 設定反映
+                vm.ImportSettings(Deserialize(json));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
         }
 
         /// <summary>
-        /// クリップボタン
+        /// Json文字列をSettingsオブジェクトにデシリアライズ
+        /// </summary>
+        private Settings Deserialize(string json)
+        {
+            Settings settings;
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var serializer = new DataContractJsonSerializer(typeof(Settings));
+                settings = serializer.ReadObject(stream) as Settings;
+            }
+            //settings.DebugLog("settings");
+            return settings;
+        }
+
+        /// <summary>
+        /// SettingsオブジェクトをJson文字列にシリアライズ
+        /// </summary>
+        private string Serialize(Settings settings)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(Settings));
+            string json;
+            using (var stream = new MemoryStream())
+            {
+                serializer.WriteObject(stream, settings);
+                json = Encoding.UTF8.GetString(stream.ToArray());
+                //Debug.WriteLine(json);
+            }
+            return json;
+        }
+
+        /// <summary>
+        /// （イベント）クリップボタンタップ
         /// </summary>
         private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -320,14 +327,24 @@ namespace iBuki
             { StopOverlay(); }
         }
 
+        private async void StartOverlay()
+        {
+            var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
+            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
+            compactOptions.CustomSize = size;
+            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
+            if (result) vm.AppConfig.IsTopMost = true;
+        }
+
+        private async void StopOverlay()
+        {
+            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+            if (result) vm.AppConfig.IsTopMost = true; vm.AppConfig.IsTopMost = false;
+        }
+
         private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
-        }
-
-        private void LanguageComboBox_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            restartLink.Visibility = Visibility.Visible;
         }
 
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -343,6 +360,12 @@ namespace iBuki
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        private void TemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = templateList.SelectedItem as string;
+            ImportAssetsSetting(item);
         }
     }
 }

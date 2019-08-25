@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Media;
 namespace iBuki
 {
     [DataContract]
-    class Settings
+    public class Settings
     {
         [DataMember]
         public string Name { get; set; }
@@ -36,7 +36,7 @@ namespace iBuki
         public string ScaleColor { get; set; }
 
         [DataMember]
-        public double ScaleCont { get; set; }
+        public int ScaleCount { get; set; }
 
         [DataMember]
         public double ScaleRadius { get; set; }
@@ -51,7 +51,7 @@ namespace iBuki
         public bool AlterScale { get; set; }
 
         [DataMember]
-        public double AlterScaleInterval { get; set; }
+        public int AlterScaleInterval { get; set; }
 
         [DataMember]
         public double AlterScaleRadius { get; set; }
@@ -136,8 +136,6 @@ namespace iBuki
 
         [DataMember]
         public double DateFontSize { get; set; }
-
-
 
         public SolidColorBrush GetBrush(string hex)
         {

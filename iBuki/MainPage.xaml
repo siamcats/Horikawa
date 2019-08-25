@@ -12,7 +12,7 @@
     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
-        <local:BoolToVisibilityConverter x:Key="Visibility" />
+        <local:BoolAndVisibilityInterConverter x:Key="Visibility" />
         <local:DoubleToThickness x:Key="Thickness" />
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
@@ -42,10 +42,12 @@
                                             x:Uid="themeLabel" Text="Window Theme"/>
                                         <StackPanel Orientation="Horizontal">
                                             <RadioButton
-                                                x:Uid="darkButton" Content="Dark"
+                                                GroupName="theme"
+                                                x:Uid="darkButton" x:Name="darkButton" Content="Dark"
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
                                             <RadioButton
-                                                x:Uid="lightButton" Content="Light"
+                                                GroupName="theme"
+                                                x:Uid="lightButton" x:Name="lightButton" Content="Light"
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
@@ -56,7 +58,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox
                                                 x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
-                                                ItemsSource="{x:Bind vm.AppConfig.LanguageList}"
+                                                ItemsSource="{x:Bind vm.LanguageList}"
                                                 SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
                                                 SelectionChanged="LanguageComboBox_SelectionChanged" />
                                             <HyperlinkButton
@@ -71,9 +73,11 @@
                                             x:Uid="movementLabel" Text="Movement"/>
                                         <StackPanel Orientation="Horizontal">
                                             <RadioButton
+                                                GroupName="movement"
                                                 x:Uid="quartzButton" Content="Quartz"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Quartz, Mode=TwoWay}" />
                                             <RadioButton
+                                                GroupName="movement"
                                                 x:Uid="mechanicalButton" Content="Mechanical"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
                                         </StackPanel>
@@ -83,7 +87,14 @@
                         </PivotItem>
                         <!--テンプレート-->
                         <PivotItem x:Uid="templateTitle" Header="Template">
-                            <ListView x:Name="listView1">
+                            <ListView x:Name="templateList" SelectionChanged="TemplateList_SelectionChanged">
+                                <DataTemplate x:DataType="x:String">
+                                    <Grid>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Text="{x:Bind}" FontSize="14" />
+                                    </Grid>
+                                </DataTemplate>
                                 <x:String>Station</x:String>
                                 <x:String>Porto</x:String>
                                 <x:String>Volks</x:String>
@@ -734,7 +745,6 @@
                         FontFamily="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=OneWay}"
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
                     <!--Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />-->
-                    <!--Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}"-->
                     <!-- デイト -->
                     <Border
                         HorizontalAlignment="Left" VerticalAlignment="Top"

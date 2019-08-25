@@ -180,7 +180,7 @@ namespace iBuki
                 var cyAdj = container.Height / 2;
                 double x = cx - cxAdj + Radius * Math.Cos(deg * i / 180.0 * Math.PI);
                 double y = cy - cyAdj + Radius * Math.Sin(deg * i / 180.0 * Math.PI);
-                Debug.WriteLine(deg * i + ": " + cxAdj + "," + cyAdj);
+                //Debug.WriteLine(deg * i + ": " + cxAdj + "," + cyAdj);
 
                 Canvas.SetLeft(container, x);
                 Canvas.SetTop(container, y);

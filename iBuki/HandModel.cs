@@ -32,7 +32,7 @@ namespace iBuki
             get => _type;
             set
             {
-                if (value == _type) return;
+                //if (value == _type) return;
                 _type = value;
                 double margin;
                 switch (_type)
@@ -114,7 +114,6 @@ namespace iBuki
                     default:
                         break;
                 }
-
                 OnPropertyChanged();
             }
         }

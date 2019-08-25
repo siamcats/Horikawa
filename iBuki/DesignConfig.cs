@@ -70,7 +70,7 @@ namespace iBuki
 
         #region Dial
 
-        private bool _isScaleDisplay = true;
+        private bool _isScaleDisplay = false;
         public bool IsScaleDisplay
         {
             get { return _isScaleDisplay; }
@@ -94,7 +94,7 @@ namespace iBuki
             }
         }
 
-        private int _scaleCount = 60;
+        private int _scaleCount = 1;
         public int ScaleCount
         {
             get { return _scaleCount; }
@@ -106,7 +106,7 @@ namespace iBuki
             }
         }
 
-        private double _scaleRadius = 45.3;
+        private double _scaleRadius = 1;
         public double ScaleRadius
         {
             get { return _scaleRadius; }
@@ -118,7 +118,7 @@ namespace iBuki
             }
         }
 
-        private double _scaleLength = 3;
+        private double _scaleLength = 1;
         public double ScaleLength
         {
             get { return _scaleLength; }
@@ -130,7 +130,7 @@ namespace iBuki
             }
         }
 
-        private double _scaleThickness = 0.7;
+        private double _scaleThickness = 1;
         public double ScaleThickness
         {
             get { return _scaleThickness; }
@@ -154,7 +154,7 @@ namespace iBuki
             }
         }
 
-        private int _alterScaleInterval = 60;
+        private int _alterScaleInterval = 1;
         public int AlterScaleInterval
         {
             get { return _alterScaleInterval; }
@@ -166,7 +166,7 @@ namespace iBuki
             }
         }
 
-        private double _alterScaleRadius = 45.3;
+        private double _alterScaleRadius = 1;
         public double AlterScaleRadius
         {
             get { return _alterScaleRadius; }
@@ -178,7 +178,7 @@ namespace iBuki
             }
         }
 
-        private double _alterScaleLength = 3;
+        private double _alterScaleLength = 1;
         public double AlterScaleLength
         {
             get { return _alterScaleLength; }
@@ -190,7 +190,7 @@ namespace iBuki
             }
         }
 
-        private double _alterScaleThickness = 0.7;
+        private double _alterScaleThickness = 1;
         public double AlterScaleThickness
         {
             get { return _alterScaleThickness; }
@@ -202,7 +202,7 @@ namespace iBuki
             }
         }
 
-        private bool _isIndexDisplay = true;
+        private bool _isIndexDisplay = false;
         public bool IsIndexDisplay
         {
             get { return _isIndexDisplay; }
@@ -214,7 +214,7 @@ namespace iBuki
             }
         }
 
-        private IndexType _indexType;
+        private IndexType _indexType = IndexType.Bar;
         public IndexType IndexType
         {
             get { return _indexType; }
@@ -238,7 +238,7 @@ namespace iBuki
             }
         }
 
-        private double _indexRadius = 43;
+        private double _indexRadius = 1;
         public double IndexRadius
         {
             get { return _indexRadius; }
@@ -250,7 +250,7 @@ namespace iBuki
             }
         }
 
-        private double _indexLength = 10;
+        private double _indexLength = 1;
         public double IndexLength
         {
             get { return _indexLength; }
@@ -262,7 +262,7 @@ namespace iBuki
             }
         }
 
-        private double _indexThickness = 2;
+        private double _indexThickness = 1;
         public double IndexThickness
         {
             get { return _indexThickness; }
@@ -286,7 +286,7 @@ namespace iBuki
             }
         }
 
-        private double _indexFontSize = 5;
+        private double _indexFontSize = 1;
         public double IndexFontSize
         {
             get { return _indexFontSize; }
@@ -314,7 +314,7 @@ namespace iBuki
             }
         }
 
-        private bool _isHandsDisplay = true;
+        private bool _isHandsDisplay = false;
         public bool IsHandsDisplay
         {
             get { return _isHandsDisplay; }
@@ -326,7 +326,7 @@ namespace iBuki
             }
         }
         
-        private Color _handsColor = Color.FromArgb(255, 21, 53, 85);
+        private Color _handsColor = Color.FromArgb(255, 255, 255, 255);
         public Color HandsColor
         {
             get { return _handsColor; }
@@ -338,7 +338,7 @@ namespace iBuki
             }
         }
 
-        private bool _isSecondHandDisplay = true;
+        private bool _isSecondHandDisplay = false;
         public bool IsSecondHandDisplay
         {
             get { return _isSecondHandDisplay; }
@@ -350,7 +350,7 @@ namespace iBuki
             }
         }
 
-        private Color _secondHandColor = Color.FromArgb(255, 21, 53, 85);
+        private Color _secondHandColor = Color.FromArgb(255, 255, 255, 255);
         public Color SecondHandColor
         {
             get { return _secondHandColor; }
@@ -366,7 +366,7 @@ namespace iBuki
 
         #region Date Display
 
-        private bool _isDateDisplay = true;
+        private bool _isDateDisplay = false;
         public bool IsDateDisplay
         {
             get { return _isDateDisplay; }
@@ -390,7 +390,7 @@ namespace iBuki
             }
         }
 
-        private double _dateCoordinateX = 50;
+        private double _dateCoordinateX = 1;
         public double DateCoordinateX
         {
             get { return _dateCoordinateX; }
@@ -402,7 +402,7 @@ namespace iBuki
             }
         }
 
-        private double _dateCoordinateY = 50;
+        private double _dateCoordinateY = 1;
         public double DateCoordinateY
         {
             get { return _dateCoordinateY; }
@@ -414,7 +414,7 @@ namespace iBuki
             }
         }
 
-        private double _dateWidth = 100;
+        private double _dateWidth = 1;
         public double DateWidth
         {
             get { return _dateWidth; }
@@ -426,7 +426,7 @@ namespace iBuki
             }
         }
 
-        private double _dateHeight = 50;
+        private double _dateHeight = 1;
         public double DateHeight
         {
             get { return _dateHeight; }
@@ -450,7 +450,7 @@ namespace iBuki
             }
         }
 
-        private double _dateBorderThickness = 2;
+        private double _dateBorderThickness = 1;
         public double DateBorderThickness
         {
             get { return _dateBorderThickness; }
@@ -498,7 +498,7 @@ namespace iBuki
             }
         }
 
-        private double _dateFontSize = 50;
+        private double _dateFontSize = 20;
         public double DateFontSize
         {
             get { return _dateFontSize; }
