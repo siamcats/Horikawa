@@ -13,6 +13,10 @@ using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Media;
 using Windows.ApplicationModel;
+using System.Diagnostics;
+using Windows.Storage;
+using Windows.Graphics.Imaging;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace iBuki
 {
@@ -51,6 +55,9 @@ namespace iBuki
             }
         }
 
+        /// <summary>
+        /// Settingsオブジェクトをアプリ設定に反映
+        /// </summary>
         public void ImportSettings(Settings settings)
         {
             // background
@@ -125,6 +132,9 @@ namespace iBuki
             }
         }
 
+        /// <summary>
+        /// アプリ設定をSettingsオブジェクトへ書き出し
+        /// </summary>
         public Settings ExportSettings(string name, string author, string version)
         {
             var settings = new Settings();
@@ -397,8 +407,16 @@ namespace iBuki
 
         private ImageSource ConvertImage(string path)
         {
-            var bitmap = new BitmapImage(new Uri(path));
-            return bitmap;
+            try
+            {
+                var bitmap = new BitmapImage(new Uri(path));
+                return bitmap;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return null;
         }
 
         private string GetAppVersion()
@@ -406,5 +424,13 @@ namespace iBuki
             var version = Package.Current.Id.Version;
             return version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
         }
+
+        
+        private async void SaveImage()
+        {
+            var storage = ApplicationData.Current.LocalFolder;
+            var file = await storage.CreateFileAsync("sample.txt", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(file, "Hello World!!");
+    }
     }
 }

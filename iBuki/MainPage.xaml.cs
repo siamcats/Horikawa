@@ -205,10 +205,10 @@ namespace iBuki
             //var angle = 6 * ss;
             //var angle2 = Convert.ToDouble(fff)/1000*6;
             //Debug.WriteLine(angle + angle2);
-            var angle = 6 * ss;
-            //var angle = vm.AppConfig.Movement == Movement.Quartz
-            //    ? 6 * ss
-            //    : 6 * ss + fff / 1000 * 6;
+            //var angle = 6 * ss;
+            var angle = vm.AppConfig.Movement == Movement.Quartz
+                ? 6 * ss
+                : 6 * ss + fff / 1000 * 6;
             return decimal.ToDouble(angle);
         }
 
