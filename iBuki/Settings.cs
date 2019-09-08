@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace iBuki
 {
@@ -25,9 +26,6 @@ namespace iBuki
 
         [DataMember]
         public bool BackgroundImageDisplay { get; set; }
-
-        [DataMember]
-        public string BackgroundImage { get; set; }
 
         [DataMember]
         public bool ScaleDisplay { get; set; }

@@ -70,7 +70,7 @@ namespace iBuki
                                 CenterY = Height - ((Height + margin) - 250);
                                 Pivot = 12;
                                 break;
-                        }                        
+                        }
                         break;
                     case HandsType.Leaf:
                         switch (_clock)
@@ -108,6 +108,39 @@ namespace iBuki
                         }
                         break;
                     case HandsType.Dolphin:
+                        switch (_clock)
+                        {
+                            case Clock.Hour:
+                                margin =110;
+                                Margin = new Thickness(0, margin, 0, 0);
+                                Width = 25;
+                                Height = 180;
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M300,0 L280,240 300,300 320,240");
+                                CenterX = Width / 2;
+                                CenterY = Height - ((Height + margin) - 250);
+                                Pivot = 0;
+                                break;
+                            case Clock.Minute:
+                                margin = 40;
+                                Margin = new Thickness(0, margin, 0, 0);
+                                Width = 25;
+                                Height = 250;
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M300,0 L280,260 300,300 320,260");
+                                CenterX = Width / 2;
+                                CenterY = Height - ((Height + margin) - 250);
+                                Pivot = 0;
+                                break;
+                            case Clock.Second:
+                                margin = 70;
+                                Margin = new Thickness(0, margin, 0, 0);
+                                Width = 6;
+                                Height = 230;
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5");
+                                CenterX = Width / 2;
+                                CenterY = Height - ((Height + margin) - 250);
+                                Pivot = 12;
+                                break;
+                        }
                         break;
                     case HandsType.Breguet:
                         break;

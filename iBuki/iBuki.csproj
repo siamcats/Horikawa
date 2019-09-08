@@ -125,6 +125,7 @@
     <Compile Include="CircleScale.xaml.cs">
       <DependentUpon>CircleScale.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Const.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="DesignConfig.cs" />
     <Compile Include="Enums.cs" />

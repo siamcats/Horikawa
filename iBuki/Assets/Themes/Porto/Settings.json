@@ -5,7 +5,7 @@
   "TargetAppVersion": "0.01",
   "BackgroundColor": "#FF141414",
   "BackgroundImageDisplay": true,
-  "BackgroundImage": "ms-appx:///Assets/Themes/Porto/Background.png",
+  "BackgroundImageFile": "ms-appx:///Assets/Themes/Porto/Background.png",
   "ScaleDisplay": true,
   "ScaleColor": "#FF153555",
   "ScaleCount": 240,

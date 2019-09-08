@@ -24,6 +24,9 @@ using Windows.UI.Xaml.Markup;
 using Windows.Storage.Pickers;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Windows.Storage.Streams;
+using Windows.Graphics.Imaging;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -100,13 +103,12 @@ namespace iBuki
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("CurrentSettings"))
             {
                 var json = (string)ApplicationData.Current.LocalSettings.Values["CurrentSettings"];
-                vm.ImportSettings(Deserialize(json));
-                Debug.WriteLine("起動時復元 - " + json);
+                vm.ImportSettingsAsync(Deserialize(json));
             }
             else
             {
                 // 保存された設定がなければAssetsのデフォルトテーマを使用
-                ImportAssetsSetting("Default");
+                ImportAssetsTheme("Default");
                 Debug.WriteLine("起動時初期値");
             }
         }
@@ -119,10 +121,10 @@ namespace iBuki
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("CurrentSettings"))
             {
                 var json = (string)ApplicationData.Current.LocalSettings.Values["CurrentSettings"];
-                vm.ImportSettings(Deserialize(json));
+                vm.ImportSettingsAsync(Deserialize(json));
             }
             // 設定がなければAssetsのデフォルトテーマを使用
-            ImportAssetsSetting("Default");
+            ImportAssetsTheme("Default");
         }
 
         /// <summary>
@@ -130,7 +132,8 @@ namespace iBuki
         /// </summary>
         private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            var json = Serialize(vm.ExportSettings("local","local","1.0.0"));
+            var settings = vm.ExportSettings("local", "local", "1.0.0");
+            var json = Serialize(settings);
             Debug.WriteLine("終了時保存 - " + json);
             ApplicationData.Current.LocalSettings.Values["CurrentSettings"] = json;
         }
@@ -223,7 +226,7 @@ namespace iBuki
         /// </summary>
         private async void DialImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var filePicker = new Windows.Storage.Pickers.FileOpenPicker();
+            var filePicker = new FileOpenPicker();
 
             filePicker.FileTypeFilter.Add(".jpg");
             filePicker.FileTypeFilter.Add(".png");
@@ -238,6 +241,7 @@ namespace iBuki
                 {
                     await bitmap.SetSourceAsync(stream);
                 }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
                 vm.DesignConfig.BackgroundImage = bitmap;
             }
         }
@@ -257,32 +261,30 @@ namespace iBuki
             }
         }
 
-        private async void SaveSetting()
-        {
-            StorageFile currentSetting = await _storageFolder.CreateFileAsync("CurrentSetting.json", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(currentSetting, "");
-        }
-
         /// <summary>
-        /// Assetからの設定ファイル読み込み
+        /// Assetからの設定ファイルコピー
         /// </summary>
         /// <param name="name"></param>
-        private async void ImportAssetsSetting(string name)
+        private async void ImportAssetsTheme(string name)
         {
-            var uri = "ms-appx:///Assets/Themes/" + name + "/Settings.json";
-
+            string json = "";
             try
             {
-                // Assetsからのファイル取り出し
-                var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
-                string json = await FileIO.ReadTextAsync(file);
-                // 設定反映
-                vm.ImportSettings(Deserialize(json));
+                // 設定ファイル
+                var settingFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS));
+                json = await FileIO.ReadTextAsync(settingFile);
+                // 画像ファイル
+                if (vm.DesignConfig.IsBackgroundImageDisplay)
+                {
+                    var bgimageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND));
+                    var bgimageFileCopied = await bgimageFile.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
+            vm.ImportSettingsAsync(Deserialize(json));
         }
 
         /// <summary>
@@ -365,7 +367,7 @@ namespace iBuki
         private void TemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var item = templateList.SelectedItem as string;
-            ImportAssetsSetting(item);
+            ImportAssetsTheme(item);
         }
     }
 }

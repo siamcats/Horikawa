@@ -5,7 +5,6 @@
   "TargetAppVersion": "0.01",
   "BackgroundColor": "#FFFFFFFF",
   "BackgroundImageDisplay": false,
-  "BackgroundImage": null,
   "ScaleDisplay": true,
   "ScaleColor": "#FF111111",
   "ScaleCount": 60,

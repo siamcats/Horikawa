@@ -58,14 +58,20 @@ namespace iBuki
         /// <summary>
         /// Settingsオブジェクトをアプリ設定に反映
         /// </summary>
-        public void ImportSettings(Settings settings)
+        public async void ImportSettingsAsync(Settings settings)
         {
             // background
             DesignConfig.BackgroundColor = ConvertHexColor(settings.BackgroundColor);
             DesignConfig.IsBackgroundImageDisplay = settings.BackgroundImageDisplay;
             if (DesignConfig.IsBackgroundImageDisplay)
             {
-                DesignConfig.BackgroundImage = ConvertImage(settings.BackgroundImage);
+                var bitmap = new BitmapImage();
+                var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_LOCAL + Const.FILE_BACKGROUND));
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                DesignConfig.BackgroundImage = bitmap;
             }
             // scale
             IsScaleDisplay = settings.ScaleDisplay;
@@ -200,8 +206,8 @@ namespace iBuki
             if (DesignConfig.IsDateDisplay)
             {
                 settings.DateBackgroundColor = DesignConfig.DateBackgroundColor.ToString();
-                DateCoordinateX = DesignConfig.DateCoordinateX;
-                DateCoordinateY = DesignConfig.DateCoordinateY;
+                settings.DateCoordinateX = DesignConfig.DateCoordinateX;
+                settings.DateCoordinateY = DesignConfig.DateCoordinateY;
                 settings.DateWidth = DesignConfig.DateWidth;
                 settings.DateHeight = DesignConfig.DateHeight;
                 settings.DateBorderColor = DesignConfig.DateBorderColor.ToString();
@@ -405,7 +411,7 @@ namespace iBuki
         }
 
 
-        private ImageSource ConvertImage(string path)
+        private BitmapSource ConvertImage(string path)
         {
             try
             {
@@ -425,12 +431,5 @@ namespace iBuki
             return version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
         }
 
-        
-        private async void SaveImage()
-        {
-            var storage = ApplicationData.Current.LocalFolder;
-            var file = await storage.CreateFileAsync("sample.txt", CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(file, "Hello World!!");
-    }
     }
 }

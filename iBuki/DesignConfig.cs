@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace iBuki
 {
@@ -54,8 +55,8 @@ namespace iBuki
             }
         }
 
-        private ImageSource _backgroundImage;
-        public ImageSource BackgroundImage
+        private BitmapSource _backgroundImage;
+        public BitmapSource BackgroundImage
         {
             get { return _backgroundImage; }
             set
