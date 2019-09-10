@@ -17,6 +17,7 @@ using System.Diagnostics;
 using Windows.Storage;
 using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.IO;
 
 namespace iBuki
 {
@@ -65,13 +66,20 @@ namespace iBuki
             DesignConfig.IsBackgroundImageDisplay = settings.BackgroundImageDisplay;
             if (DesignConfig.IsBackgroundImageDisplay)
             {
-                var bitmap = new BitmapImage();
-                var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_LOCAL + Const.FILE_BACKGROUND));
-                using (var stream = await file.OpenReadAsync())
+                try
                 {
-                    await bitmap.SetSourceAsync(stream);
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_LOCAL + Const.FILE_BACKGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.BackgroundImage = bitmap;
                 }
-                DesignConfig.BackgroundImage = bitmap;
+                catch (FileNotFoundException e)
+                {
+                    Debug.WriteLine(Const.URI_LOCAL + Const.FILE_BACKGROUND + " Not Found");
+                }
             }
             // scale
             IsScaleDisplay = settings.ScaleDisplay;

@@ -268,23 +268,34 @@ namespace iBuki
         private async void ImportAssetsTheme(string name)
         {
             string json = "";
+
+            // 設定ファイル
             try
             {
-                // 設定ファイル
                 var settingFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS));
                 json = await FileIO.ReadTextAsync(settingFile);
-                // 画像ファイル
-                if (vm.DesignConfig.IsBackgroundImageDisplay)
+            }
+            catch (FileNotFoundException e)
+            {
+                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS + " Not Found");
+            }
+            var settings = Deserialize(json);
+
+            // 画像ファイル
+            try
+            {
+                if (settings.BackgroundImageDisplay)
                 {
                     var bgimageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND));
                     var bgimageFileCopied = await bgimageFile.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
                 }
             }
-            catch (Exception e)
+            catch (FileNotFoundException e)
             {
-                Debug.WriteLine(e.Message);
+                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND + " Not Found");
             }
-            vm.ImportSettingsAsync(Deserialize(json));
+
+            vm.ImportSettingsAsync(settings);
         }
 
         /// <summary>
