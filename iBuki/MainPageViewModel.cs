@@ -418,21 +418,6 @@ namespace iBuki
             return Color.FromArgb(a, r, g, b);
         }
 
-
-        private BitmapSource ConvertImage(string path)
-        {
-            try
-            {
-                var bitmap = new BitmapImage(new Uri(path));
-                return bitmap;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            return null;
-        }
-
         private string GetAppVersion()
         {
             var version = Package.Current.Id.Version;

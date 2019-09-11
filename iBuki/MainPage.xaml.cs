@@ -38,10 +38,7 @@ namespace iBuki
     public sealed partial class MainPage : Page
     {
         private MainPageViewModel vm = new MainPageViewModel();
-
-        private StorageFolder _storageFolder = ApplicationData.Current.LocalFolder;
         private DispatcherTimer _timer;
-
 
         /// <summary>
         /// コンストラクタ
@@ -57,7 +54,6 @@ namespace iBuki
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             var view = ApplicationView.GetForCurrentView();
             view.SetPreferredMinSize(size);
-
         }
 
         /// <summary>
@@ -66,49 +62,33 @@ namespace iBuki
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+            SetTitleBar();
 
-            // タイトルバーの領域までアプリの表示を拡張する
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-
-            // ［×］ボタンなどの背景色を設定する
-            appTitleBar.ButtonBackgroundColor = Colors.Transparent;
-            appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            appTitleBar.ButtonForegroundColor = Colors.White;
-
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
-            Window.Current.SetTitleBar(moveButton);
-            Window.Current.Activated += Current_Activated;
-
-            // Suspending・Resumingイベントハンドラ
-            Application.Current.Suspending += OnSuspending;
-            Application.Current.Resuming += OnResuming;
-
-            // タイマーイベントの間隔を指定します。。
+            // イベントハンドラの設定
+            Application.Current.Suspending += OnSuspending; //アプリ終了イベント
+            Application.Current.Resuming += OnResuming; //アプリ復帰イベント
+            /// タイマーイベント
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(0.125);
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
-
-            // デフォルトのクリップ状態を反映
+            // 設定の読み込み・反映
+            /// クリップ状態
             if (vm.AppConfig.IsTopMost)
             { StartOverlay(); }
             else
             { StopOverlay(); }
-
-            // 前回設定を読み込み反映
-            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("CurrentSettings"))
+            /// デザイン
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Const.THEME_CURRENT))
             {
-                var json = (string)ApplicationData.Current.LocalSettings.Values["CurrentSettings"];
+                var json = (string)ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT];
                 vm.ImportSettingsAsync(Deserialize(json));
             }
             else
             {
                 // 保存された設定がなければAssetsのデフォルトテーマを使用
-                ImportAssetsTheme("Default");
+                ImportAssetsTheme(Const.THEME_DEFAULT);
                 Debug.WriteLine("起動時初期値");
             }
         }
@@ -118,13 +98,13 @@ namespace iBuki
         /// </summary>
         private void OnResuming(object sender, object e)
         {
-            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("CurrentSettings"))
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Const.THEME_CURRENT))
             {
-                var json = (string)ApplicationData.Current.LocalSettings.Values["CurrentSettings"];
+                var json = (string)ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT];
                 vm.ImportSettingsAsync(Deserialize(json));
             }
             // 設定がなければAssetsのデフォルトテーマを使用
-            ImportAssetsTheme("Default");
+            ImportAssetsTheme(Const.THEME_DEFAULT);
         }
 
         /// <summary>
@@ -132,10 +112,10 @@ namespace iBuki
         /// </summary>
         private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            var settings = vm.ExportSettings("local", "local", "1.0.0");
+            var settings = vm.ExportSettings(Const.THEME_CURRENT, Const.THEME_CURRENT, Const.APP_VERSION);
             var json = Serialize(settings);
             Debug.WriteLine("終了時保存 - " + json);
-            ApplicationData.Current.LocalSettings.Values["CurrentSettings"] = json;
+            ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT] = json;
         }
 
         /// <summary>
@@ -379,6 +359,29 @@ namespace iBuki
         {
             var item = templateList.SelectedItem as string;
             ImportAssetsTheme(item);
+        }
+
+        /// <summary>
+        ///  タイトルバーの設定を行う
+        /// </summary>
+        private void SetTitleBar()
+        {
+            // タイトルバーの領域を指定する
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+            // タイトルバーの領域までアプリの表示を拡張する
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            // ［×］ボタンなどの背景色を設定する
+            appTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonForegroundColor = Colors.White;
+
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+
+            Window.Current.SetTitleBar(moveButton);
+            Window.Current.Activated += Current_Activated;
         }
     }
 }
