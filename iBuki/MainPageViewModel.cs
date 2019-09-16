@@ -41,9 +41,7 @@ namespace iBuki
 
             }
         }
-
-        public List<string> LanguageList = new List<string> { "en-US", "jp-JP" };
-
+        
         private DesignConfig _designConfig = new DesignConfig();
         public DesignConfig DesignConfig
         {
@@ -123,6 +121,8 @@ namespace iBuki
             if (DesignConfig.IsHandsDisplay)
             {
                 DesignConfig.HandsColor = ConvertHexColor(settings.HandsColor);
+                DesignConfig.HandsStrokeColor = ConvertHexColor(settings.HandsStrokeColor);
+                DesignConfig.HandsStrokeThickness = settings.HandsStrokeThickness;
             }
             DesignConfig.IsSecondHandDisplay = settings.SecondHandDisplay;
             if (DesignConfig.IsSecondHandDisplay)
@@ -203,6 +203,8 @@ namespace iBuki
             if (DesignConfig.IsHandsDisplay)
             {
                 settings.HandsColor =DesignConfig.HandsColor.ToString();
+                settings.HandsStrokeColor = DesignConfig.HandsStrokeColor.ToString();
+                settings.HandsStrokeThickness = DesignConfig.HandsStrokeThickness;
             }
             settings.SecondHandDisplay = DesignConfig.IsSecondHandDisplay;
             if (DesignConfig.IsSecondHandDisplay)
@@ -227,6 +229,16 @@ namespace iBuki
 
             return settings;
         }
+
+        #region General
+
+        public List<string> LanguageList = Const.LANGUAGE_LIST;
+
+        public string AppVersion = Const.GetAppVersion();
+
+        public string AppName = Const.GetAppName();
+
+        #endregion
 
         #region Dial
 
@@ -410,12 +422,19 @@ namespace iBuki
 
         private Color ConvertHexColor(string hexCode)
         {
-            hexCode = hexCode.Replace("#", string.Empty);
-            byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
-            byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
-            byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
-            byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
-            return Color.FromArgb(a, r, g, b);
+            try
+            {
+                hexCode = hexCode.Replace("#", string.Empty);
+                byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
+                byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
+                byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
+                byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
+                return Color.FromArgb(a, r, g, b);
+            }
+            catch (Exception)
+            {
+                return Color.FromArgb(255, 255, 255, 255);
+            }
         }
 
         private string GetAppVersion()

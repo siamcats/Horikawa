@@ -339,6 +339,30 @@ namespace iBuki
             }
         }
 
+        private Color _handsStrokeColor = Color.FromArgb(255, 255, 255, 255);
+        public Color HandsStrokeColor
+        {
+            get { return _handsStrokeColor; }
+            set
+            {
+                if (value == _handsStrokeColor) return;
+                _handsStrokeColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _handsStrokeThickness = 0;
+        public double HandsStrokeThickness
+        {
+            get { return _handsStrokeThickness; }
+            set
+            {
+                if (value == _handsStrokeThickness) return;
+                _handsStrokeThickness = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _isSecondHandDisplay = false;
         public bool IsSecondHandDisplay
         {

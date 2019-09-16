@@ -5,6 +5,7 @@
     xmlns:local="using:iBuki"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged"
     HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -40,14 +41,18 @@
                                     <StackPanel>
                                         <TextBlock
                                             x:Uid="themeLabel" Text="Window Theme"/>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical">
                                             <RadioButton
                                                 GroupName="theme"
-                                                x:Uid="darkButton" x:Name="darkButton" Content="Dark"
+                                                x:Uid="defaultButton" Content="Default"
+                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Default, Mode=TwoWay}"/>
+                                            <RadioButton
+                                                GroupName="theme"
+                                                x:Uid="darkButton" Content="Dark"
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
                                             <RadioButton
                                                 GroupName="theme"
-                                                x:Uid="lightButton" x:Name="lightButton" Content="Light"
+                                                x:Uid="lightButton" Content="Light"
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
@@ -145,7 +150,9 @@
                         <PivotItem x:Uid="clockFaceTitle" Header="Clock Face">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock x:Uid="scaleLabel" Text="Scale" FontSize="20" />
+                                    <TextBlock
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="scaleLabel" Text="Scale"/>
                                     <!--目盛り-->
                                     <ToggleSwitch
                                         x:Name="scaleDisplayToggle" 
@@ -310,7 +317,9 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--インデックス-->
-                                    <TextBlock x:Uid="indexLabel" Text="Index" FontSize="20" />
+                                    <TextBlock
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="indexLabel" Text="Index"/>
                                     <ToggleSwitch
                                         x:Name="indexDisplayToggle" 
                                         OffContent="Off" OnContent="On"
@@ -403,7 +412,7 @@
                                         <ComboBox
                                             Width="250"
                                             IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
-                                            ItemsSource="{x:Bind vm.FontList}"
+                                            ItemsSource="{x:Bind vm.FontList,Mode=OneTime}"
                                             SelectedValue ="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントのサイズ-->
@@ -439,7 +448,9 @@
                                             SelectedIndex="{x:Bind vm.HandsType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
                                     </StackPanel>
                                     <!--時針分針-->
-                                    <TextBlock x:Uid="handsLabel" Text="Hour / Minute Hands" FontSize="20" />
+                                    <TextBlock
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="handsLabel" Text="Hour / Minute Hands"/>
                                     <ToggleSwitch
                                         x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
                                         IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
@@ -467,7 +478,9 @@
                                         </Button>
                                     </StackPanel>
                                     <!--秒針-->
-                                    <TextBlock x:Uid="secondHandLabel" Text="Second Hand" FontSize="20" />
+                                    <TextBlock
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="secondHandLabel" Text="Second Hand"/>
                                     <ToggleSwitch
                                         x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
                                         IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
@@ -493,6 +506,48 @@
                                                 </Flyout>
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
+                                    </StackPanel>
+                                    <!--縁取り-->
+                                    <TextBlock
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="borderLabel" Text="Boder"/>
+                                    <!--境界線の色-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                            x:Uid="colorLabel" Text="Color"/>
+                                        <Button
+                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
+                                            IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
+                                            Background="{x:Bind vm.DesignConfig.HandsStrokeColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorButton_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                            x:Name="handsStrokeColorPicker"
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            Color="{x:Bind vm.DesignConfig.HandsStrokeColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Button>
+                                    </StackPanel>
+                                    <!--境界線の太さ-->
+                                    <StackPanel Margin="0">
+                                        <TextBlock
+                                                x:Uid="thicknessLabel" Text="Thickness"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                x:Name="HandsBorderThicknessSlider"
+                                                Minimum="0" Maximum="10" Width="230"
+                                                TickPlacement="Outside" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Value="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind HandsBorderThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -592,7 +647,9 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--境界線-->
-                                    <TextBlock x:Uid="borderLabel" Text="Border" FontSize="20" />
+                                    <TextBlock
+                                         Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="borderLabel" Text="Border"/>
                                     <!--境界線の色-->
                                     <StackPanel Margin="0">
                                         <TextBlock
@@ -633,7 +690,9 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--フォント-->
-                                    <TextBlock x:Uid="fontLabel" Text="Font" FontSize="20" />
+                                    <TextBlock
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        x:Uid="fontLabel" Text="Font"/>
                                     <!--フォントの色-->
                                     <StackPanel Margin="0">
                                         <TextBlock
@@ -692,6 +751,25 @@
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind dateFontSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </PivotItem>
+                        <!--About-->
+                        <PivotItem x:Uid="aboutTitle" Header="About">
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <StackPanel>
+                                        <TextBlock
+                                                Style="{StaticResource SubtitleTextBlockStyle}"
+                                                x:Uid="appVersion" Text="App Version"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind vm.AppName,Mode=OneTime}"/>
+                                            <TextBlock Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
+                                        </StackPanel>
+                                        <TextBlock TextWrapping="WrapWholeWords">
+                                            <Span xml:space="preserve">siamcats - <Hyperlink NavigateUri="https://twitter.com/siamcats">twitter</Hyperlink></Span>
+                                        </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -770,7 +848,9 @@
                         Height="{x:Bind vm.HourHand.Height,Mode=OneWay}"
                         Data="{x:Bind vm.HourHand.Data,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                        Fill="{x:Bind vm.DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        Fill="{x:Bind vm.DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                        StrokeThickness="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=OneWay}"
+                        Stroke="{x:Bind vm.DesignConfig.HandsStrokeColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform
                                 x:Name="hourHandAngle"
@@ -778,6 +858,12 @@
                                 CenterY="{x:Bind vm.HourHand.CenterY,Mode=OneWay}"/>
                         </Path.RenderTransform>
                     </Path>
+                    <Ellipse
+                        Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Width="{x:Bind vm.HourHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.HourHand.Pivot,Mode=OneWay}"
+                        Fill="{x:Bind HourHand.Fill,Mode=OneWay}"
+                        StrokeThickness="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=OneWay}"
+                        Stroke="{x:Bind vm.DesignConfig.HandsStrokeColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <!--分針-->
                     <Path
                         x:Name="minuteHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
@@ -786,7 +872,9 @@
                         Height="{x:Bind vm.MinuteHand.Height,Mode=OneWay}"
                         Data="{x:Bind vm.MinuteHand.Data,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                        Fill="{x:Bind vm.DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        Fill="{x:Bind vm.DesignConfig.HandsColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                        StrokeThickness="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=OneWay}"
+                        Stroke="{x:Bind vm.DesignConfig.HandsStrokeColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="minuteHandAngle"
                                 CenterX="{x:Bind vm.MinuteHand.CenterX,Mode=OneWay}"
@@ -796,22 +884,24 @@
                     <Ellipse
                         Visibility="{x:Bind vm.DesignConfig.IsHandsDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                         Width="{x:Bind vm.MinuteHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.MinuteHand.Pivot,Mode=OneWay}"
-                        Fill="{x:Bind HourHand.Fill,Mode=OneWay}"/>
+                        Fill="{x:Bind HourHand.Fill,Mode=OneWay}"
+                        StrokeThickness="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=OneWay}"
+                        Stroke="{x:Bind vm.DesignConfig.HandsStrokeColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <!--秒針-->
-                    <Path 
-                        x:Name="secondHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
-                        Margin="{x:Bind vm.SecondHand.Margin,Mode=OneWay}"
-                        Width="{x:Bind vm.SecondHand.Width,Mode=OneWay}"
-                        Height="{x:Bind vm.SecondHand.Height,Mode=OneWay}"
-                        Data="{x:Bind vm.SecondHand.Data,Mode=OneWay}"
-                        Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                        Fill="{x:Bind vm.DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
-                        <Path.RenderTransform>
-                            <RotateTransform x:Name="secondHandAngle"
-                                CenterX="{x:Bind vm.SecondHand.CenterX,Mode=OneWay}"
-                                CenterY="{x:Bind vm.SecondHand.CenterY,Mode=OneWay}"/>
-                        </Path.RenderTransform>
-                    </Path>
+                        <Path 
+                            x:Name="secondHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
+                            Margin="{x:Bind vm.SecondHand.Margin,Mode=OneWay}"
+                            Width="{x:Bind vm.SecondHand.Width,Mode=OneWay}"
+                            Height="{x:Bind vm.SecondHand.Height,Mode=OneWay}"
+                            Data="{x:Bind vm.SecondHand.Data,Mode=OneWay}"
+                            Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                            Fill="{x:Bind vm.DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                            <Path.RenderTransform>
+                                <RotateTransform x:Name="secondHandAngle"
+                                    CenterX="{x:Bind vm.SecondHand.CenterX,Mode=OneWay}"
+                                    CenterY="{x:Bind vm.SecondHand.CenterY,Mode=OneWay}"/>
+                            </Path.RenderTransform>
+                        </Path>
                     <Ellipse
                         Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                         Width="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}"

@@ -133,7 +133,7 @@
     <value>バーインデックス</value>
   </data>
   <data name="borderLabel.Text" xml:space="preserve">
-    <value>境界線</value>
+    <value>縁取り</value>
   </data>
   <data name="breguetHandEnum" xml:space="preserve">
     <value>ブレゲ針</value>
@@ -161,6 +161,9 @@
   </data>
   <data name="dayDateTitle.Header" xml:space="preserve">
     <value>デイト</value>
+  </data>
+  <data name="defaultButton.Content" xml:space="preserve">
+    <value>Windowsデフォルト</value>
   </data>
   <data name="dolphinHandEnum" xml:space="preserve">
     <value>ドルフィン針</value>

@@ -94,6 +94,10 @@ namespace iBuki
         public string HandsColor { get; set; }
 
         [DataMember]
+        public string HandsStrokeColor { get; set; }
+        [DataMember]
+        public double HandsStrokeThickness { get; set; }
+        [DataMember]
         public bool SecondHandDisplay { get; set; }
 
         [DataMember]

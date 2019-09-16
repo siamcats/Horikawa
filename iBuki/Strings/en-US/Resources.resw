@@ -162,6 +162,9 @@
   <data name="dayDateTitle.Header" xml:space="preserve">
     <value>Day Date</value>
   </data>
+  <data name="defaultButton.Content" xml:space="preserve">
+    <value>Default</value>
+  </data>
   <data name="dolphinHandEnum" xml:space="preserve">
     <value>Dolphin</value>
   </data>

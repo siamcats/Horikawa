@@ -112,7 +112,7 @@ namespace iBuki
         /// </summary>
         private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            var settings = vm.ExportSettings(Const.THEME_CURRENT, Const.THEME_CURRENT, Const.APP_VERSION);
+            var settings = vm.ExportSettings(Const.THEME_CURRENT, Const.THEME_CURRENT, Const.GetAppVersion());
             var json = Serialize(settings);
             Debug.WriteLine("終了時保存 - " + json);
             ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT] = json;
@@ -153,7 +153,8 @@ namespace iBuki
         /// </summary>
         private void Timer_Tick(object sender, object e)
         {
-            DateTime localDate = DateTime.Now;
+            var localDate = DateTime.Now;
+            //var localDate = DateTime.Parse("2019/12/12 10:08:42");
             //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
