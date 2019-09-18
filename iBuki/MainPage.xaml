@@ -17,12 +17,13 @@
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
         <local:DecimalTruncateConveter x:Key="Truncate" />
-        <Style x:Key="TitleBlockStyle" TargetType="TextBlock">
+        <Style x:Key="SettingTitleTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="0,15,0,5"/>
         </Style>
         <Style x:Key="SettingPanelStyle" TargetType="StackPanel">
             <Setter Property="Width" Value="270"/>
-            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="Margin" Value="0,1,0,2"/>
             <Setter Property="Padding" Value="10,5,5,5"/>
             <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -39,6 +40,10 @@
             <Setter Property="Width" Value="150"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderThemeBrush}"/>
+        </Style>
+        <Style x:Key="SliderStyle" TargetType="Slider">
+            <Setter Property="Width" Value="210"/>
+            <Setter Property="TickPlacement" Value="Outside"/>
         </Style>
     </Page.Resources>
 
@@ -60,6 +65,23 @@
                         <PivotItem x:Uid="generalTitle" Header="General">
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--言語-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <TextBlock
+                                            x:Uid="languageLabel" Text="Language" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox
+                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
+                                                ItemsSource="{x:Bind vm.LanguageList}"
+                                                SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
+                                                SelectionChanged="LanguageComboBox_SelectionChanged" />
+                                            <HyperlinkButton
+                                                x:Uid="restartButton" Content="Restart App to Apply"
+                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"
+                                                Tapped="HyperlinkButton_Tapped"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                     <!--ウィンドウテーマ-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
@@ -80,29 +102,12 @@
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
-                                    <!--言語-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <TextBlock
-                                            x:Uid="languageLabel" Text="Language" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <ComboBox
-                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
-                                                ItemsSource="{x:Bind vm.LanguageList}"
-                                                SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
-                                                SelectionChanged="LanguageComboBox_SelectionChanged" />
-                                            <HyperlinkButton
-                                                x:Uid="restartButton" Content="Restart App to Apply"
-                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"
-                                                Tapped="HyperlinkButton_Tapped"/>
-                                        </StackPanel>
-                                    </StackPanel>
                                     <!--ムーブメント-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="movementLabel" Text="Movement"/>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical">
                                             <RadioButton
                                                 GroupName="movement"
                                                 x:Uid="quartzButton" Content="Quartz"
@@ -111,6 +116,10 @@
                                                 GroupName="movement"
                                                 x:Uid="mechanicalButton" Content="Mechanical"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
+                                            <RadioButton
+                                                GroupName="movement"
+                                                x:Uid="mechanicalButton" Content="Chronograph "
+                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Chronograph , Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -177,7 +186,7 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock
-                                        Style="{StaticResource TitleTextBlockStyle}"
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="scaleLabel" Text="Scale"/>
                                     <!--目盛り-->
                                     <StackPanel
@@ -194,7 +203,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.ScaleColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -218,9 +226,9 @@
                                             x:Uid="countLabel" Text="Count" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleCountSlider"
-                                                Minimum="1" Maximum="240" Width="230"
-                                                TickPlacement="Outside" TickFrequency="12" SnapsTo="Ticks"
+                                                Minimum="1" Maximum="240" TickFrequency="12" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleCount,Mode=TwoWay}" />
                                             <TextBlock
@@ -235,9 +243,9 @@
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleRadiusSlider"
-                                                Minimum="30" Maximum="50" Width="230"
-                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                Minimum="30" Maximum="50" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleRadius,Mode=TwoWay}" />
                                             <TextBlock
@@ -252,9 +260,9 @@
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleLengthSlider"
-                                                Minimum="0.1" Maximum="4" Width="230"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.1" Maximum="4" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleLength,Mode=TwoWay}" />
                                             <TextBlock
@@ -269,9 +277,9 @@
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleThicknessSlider"
-                                                Minimum="0.1" Maximum="4" Width="230"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.1" Maximum="4" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleThickness,Mode=TwoWay}" />
                                             <TextBlock
@@ -280,10 +288,13 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛り-->
+                                    <TextBlock
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
+                                        x:Uid="alterScaleLabel" Text="Alter Scale" />
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}" >
                                         <ToggleSwitch
-                                            x:Uid="alterScaleToggle" Header="Alter Scale" 
+                                            x:Uid="alterScaleToggle" 
                                             x:Name="alterScaleDisplayToggle" 
                                             OffContent="Off" OnContent="On"
                                             IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
@@ -296,9 +307,10 @@
                                             x:Uid="intervalLabel" Text="Interval" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="alterScaleIntervalSlider"
-                                                Minimum="0" Maximum="{x:Bind vm.DesignConfig.ScaleCount,Mode=OneWay}" Width="230"
-                                                TickPlacement="none" TickFrequency="1" SnapsTo="Ticks"
+                                                Minimum="0" Maximum="{x:Bind vm.DesignConfig.ScaleCount,Mode=OneWay}"
+                                                TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleInterval,Mode=TwoWay}" />
                                             <TextBlock
@@ -313,9 +325,9 @@
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="alterScaleRadiusSlider"
-                                                Minimum="30" Maximum="50" Width="230"
-                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                Minimum="30" Maximum="50" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleRadius,Mode=TwoWay}" />
                                             <TextBlock
@@ -330,9 +342,9 @@
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="alterScaleLengthSlider"
-                                                Minimum="0.1" Maximum="4" Width="230"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.1" Maximum="4" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleLength,Mode=TwoWay}" />
                                             <TextBlock
@@ -347,9 +359,9 @@
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="alterScaleThicknessSlider"
-                                                Minimum="0.1" Maximum="3" Width="230"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.1" Maximum="3" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleThickness,Mode=TwoWay}" />
                                             <TextBlock
@@ -359,7 +371,7 @@
                                     </StackPanel>
                                     <!--インデックス-->
                                     <TextBlock
-                                        Style="{StaticResource TitleTextBlockStyle}"
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="indexLabel" Text="Index"/>
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}" >
@@ -374,7 +386,8 @@
                                         <TextBlock
                                             x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
-                                            x:Name="indexTypeComboBox" Width="150"
+                                            Style="{StaticResource ComboBoxStyle}"
+                                            x:Name="indexTypeComboBox"
                                             IsEnabled="{x:Bind indexDisplayToggle.IsOn, Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.IndexTypeList}"
                                             SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
@@ -410,9 +423,9 @@
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="indexRadiusSlider"
-                                                Minimum="20" Maximum="50" Width="230"
-                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                Minimum="20" Maximum="50" TickFrequency="0.2" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind indexDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.IndexRadius,Mode=TwoWay}" />
                                             <TextBlock
@@ -427,9 +440,9 @@
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="indexLengthSlider"
-                                                Minimum="1" Maximum="10" Width="230"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                Minimum="1" Maximum="10" TickFrequency="0.2" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IndexBarVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.IndexLength,Mode=TwoWay}" />
                                             <TextBlock
@@ -444,9 +457,9 @@
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="indexThicknessSlider"
-                                                Minimum="0.1" Maximum="4" Width="230"
-                                                TickPlacement="None" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.2" Maximum="4" TickFrequency="0.2" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IndexBarVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.IndexThickness,Mode=TwoWay}" />
                                             <TextBlock
@@ -460,7 +473,7 @@
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
                                         <ComboBox
-                                            Width="250"
+                                            Style="{StaticResource ComboBoxStyle}"
                                             IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.FontList,Mode=OneTime}"
                                             SelectedValue ="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=TwoWay}"/>
@@ -472,9 +485,9 @@
                                             x:Uid="fontSizeLabel" Text="Font Size"/>
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="indexFontSizeSlider"
-                                                Minimum="1" Maximum="20" Width="200"
-                                                TickPlacement="None" TickFrequency="0.2" SnapsTo="Ticks"
+                                                Minimum="1" Maximum="20" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.IndexFontSize,Mode=TwoWay}" />
                                             <TextBlock
@@ -501,7 +514,7 @@
                                     </StackPanel>
                                     <!--時針分針-->
                                     <TextBlock
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="handsLabel" Text="Hour / Minute Hands"/>
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
@@ -516,7 +529,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.HandsColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -535,7 +547,7 @@
                                     </StackPanel>
                                     <!--秒針-->
                                     <TextBlock
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="secondHandLabel" Text="Second Hand"/>
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
@@ -550,7 +562,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.SecondHandColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -569,7 +580,7 @@
                                     </StackPanel>
                                     <!--縁取り-->
                                     <TextBlock
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="borderLabel" Text="Boder"/>
                                     <!--境界線の色-->
                                     <StackPanel
@@ -578,7 +589,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.HandsStrokeColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -602,9 +612,9 @@
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="HandsBorderThicknessSlider"
-                                                Minimum="0" Maximum="10" Width="230"
-                                                TickPlacement="Outside" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0" Maximum="10" TickFrequency="0.1" SnapsTo="Ticks"
                                                 Value="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
@@ -633,7 +643,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateBackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -660,7 +669,7 @@
                                                  Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
                                             <Slider
                                                 x:Name="dateXSlider"
-                                                Minimum="1" Maximum="500" Width="215"
+                                                Minimum="1" Maximum="500" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DateCoordinateX,Mode=TwoWay}" />
@@ -673,7 +682,7 @@
                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
                                             <Slider
                                                 x:Name="dateYSlider"
-                                                Minimum="1" Maximum="500" Width="215"
+                                                Minimum="1" Maximum="500" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DateCoordinateY,Mode=TwoWay}" />
@@ -692,7 +701,7 @@
                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
                                             <Slider
                                                 x:Name="dateBorderSizeXSlider"
-                                                Minimum="1" Maximum="500" Width="215"
+                                                Minimum="1" Maximum="500" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.DateWidth,Mode=TwoWay}" />
@@ -705,7 +714,7 @@
                                                     Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
                                             <Slider
                                                 x:Name="dateBorderSizeYSlider"
-                                                Minimum="1" Maximum="500" Width="215"
+                                                Minimum="1" Maximum="500" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.DateHeight,Mode=TwoWay}" />
@@ -716,7 +725,7 @@
                                     </StackPanel>
                                     <!--境界線-->
                                     <TextBlock
-                                         Style="{StaticResource SubtitleTextBlockStyle}"
+                                         Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="borderLabel" Text="Border"/>
                                     <!--境界線の色-->
                                     <StackPanel
@@ -725,7 +734,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateBorderColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -749,9 +757,9 @@
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="dateBorderThicknessSlider"
-                                                Minimum="0" Maximum="20" Width="230"
-                                                TickPlacement="Outside" TickFrequency="1" SnapsTo="Ticks"
+                                                Minimum="0" Maximum="20" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.DateBorderThickness,Mode=TwoWay}" />
                                             <TextBlock
@@ -761,7 +769,7 @@
                                     </StackPanel>
                                     <!--フォント-->
                                     <TextBlock
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="fontLabel" Text="Font"/>
                                     <!--フォントの色-->
                                     <StackPanel
@@ -770,7 +778,6 @@
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
                                             Style="{StaticResource ColorButtonStyle}"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateFontColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
@@ -804,7 +811,7 @@
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
                                         <ComboBox
-                                            x:Name="dateFontComboBox" Width="250"
+                                            x:Name="dateFontComboBox" Style="{StaticResource ComboBoxStyle}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.FontList}"
                                             SelectedValue ="{x:Bind vm.DesignConfig.DateFontFamily,Mode=TwoWay}"/>
@@ -816,9 +823,9 @@
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
                                             <Slider
+                                                Style="{StaticResource SliderStyle}"
                                                 x:Name="dateFontSizeSlider"
-                                                Minimum="1" Maximum="80" Width="230"
-                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                Minimum="1" Maximum="80" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.DateFontSize,Mode=TwoWay}" />
                                             <TextBlock
@@ -833,10 +840,11 @@
                         <PivotItem x:Uid="aboutTitle" Header="About">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <StackPanel>
-                                        <TextBlock
-                                                Style="{StaticResource SubtitleTextBlockStyle}"
-                                                x:Uid="appVersion" Text="App Version"/>
+                                    <TextBlock
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
+                                        x:Uid="appVersion" Text="App Version"/>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{x:Bind vm.AppName,Mode=OneTime}"/>
                                             <TextBlock Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>

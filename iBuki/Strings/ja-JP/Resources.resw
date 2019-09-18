@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="alterScaleToggle.Header" xml:space="preserve">
+  <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>一部の目盛りを変える</value>
   </data>
   <data name="arabicIndexEnum" xml:space="preserve">
