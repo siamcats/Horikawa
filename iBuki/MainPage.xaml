@@ -5,7 +5,6 @@
     xmlns:local="using:iBuki"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged"
     HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -18,7 +17,31 @@
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
         <local:DecimalTruncateConveter x:Key="Truncate" />
+        <Style x:Key="TitleBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="SettingPanelStyle" TargetType="StackPanel">
+            <Setter Property="Width" Value="270"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="Padding" Value="10,5,5,5"/>
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        <Style x:Key="ColorButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderThemeBrush}"/>
+        </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderThemeBrush}"/>
+        </Style>
     </Page.Resources>
+
 
     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
 
@@ -38,7 +61,8 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--ウィンドウテーマ-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="themeLabel" Text="Window Theme"/>
                                         <StackPanel Orientation="Vertical">
@@ -57,7 +81,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--言語-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="languageLabel" Text="Language" />
                                         <StackPanel Orientation="Horizontal">
@@ -73,7 +98,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--ムーブメント-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="movementLabel" Text="Movement"/>
                                         <StackPanel Orientation="Horizontal">
@@ -110,12 +136,12 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--色-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
-                                            BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped" >
                                             <FlyoutBase.AttachedFlyout>
@@ -131,17 +157,17 @@
                                         </Button>
                                     </StackPanel>
                                     <!--画像-->
-                                    <ToggleSwitch 
-                                        x:Uid="imageToggle" Header="Image"
-                                        x:Name="backgroundImageDisplayToggle" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
-                                    <!--画像インポート-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <ToggleSwitch 
+                                            x:Uid="imageToggle" Header="Image"
+                                            x:Name="backgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
                                         <Button
+                                            Style="{StaticResource ButtonStyle}"
                                             x:Uid="imageSelectButton" Content="Select Image" 
                                             x:Name="DialImagePicker" Tapped="DialImagePicker_Tapped"
-                                            IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
-                                            />
+                                            IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}" />
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -151,19 +177,23 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Style="{StaticResource TitleTextBlockStyle}"
                                         x:Uid="scaleLabel" Text="Scale"/>
                                     <!--目盛り-->
-                                    <ToggleSwitch
-                                        x:Name="scaleDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
+                                        <ToggleSwitch
+                                            x:Name="scaleDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--目盛りの色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.ScaleColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -182,7 +212,8 @@
                                         </Button>
                                     </StackPanel>
                                     <!--目盛りの数-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="countLabel" Text="Count" />
                                         <StackPanel Orientation="Horizontal">
@@ -198,7 +229,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--目盛りの半径-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -214,7 +246,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--目盛りの長さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
@@ -230,7 +263,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--目盛りの太さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
@@ -246,14 +280,18 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛り-->
-                                    <ToggleSwitch
-                                        x:Uid="alterScaleToggle" Header="Alter Scale" 
-                                        x:Name="alterScaleDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                        IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
+                                        <ToggleSwitch
+                                            x:Uid="alterScaleToggle" Header="Alter Scale" 
+                                            x:Name="alterScaleDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                            IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--一部目盛り間隔-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="intervalLabel" Text="Interval" />
                                         <StackPanel Orientation="Horizontal">
@@ -269,7 +307,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛りの半径-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -285,7 +324,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛りの長さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
@@ -301,7 +341,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛りの太さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
@@ -318,14 +359,18 @@
                                     </StackPanel>
                                     <!--インデックス-->
                                     <TextBlock
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Style="{StaticResource TitleTextBlockStyle}"
                                         x:Uid="indexLabel" Text="Index"/>
-                                    <ToggleSwitch
-                                        x:Name="indexDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
+                                        <ToggleSwitch
+                                            x:Name="indexDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
+                                    </StackPanel>
                                     <!--インデックスタイプ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
@@ -335,11 +380,12 @@
                                             SelectedIndex="{x:Bind vm.IndexType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
                                     </StackPanel>
                                     <!--インデックスの色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind indexDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.IndexColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -348,17 +394,18 @@
                                             <Flyout Placement="Right">
                                                 <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
                                                     <ColorPicker
-                                                    x:Name="indexColorPicker"
-                                                    IsColorChannelTextInputVisible="False"
-                                                    IsColorSliderVisible="True"
-                                                    Color="{x:Bind vm.DesignConfig.IndexColor,Mode=TwoWay}"/>
+                                                        x:Name="indexColorPicker"
+                                                        IsColorChannelTextInputVisible="False"
+                                                        IsColorSliderVisible="True"
+                                                        Color="{x:Bind vm.DesignConfig.IndexColor,Mode=TwoWay}"/>
                                                 </Viewbox>
                                             </Flyout>
                                         </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
                                     <!--インデックスの半径-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -374,7 +421,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--インデックスの長さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
@@ -390,7 +438,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--インデックスの太さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
@@ -406,7 +455,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--フォントファミリ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
                                         <ComboBox
@@ -416,7 +466,8 @@
                                             SelectedValue ="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントのサイズ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" >
                                         <TextBlock
                                             x:Uid="fontSizeLabel" Text="Font Size"/>
                                         <StackPanel Orientation="Horizontal">
@@ -439,11 +490,12 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--タイプ-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
-                                            x:Name="handsTypeComboBox" Width="150"
+                                            x:Name="handsTypeComboBox" Style="{StaticResource ComboBoxStyle}"
                                             ItemsSource="{x:Bind vm.HandsTypeList}"
                                             SelectedIndex="{x:Bind vm.HandsType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
                                     </StackPanel>
@@ -451,15 +503,19 @@
                                     <TextBlock
                                         Style="{StaticResource SubtitleTextBlockStyle}"
                                         x:Uid="handsLabel" Text="Hour / Minute Hands"/>
-                                    <ToggleSwitch
-                                        x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <ToggleSwitch
+                                            x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--時針分針の色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.HandsColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -481,15 +537,19 @@
                                     <TextBlock
                                         Style="{StaticResource SubtitleTextBlockStyle}"
                                         x:Uid="secondHandLabel" Text="Second Hand"/>
-                                    <ToggleSwitch
-                                        x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <ToggleSwitch
+                                            x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--秒針の色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.SecondHandColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -498,10 +558,10 @@
                                                 <Flyout Placement="Right">
                                                     <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
                                                         <ColorPicker
-                                                        x:Name="secondHandColorPicker"
-                                                        IsColorChannelTextInputVisible="False"
-                                                        IsColorSliderVisible="True"
-                                                        Color="{x:Bind vm.DesignConfig.SecondHandColor,Mode=TwoWay}"/>
+                                                            x:Name="secondHandColorPicker"
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            Color="{x:Bind vm.DesignConfig.SecondHandColor,Mode=TwoWay}"/>
                                                     </Viewbox>
                                                 </Flyout>
                                             </FlyoutBase.AttachedFlyout>
@@ -512,11 +572,12 @@
                                         Style="{StaticResource SubtitleTextBlockStyle}"
                                         x:Uid="borderLabel" Text="Boder"/>
                                     <!--境界線の色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.HandsStrokeColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -535,7 +596,8 @@
                                         </Button>
                                     </StackPanel>
                                     <!--境界線の太さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
@@ -556,17 +618,21 @@
                         <PivotItem x:Uid="dayDateTitle" Header="Day Date">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <ToggleSwitch 
-                                        x:Uid="dateDisplayToggle" Header="Date Display" 
-                                        x:Name="dateDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <ToggleSwitch 
+                                            x:Uid="dateDisplayToggle" Header="Date Display" 
+                                            x:Name="dateDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--色-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateBackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -585,7 +651,8 @@
                                         </Button>
                                     </StackPanel>
                                     <!--座標-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
                                         <StackPanel Orientation="Horizontal">
@@ -616,7 +683,8 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--サイズ-->
-                                    <StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size"/>
                                         <StackPanel Orientation="Horizontal">
@@ -651,11 +719,12 @@
                                          Style="{StaticResource SubtitleTextBlockStyle}"
                                         x:Uid="borderLabel" Text="Border"/>
                                     <!--境界線の色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateBorderColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -674,7 +743,8 @@
                                         </Button>
                                     </StackPanel>
                                     <!--境界線の太さ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
@@ -694,11 +764,12 @@
                                         Style="{StaticResource SubtitleTextBlockStyle}"
                                         x:Uid="fontLabel" Text="Font"/>
                                     <!--フォントの色-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
-                                            Height="32" Width="120" Margin="0,0,0,8"
+                                            Style="{StaticResource ColorButtonStyle}"
                                             BorderBrush="{ThemeResource ButtonBorderThemeBrush}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.DateFontColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
@@ -718,7 +789,8 @@
                                         </Button>
                                     </StackPanel>
                                     <!--フォーマット-->
-                                    <StackPanel Margin="0" HorizontalAlignment="Left">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="formatLabel" Text="Format"/>
                                         <TextBox
@@ -727,7 +799,8 @@
                                             Text="{x:Bind vm.DesignConfig.DateFormat,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントファミリ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
                                         <ComboBox
@@ -737,7 +810,8 @@
                                             SelectedValue ="{x:Bind vm.DesignConfig.DateFontFamily,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントのサイズ-->
-                                    <StackPanel Margin="0">
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
