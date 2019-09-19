@@ -19,7 +19,11 @@
         <local:DecimalTruncateConveter x:Key="Truncate" />
         <Style x:Key="SettingTitleTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Margin" Value="0,15,0,5"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+        <Style x:Key="SettingSubTitleTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="0,5,0,2"/>
         </Style>
         <Style x:Key="SettingPanelStyle" TargetType="StackPanel">
             <Setter Property="Width" Value="270"/>
@@ -189,13 +193,10 @@
                                         Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="scaleLabel" Text="Scale"/>
                                     <!--目盛り-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
-                                        <ToggleSwitch
-                                            x:Name="scaleDisplayToggle" 
-                                            OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
-                                    </StackPanel>
+                                    <ToggleSwitch
+                                        x:Name="scaleDisplayToggle" 
+                                        OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
                                     <!--目盛りの色-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}" >
@@ -289,17 +290,14 @@
                                     </StackPanel>
                                     <!--一部目盛り-->
                                     <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
+                                        Style="{StaticResource SettingSubTitleTextBlockStyle}"
                                         x:Uid="alterScaleLabel" Text="Alter Scale" />
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
-                                        <ToggleSwitch
-                                            x:Uid="alterScaleToggle" 
-                                            x:Name="alterScaleDisplayToggle" 
-                                            OffContent="Off" OnContent="On"
-                                            IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                            IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
-                                    </StackPanel>
+                                    <ToggleSwitch
+                                        x:Uid="alterScaleToggle" 
+                                        x:Name="alterScaleDisplayToggle" 
+                                        OffContent="Off" OnContent="On"
+                                        IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                        IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
                                     <!--一部目盛り間隔-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}" >
@@ -373,13 +371,10 @@
                                     <TextBlock
                                         Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="indexLabel" Text="Index"/>
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
-                                        <ToggleSwitch
-                                            x:Name="indexDisplayToggle" 
-                                            OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
-                                    </StackPanel>
+                                    <ToggleSwitch
+                                        x:Name="indexDisplayToggle" 
+                                        OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
                                     <!--インデックスタイプ-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}" >
@@ -476,7 +471,7 @@
                                             Style="{StaticResource ComboBoxStyle}"
                                             IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.FontList,Mode=OneTime}"
-                                            SelectedValue ="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=TwoWay}"/>
+                                            SelectedItem ="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
@@ -516,12 +511,9 @@
                                     <TextBlock
                                         Style="{StaticResource SettingTitleTextBlockStyle}"
                                         x:Uid="handsLabel" Text="Hour / Minute Hands"/>
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <ToggleSwitch
-                                            x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
-                                    </StackPanel>
+                                    <ToggleSwitch
+                                        x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
                                     <!--時針分針の色-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
@@ -545,44 +537,10 @@
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
-                                    <!--秒針-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="secondHandLabel" Text="Second Hand"/>
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <ToggleSwitch
-                                            x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
-                                    </StackPanel>
-                                    <!--秒針の色-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <TextBlock
-                                            x:Uid="colorLabel" Text="Color"/>
-                                        <Button
-                                            Style="{StaticResource ColorButtonStyle}"
-                                            IsEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
-                                            Background="{x:Bind vm.DesignConfig.SecondHandColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
-                                            Tapped="ColorButton_Tapped">
-                                            <FlyoutBase.AttachedFlyout>
-                                                <Flyout Placement="Right">
-                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                                        <ColorPicker
-                                                            x:Name="secondHandColorPicker"
-                                                            IsColorChannelTextInputVisible="False"
-                                                            IsColorSliderVisible="True"
-                                                            Color="{x:Bind vm.DesignConfig.SecondHandColor,Mode=TwoWay}"/>
-                                                    </Viewbox>
-                                                </Flyout>
-                                            </FlyoutBase.AttachedFlyout>
-                                        </Button>
-                                    </StackPanel>
-                                    <!--縁取り-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="borderLabel" Text="Boder"/>
                                     <!--境界線の色-->
+                                    <TextBlock
+                                        Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                        x:Uid="borderLabel" Text="Boder"/>
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
@@ -614,12 +572,43 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="HandsBorderThicknessSlider"
+                                                IsEnabled="{x:Bind handsDisplayToggle.IsOn,Mode=OneWay}"
                                                 Minimum="0" Maximum="10" TickFrequency="0.1" SnapsTo="Ticks"
                                                 Value="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind HandsBorderThicknessSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
+                                    </StackPanel>
+                                    <!--秒針-->
+                                    <TextBlock
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
+                                        x:Uid="secondHandLabel" Text="Second Hand"/>
+                                    <ToggleSwitch
+                                        x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
+                                    <!--秒針の色-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <TextBlock
+                                            x:Uid="colorLabel" Text="Color"/>
+                                        <Button
+                                            Style="{StaticResource ColorButtonStyle}"
+                                            IsEnabled="{x:Bind secondHandDisplayToggle.IsOn,Mode=OneWay}"
+                                            Background="{x:Bind vm.DesignConfig.SecondHandColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorButton_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                            x:Name="secondHandColorPicker"
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            Color="{x:Bind vm.DesignConfig.SecondHandColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -628,15 +617,15 @@
                         <PivotItem x:Uid="dayDateTitle" Header="Day Date">
                             <ScrollViewer>
                                 <StackPanel>
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <ToggleSwitch 
-                                            x:Uid="dateDisplayToggle" Header="Date Display" 
-                                            x:Name="dateDisplayToggle" 
-                                            OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
-                                    </StackPanel>
-                                    <!--色-->
+                                    <TextBlock
+                                        Style="{StaticResource SettingTitleTextBlockStyle}"
+                                        x:Uid="dateDisplayLabel" Text="Day Date"/>
+                                    <ToggleSwitch 
+                                        x:Uid="dateDisplayToggle"
+                                        x:Name="dateDisplayToggle" 
+                                        OffContent="Off" OnContent="On"
+                                        IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                   <!--色-->
                                     <StackPanel
                                         Style="{StaticResource SettingPanelStyle}">
                                         <TextBlock
@@ -725,7 +714,7 @@
                                     </StackPanel>
                                     <!--境界線-->
                                     <TextBlock
-                                         Style="{StaticResource SettingTitleTextBlockStyle}"
+                                         Style="{StaticResource SettingSubTitleTextBlockStyle}"
                                         x:Uid="borderLabel" Text="Border"/>
                                     <!--境界線の色-->
                                     <StackPanel
@@ -769,7 +758,7 @@
                                     </StackPanel>
                                     <!--フォント-->
                                     <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
+                                        Style="{StaticResource SettingSubTitleTextBlockStyle}"
                                         x:Uid="fontLabel" Text="Font"/>
                                     <!--フォントの色-->
                                     <StackPanel
@@ -814,7 +803,7 @@
                                             x:Name="dateFontComboBox" Style="{StaticResource ComboBoxStyle}"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.FontList}"
-                                            SelectedValue ="{x:Bind vm.DesignConfig.DateFontFamily,Mode=TwoWay}"/>
+                                            SelectedItem ="{x:Bind vm.DesignConfig.DateFontFamily,Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel

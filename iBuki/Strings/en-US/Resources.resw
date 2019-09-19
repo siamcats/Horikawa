@@ -156,8 +156,8 @@
   <data name="darkButton.Content" xml:space="preserve">
     <value>Dark</value>
   </data>
-  <data name="dateDisplayToggle.Header" xml:space="preserve">
-    <value>Date Display</value>
+  <data name="dateDisplayLabel.Text" xml:space="preserve">
+    <value>Day Date</value>
   </data>
   <data name="dayDateTitle.Header" xml:space="preserve">
     <value>Day Date</value>

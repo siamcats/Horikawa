@@ -7,8 +7,8 @@
     <ProjectGuid>{ADE53C1C-3B7D-4B24-8D44-247B99B358D6}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>iBuki</RootNamespace>
-    <AssemblyName>iBuki</AssemblyName>
+    <RootNamespace>Chronocci</RootNamespace>
+    <AssemblyName>Chronocci</AssemblyName>
     <DefaultLanguage>ja-JP</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
