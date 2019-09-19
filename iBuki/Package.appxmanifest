@@ -3,8 +3,8 @@
   <Identity Name="688e5d2f-1589-4cc5-9566-f47f0f4a1a5a" Publisher="CN=siamo" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="688e5d2f-1589-4cc5-9566-f47f0f4a1a5a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>iBuki</DisplayName>
-    <PublisherDisplayName>siamo</PublisherDisplayName>
+    <DisplayName>Chronocci</DisplayName>
+    <PublisherDisplayName>siamcats</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

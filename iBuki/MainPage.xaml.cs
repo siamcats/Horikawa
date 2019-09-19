@@ -374,10 +374,10 @@ namespace iBuki
             // タイトルバーの領域までアプリの表示を拡張する
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
-            // ［×］ボタンなどの背景色を設定する
+            // ［×］ボタンなどの色を設定する
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             appTitleBar.ButtonBackgroundColor = Colors.Transparent;
             appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            appTitleBar.ButtonForegroundColor = Colors.White;
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
 

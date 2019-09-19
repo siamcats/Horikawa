@@ -994,7 +994,7 @@
             <StackPanel Grid.Column="0">
                 <ToggleButton
                     x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    Foreground="{x:Bind vm.DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                    Foreground="{ThemeResource SystemBaseHighColor}"
                     Tapped="ConfigButton_Tapped" >
                     <ToggleButton.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
@@ -1002,14 +1002,14 @@
                 </ToggleButton>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                    <ToggleButton
-                        x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                        IsChecked="{x:Bind vm.AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
-                        Foreground="{x:Bind vm.DesignConfig.BackgroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
-                        <ToggleButton.Content>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
-                        </ToggleButton.Content>
-                    </ToggleButton>
+                <ToggleButton
+                    x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    IsChecked="{x:Bind vm.AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
+                    Foreground="{ThemeResource SystemBaseHighColor}">
+                    <ToggleButton.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
+                    </ToggleButton.Content>
+                </ToggleButton>
             </StackPanel>
             <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent"/>
         </Grid>
