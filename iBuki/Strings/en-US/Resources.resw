@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="aboutAppTitle.Text" xml:space="preserve">
+    <value>About App</value>
+  </data>
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>Alter Scale</value>
   </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>Arabic</value>
   </data>
-  <data name="backgroundTitle.Header" xml:space="preserve">
+  <data name="backgroundTitle.Text" xml:space="preserve">
     <value>Background</value>
   </data>
   <data name="barHandEnum" xml:space="preserve">
@@ -138,11 +141,11 @@
   <data name="breguetHandEnum" xml:space="preserve">
     <value>Breguet</value>
   </data>
-  <data name="clockFaceTitle.Header" xml:space="preserve">
-    <value>Clock Face</value>
+  <data name="clockFaceTitle.Text" xml:space="preserve">
+    <value>Dial</value>
   </data>
-  <data name="clockHandsTitle.Header" xml:space="preserve">
-    <value>Clock Hands</value>
+  <data name="clockHandsTitle.Text" xml:space="preserve">
+    <value>Hands</value>
   </data>
   <data name="colorLabel.Text" xml:space="preserve">
     <value>Color</value>
@@ -159,7 +162,7 @@
   <data name="dateDisplayLabel.Text" xml:space="preserve">
     <value>Day Date</value>
   </data>
-  <data name="dayDateTitle.Header" xml:space="preserve">
+  <data name="dayDateTitle.Text" xml:space="preserve">
     <value>Day Date</value>
   </data>
   <data name="defaultButton.Content" xml:space="preserve">
@@ -180,7 +183,7 @@
   <data name="formatLabel.Text" xml:space="preserve">
     <value>Format</value>
   </data>
-  <data name="generalTitle.Header" xml:space="preserve">
+  <data name="generalTitle.Text" xml:space="preserve">
     <value>General</value>
   </data>
   <data name="handsLabel.Text" xml:space="preserve">
@@ -213,6 +216,9 @@
   <data name="mechanicalButton.Content" xml:space="preserve">
     <value>Mechanical</value>
   </data>
+  <data name="moonPhaseTitle.Text" xml:space="preserve">
+    <value>Lunar Phase</value>
+  </data>
   <data name="movementLabel.Text" xml:space="preserve">
     <value>Movement</value>
   </data>
@@ -234,7 +240,7 @@
   <data name="sizeLabel.Text" xml:space="preserve">
     <value>Size</value>
   </data>
-  <data name="templateTitle.Header" xml:space="preserve">
+  <data name="templateTitle.Text" xml:space="preserve">
     <value>Template</value>
   </data>
   <data name="themeLabel.Text" xml:space="preserve">

@@ -240,6 +240,12 @@ namespace iBuki
 
         #endregion
 
+        #region Template
+
+        public List<Settings> DefaultTemplateList = new List<Settings>();
+
+        #endregion
+
         #region Dial
 
         public bool IsScaleDisplay

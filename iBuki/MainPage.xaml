@@ -17,9 +17,12 @@
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
         <local:DecimalTruncateConveter x:Key="Truncate" />
+        <Style x:Key="PivotTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
         <Style x:Key="SettingTitleTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Margin" Value="0,10,0,5"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,7,0,4"/>
         </Style>
         <Style x:Key="SettingSubTitleTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
@@ -27,7 +30,7 @@
         </Style>
         <Style x:Key="SettingPanelStyle" TargetType="StackPanel">
             <Setter Property="Width" Value="270"/>
-            <Setter Property="Margin" Value="0,1,0,2"/>
+            <Setter Property="Margin" Value="0,1,0,1"/>
             <Setter Property="Padding" Value="10,5,5,5"/>
             <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -66,7 +69,13 @@
                 <Grid x:Name="ConfigPanel">
                     <Pivot>
                         <!--全般-->
-                        <PivotItem x:Uid="generalTitle" Header="General">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90F;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="generalTitle" Text="General"/>
+                                </StackPanel>
+                            </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--言語-->
@@ -130,22 +139,45 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--テンプレート-->
-                        <PivotItem x:Uid="templateTitle" Header="Template">
-                            <ListView x:Name="templateList" SelectionChanged="TemplateList_SelectionChanged">
-                                <DataTemplate x:DataType="x:String">
-                                    <Grid>
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            Text="{x:Bind}" FontSize="14" />
-                                    </Grid>
-                                </DataTemplate>
-                                <x:String>Station</x:String>
-                                <x:String>Porto</x:String>
-                                <x:String>Volks</x:String>
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE71D;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="templateTitle" Text="Template"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                            <ListView
+                                x:Name="templateList"
+                                SelectionChanged="TemplateList_SelectionChanged">
+                                <!--ItemsSource="{x:Bind vm.DefaultTemplateList, Mode=OneWay}">-->
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:Name="DoubleLineDataTemplate">
+                                        <StackPanel Orientation="Horizontal" Height="64">
+                                            <Ellipse Height="48" Width="48" VerticalAlignment="Center">
+                                                <Ellipse.Fill>
+                                                    <ImageBrush ImageSource="Placeholder.png"/>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                <TextBlock Text="{Binding Name}"  Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Version}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                                    <TextBlock Text="{Binding Author}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
                             </ListView>
                         </PivotItem>
                         <!--背景-->
-                        <PivotItem x:Uid="backgroundTitle" Header="Background">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="HoloLens MDL2 Assets" Glyph="&#xE7AA;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="backgroundTitle" Text="Background"/>
+                                </StackPanel>
+                            </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--色-->
@@ -186,7 +218,13 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--文字盤-->
-                        <PivotItem x:Uid="clockFaceTitle" Header="Clock Face">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0B4;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="clockFaceTitle" Text="Face"/>
+                                </StackPanel>
+                            </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock
@@ -494,7 +532,13 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--針-->
-                        <PivotItem x:Uid="clockHandsTitle" Header="Clock Hands">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE001;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="clockHandsTitle" Text="Hands"/>
+                                </StackPanel>
+                            </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--タイプ-->
@@ -614,7 +658,13 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--デイト-->
-                        <PivotItem x:Uid="dayDateTitle" Header="Day Date">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC92;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="dayDateTitle" Text="Day Date"/>
+                                </StackPanel>
+                            </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock
@@ -825,8 +875,23 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
+                        <!--ムーン-->
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTitle" Text="Lunar Phase"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                        </PivotItem>
                         <!--About-->
-                        <PivotItem x:Uid="aboutTitle" Header="About">
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="aboutAppTitle" Text="About App"/>
+                                </StackPanel>
+                            </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock

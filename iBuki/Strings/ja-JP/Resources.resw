@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="aboutAppTitle.Text" xml:space="preserve">
+    <value>アプリについて</value>
+  </data>
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>一部の目盛りを変える</value>
   </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>アラビア数字</value>
   </data>
-  <data name="backgroundTitle.Header" xml:space="preserve">
+  <data name="backgroundTitle.Text" xml:space="preserve">
     <value>背景</value>
   </data>
   <data name="barHandEnum" xml:space="preserve">
@@ -138,11 +141,11 @@
   <data name="breguetHandEnum" xml:space="preserve">
     <value>ブレゲ針</value>
   </data>
-  <data name="clockFaceTitle.Header" xml:space="preserve">
+  <data name="clockFaceTitle.Text" xml:space="preserve">
     <value>文字盤</value>
   </data>
-  <data name="clockHandsTitle.Header" xml:space="preserve">
-    <value>針</value>
+  <data name="clockHandsTitle.Text" xml:space="preserve">
+    <value>時計針</value>
   </data>
   <data name="colorLabel.Text" xml:space="preserve">
     <value>色</value>
@@ -159,7 +162,7 @@
   <data name="dateDisplayLabel.Text" xml:space="preserve">
     <value>デイト表示</value>
   </data>
-  <data name="dayDateTitle.Header" xml:space="preserve">
+  <data name="dayDateTitle.Text" xml:space="preserve">
     <value>デイト</value>
   </data>
   <data name="defaultButton.Content" xml:space="preserve">
@@ -180,7 +183,7 @@
   <data name="formatLabel.Text" xml:space="preserve">
     <value>フォーマット</value>
   </data>
-  <data name="generalTitle.Header" xml:space="preserve">
+  <data name="generalTitle.Text" xml:space="preserve">
     <value>全般</value>
   </data>
   <data name="handsLabel.Text" xml:space="preserve">
@@ -213,6 +216,9 @@
   <data name="mechanicalButton.Content" xml:space="preserve">
     <value>機械式</value>
   </data>
+  <data name="moonPhaseTitle.Text" xml:space="preserve">
+    <value>ムーンフェーズ</value>
+  </data>
   <data name="movementLabel.Text" xml:space="preserve">
     <value>ムーブメント</value>
   </data>
@@ -234,7 +240,7 @@
   <data name="sizeLabel.Text" xml:space="preserve">
     <value>サイズ</value>
   </data>
-  <data name="templateTitle.Header" xml:space="preserve">
+  <data name="templateTitle.Text" xml:space="preserve">
     <value>テンプレート</value>
   </data>
   <data name="themeLabel.Text" xml:space="preserve">

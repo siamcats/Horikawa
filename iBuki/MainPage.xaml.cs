@@ -27,6 +27,7 @@ using System.Text;
 using Windows.Storage.Streams;
 using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Generic;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -91,6 +92,14 @@ namespace iBuki
                 ImportAssetsTheme(Const.THEME_DEFAULT);
                 Debug.WriteLine("起動時初期値");
             }
+
+            // デフォルトテンプレートの読み取り
+            GetTemplatesFromAssets();
+            var items = new List<Settings>();
+            items.Add(new Settings() { Name = "John Doe", Version = "42", Author = "john@doe-family.com" });
+            items.Add(new Settings() { Name = "Jane Doe", Version = "39", Author = "jane@doe-family.com" });
+            items.Add(new Settings() { Name = "Sammy Doe", Version = "13", Author = "sammy.doe@gmail.com" });
+            templateList.ItemsSource = items;
         }
 
         /// <summary>
@@ -243,7 +252,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// Assetからの設定ファイルコピー
+        /// Assetからの設定取り出し
         /// </summary>
         /// <param name="name"></param>
         private async void ImportAssetsTheme(string name)
@@ -277,6 +286,43 @@ namespace iBuki
             }
 
             vm.ImportSettingsAsync(settings);
+        }
+
+        /// <summary>
+        /// Assetから設定取り出し
+        /// </summary>
+        private async void GetTemplatesFromAssets()
+        {
+            var name = "Station";
+            string json = "";
+
+            // 設定ファイル
+            try
+            {
+                var settingFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS));
+                json = await FileIO.ReadTextAsync(settingFile);
+            }
+            catch (FileNotFoundException e)
+            {
+                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS + " Not Found");
+            }
+            var settings = Deserialize(json);
+
+            // 画像ファイル
+            try
+            {
+                if (settings.BackgroundImageDisplay)
+                {
+                    var bgimageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND));
+                    var bgimageFileCopied = await bgimageFile.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND + " Not Found");
+            }
+
+            vm.DefaultTemplateList.Add(settings);
         }
 
         /// <summary>
