@@ -123,10 +123,16 @@
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>一部の目盛りを変える</value>
   </data>
+  <data name="appConfigTextBlock.Text" xml:space="preserve">
+    <value>アプリ</value>
+  </data>
+  <data name="appVersion.Text" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>アラビア数字</value>
   </data>
-  <data name="backgroundTitle.Text" xml:space="preserve">
+  <data name="backgroundTextBlock.Text" xml:space="preserve">
     <value>背景</value>
   </data>
   <data name="barHandEnum" xml:space="preserve">
@@ -140,6 +146,9 @@
   </data>
   <data name="breguetHandEnum" xml:space="preserve">
     <value>ブレゲ針</value>
+  </data>
+  <data name="clockConfigTextBlock.Text" xml:space="preserve">
+    <value>時計</value>
   </data>
   <data name="clockFaceTitle.Text" xml:space="preserve">
     <value>文字盤</value>
@@ -222,6 +231,9 @@
   <data name="movementLabel.Text" xml:space="preserve">
     <value>ムーブメント</value>
   </data>
+  <data name="PresetTextBlock.Text" xml:space="preserve">
+    <value>プリセット</value>
+  </data>
   <data name="quartzButton.Content" xml:space="preserve">
     <value>クォーツ式</value>
   </data>
@@ -251,5 +263,14 @@
   </data>
   <data name="typeLabel.Text" xml:space="preserve">
     <value>タイプ</value>
+  </data>
+  <data name="mysetTextBlock.Text" xml:space="preserve">
+    <value>マイセット</value>
+  </data>
+  <data name="chronographButton.Content" xml:space="preserve">
+    <value>クロノグラフ</value>
+  </data>
+  <data name="creditsTextBlock.Text" xml:space="preserve">
+    <value>クレジット</value>
   </data>
 </root>

@@ -1,8 +1,10 @@
 {
-  "Name": "Porto",
+  "Name": "Portofino",
+  "Description": "Portofino is in Italy not Portuguese.",
   "Author": "siamcats",
-  "Version": "0.01",
-  "TargetAppVersion": "0.01",
+  "CreatedAt": "2019-04-01T00:00Z",
+  "Version": "0.0.1",
+  "TargetAppVersion": "1.0.0",
   "BackgroundColor": "#FF141414",
   "BackgroundImageDisplay": true,
   "BackgroundImageFile": "ms-appx:///Assets/Themes/Porto/Background.png",

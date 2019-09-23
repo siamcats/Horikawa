@@ -9,8 +9,15 @@ namespace iBuki
     [DataContract]
     public class Settings
     {
+
         [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
+        public string Description { get; set; }
+
+        [DataMember]
+        public string CreatedAt { get; set; }
 
         [DataMember]
         public string Author { get; set; }
@@ -95,8 +102,10 @@ namespace iBuki
 
         [DataMember]
         public string HandsStrokeColor { get; set; }
+
         [DataMember]
         public double HandsStrokeThickness { get; set; }
+
         [DataMember]
         public bool SecondHandDisplay { get; set; }
 
@@ -139,14 +148,13 @@ namespace iBuki
         [DataMember]
         public double DateFontSize { get; set; }
 
-        public SolidColorBrush GetBrush(string hex)
-        {
-            hex = hex.Replace("#", string.Empty);
-            byte r = (byte)(Convert.ToUInt32(hex.Substring(0, 2), 16));
-            byte g = (byte)(Convert.ToUInt32(hex.Substring(2, 2), 16));
-            byte b = (byte)(Convert.ToUInt32(hex.Substring(4, 2), 16));
-            SolidColorBrush brush = new SolidColorBrush(Color.FromArgb(255, r, g, b));
-            return brush;
+        public BitmapSource Thumbnail { get; set; }
+
+        public string CreatedAtDateFormat { get
+            {
+                var datetime = DateTime.Parse(CreatedAt);
+                return datetime.ToString("yyyy-MM-dd");
+            }
         }
     }
 }

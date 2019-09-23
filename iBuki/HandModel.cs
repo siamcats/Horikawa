@@ -48,7 +48,7 @@ namespace iBuki
                                 Margin = new Thickness(0, margin, 0, 0);
                                 Width = 18;
                                 Height = 190;
-                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5");
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5 z");
                                 CenterX = Width / 2;
                                 CenterY = Height - ((Height + margin) - 250);
                                 Pivot = 0;
@@ -58,7 +58,7 @@ namespace iBuki
                                 Margin = new Thickness(0, margin, 0, 0);
                                 Width = 17;
                                 Height = 250;
-                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5");
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5 z");
                                 CenterX = Width / 2;
                                 CenterY = Height - ((Height + margin) - 250);
                                 Pivot = 0;
@@ -68,7 +68,7 @@ namespace iBuki
                                 Margin = new Thickness(0, margin, 0, 0);
                                 Width = 6;
                                 Height = 230;
-                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5");
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 258,5 z");
                                 CenterX = Width / 2;
                                 CenterY = Height - ((Height + margin) - 250);
                                 Pivot = 12;
@@ -126,7 +126,7 @@ namespace iBuki
                             case Clock.Minute:
                                 margin = 69;
                                 Margin = new Thickness(0, margin, 0, 0);
-                                Width = 35;
+                                Width = 32;
                                 Height = 231;
                                 Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M300,-55 L280,230 300,300 320,230 z");
                                 CenterX = Width / 2;
@@ -134,10 +134,10 @@ namespace iBuki
                                 Pivot = 0;
                                 break;
                             case Clock.Second:
-                                margin = 58;
+                                margin = 35;
                                 Margin = new Thickness(0, margin, 0, 0);
                                 Width = 10;
-                                Height = 260;
+                                Height = 280;
                                 Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M159.25256,110.00066 L158.25434,111.00056 157.25519,263.98578 156.25604,268.98557 155.25662,314.9812 C155.25689,316.98045 163.25007,316.98062 163.24981,314.98122 L162.25093,268.98557 161.25178,263.98578 160.25263,111.00056 z");
                                 CenterX = Width / 2;
                                 CenterY = Height - ((Height + margin) - 250);
@@ -186,7 +186,6 @@ namespace iBuki
                 OnPropertyChanged();
             }
         }
-
 
         private Thickness _margin;
         public Thickness Margin

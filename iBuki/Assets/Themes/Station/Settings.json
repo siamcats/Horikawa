@@ -1,8 +1,10 @@
 ﻿{
   "Name": "Station",
+  "Description": "Like a Swiss train station",
   "Author": "siamcats",
+  "CreatedAt": "2019-04-01T00:00Z",
   "Version": "0.01",
-  "TargetAppVersion": "0.01",
+  "TargetAppVersion": "1.0.0",
   "BackgroundColor": "#FFFFFFFF",
   "BackgroundImageDisplay": false,
   "ScaleDisplay": true,
@@ -29,9 +31,9 @@
   "DateCoordinateY": 223,
   "DateWidth": 160,
   "DateHeight": 53,
-  "DateBorderColor": "FF111111",
+  "DateBorderColor": "#FF111111",
   "DateBorderThickness": 3,
-  "DateFontColor": "FF111111",
+  "DateFontColor": "#FF111111",
   "DateFormat": "ddd d",
   "DateFontFamily": "Century Gothic",
   "DateFontSize": 40

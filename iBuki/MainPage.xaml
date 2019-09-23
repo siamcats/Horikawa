@@ -17,23 +17,32 @@
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
         <local:DecimalTruncateConveter x:Key="Truncate" />
+        <Style TargetType="PivotItem">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
         <Style x:Key="PivotTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
         </Style>
+        <Style x:Key="PivotFontIconStyle" TargetType="FontIcon">
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
         <Style x:Key="SettingTitleTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Margin" Value="0,7,0,4"/>
+            <Setter Property="FontSize" Value="20"/>
         </Style>
         <Style x:Key="SettingSubTitleTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Margin" Value="0,5,0,2"/>
+            <Setter Property="FontSize" Value="15"/>
         </Style>
         <Style x:Key="SettingPanelStyle" TargetType="StackPanel">
-            <Setter Property="Width" Value="270"/>
-            <Setter Property="Margin" Value="0,1,0,1"/>
+            <Setter Property="Width" Value="300"/>
             <Setter Property="Padding" Value="10,5,5,5"/>
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="SettingTitlePanelStyle" TargetType="StackPanel" BasedOn="{StaticResource SettingPanelStyle}">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+        <Style x:Key="SettingWhitePanelStyle" TargetType="StackPanel" BasedOn="{StaticResource SettingPanelStyle}">
+            <!--<Setter Property="Margin" Value="0,1,0,1"/>-->
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
         </Style>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="0,0,0,5"/>
@@ -48,9 +57,17 @@
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderThemeBrush}"/>
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
         <Style x:Key="SliderStyle" TargetType="Slider">
             <Setter Property="Width" Value="210"/>
             <Setter Property="TickPlacement" Value="Outside"/>
+        </Style>
+        <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
         </Style>
     </Page.Resources>
 
@@ -72,15 +89,22 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE90F;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE90F;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="generalTitle" Text="General"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--アプリ設定-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="appConfigTextBlock" Text="App Config"/>
+                                    </StackPanel>
                                     <!--言語-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="languageLabel" Text="Language" />
                                         <StackPanel Orientation="Horizontal">
@@ -97,7 +121,7 @@
                                     </StackPanel>
                                     <!--ウィンドウテーマ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="themeLabel" Text="Window Theme"/>
                                         <StackPanel Orientation="Vertical">
@@ -115,9 +139,16 @@
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
+                                    <!--時計の設定-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="clockConfigTextBlock" Text="Clock Config"/>
+                                    </StackPanel>
                                     <!--ムーブメント-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="movementLabel" Text="Movement"/>
                                         <StackPanel Orientation="Vertical">
@@ -131,7 +162,7 @@
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
                                             <RadioButton
                                                 GroupName="movement"
-                                                x:Uid="mechanicalButton" Content="Chronograph "
+                                                x:Uid="chronographButton" Content="Chronograph "
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Chronograph , Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
@@ -142,47 +173,129 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE71D;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE71D;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="templateTitle" Text="Template"/>
                                 </StackPanel>
                             </PivotItem.Header>
-                            <ListView
-                                x:Name="templateList"
-                                SelectionChanged="TemplateList_SelectionChanged">
-                                <!--ItemsSource="{x:Bind vm.DefaultTemplateList, Mode=OneWay}">-->
-                                <ListView.ItemTemplate>
-                                    <DataTemplate x:Name="DoubleLineDataTemplate">
-                                        <StackPanel Orientation="Horizontal" Height="64">
-                                            <Ellipse Height="48" Width="48" VerticalAlignment="Center">
-                                                <Ellipse.Fill>
-                                                    <ImageBrush ImageSource="Placeholder.png"/>
-                                                </Ellipse.Fill>
-                                            </Ellipse>
-                                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
-                                                <TextBlock Text="{Binding Name}"  Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" />
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Version}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
-                                                    <TextBlock Text="{Binding Author}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <!--Preset-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="PresetTextBlock" Text="Preset"/>
+                                    </StackPanel>
+                                    <!--リスト-->
+                                    <ListView
+                                        x:Name="presetTemplateList"
+                                        ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}" SelectionChanged="PresetTemplateList_SelectionChanged">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel
+                                                    Orientation="Horizontal" Height="64">
+                                                    <Ellipse Height="50" Width="50" VerticalAlignment="Center">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource="{Binding Thumbnail}"/>
+                                                        </Ellipse.Fill>
+                                                    </Ellipse>
+                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                        <TextBlock
+                                                            Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Name}" 
+                                                            Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" />
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding CreatedAtDateFormat}"
+                                                                Padding="0,0,5,0"/>
+                                                            <TextBlock
+                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Author}"/>
+                                                        </StackPanel>
+                                                        <TextBlock
+                                                            Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Description}" />
+                                                    </StackPanel>
                                                 </StackPanel>
-                                            </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <!--My Template-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="mysetTextBlock" Text="My Templates"/>
+                                    </StackPanel>
+                                    <!--保存-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Style="{ThemeResource AccentButtonStyle}"
+                                                x:Uid="saveButton" Content="Save"
+                                                ToolTipService.ToolTip="comming soon..."/>
+                                            <Button
+                                                Style="{ThemeResource ButtonRevealStyle}" x:Uid="exportButton" Content="Export"
+                                                ToolTipService.ToolTip="comming soon..."/>
+                                            <Button
+                                                Style="{ThemeResource ButtonRevealStyle}" x:Uid="importButton" Content="Import"
+                                                ToolTipService.ToolTip="comming soon..."/>
                                         </StackPanel>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                    </StackPanel>
+                                    <!--リスト-->
+                                    <ListView
+                                        x:Name="templateList"
+                                        ItemsSource="{x:Bind vm.TemplateList, Mode=TwoWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel
+                                                    Orientation="Horizontal" Height="64">
+                                                    <Ellipse Height="48" Width="48" VerticalAlignment="Center">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource="{Binding Thumbnail}"/>
+                                                        </Ellipse.Fill>
+                                                    </Ellipse>
+                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                        <TextBlock
+                                                            Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Name}" 
+                                                            Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" />
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding CreatedAtDateFormat}"
+                                                                Padding="0,0,5,0"/>
+                                                            <TextBlock
+                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Author}"/>
+                                                        </StackPanel>
+                                                        <TextBlock
+                                                            Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Description}" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackPanel>
+                            </ScrollViewer>
                         </PivotItem>
                         <!--背景-->
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="HoloLens MDL2 Assets" Glyph="&#xE7AA;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="backgroundTitle" Text="Background"/>
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="HoloLens MDL2 Assets" Glyph="&#xE7AA;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="backgroundTextBlock" Text="Background"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--背景-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="backgroundTextBlock" Text="Background"/>
+                                    </StackPanel>
                                     <!--色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -203,7 +316,7 @@
                                     </StackPanel>
                                     <!--画像-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <ToggleSwitch 
                                             x:Uid="imageToggle" Header="Image"
                                             x:Name="backgroundImageDisplayToggle" OffContent="Off" OnContent="On"
@@ -221,23 +334,26 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0B4;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="clockFaceTitle" Text="Face"/>
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0B4;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="clockFaceTitle" Text="Dial"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="scaleLabel" Text="Scale"/>
                                     <!--目盛り-->
-                                    <ToggleSwitch
-                                        x:Name="scaleDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="scaleLabel" Text="Scale"/>
+                                        <ToggleSwitch
+                                            x:Name="scaleDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.IsScaleDisplay, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--目盛りの色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -260,7 +376,7 @@
                                     </StackPanel>
                                     <!--目盛りの数-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="countLabel" Text="Count" />
                                         <StackPanel Orientation="Horizontal">
@@ -277,7 +393,7 @@
                                     </StackPanel>
                                     <!--目盛りの半径-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -294,7 +410,7 @@
                                     </StackPanel>
                                     <!--目盛りの長さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
@@ -311,7 +427,7 @@
                                     </StackPanel>
                                     <!--目盛りの太さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
@@ -327,18 +443,21 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--一部目盛り-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingSubTitleTextBlockStyle}"
-                                        x:Uid="alterScaleLabel" Text="Alter Scale" />
-                                    <ToggleSwitch
-                                        x:Uid="alterScaleToggle" 
-                                        x:Name="alterScaleDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
-                                        IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="alterScaleLabel" Text="Alter Scale" />
+                                        <ToggleSwitch
+                                            x:Uid="alterScaleToggle" 
+                                            x:Name="alterScaleDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
+                                            IsOn="{x:Bind vm.IsAlterScale, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--一部目盛り間隔-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="intervalLabel" Text="Interval" />
                                         <StackPanel Orientation="Horizontal">
@@ -356,7 +475,7 @@
                                     </StackPanel>
                                     <!--一部目盛りの半径-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -373,7 +492,7 @@
                                     </StackPanel>
                                     <!--一部目盛りの長さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
@@ -390,7 +509,7 @@
                                     </StackPanel>
                                     <!--一部目盛りの太さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
@@ -406,16 +525,19 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--インデックス-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="indexLabel" Text="Index"/>
-                                    <ToggleSwitch
-                                        x:Name="indexDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="indexLabel" Text="Index"/>
+                                        <ToggleSwitch
+                                            x:Name="indexDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.IsIndexDisplay, Mode=TwoWay}"/>
+                                    </StackPanel>
                                     <!--インデックスタイプ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
@@ -427,7 +549,7 @@
                                     </StackPanel>
                                     <!--インデックスの色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -451,7 +573,7 @@
                                     </StackPanel>
                                     <!--インデックスの半径-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -468,7 +590,7 @@
                                     </StackPanel>
                                     <!--インデックスの長さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="lengthLabel" Text="Length" />
                                         <StackPanel Orientation="Horizontal">
@@ -485,7 +607,7 @@
                                     </StackPanel>
                                     <!--インデックスの太さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="thicknessLabel" Text="Thickness" />
                                         <StackPanel Orientation="Horizontal">
@@ -502,7 +624,7 @@
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
                                         <ComboBox
@@ -513,7 +635,7 @@
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" >
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
                                         <TextBlock
                                             x:Uid="fontSizeLabel" Text="Font Size"/>
                                         <StackPanel Orientation="Horizontal">
@@ -535,15 +657,25 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE001;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE001;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="clockHandsTitle" Text="Hands"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--時針分針-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="handsLabel" Text="Hour / Minute Hands"/>
+                                        <ToggleSwitch
+                                            x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--タイプ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="typeLabel" Text="Type" />
                                         <ComboBox
@@ -551,16 +683,9 @@
                                             ItemsSource="{x:Bind vm.HandsTypeList}"
                                             SelectedIndex="{x:Bind vm.HandsType,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
                                     </StackPanel>
-                                    <!--時針分針-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="handsLabel" Text="Hour / Minute Hands"/>
-                                    <ToggleSwitch
-                                        x:Name="handsDisplayToggle" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsHandsDisplay, Mode=TwoWay}" />
                                     <!--時針分針の色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -581,12 +706,16 @@
                                             </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
-                                    <!--境界線の色-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingSubTitleTextBlockStyle}"
-                                        x:Uid="borderLabel" Text="Boder"/>
+                                    <!--境界線-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="borderLabel" Text="Boder"/>
+                                    </StackPanel>
+                                    <!--境界線の色-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -609,7 +738,7 @@
                                     </StackPanel>
                                     <!--境界線の太さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
@@ -625,15 +754,18 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--秒針-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="secondHandLabel" Text="Second Hand"/>
-                                    <ToggleSwitch
-                                        x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="secondHandLabel" Text="Second Hand"/>
+                                        <ToggleSwitch
+                                            x:Name="secondHandDisplayToggle" OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsSecondHandDisplay, Mode=TwoWay}" />
+                                    </StackPanel>
                                     <!--秒針の色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -661,23 +793,26 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC92;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEC92;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="dayDateTitle" Text="Day Date"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="dateDisplayLabel" Text="Day Date"/>
-                                    <ToggleSwitch 
-                                        x:Uid="dateDisplayToggle"
-                                        x:Name="dateDisplayToggle" 
-                                        OffContent="Off" OnContent="On"
-                                        IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
-                                   <!--色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="dateDisplayLabel" Text="Day Date"/>
+                                        <ToggleSwitch 
+                                            x:Uid="dateDisplayToggle"
+                                            x:Name="dateDisplayToggle" 
+                                            OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <!--色-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -700,7 +835,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
                                         <StackPanel Orientation="Horizontal">
@@ -732,7 +867,7 @@
                                     </StackPanel>
                                     <!--サイズ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size"/>
                                         <StackPanel Orientation="Horizontal">
@@ -763,12 +898,15 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--境界線-->
-                                    <TextBlock
-                                         Style="{StaticResource SettingSubTitleTextBlockStyle}"
-                                        x:Uid="borderLabel" Text="Border"/>
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="borderLabel" Text="Border"/>
+                                    </StackPanel>
                                     <!--境界線の色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -791,7 +929,7 @@
                                     </StackPanel>
                                     <!--境界線の太さ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
                                         <StackPanel Orientation="Horizontal">
@@ -807,12 +945,15 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <!--フォント-->
-                                    <TextBlock
-                                        Style="{StaticResource SettingSubTitleTextBlockStyle}"
-                                        x:Uid="fontLabel" Text="Font"/>
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="fontLabel" Text="Font"/>
+                                    </StackPanel>
                                     <!--フォントの色-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
                                         <Button
@@ -836,17 +977,26 @@
                                     </StackPanel>
                                     <!--フォーマット-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="formatLabel" Text="Format"/>
                                         <TextBox
                                             x:Name="dateDisplayFormatTextBox" Width="250"
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                            Text="{x:Bind vm.DesignConfig.DateFormat,Mode=TwoWay}"/>
+                                            Text="{x:Bind vm.DesignConfig.DateFormat,Mode=TwoWay}" FontFamily="Segoe UI">
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock>
+                                                    d -> 1<LineBreak/>
+                                                    dd -> 01<LineBreak />
+                                                    ddd -> Mon<LineBreak />
+                                                    dddd -> Monday
+                                                </TextBlock>
+                                            </ToolTipService.ToolTip>
+                                        </TextBox>
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
                                         <ComboBox
@@ -857,7 +1007,7 @@
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
                                         <StackPanel Orientation="Horizontal">
@@ -876,36 +1026,62 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--ムーン-->
+                        <!--
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTitle" Text="Lunar Phase"/>
                                 </StackPanel>
                             </PivotItem.Header>
+                            <TextBlock></TextBlock>
                         </PivotItem>
+                        -->
                         <!--About-->
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="aboutAppTitle" Text="About App"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
-                                    <TextBlock
-                                        Style="{StaticResource SettingTitleTextBlockStyle}"
-                                        x:Uid="appVersion" Text="App Version"/>
+                                    <!--アプリバージョン-->
                                     <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{x:Bind vm.AppName,Mode=OneTime}"/>
-                                            <TextBlock Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="appVersion" Text="App Version"/>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel>
+                                            <TextBlock
+                                                Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    Style="{ThemeResource DescriptionTextBlock}"
+                                                    Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
+                                            </StackPanel>
                                         </StackPanel>
-                                        <TextBlock TextWrapping="WrapWholeWords">
-                                            <Span xml:space="preserve">siamcats - <Hyperlink NavigateUri="https://twitter.com/siamcats">twitter</Hyperlink></Span>
-                                        </TextBlock>
+                                    </StackPanel>
+                                    <!--クレジット-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="creditsTextBlock" Text="Credits"/>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind vm.AppAuthor,Mode=OneTime}" Padding="0,0,5,0"/>
+                                            <TextBlock TextWrapping="WrapWholeWords">
+                                                <Hyperlink NavigateUri="https://twitter.com/siamcats">twitter</Hyperlink>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Style="{ThemeResource DescriptionTextBlock}" Text="thank you for using this app."/>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>

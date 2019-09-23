@@ -55,7 +55,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// Settingsオブジェクトをアプリ設定に反映
+        /// Settingsオブジェクトをアプリに反映
         /// </summary>
         public async void ImportSettingsAsync(Settings settings)
         {
@@ -67,6 +67,7 @@ namespace iBuki
                 try
                 {
                     var bitmap = new BitmapImage();
+                    //var
                     var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_LOCAL + Const.FILE_BACKGROUND));
                     using (var stream = await file.OpenReadAsync())
                     {
@@ -74,7 +75,7 @@ namespace iBuki
                     }
                     DesignConfig.BackgroundImage = bitmap;
                 }
-                catch (FileNotFoundException e)
+                catch (FileNotFoundException)
                 {
                     Debug.WriteLine(Const.URI_LOCAL + Const.FILE_BACKGROUND + " Not Found");
                 }
@@ -139,6 +140,7 @@ namespace iBuki
                 DesignConfig.DateWidth = settings.DateWidth;
                 DesignConfig.DateHeight = settings.DateHeight;
                 DesignConfig.DateBorderColor = ConvertHexColor(settings.DateBorderColor);
+                DesignConfig.DateBorderThickness = settings.DateBorderThickness;
                 DesignConfig.DateFontColor = ConvertHexColor(settings.DateFontColor);
                 DesignConfig.DateFormat = settings.DateFormat;
                 DesignConfig.DateFontFamily = settings.DateFontFamily;
@@ -147,7 +149,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// アプリ設定をSettingsオブジェクトへ書き出し
+        /// 現在のアプリの設定をSettingsオブジェクトへ書き出し
         /// </summary>
         public Settings ExportSettings(string name, string author, string version)
         {
@@ -221,6 +223,7 @@ namespace iBuki
                 settings.DateWidth = DesignConfig.DateWidth;
                 settings.DateHeight = DesignConfig.DateHeight;
                 settings.DateBorderColor = DesignConfig.DateBorderColor.ToString();
+                settings.DateBorderThickness = DesignConfig.DateBorderThickness;
                 settings.DateFontColor = DesignConfig.DateFontColor.ToString();
                 settings.DateFormat = DesignConfig.DateFormat;
                 settings.DateFontFamily = DesignConfig.DateFontFamily;
@@ -238,11 +241,15 @@ namespace iBuki
 
         public string AppName = Const.GetAppName();
 
+        public string AppAuthor = Const.GetAppAuthor();
+
         #endregion
 
         #region Template
 
-        public List<Settings> DefaultTemplateList = new List<Settings>();
+        public List<Settings> PresetTemplateList = new List<Settings>() { };
+
+        public List<Settings> TemplateList = new List<Settings>() { };
 
         #endregion
 
@@ -428,19 +435,14 @@ namespace iBuki
 
         private Color ConvertHexColor(string hexCode)
         {
-            try
-            {
-                hexCode = hexCode.Replace("#", string.Empty);
-                byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
-                byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
-                byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
-                byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
-                return Color.FromArgb(a, r, g, b);
-            }
-            catch (Exception)
-            {
-                return Color.FromArgb(255, 255, 255, 255);
-            }
+            if(string.IsNullOrEmpty(hexCode)||!hexCode.Contains("#")) return Color.FromArgb(255, 255, 255, 255);
+            hexCode = hexCode.Replace("#", string.Empty);
+            if(hexCode.Length!=8) return Color.FromArgb(255, 255, 255, 255);
+            byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
+            byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
+            byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
+            byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
+            return Color.FromArgb(a, r, g, b);
         }
 
         private string GetAppVersion()

@@ -24,10 +24,7 @@ using Windows.UI.Xaml.Markup;
 using Windows.Storage.Pickers;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using Windows.Storage.Streams;
-using Windows.Graphics.Imaging;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Collections.Generic;
+using Windows.ApplicationModel;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -63,6 +60,7 @@ namespace iBuki
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DebugLocalFolder();
             SetTitleBar();
 
             // イベントハンドラの設定
@@ -74,6 +72,9 @@ namespace iBuki
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
+            // プリセットテンプレートの読み取り
+            GetAssetsTheme();
+
             // 設定の読み込み・反映
             /// クリップ状態
             if (vm.AppConfig.IsTopMost)
@@ -81,25 +82,16 @@ namespace iBuki
             else
             { StopOverlay(); }
             /// デザイン
-            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Const.THEME_CURRENT))
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Const.KEY_CURRENT_SETTINGS))
             {
-                var json = (string)ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT];
+                var json = (string)ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS];
                 vm.ImportSettingsAsync(Deserialize(json));
             }
             else
             {
                 // 保存された設定がなければAssetsのデフォルトテーマを使用
-                ImportAssetsTheme(Const.THEME_DEFAULT);
                 Debug.WriteLine("起動時初期値");
             }
-
-            // デフォルトテンプレートの読み取り
-            GetTemplatesFromAssets();
-            var items = new List<Settings>();
-            items.Add(new Settings() { Name = "John Doe", Version = "42", Author = "john@doe-family.com" });
-            items.Add(new Settings() { Name = "Jane Doe", Version = "39", Author = "jane@doe-family.com" });
-            items.Add(new Settings() { Name = "Sammy Doe", Version = "13", Author = "sammy.doe@gmail.com" });
-            templateList.ItemsSource = items;
         }
 
         /// <summary>
@@ -107,13 +99,12 @@ namespace iBuki
         /// </summary>
         private void OnResuming(object sender, object e)
         {
-            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Const.THEME_CURRENT))
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(Const.KEY_CURRENT_SETTINGS))
             {
-                var json = (string)ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT];
+                var json = (string)ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS];
                 vm.ImportSettingsAsync(Deserialize(json));
             }
             // 設定がなければAssetsのデフォルトテーマを使用
-            ImportAssetsTheme(Const.THEME_DEFAULT);
         }
 
         /// <summary>
@@ -121,10 +112,10 @@ namespace iBuki
         /// </summary>
         private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            var settings = vm.ExportSettings(Const.THEME_CURRENT, Const.THEME_CURRENT, Const.GetAppVersion());
+            var settings = vm.ExportSettings(Const.KEY_CURRENT_SETTINGS, Const.KEY_CURRENT_SETTINGS, Const.GetAppVersion());
             var json = Serialize(settings);
             Debug.WriteLine("終了時保存 - " + json);
-            ApplicationData.Current.LocalSettings.Values[Const.THEME_CURRENT] = json;
+            ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS] = json;
         }
 
         /// <summary>
@@ -163,7 +154,7 @@ namespace iBuki
         private void Timer_Tick(object sender, object e)
         {
             var localDate = DateTime.Now;
-            //var localDate = DateTime.Parse("2019/12/12 10:08:42");
+            //var localDate = DateTime.Parse("2019/12/12 10:08:37");
             //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
@@ -193,6 +184,9 @@ namespace iBuki
 
         private double CalcAngleSecond(DateTime now)
         {
+            var movement = vm.AppConfig.Movement;
+            if (movement == Movement.Chronograph) return 0;
+
             var ss = Convert.ToDecimal(now.ToString("ss"));
             var fff = Convert.ToDecimal(now.ToString("fff"));
             //var angle = 6 * ss;
@@ -252,77 +246,55 @@ namespace iBuki
         }
 
         /// <summary>
-        /// Assetからの設定取り出し
+        /// Assetsのテンプレートファイルをローカルに保存＆テンプレートリスト表示
         /// </summary>
-        /// <param name="name"></param>
-        private async void ImportAssetsTheme(string name)
+        private async void GetAssetsTheme()
         {
-            string json = "";
+            var installedFolder = Package.Current.InstalledLocation;
+            var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
+            var ThemesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_THEMES);
+            var ThemesFolderList = await ThemesFolder.GetFoldersAsync();
 
-            // 設定ファイル
-            try
+            foreach (var folder in ThemesFolderList)
             {
-                var settingFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS));
-                json = await FileIO.ReadTextAsync(settingFile);
-            }
-            catch (FileNotFoundException e)
-            {
-                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS + " Not Found");
-            }
-            var settings = Deserialize(json);
+                // LocalFolderを作る
+                var localFolder = ApplicationData.Current.LocalFolder;
+                var existFolder = await localFolder.TryGetItemAsync(folder.Name);
+                if (existFolder == null)
+                {
+                    await localFolder.CreateFolderAsync(folder.Name);
+                }
+                var localTemplateFolder = await localFolder.GetFolderAsync(folder.Name);
 
-            // 画像ファイル
-            try
-            {
+                // 設定ファイル→SettingsObj化
+                var settingFile = await folder.GetFileAsync(Const.FILE_SETTINGS);
+                var json = await FileIO.ReadTextAsync(settingFile);
+                var settings = Deserialize(json);
+
+                // サムネイル画像→SettingsObj化
+                var bitmap = new BitmapImage();
+                var thumbFile = await folder.GetFileAsync(Const.FILE_THUMBNAIL);
+                using (var stream = await thumbFile.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                settings.Thumbnail = bitmap;
+                vm.PresetTemplateList.Add(settings);
+
+                // 背景画像→LocalFolder/テーマ名/配下に配置する（重いからObj化は駄目）
                 if (settings.BackgroundImageDisplay)
                 {
-                    var bgimageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND));
-                    var bgimageFileCopied = await bgimageFile.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                    try
+                    {
+                        var bgFile = await folder.GetFileAsync(Const.FILE_BACKGROUND);
+                        var bgFileCopied = await bgFile.CopyAsync(localTemplateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                    }
+                    catch (FileNotFoundException e)
+                    {
+                        Debug.WriteLine(e.FileName);
+                    }
                 }
             }
-            catch (FileNotFoundException e)
-            {
-                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND + " Not Found");
-            }
-
-            vm.ImportSettingsAsync(settings);
-        }
-
-        /// <summary>
-        /// Assetから設定取り出し
-        /// </summary>
-        private async void GetTemplatesFromAssets()
-        {
-            var name = "Station";
-            string json = "";
-
-            // 設定ファイル
-            try
-            {
-                var settingFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS));
-                json = await FileIO.ReadTextAsync(settingFile);
-            }
-            catch (FileNotFoundException e)
-            {
-                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_SETTINGS + " Not Found");
-            }
-            var settings = Deserialize(json);
-
-            // 画像ファイル
-            try
-            {
-                if (settings.BackgroundImageDisplay)
-                {
-                    var bgimageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND));
-                    var bgimageFileCopied = await bgimageFile.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
-                }
-            }
-            catch (FileNotFoundException e)
-            {
-                Debug.WriteLine(Const.URI_ASSETS + name + "/" + Const.FILE_BACKGROUND + " Not Found");
-            }
-
-            vm.DefaultTemplateList.Add(settings);
         }
 
         /// <summary>
@@ -402,14 +374,8 @@ namespace iBuki
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
-        private void TemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var item = templateList.SelectedItem as string;
-            ImportAssetsTheme(item);
-        }
-
         /// <summary>
-        ///  タイトルバーの設定を行う
+        ///  ウィンドウタイトルバーの設定
         /// </summary>
         private void SetTitleBar()
         {
@@ -424,11 +390,68 @@ namespace iBuki
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             appTitleBar.ButtonBackgroundColor = Colors.Transparent;
             appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonInactiveForegroundColor = Colors.Transparent; //効かないっぽい
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
 
             Window.Current.SetTitleBar(moveButton);
             Window.Current.Activated += Current_Activated;
+        }
+
+        private async void DebugLocalFolder()
+        {
+
+            var localfiles = await ApplicationData.Current.LocalFolder.GetFilesAsync();
+
+
+            Debug.WriteLine("★localFile");
+            foreach (StorageFile file in localfiles)
+            {
+                Debug.WriteLine(file.Name);
+            }
+
+
+            var localfolders = await ApplicationData.Current.LocalFolder.GetFoldersAsync();
+
+            Debug.WriteLine("★localFolder");
+            foreach (StorageFolder folder in localfolders)
+            {
+                Debug.WriteLine(folder.Name);
+            }
+
+            StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            StorageFolder assets = await appInstalledFolder.GetFolderAsync("Assets");
+            var assetsfiles = await assets.GetFoldersAsync();
+
+
+            Debug.WriteLine("★AssetsFolder");
+            for (int i = 0; i < assetsfiles.Count; i++)
+            {
+                // do something with the name of each file
+                Debug.WriteLine(assetsfiles[i].Name);
+            }
+        }
+
+        private async void PresetTemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var settings = presetTemplateList.SelectedItem as Settings;
+
+            if (settings.BackgroundImageDisplay)
+            {
+                try
+                {
+                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    var templateFolder = await localFolder.GetFolderAsync(settings.Name);
+                    var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+                    await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Debug.WriteLine(ex.FileName);
+                }
+            }
+            vm.ImportSettingsAsync(settings);
         }
     }
 }

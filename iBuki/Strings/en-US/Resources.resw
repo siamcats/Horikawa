@@ -118,15 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="aboutAppTitle.Text" xml:space="preserve">
-    <value>About App</value>
+    <value>About</value>
   </data>
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>Alter Scale</value>
   </data>
+  <data name="appConfigTextBlock.Text" xml:space="preserve">
+    <value>App Config</value>
+  </data>
+  <data name="appVersion.Text" xml:space="preserve">
+    <value>App Version</value>
+  </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>Arabic</value>
   </data>
-  <data name="backgroundTitle.Text" xml:space="preserve">
+  <data name="backgroundTextBlock.Text" xml:space="preserve">
     <value>Background</value>
   </data>
   <data name="barHandEnum" xml:space="preserve">
@@ -140,6 +146,9 @@
   </data>
   <data name="breguetHandEnum" xml:space="preserve">
     <value>Breguet</value>
+  </data>
+  <data name="clockConfigTextBlock.Text" xml:space="preserve">
+    <value>Clock Config</value>
   </data>
   <data name="clockFaceTitle.Text" xml:space="preserve">
     <value>Dial</value>
@@ -222,6 +231,9 @@
   <data name="movementLabel.Text" xml:space="preserve">
     <value>Movement</value>
   </data>
+  <data name="PresetTextBlock.Text" xml:space="preserve">
+    <value>Preset</value>
+  </data>
   <data name="quartzButton.Content" xml:space="preserve">
     <value>Quartz</value>
   </data>
@@ -251,5 +263,14 @@
   </data>
   <data name="typeLabel.Text" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="mysetTextBlock.Text" xml:space="preserve">
+    <value>My Templates</value>
+  </data>
+  <data name="chronographButton.Content" xml:space="preserve">
+    <value>Chronograph</value>
+  </data>
+  <data name="creditsTextBlock.Text" xml:space="preserve">
+    <value>Credits</value>
   </data>
 </root>

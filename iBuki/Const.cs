@@ -32,17 +32,24 @@ namespace iBuki
         public static string GetAppAuthor()
         {
             var package = Package.Current;
-            var packageId = package.Id;
-            var author = packageId.Author;
+            var author = package.PublisherDisplayName;
             return author;
         }
 
-        public static readonly string THEME_CURRENT = "CurrentSettings";
-        public static readonly string THEME_DEFAULT = "Default";
+        public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings";
+
+        public static readonly List<string> TEMPLATE_LIST = new List<string>()
+        {
+            "Default","Station","Portofino"
+        };
 
         public static readonly string URI_ASSETS = "ms-appx:///Assets/Themes/";
         public static readonly string URI_LOCAL = "ms-appdata:///local/";
+
+        public static readonly string FOLDER_ASSETS = "Assets";
+        public static readonly string FOLDER_THEMES = "Themes";
         public static readonly string FILE_SETTINGS = "Settings.json";
+        public static readonly string FILE_THUMBNAIL = "Thumbnail.png";
         public static readonly string FILE_BACKGROUND = "Background.png";
     }
 }
