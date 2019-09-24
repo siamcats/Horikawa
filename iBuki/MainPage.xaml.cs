@@ -246,7 +246,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// Assetsのテンプレートファイルをローカルに保存＆テンプレートリスト表示
+        /// Assetsのテンプレートファイルをテンプレートリストに反映
         /// </summary>
         private async void GetAssetsTheme()
         {

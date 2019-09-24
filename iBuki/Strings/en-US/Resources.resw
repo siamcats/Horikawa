@@ -273,4 +273,10 @@
   <data name="creditsTextBlock.Text" xml:space="preserve">
     <value>Credits</value>
   </data>
+  <data name="importTemplateTextBlock.Text" xml:space="preserve">
+    <value>Import from template file.</value>
+  </data>
+  <data name="saveTemplateTextBlock.Text" xml:space="preserve">
+    <value>Save current setting as template.</value>
+  </data>
 </root>

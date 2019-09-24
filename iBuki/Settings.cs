@@ -9,13 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace iBuki
 {
     [DataContract]
-    public class Settings : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    public class Settings { 
 
         [DataMember]
         public string Name { get; set; }

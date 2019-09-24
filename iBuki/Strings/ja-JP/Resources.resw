@@ -273,4 +273,10 @@
   <data name="creditsTextBlock.Text" xml:space="preserve">
     <value>クレジット</value>
   </data>
+  <data name="importTemplateTextBlock.Text" xml:space="preserve">
+    <value>テンプレートファイルをインポートします。</value>
+  </data>
+  <data name="saveTemplateTextBlock.Text" xml:space="preserve">
+    <value>現在の設定をテンプレートとして保存します。</value>
+  </data>
 </root>

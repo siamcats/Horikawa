@@ -69,6 +69,10 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
         </Style>
+        <Style x:Key="FlyoutStyle" TargetType="FlyoutPresenter">
+            <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+        </Style>
     </Page.Resources>
 
 
@@ -222,25 +226,37 @@
                                     <!--My Template-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
-                                        <TextBlock
-                                            Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="mysetTextBlock" Text="My Templates"/>
-                                    </StackPanel>
-                                    <!--保存-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button
-                                                Style="{ThemeResource AccentButtonStyle}"
-                                                x:Uid="saveButton" Content="Save"
-                                                ToolTipService.ToolTip="comming soon..." Tapped="Button_Tapped"/>
-                                            <Button
-                                                Style="{ThemeResource ButtonRevealStyle}" x:Uid="exportButton" Content="Export"
-                                                ToolTipService.ToolTip="comming soon..."/>
-                                            <Button
-                                                Style="{ThemeResource ButtonRevealStyle}" x:Uid="importButton" Content="Import"
-                                                ToolTipService.ToolTip="comming soon..."/>
-                                        </StackPanel>
+                                        <Grid Height="Auto" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="mysetTextBlock" Text="My Templates"
+                                                Padding="0,0,80,0"
+                                                Grid.Column="0"/>
+                                            <!--template add-->
+                                            <StackPanel
+                                                Orientation="Horizontal" HorizontalAlignment="Right"
+                                                Grid.Column="1">
+                                                <Button
+                                                    Style="{ThemeResource TextBlockButtonStyle}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
+                                                    </ToolTipService.ToolTip>
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
+                                                </Button>
+                                                <Button
+                                                    IsEnabled="false"
+                                                    Style="{ThemeResource TextBlockButtonStyle}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="importTemplateTextBlock" Text="Import template file."/>
+                                                    </ToolTipService.ToolTip>
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED25;" />
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
                                     </StackPanel>
                                     <!--リスト-->
                                     <ListView
@@ -274,6 +290,10 @@
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}"
+                                        Orientation="Horizontal">
+                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
