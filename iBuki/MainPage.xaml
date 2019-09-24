@@ -190,7 +190,8 @@
                                     <ListView
                                         x:Name="presetTemplateList"
                                         ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
-                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}" SelectionChanged="PresetTemplateList_SelectionChanged">
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        SelectionChanged="PresetTemplateList_SelectionChanged">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel
@@ -232,7 +233,7 @@
                                             <Button
                                                 Style="{ThemeResource AccentButtonStyle}"
                                                 x:Uid="saveButton" Content="Save"
-                                                ToolTipService.ToolTip="comming soon..."/>
+                                                ToolTipService.ToolTip="comming soon..." Tapped="Button_Tapped"/>
                                             <Button
                                                 Style="{ThemeResource ButtonRevealStyle}" x:Uid="exportButton" Content="Export"
                                                 ToolTipService.ToolTip="comming soon..."/>

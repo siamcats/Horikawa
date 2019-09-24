@@ -18,6 +18,7 @@ using Windows.Storage;
 using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace iBuki
 {
@@ -157,7 +158,7 @@ namespace iBuki
             settings.Name = name;
             settings.Author = author;
             settings.Version = version;
-            settings.TargetAppVersion = GetAppVersion();
+            settings.TargetAppVersion = Const.GetAppVersion();
             settings.BackgroundColor = DesignConfig.BackgroundColor.ToString();
             settings.BackgroundImageDisplay = DesignConfig.IsBackgroundImageDisplay;
             if (DesignConfig.IsBackgroundImageDisplay)
@@ -247,9 +248,9 @@ namespace iBuki
 
         #region Template
 
-        public List<Settings> PresetTemplateList = new List<Settings>() { };
+        public ObservableCollection<Settings> PresetTemplateList = new ObservableCollection<Settings>();
 
-        public List<Settings> TemplateList = new List<Settings>() { };
+        public ObservableCollection<Settings> TemplateList = new ObservableCollection<Settings>();
 
         #endregion
 
@@ -443,12 +444,6 @@ namespace iBuki
             byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
             byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
             return Color.FromArgb(a, r, g, b);
-        }
-
-        private string GetAppVersion()
-        {
-            var version = Package.Current.Id.Version;
-            return version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision;
         }
 
     }

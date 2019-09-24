@@ -453,5 +453,10 @@ namespace iBuki
             }
             vm.ImportSettingsAsync(settings);
         }
+
+        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            vm.PresetTemplateList.Add(new Settings() { Name = "test2", Author = "lade" });
+        }
     }
 }

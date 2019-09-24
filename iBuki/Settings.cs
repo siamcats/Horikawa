@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
@@ -7,8 +9,13 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace iBuki
 {
     [DataContract]
-    public class Settings
+    public class Settings : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         [DataMember]
         public string Name { get; set; }
@@ -152,6 +159,7 @@ namespace iBuki
 
         public string CreatedAtDateFormat { get
             {
+                if (CreatedAt == null) return "";
                 var datetime = DateTime.Parse(CreatedAt);
                 return datetime.ToString("yyyy-MM-dd");
             }
