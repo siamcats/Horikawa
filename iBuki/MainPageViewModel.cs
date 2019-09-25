@@ -152,13 +152,14 @@ namespace iBuki
         /// <summary>
         /// 現在のアプリの設定をSettingsオブジェクトへ書き出し
         /// </summary>
-        public Settings ExportSettings(string name, string author, string version)
+        public Settings ExportSettings(string name, string author, string description = "" )
         {
             var settings = new Settings();
             settings.Name = name;
             settings.Author = author;
-            settings.Version = version;
-            settings.TargetAppVersion = Const.GetAppVersion();
+            settings.Description = description;
+            settings.CreatedAt = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:sszzz");
+            settings.TargetAppVersion = Const.APP_VERSION;
             settings.BackgroundColor = DesignConfig.BackgroundColor.ToString();
             settings.BackgroundImageDisplay = DesignConfig.IsBackgroundImageDisplay;
             if (DesignConfig.IsBackgroundImageDisplay)
@@ -238,7 +239,7 @@ namespace iBuki
 
         public List<string> LanguageList = Const.LANGUAGE_LIST;
 
-        public string AppVersion = Const.GetAppVersion();
+        public string AppVersion = Const.APP_VERSION;
 
         public string AppName = Const.GetAppName();
 

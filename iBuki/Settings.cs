@@ -17,6 +17,9 @@ namespace iBuki
         [DataMember]
         public string Description { get; set; }
 
+        /// <summary>
+        /// ISO 8601 Format(2019-09-22T00:00Z)
+        /// </summary>
         [DataMember]
         public string CreatedAt { get; set; }
 

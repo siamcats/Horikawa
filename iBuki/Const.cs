@@ -14,12 +14,14 @@ namespace iBuki
             "jp-JP"
         };
 
-        public static string GetAppVersion()
-        {
-            var package = Package.Current;
-            var packageId = package.Id;
-            var version = packageId.Version;
-            return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+        public static string APP_VERSION {
+            get
+            {
+                var package = Package.Current;
+                var packageId = package.Id;
+                var version = packageId.Version;
+                return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+            }
         }
 
         public static string GetAppName()
@@ -37,11 +39,6 @@ namespace iBuki
         }
 
         public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings";
-
-        public static readonly List<string> TEMPLATE_LIST = new List<string>()
-        {
-            "Default","Station","Portofino"
-        };
 
         public static readonly string URI_ASSETS = "ms-appx:///Assets/Themes/";
         public static readonly string URI_LOCAL = "ms-appdata:///local/";

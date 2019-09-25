@@ -17,6 +17,7 @@
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
         <local:DecimalTruncateConveter x:Key="Truncate" />
+        <!--ピボットメニュー-->
         <Style TargetType="PivotItem">
             <Setter Property="Margin" Value="0,5,0,0"/>
         </Style>
@@ -26,6 +27,7 @@
         <Style x:Key="PivotFontIconStyle" TargetType="FontIcon">
             <Setter Property="FontSize" Value="24"/>
         </Style>
+        <!--設定項目-->
         <Style x:Key="SettingTitleTextBlockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="20"/>
         </Style>
@@ -44,6 +46,7 @@
             <!--<Setter Property="Margin" Value="0,1,0,1"/>-->
             <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
         </Style>
+        <!--設定項目コントロール-->
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="0,0,0,5"/>
         </Style>
@@ -57,21 +60,30 @@
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderThemeBrush}"/>
         </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,0,0,5"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-        </Style>
         <Style x:Key="SliderStyle" TargetType="Slider">
             <Setter Property="Width" Value="210"/>
             <Setter Property="TickPlacement" Value="Outside"/>
         </Style>
-        <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
-        <Style x:Key="FlyoutStyle" TargetType="FlyoutPresenter">
-            <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicWindowBrush}"/>
-            <Setter Property="BorderThickness" Value="0.5"/>
+        <!--テンプレートリスト-->
+        <Style x:Key="NameTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+        </Style>
+        <Style x:Key="DescriptionTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+        <Style x:Key="AuthorTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinHeight" Value="14"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="5,1,5,2"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
     </Page.Resources>
 
@@ -207,17 +219,16 @@
                                                     </Ellipse>
                                                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
                                                         <TextBlock
-                                                            Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Name}" 
-                                                            Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" />
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
                                                         <StackPanel Orientation="Horizontal">
                                                             <TextBlock
-                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding CreatedAtDateFormat}"
-                                                                Padding="0,0,5,0"/>
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
+                                                                Padding="0,0,8,0"/>
                                                             <TextBlock
-                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Author}"/>
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
                                                         </StackPanel>
                                                         <TextBlock
-                                                            Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Description}" />
+                                                            Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
                                                     </StackPanel>
                                                 </StackPanel>
                                             </DataTemplate>
@@ -234,21 +245,20 @@
                                             <TextBlock
                                                 Style="{StaticResource SettingTitleTextBlockStyle}"
                                                 x:Uid="mysetTextBlock" Text="My Templates"
-                                                Padding="0,0,80,0"
-                                                Grid.Column="0"/>
-                                            <!--template add-->
+                                                Padding="0,0,80,0" Grid.Column="0"/>
+                                            <!--add template button-->
                                             <StackPanel
-                                                Orientation="Horizontal" HorizontalAlignment="Right"
-                                                Grid.Column="1">
-                                                <Button
+                                                Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                                                <ToggleButton
+                                                    x:Name="saveTemplateToggleButton"
                                                     Style="{ThemeResource TextBlockButtonStyle}">
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
                                                     </ToolTipService.ToolTip>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
-                                                </Button>
+                                                </ToggleButton>
                                                 <Button
-                                                    IsEnabled="false"
+                                                    x:Name="importTemplateButton" IsEnabled="false"
                                                     Style="{ThemeResource TextBlockButtonStyle}">
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="importTemplateTextBlock" Text="Import template file."/>
@@ -258,42 +268,86 @@
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
+                                    <!--保存パネル-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingPanelStyle}" Orientation="Horizontal"
+                                        Visibility="{x:Bind saveTemplateToggleButton.IsChecked,Converter={StaticResource Visibility},Mode=OneWay}">
+                                        <StackPanel Width="225" Margin="0,0,5,0">
+                                            <TextBox
+                                                x:Name="inputNameTextBox"
+                                                PlaceholderText="Template Name"
+                                                Style="{StaticResource AuthorTextBoxStyle}"/>
+                                            <TextBox
+                                                x:Name="inputAuthorTextBox"
+                                                PlaceholderText="Author"
+                                                Style="{StaticResource AuthorTextBoxStyle}"/>
+                                            <TextBox
+                                                x:Name="inputDescriptionTextBox"
+                                                PlaceholderText="Description"
+                                                Style="{StaticResource AuthorTextBoxStyle}"/>
+                                        </StackPanel>
+                                        <Button
+                                            x:Name="saveTemplateButton" x:Uid="saveButton" Content="Save" 
+                                            VerticalAlignment="Bottom"
+                                            Style="{ThemeResource AccentButtonStyle}" Tapped="SaveTemplateButton_Tapped" />
+                                    </StackPanel>
                                     <!--リスト-->
                                     <ListView
                                         x:Name="templateList"
-                                        ItemsSource="{x:Bind vm.TemplateList, Mode=TwoWay}"
+                                        ItemsSource="{x:Bind vm.TemplateList, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel
-                                                    Orientation="Horizontal" Height="64">
-                                                    <Ellipse Height="48" Width="48" VerticalAlignment="Center">
+                                                <Grid Height="64">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Ellipse
+                                                        Grid.Column="0"
+                                                        Height="50" Width="50" VerticalAlignment="Center">
                                                         <Ellipse.Fill>
                                                             <ImageBrush ImageSource="{Binding Thumbnail}"/>
                                                         </Ellipse.Fill>
                                                     </Ellipse>
-                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                    <StackPanel
+                                                        Grid.Column="1"
+                                                        Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
                                                         <TextBlock
-                                                            Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding Name}" 
-                                                            Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" />
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
                                                         <StackPanel Orientation="Horizontal">
                                                             <TextBlock
-                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding CreatedAtDateFormat}"
-                                                                Padding="0,0,5,0"/>
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
+                                                                Padding="0,0,8,0"/>
                                                             <TextBlock
-                                                                Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Author}"/>
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
                                                         </StackPanel>
                                                         <TextBlock
-                                                            Style="{ThemeResource DescriptionTextBlock}" Text="{Binding Description}" />
+                                                            Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
                                                     </StackPanel>
-                                                </StackPanel>
+                                                    <StackPanel
+                                                        Grid.Column="0" Margin="-10,0,0,0"
+                                                        HorizontalAlignment="left" VerticalAlignment="Top" >
+                                                        <!--delete-->
+                                                        <Button
+                                                            x:Name="templateDeleteButton"
+                                                            Width="20" Height="20" Padding="0" Tapped="TemplateDeleteButton_Tapped">
+                                                            <Button.Content>
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" />
+                                                            </Button.Content>
+                                                        </Button>
+                                                        <!--export-->
+                                                        <Button
+                                                            Width="20" Height="20" Padding="0">
+                                                            <Button.Content>
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" />
+                                                            </Button.Content>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}"
-                                        Orientation="Horizontal">
-                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
@@ -579,17 +633,17 @@
                                             IsEnabled="{x:Bind indexDisplayToggle.IsOn,Mode=OneWay}"
                                             Background="{x:Bind vm.DesignConfig.IndexColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
                                             Tapped="ColorButton_Tapped">
-                                        <FlyoutBase.AttachedFlyout>
-                                            <Flyout Placement="Right">
-                                                <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
-                                                    <ColorPicker
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
                                                         x:Name="indexColorPicker"
                                                         IsColorChannelTextInputVisible="False"
                                                         IsColorSliderVisible="True"
                                                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=TwoWay}"/>
-                                                </Viewbox>
-                                            </Flyout>
-                                        </FlyoutBase.AttachedFlyout>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
                                         </Button>
                                     </StackPanel>
                                     <!--インデックスの半径-->
@@ -1082,7 +1136,7 @@
                                                 Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock
-                                                    Style="{ThemeResource DescriptionTextBlock}"
+                                                    Style="{StaticResource DescriptionTextBlockStyle}"
                                                     Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -1102,7 +1156,7 @@
                                                 <Hyperlink NavigateUri="https://twitter.com/siamcats">twitter</Hyperlink>
                                             </TextBlock>
                                         </StackPanel>
-                                        <TextBlock Style="{ThemeResource DescriptionTextBlock}" Text="thank you for using this app."/>
+                                        <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="thank you for using this app."/>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -1221,7 +1275,7 @@
                         StrokeThickness="{x:Bind vm.DesignConfig.HandsStrokeThickness,Mode=OneWay}"
                         Stroke="{x:Bind vm.DesignConfig.HandsStrokeColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <!--秒針-->
-                        <Path 
+                    <Path 
                             x:Name="secondHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
                             Margin="{x:Bind vm.SecondHand.Margin,Mode=OneWay}"
                             Width="{x:Bind vm.SecondHand.Width,Mode=OneWay}"
@@ -1229,12 +1283,12 @@
                             Data="{x:Bind vm.SecondHand.Data,Mode=OneWay}"
                             Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                             Fill="{x:Bind vm.DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
-                            <Path.RenderTransform>
-                                <RotateTransform x:Name="secondHandAngle"
+                        <Path.RenderTransform>
+                            <RotateTransform x:Name="secondHandAngle"
                                     CenterX="{x:Bind vm.SecondHand.CenterX,Mode=OneWay}"
                                     CenterY="{x:Bind vm.SecondHand.CenterY,Mode=OneWay}"/>
-                            </Path.RenderTransform>
-                        </Path>
+                        </Path.RenderTransform>
+                    </Path>
                     <Ellipse
                         Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                         Width="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}"
@@ -1256,7 +1310,6 @@
             <StackPanel Grid.Column="0">
                 <ToggleButton
                     x:Name="configButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    Foreground="{ThemeResource SystemBaseHighColor}"
                     Tapped="ConfigButton_Tapped" >
                     <ToggleButton.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
@@ -1266,8 +1319,7 @@
             <StackPanel Grid.Column="1">
                 <ToggleButton
                     x:Name="clipButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    IsChecked="{x:Bind vm.AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped"
-                    Foreground="{ThemeResource SystemBaseHighColor}">
+                    IsChecked="{x:Bind vm.AppConfig.IsTopMost, Mode=TwoWay}" Tapped="ClipButton_Tapped">
                     <ToggleButton.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
                     </ToggleButton.Content>

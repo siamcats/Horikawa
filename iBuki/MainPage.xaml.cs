@@ -25,6 +25,7 @@ using Windows.Storage.Pickers;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Windows.ApplicationModel;
+using System.Collections.ObjectModel;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -112,7 +113,7 @@ namespace iBuki
         /// </summary>
         private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
-            var settings = vm.ExportSettings(Const.KEY_CURRENT_SETTINGS, Const.KEY_CURRENT_SETTINGS, Const.GetAppVersion());
+            var settings = vm.ExportSettings(Const.KEY_CURRENT_SETTINGS, Const.KEY_CURRENT_SETTINGS, "Description");
             var json = Serialize(settings);
             Debug.WriteLine("終了時保存 - " + json);
             ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS] = json;
@@ -454,9 +455,29 @@ namespace iBuki
             vm.ImportSettingsAsync(settings);
         }
 
-        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        private void SaveTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            vm.PresetTemplateList.Add(new Settings() { Name = "test2", Author = "lade" });
+            if (inputNameTextBox.Text == "") return;
+
+            var settings = vm.ExportSettings(inputNameTextBox.Text, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
+            vm.TemplateList.Add(settings);
+
+            saveTemplateToggleButton.IsChecked = false;
+
+            inputNameTextBox.Text = "";
+            inputAuthorTextBox.Text = "";
+            inputDescriptionTextBox.Text = "";
+        }
+
+        private void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (sender is Control ctl && ctl.DataContext is Settings settings)
+            {
+                templateList.SelectedItem = settings;
+                var list = (ObservableCollection<Settings>)templateList.ItemsSource;
+                var index = list.IndexOf(settings);
+                vm.TemplateList.RemoveAt(index);
+            }
         }
     }
 }
