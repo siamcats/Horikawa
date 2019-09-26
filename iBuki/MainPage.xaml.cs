@@ -26,6 +26,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using Windows.ApplicationModel;
 using System.Collections.ObjectModel;
+using Windows.UI.Popups;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -76,6 +77,8 @@ namespace iBuki
             // プリセットテンプレートの読み取り
             GetAssetsTheme();
 
+            GetTemplateList();
+
             // 設定の読み込み・反映
             /// クリップ状態
             if (vm.AppConfig.IsTopMost)
@@ -117,23 +120,6 @@ namespace iBuki
             var json = Serialize(settings);
             Debug.WriteLine("終了時保存 - " + json);
             ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS] = json;
-        }
-
-        /// <summary>
-        /// （イベント）ウィンドウのアクティブ状態変化
-        /// </summary>
-        private void Current_Activated(object sender, WindowActivatedEventArgs e)
-        {
-            if (e.WindowActivationState != CoreWindowActivationState.Deactivated)
-            {
-                // アクティブ
-                myTitleBar.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                // 非アクティブ
-                myTitleBar.Visibility = Visibility.Collapsed;
-            }
         }
 
         #region 針の描写更新
@@ -238,6 +224,171 @@ namespace iBuki
         }
 
         /// <summary>
+        /// Json文字列をSettingsオブジェクトにデシリアライズ
+        /// </summary>
+        private Settings Deserialize(string json)
+        {
+            Settings settings;
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var serializer = new DataContractJsonSerializer(typeof(Settings));
+                settings = serializer.ReadObject(stream) as Settings;
+            }
+            //settings.DebugLog("settings");
+            return settings;
+        }
+
+        /// <summary>
+        /// SettingsオブジェクトをJson文字列にシリアライズ
+        /// </summary>
+        private string Serialize(Settings settings)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(Settings));
+            string json;
+            using (var stream = new MemoryStream())
+            {
+                serializer.WriteObject(stream, settings);
+                json = Encoding.UTF8.GetString(stream.ToArray());
+                //Debug.WriteLine(json);
+            }
+            return json;
+        }
+
+        /// <summary>
+        /// （イベント）カラー選択ボタン
+        /// </summary>
+        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        #region 言語選択
+
+        /// <summary>
+        /// （イベント）言語選択
+        /// </summary>
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //言語選択したら再起動を促す
+            restartLink.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// （イベント）言語選択後は再起動でアプリに反映させる
+        /// </summary>
+        private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
+        }
+
+        /// <summary>
+        /// （イベント）設定パネル
+        /// </summary>
+        private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            //設定パネル押したら再起動しますか？表示は消しとく
+            restartLink.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        #region デスクトップ最前面表示の制御
+
+        /// <summary>
+        /// （イベント）クリップボタンタップ
+        /// </summary>
+        private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (vm.AppConfig.IsTopMost)
+            { StartOverlay(); }
+            else
+            { StopOverlay(); }
+        }
+
+        /// <summary>
+        /// 最前面表示にする
+        /// </summary>
+        private async void StartOverlay()
+        {
+            var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
+            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
+            compactOptions.CustomSize = size;
+            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
+            if (result) vm.AppConfig.IsTopMost = true;
+        }
+
+        /// <summary>
+        /// 最前面表示を解除する
+        /// </summary>
+        private async void StopOverlay()
+        {
+            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+            if (result) vm.AppConfig.IsTopMost = true; vm.AppConfig.IsTopMost = false;
+        }
+
+        #endregion
+
+        #region ウィンドウタイトルバー関連の制御
+
+        /// <summary>
+        /// （イベント）ウィンドウのアクティブ状態変化
+        /// </summary>
+        private void Current_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState != CoreWindowActivationState.Deactivated)
+            {
+                // アクティブ時のみタイトルバーを表示
+                myTitleBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // 非アクティブ
+                myTitleBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        ///  ウィンドウタイトルバーの設定
+        /// </summary>
+        private void SetTitleBar()
+        {
+            // タイトルバーの領域を指定する
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+            // タイトルバーの領域までアプリの表示を拡張する
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+
+            // ［×］ボタンなどの色を設定する
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            appTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            appTitleBar.ButtonInactiveForegroundColor = Colors.Transparent; //効かないっぽい
+
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;　//なんで必要なんだっけ？思い出したら復活させる
+
+            Window.Current.SetTitleBar(moveButton);
+            Window.Current.Activated += Current_Activated;
+        }
+
+        /// <summary>
+        /// （イベント）タイトルバーの大きさが変わった時
+        /// </summary>
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            // タイトルバーの高さ
+            myTitleBar.Height = sender.Height;
+
+            // タイトルバーの左右に確保するスペース
+            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
+            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
+        }
+
+        #endregion
+
+        #region テンプレート関連の制御
+
+        /// <summary>
         /// Assetsのテンプレートファイルをテンプレートリストに反映
         /// </summary>
         private async void GetAssetsTheme()
@@ -290,113 +441,48 @@ namespace iBuki
         }
 
         /// <summary>
-        /// Json文字列をSettingsオブジェクトにデシリアライズ
+        /// LocalFolderのテンプレートファイルをテンプレートリストに反映
         /// </summary>
-        private Settings Deserialize(string json)
+        private async void GetTemplateList()
         {
-            Settings settings;
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            var localFolder = ApplicationData.Current.LocalFolder;
+            var folderList = await localFolder.GetFoldersAsync();
+
+            foreach (var folder in folderList)
             {
-                var serializer = new DataContractJsonSerializer(typeof(Settings));
-                settings = serializer.ReadObject(stream) as Settings;
+                //デフォルトテンプレートはスキップ
+                if (folder.Name == "Japan Black" || folder.Name == "Portofino" || folder.Name == "Station") continue;
+
+                // 設定ファイル→SettingsObj化
+                var settingFile = await folder.GetFileAsync(Const.FILE_SETTINGS);
+                var json = await FileIO.ReadTextAsync(settingFile);
+                var settings = Deserialize(json);
+
+                // サムネイル画像→SettingsObj化
+                //var bitmap = new BitmapImage();
+                //var thumbFile = await folder.GetFileAsync(Const.FILE_THUMBNAIL);
+                //using (var stream = await thumbFile.OpenReadAsync())
+                //{
+                //    await bitmap.SetSourceAsync(stream);
+                //}
+                //settings.Thumbnail = bitmap;
+                vm.TemplateList.Add(settings);
+
+                // 背景画像→LocalFolder/テーマ名/配下に配置する（重いからObj化は駄目）
+                //if (settings.BackgroundImageDisplay)
+                //{
+                //    try
+                //    {
+                //        var bgFile = await folder.GetFileAsync(Const.FILE_BACKGROUND);
+                //        var bgFileCopied = await bgFile.CopyAsync(localTemplateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //    }
+                //    catch (FileNotFoundException e)
+                //    {
+                //        Debug.WriteLine(e.FileName);
+                //    }
+                //}
             }
-            //settings.DebugLog("settings");
-            return settings;
         }
-
-        /// <summary>
-        /// SettingsオブジェクトをJson文字列にシリアライズ
-        /// </summary>
-        private string Serialize(Settings settings)
-        {
-            var serializer = new DataContractJsonSerializer(typeof(Settings));
-            string json;
-            using (var stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, settings);
-                json = Encoding.UTF8.GetString(stream.ToArray());
-                //Debug.WriteLine(json);
-            }
-            return json;
-        }
-
-        #region デスクトップ最前面表示の制御
-
-        /// <summary>
-        /// （イベント）クリップボタンタップ
-        /// </summary>
-        private void ClipButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (vm.AppConfig.IsTopMost)
-            { StartOverlay(); }
-            else
-            { StopOverlay(); }
-        }
-
-        /// <summary>
-        /// 最前面表示にする
-        /// </summary>
-        private async void StartOverlay()
-        {
-            var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
-            var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
-            compactOptions.CustomSize = size;
-            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay, compactOptions);
-            if (result) vm.AppConfig.IsTopMost = true;
-        }
-
-        /// <summary>
-        /// 最前面表示を解除する
-        /// </summary>
-        private async void StopOverlay()
-        {
-            var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
-            if (result) vm.AppConfig.IsTopMost = true; vm.AppConfig.IsTopMost = false;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// （イベント）カラー選択ボタン
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-        }
-
-        #region 言語選択
-
-        /// <summary>
-        /// （イベント）言語選択
-        /// </summary>
-        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //言語選択したら再起動を促す
-            restartLink.Visibility = Visibility.Visible;
-        }
-
-        /// <summary>
-        /// （イベント）言語選択後は再起動でアプリに反映させる
-        /// </summary>
-        private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
-        }
-
-        /// <summary>
-        /// （イベント）設定パネル
-        /// </summary>
-        private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            //設定パネル押したら再起動しますか？表示は消しとく
-            restartLink.Visibility = Visibility.Collapsed;
-        }
-
-        #endregion
-
-        #region テンプレート関連
 
         /// <summary>
         /// （イベント）テンプレート選択
@@ -424,76 +510,97 @@ namespace iBuki
         }
 
         /// <summary>
+        /// （イベント）テンプレート選択
+        /// </summary>
+        //private async void TemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    var settings = templateList.SelectedItem as Settings;
+
+        //    if (settings.BackgroundImageDisplay)
+        //    {
+        //        try
+        //        {
+        //            //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
+        //            var localFolder = ApplicationData.Current.LocalFolder;
+        //            var templateFolder = await localFolder.GetFolderAsync(settings.Name);
+        //            var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+        //            await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+        //        }
+        //        catch (FileNotFoundException ex)
+        //        {
+        //            Debug.WriteLine(ex.FileName);
+        //        }
+        //    }
+        //    vm.ImportSettingsAsync(settings);
+        //}
+
+        /// <summary>
         /// （イベント）テンプレート保存ボタン
         /// </summary>
-        private void SaveTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void SaveTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (inputNameTextBox.Text == "") return;
+            var newTemplateName = inputNameTextBox.Text;
 
-            var settings = vm.ExportSettings(inputNameTextBox.Text, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
-            vm.TemplateList.Add(settings);
+            if (newTemplateName == "") return; //テンプレート名は必須
 
             saveTemplateToggleButton.IsChecked = false;
 
             inputNameTextBox.Text = "";
             inputAuthorTextBox.Text = "";
             inputDescriptionTextBox.Text = "";
+
+            // LocalFolderを作る
+            var localFolder = ApplicationData.Current.LocalFolder;
+            var existFolder = await localFolder.TryGetItemAsync(newTemplateName);
+            if (existFolder == null)
+            {
+                await localFolder.CreateFolderAsync(newTemplateName);
+            }
+            else
+            {
+                //同名のテンプレートが存在したら終わり
+                var dlg = new MessageDialog("同じ名前のテンプレート");
+                await dlg.ShowAsync();
+                return;
+            }
+
+            var settings = vm.ExportSettings(newTemplateName, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
+            vm.TemplateList.Add(settings);
+            var json = Serialize(settings);
+            var localTemplateFolder = await localFolder.GetFolderAsync(newTemplateName);
+            var localSettingsFile = await localTemplateFolder.CreateFileAsync("Settings.json");
+            await FileIO.WriteTextAsync(localSettingsFile, json);
         }
 
         /// <summary>
         /// （イベント）テンプレート削除ボタン
         /// </summary>
-        private void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             //親のDataContext（＝settings）を拾う
             if (sender is Control ctl && ctl.DataContext is Settings settings)
             {
                 templateList.SelectedItem = settings;
+                var templateName = settings.Name;
                 var list = (ObservableCollection<Settings>)templateList.ItemsSource;
                 var index = list.IndexOf(settings);
                 vm.TemplateList.RemoveAt(index);
+
+                // LocalFolderを消す
+                var localFolder = ApplicationData.Current.LocalFolder;
+                var existFolder = await localFolder.TryGetItemAsync(templateName);
+                if (existFolder == null)
+                {
+                    //テンプレートが存在しない（想定外）
+                    var dlg = new MessageDialog("テンプレートファイルが既になし");
+                    await dlg.ShowAsync();
+                    return;
+                }
+                else
+                {
+                    await existFolder.DeleteAsync();
+                }
             }
-        }
-
-        #endregion
-
-        #region ウィンドウタイトルバー関連の制御
-
-        /// <summary>
-        ///  ウィンドウタイトルバーの設定
-        /// </summary>
-        private void SetTitleBar()
-        {
-            // タイトルバーの領域を指定する
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            var appTitleBar = ApplicationView.GetForCurrentView().TitleBar;
-
-            // タイトルバーの領域までアプリの表示を拡張する
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-
-            // ［×］ボタンなどの色を設定する
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            appTitleBar.ButtonBackgroundColor = Colors.Transparent;
-            appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            appTitleBar.ButtonInactiveForegroundColor = Colors.Transparent; //効かないっぽい
-
-            //coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;　//なんで必要なんだっけ？思い出したら復活させる
-
-            Window.Current.SetTitleBar(moveButton);
-            Window.Current.Activated += Current_Activated;
-        }
-
-        /// <summary>
-        /// （イベント）タイトルバーの大きさが変わった時
-        /// </summary>
-        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
-        {
-            // タイトルバーの高さ
-            myTitleBar.Height = sender.Height;
-
-            // タイトルバーの左右に確保するスペース
-            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
-            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
         }
 
         #endregion

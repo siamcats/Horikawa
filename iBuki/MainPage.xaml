@@ -296,6 +296,7 @@
                                         x:Name="templateList"
                                         ItemsSource="{x:Bind vm.TemplateList, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                        <!--SelectionChanged="TemplateList_SelectionChanged">-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Height="64">
@@ -326,7 +327,7 @@
                                                             Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
                                                     </StackPanel>
                                                     <StackPanel
-                                                        Grid.Column="0" Margin="-10,0,0,0"
+                                                        Grid.Column="0" Margin="-12,0,0,0"
                                                         HorizontalAlignment="left" VerticalAlignment="Top" >
                                                         <!--delete-->
                                                         <Button
@@ -337,12 +338,12 @@
                                                             </Button.Content>
                                                         </Button>
                                                         <!--export-->
-                                                        <Button
+                                                        <!--<Button
                                                             Width="20" Height="20" Padding="0">
                                                             <Button.Content>
                                                                 <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" />
                                                             </Button.Content>
-                                                        </Button>
+                                                        </Button>-->
                                                     </StackPanel>
                                                 </Grid>
                                             </DataTemplate>
