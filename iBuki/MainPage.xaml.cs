@@ -136,18 +136,7 @@ namespace iBuki
             }
         }
 
-        /// <summary>
-        /// （イベント）タイトルバーの大きさが変わった時
-        /// </summary>
-        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
-        {
-            // タイトルバーの高さ
-            myTitleBar.Height = sender.Height;
-
-            // タイトルバーの左右に確保するスペース
-            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
-            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);            
-        }
+        #region 針の描写更新
 
         /// <summary>
         /// （イベント）チックで針描画
@@ -205,6 +194,8 @@ namespace iBuki
             var ss = now.ToString(vm.DesignConfig.DateFormat, new CultureInfo("en-US"));
             return ss;
         }
+
+        #endregion
 
         /// <summary>
         ///（イベント）画像取り込みボタンタップ
@@ -329,6 +320,8 @@ namespace iBuki
             return json;
         }
 
+        #region デスクトップ最前面表示の制御
+
         /// <summary>
         /// （イベント）クリップボタンタップ
         /// </summary>
@@ -340,6 +333,9 @@ namespace iBuki
             { StopOverlay(); }
         }
 
+        /// <summary>
+        /// 最前面表示にする
+        /// </summary>
         private async void StartOverlay()
         {
             var compactOptions = ViewModePreferences.CreateDefault(ApplicationViewMode.CompactOverlay);
@@ -349,31 +345,119 @@ namespace iBuki
             if (result) vm.AppConfig.IsTopMost = true;
         }
 
+        /// <summary>
+        /// 最前面表示を解除する
+        /// </summary>
         private async void StopOverlay()
         {
             var result = await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
             if (result) vm.AppConfig.IsTopMost = true; vm.AppConfig.IsTopMost = false;
         }
 
+        #endregion
+
+        /// <summary>
+        /// （イベント）カラー選択ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        #region 言語選択
+
+        /// <summary>
+        /// （イベント）言語選択
+        /// </summary>
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //言語選択したら再起動を促す
+            restartLink.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// （イベント）言語選択後は再起動でアプリに反映させる
+        /// </summary>
         private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
         }
 
-        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            restartLink.Visibility = Visibility.Visible;
-        }
-
+        /// <summary>
+        /// （イベント）設定パネル
+        /// </summary>
         private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            //設定パネル押したら再起動しますか？表示は消しとく
             restartLink.Visibility = Visibility.Collapsed;
         }
 
-        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
+        #endregion
+
+        #region テンプレート関連
+
+        /// <summary>
+        /// （イベント）テンプレート選択
+        /// </summary>
+        private async void PresetTemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+            var settings = presetTemplateList.SelectedItem as Settings;
+
+            if (settings.BackgroundImageDisplay)
+            {
+                try
+                {
+                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    var templateFolder = await localFolder.GetFolderAsync(settings.Name);
+                    var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+                    await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Debug.WriteLine(ex.FileName);
+                }
+            }
+            vm.ImportSettingsAsync(settings);
         }
+
+        /// <summary>
+        /// （イベント）テンプレート保存ボタン
+        /// </summary>
+        private void SaveTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (inputNameTextBox.Text == "") return;
+
+            var settings = vm.ExportSettings(inputNameTextBox.Text, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
+            vm.TemplateList.Add(settings);
+
+            saveTemplateToggleButton.IsChecked = false;
+
+            inputNameTextBox.Text = "";
+            inputAuthorTextBox.Text = "";
+            inputDescriptionTextBox.Text = "";
+        }
+
+        /// <summary>
+        /// （イベント）テンプレート削除ボタン
+        /// </summary>
+        private void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            //親のDataContext（＝settings）を拾う
+            if (sender is Control ctl && ctl.DataContext is Settings settings)
+            {
+                templateList.SelectedItem = settings;
+                var list = (ObservableCollection<Settings>)templateList.ItemsSource;
+                var index = list.IndexOf(settings);
+                vm.TemplateList.RemoveAt(index);
+            }
+        }
+
+        #endregion
+
+        #region ウィンドウタイトルバー関連の制御
 
         /// <summary>
         ///  ウィンドウタイトルバーの設定
@@ -393,11 +477,28 @@ namespace iBuki
             appTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             appTitleBar.ButtonInactiveForegroundColor = Colors.Transparent; //効かないっぽい
 
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+            //coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;　//なんで必要なんだっけ？思い出したら復活させる
 
             Window.Current.SetTitleBar(moveButton);
             Window.Current.Activated += Current_Activated;
         }
+
+        /// <summary>
+        /// （イベント）タイトルバーの大きさが変わった時
+        /// </summary>
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        {
+            // タイトルバーの高さ
+            myTitleBar.Height = sender.Height;
+
+            // タイトルバーの左右に確保するスペース
+            myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
+            ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
+        }
+
+        #endregion
+
+        #region 雑多なprivateメソッド
 
         private async void DebugLocalFolder()
         {
@@ -432,52 +533,6 @@ namespace iBuki
                 Debug.WriteLine(assetsfiles[i].Name);
             }
         }
-
-        private async void PresetTemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var settings = presetTemplateList.SelectedItem as Settings;
-
-            if (settings.BackgroundImageDisplay)
-            {
-                try
-                {
-                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
-                    var localFolder = ApplicationData.Current.LocalFolder;
-                    var templateFolder = await localFolder.GetFolderAsync(settings.Name);
-                    var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
-                    await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    Debug.WriteLine(ex.FileName);
-                }
-            }
-            vm.ImportSettingsAsync(settings);
-        }
-
-        private void SaveTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (inputNameTextBox.Text == "") return;
-
-            var settings = vm.ExportSettings(inputNameTextBox.Text, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
-            vm.TemplateList.Add(settings);
-
-            saveTemplateToggleButton.IsChecked = false;
-
-            inputNameTextBox.Text = "";
-            inputAuthorTextBox.Text = "";
-            inputDescriptionTextBox.Text = "";
-        }
-
-        private void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (sender is Control ctl && ctl.DataContext is Settings settings)
-            {
-                templateList.SelectedItem = settings;
-                var list = (ObservableCollection<Settings>)templateList.ItemsSource;
-                var index = list.IndexOf(settings);
-                vm.TemplateList.RemoveAt(index);
-            }
-        }
+        #endregion
     }
 }
