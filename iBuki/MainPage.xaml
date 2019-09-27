@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Width="500" Height="500" Visibility="Visible" SizeChanged="Page_SizeChanged"
-    HorizontalAlignment="Left" VerticalAlignment="Top"
+    SizeChanged="Page_SizeChanged"
+    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
     RequestedTheme="{x:Bind vm.AppConfig.SystemTheme,Mode=TwoWay}"
     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
@@ -207,7 +207,8 @@
                                         x:Name="presetTemplateList"
                                         ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                        SelectionChanged="PresetTemplateList_SelectionChanged">
+                                        Tapped="PresetTemplateList_Tapped"
+                                        >
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel
@@ -295,7 +296,8 @@
                                     <ListView
                                         x:Name="templateList"
                                         ItemsSource="{x:Bind vm.TemplateList, Mode=OneWay}"
-                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tapped="TemplateList_Tapped"
+                                        >
                                         <!--SelectionChanged="TemplateList_SelectionChanged">-->
                                         <ListView.ItemTemplate>
                                             <DataTemplate>

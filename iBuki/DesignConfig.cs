@@ -55,8 +55,8 @@ namespace iBuki
             }
         }
 
-        private BitmapSource _backgroundImage;
-        public BitmapSource BackgroundImage
+        private BitmapImage _backgroundImage;
+        public BitmapImage BackgroundImage
         {
             get { return _backgroundImage; }
             set

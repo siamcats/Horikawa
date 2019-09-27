@@ -27,6 +27,9 @@ using System.Text;
 using Windows.ApplicationModel;
 using System.Collections.ObjectModel;
 using Windows.UI.Popups;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -122,6 +125,76 @@ namespace iBuki
             ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS] = json;
         }
 
+        /// <summary>
+        ///（イベント）画像取り込みボタンタップ
+        /// </summary>
+        private async void DialImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            //filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                //LocalFolder/Background.pngに配置
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.BackgroundImage = bitmap;
+            }
+        }
+
+        #region 設定ファイル関連の操作
+
+        /// <summary>
+        /// Json文字列をSettingsオブジェクトにデシリアライズ
+        /// </summary>
+        private Settings Deserialize(string json)
+        {
+            Settings settings;
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var serializer = new DataContractJsonSerializer(typeof(Settings));
+                settings = serializer.ReadObject(stream) as Settings;
+            }
+            //settings.DebugLog("settings");
+            return settings;
+        }
+
+        /// <summary>
+        /// SettingsオブジェクトをJson文字列にシリアライズ
+        /// </summary>
+        private string Serialize(Settings settings)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(Settings));
+            string json;
+            using (var stream = new MemoryStream())
+            {
+                serializer.WriteObject(stream, settings);
+                json = Encoding.UTF8.GetString(stream.ToArray());
+                //Debug.WriteLine(json);
+            }
+            return json;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// （イベント）カラー選択ボタン
+        /// </summary>
+        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
         #region 針の描写更新
 
         /// <summary>
@@ -183,30 +256,7 @@ namespace iBuki
 
         #endregion
 
-        /// <summary>
-        ///（イベント）画像取り込みボタンタップ
-        /// </summary>
-        private async void DialImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var filePicker = new FileOpenPicker();
-
-            filePicker.FileTypeFilter.Add(".jpg");
-            filePicker.FileTypeFilter.Add(".png");
-            //filePicker.FileTypeFilter.Add("*");
-
-            // 単一ファイルの選択
-            var file = await filePicker.PickSingleFileAsync();
-            if (file != null)
-            {
-                var bitmap = new BitmapImage();
-                using (var stream = await file.OpenReadAsync())
-                {
-                    await bitmap.SetSourceAsync(stream);
-                }
-                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
-                vm.DesignConfig.BackgroundImage = bitmap;
-            }
-        }
+        #region ウィンドウサイズの制御
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -223,44 +273,7 @@ namespace iBuki
             }
         }
 
-        /// <summary>
-        /// Json文字列をSettingsオブジェクトにデシリアライズ
-        /// </summary>
-        private Settings Deserialize(string json)
-        {
-            Settings settings;
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            {
-                var serializer = new DataContractJsonSerializer(typeof(Settings));
-                settings = serializer.ReadObject(stream) as Settings;
-            }
-            //settings.DebugLog("settings");
-            return settings;
-        }
-
-        /// <summary>
-        /// SettingsオブジェクトをJson文字列にシリアライズ
-        /// </summary>
-        private string Serialize(Settings settings)
-        {
-            var serializer = new DataContractJsonSerializer(typeof(Settings));
-            string json;
-            using (var stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, settings);
-                json = Encoding.UTF8.GetString(stream.ToArray());
-                //Debug.WriteLine(json);
-            }
-            return json;
-        }
-
-        /// <summary>
-        /// （イベント）カラー選択ボタン
-        /// </summary>
-        private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-        }
+        #endregion
 
         #region 言語選択
 
@@ -467,27 +480,10 @@ namespace iBuki
                 //}
                 //settings.Thumbnail = bitmap;
                 vm.TemplateList.Add(settings);
-
-                // 背景画像→LocalFolder/テーマ名/配下に配置する（重いからObj化は駄目）
-                //if (settings.BackgroundImageDisplay)
-                //{
-                //    try
-                //    {
-                //        var bgFile = await folder.GetFileAsync(Const.FILE_BACKGROUND);
-                //        var bgFileCopied = await bgFile.CopyAsync(localTemplateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
-                //    }
-                //    catch (FileNotFoundException e)
-                //    {
-                //        Debug.WriteLine(e.FileName);
-                //    }
-                //}
             }
         }
 
-        /// <summary>
-        /// （イベント）テンプレート選択
-        /// </summary>
-        private async void PresetTemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void PresetTemplateList_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var settings = presetTemplateList.SelectedItem as Settings;
 
@@ -507,6 +503,44 @@ namespace iBuki
                 }
             }
             vm.ImportSettingsAsync(settings);
+
+            presetTemplateList.SelectedItem = null;
+        }
+
+        /// <summary>
+        /// （イベント）テンプレート選択
+        /// </summary>
+        private async void TemplateList_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var settings = templateList.SelectedItem as Settings;
+            if (settings == null) return; //deleteした後もこのイベントが走るのでここで抜ける
+  
+            if (settings.BackgroundImageDisplay)
+            {
+                try
+                {
+                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    var templateFolder = await localFolder.GetFolderAsync(settings.Name);
+                    var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+                    await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Debug.WriteLine(ex.FileName);
+                }
+            }
+            vm.ImportSettingsAsync(settings);
+
+            templateList.SelectedItem = null;
+
+        }
+
+        /// <summary>
+        /// （イベント）テンプレート選択
+        /// </summary>
+        private async void PresetTemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
         }
 
         /// <summary>
@@ -549,27 +583,41 @@ namespace iBuki
             inputAuthorTextBox.Text = "";
             inputDescriptionTextBox.Text = "";
 
-            // LocalFolderを作る
+            //同名のテンプレートが存在したら終わり
             var localFolder = ApplicationData.Current.LocalFolder;
             var existFolder = await localFolder.TryGetItemAsync(newTemplateName);
-            if (existFolder == null)
+            if (existFolder != null)
             {
-                await localFolder.CreateFolderAsync(newTemplateName);
-            }
-            else
-            {
-                //同名のテンプレートが存在したら終わり
-                var dlg = new MessageDialog("同じ名前のテンプレート");
+                var dlg = new MessageDialog("同じ名前のテンプレートがもうあるよ");
                 await dlg.ShowAsync();
                 return;
             }
 
+            //現在の設定値をテンプレートリストに追加反映
             var settings = vm.ExportSettings(newTemplateName, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
             vm.TemplateList.Add(settings);
+
+            //LocalFolderに保存
+            var templateFolder = await localFolder.CreateFolderAsync(newTemplateName);
+
+            ///Settings.json
             var json = Serialize(settings);
-            var localTemplateFolder = await localFolder.GetFolderAsync(newTemplateName);
-            var localSettingsFile = await localTemplateFolder.CreateFileAsync("Settings.json");
+            var localSettingsFile = await templateFolder.CreateFileAsync(Const.FILE_SETTINGS);
             await FileIO.WriteTextAsync(localSettingsFile, json);
+
+            ///Background.png
+            if (settings.BackgroundImageDisplay)
+            {
+                try
+                {
+                    var bgFile = await localFolder.GetFileAsync(Const.FILE_BACKGROUND);
+                    var bgFileCopied = await bgFile.CopyAsync(templateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Debug.WriteLine(ex.FileName);
+                }
+            }
         }
 
         /// <summary>
@@ -641,5 +689,6 @@ namespace iBuki
             }
         }
         #endregion
+
     }
 }
