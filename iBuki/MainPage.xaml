@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     SizeChanged="Page_SizeChanged"
-    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+    HorizontalAlignment="Left" VerticalAlignment="Top"
     RequestedTheme="{x:Bind vm.AppConfig.SystemTheme,Mode=TwoWay}"
     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
@@ -190,7 +190,7 @@
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE71D;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="templateTitle" Text="Template"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="templateTitle" Text="Templates"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
@@ -200,15 +200,14 @@
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="PresetTextBlock" Text="Preset"/>
+                                            x:Uid="PresetTextBlock" Text="Presets"/>
                                     </StackPanel>
                                     <!--リスト-->
                                     <ListView
                                         x:Name="presetTemplateList"
                                         ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                        Tapped="PresetTemplateList_Tapped"
-                                        >
+                                        Tapped="PresetTemplateList_Tapped">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel
@@ -245,21 +244,43 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
                                                 Style="{StaticResource SettingTitleTextBlockStyle}"
-                                                x:Uid="mysetTextBlock" Text="My Templates"
+                                                x:Uid="mysetTextBlock" Text="Stock"
                                                 Padding="0,0,80,0" Grid.Column="0"/>
                                             <!--add template button-->
                                             <StackPanel
                                                 Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-                                                <ToggleButton
+                                                <Button
                                                     x:Name="saveTemplateToggleButton"
                                                     Style="{ThemeResource TextBlockButtonStyle}">
+                                                    <Button.Flyout>
+                                                        <Flyout Placement="Bottom">
+                                                            <StackPanel
+                                                                Orientation="Horizontal">
+                                                                <StackPanel Width="180" Margin="0,0,10,0">
+                                                                    <TextBox
+                                                                        x:Name="inputNameTextBox" PlaceholderText="Template Name"
+                                                                        Style="{StaticResource AuthorTextBoxStyle}"/>
+                                                                    <TextBox
+                                                                        x:Name="inputAuthorTextBox" PlaceholderText="Author"
+                                                                        Style="{StaticResource AuthorTextBoxStyle}"/>
+                                                                    <TextBox
+                                                                        x:Name="inputDescriptionTextBox" PlaceholderText="Description"
+                                                                        Style="{StaticResource AuthorTextBoxStyle}"/>
+                                                                </StackPanel>
+                                                                <Button
+                                                                    x:Name="saveTemplateButton" x:Uid="saveButton" Content="Add" 
+                                                                    VerticalAlignment="Bottom"
+                                                                    Style="{ThemeResource AccentButtonStyle}" Tapped="SaveTemplateButton_Tapped" />
+                                                            </StackPanel>
+                                                        </Flyout>
+                                                    </Button.Flyout>
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
                                                     </ToolTipService.ToolTip>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
-                                                </ToggleButton>
+                                                </Button>
                                                 <Button
-                                                    x:Name="importTemplateButton" IsEnabled="false"
+                                                    x:Name="importTemplateButton" Visibility="Collapsed"
                                                     Style="{ThemeResource TextBlockButtonStyle}">
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="importTemplateTextBlock" Text="Import template file."/>
@@ -269,36 +290,12 @@
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
-                                    <!--保存パネル-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingPanelStyle}" Orientation="Horizontal"
-                                        Visibility="{x:Bind saveTemplateToggleButton.IsChecked,Converter={StaticResource Visibility},Mode=OneWay}">
-                                        <StackPanel Width="225" Margin="0,0,5,0">
-                                            <TextBox
-                                                x:Name="inputNameTextBox"
-                                                PlaceholderText="Template Name"
-                                                Style="{StaticResource AuthorTextBoxStyle}"/>
-                                            <TextBox
-                                                x:Name="inputAuthorTextBox"
-                                                PlaceholderText="Author"
-                                                Style="{StaticResource AuthorTextBoxStyle}"/>
-                                            <TextBox
-                                                x:Name="inputDescriptionTextBox"
-                                                PlaceholderText="Description"
-                                                Style="{StaticResource AuthorTextBoxStyle}"/>
-                                        </StackPanel>
-                                        <Button
-                                            x:Name="saveTemplateButton" x:Uid="saveButton" Content="Save" 
-                                            VerticalAlignment="Bottom"
-                                            Style="{ThemeResource AccentButtonStyle}" Tapped="SaveTemplateButton_Tapped" />
-                                    </StackPanel>
                                     <!--リスト-->
                                     <ListView
                                         x:Name="templateList"
                                         ItemsSource="{x:Bind vm.TemplateList, Mode=OneWay}"
-                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Tapped="TemplateList_Tapped"
-                                        >
-                                        <!--SelectionChanged="TemplateList_SelectionChanged">-->
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        Tapped="TemplateList_Tapped">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid Height="64">
@@ -336,16 +333,16 @@
                                                             x:Name="templateDeleteButton"
                                                             Width="20" Height="20" Padding="0" Tapped="TemplateDeleteButton_Tapped">
                                                             <Button.Content>
-                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" />
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" />
                                                             </Button.Content>
                                                         </Button>
                                                         <!--export-->
-                                                        <!--<Button
-                                                            Width="20" Height="20" Padding="0">
+                                                        <Button
+                                                            Width="20" Height="20" Padding="0" Visibility="Collapsed">
                                                             <Button.Content>
                                                                 <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" />
                                                             </Button.Content>
-                                                        </Button>-->
+                                                        </Button>
                                                     </StackPanel>
                                                 </Grid>
                                             </DataTemplate>
@@ -495,7 +492,7 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleLengthSlider"
-                                                Minimum="0.1" Maximum="4" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.1" Maximum="8" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleLength,Mode=TwoWay}" />
                                             <TextBlock
@@ -577,7 +574,7 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="alterScaleLengthSlider"
-                                                Minimum="0.1" Maximum="4" TickFrequency="0.1" SnapsTo="Ticks"
+                                                Minimum="0.1" Maximum="8" TickFrequency="0.1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind vm.IsAlterScaleEnable,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.AlterScaleLength,Mode=TwoWay}" />
                                             <TextBlock
@@ -664,6 +661,23 @@
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind indexRadiusSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--インデックスの間隔-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}" >
+                                        <TextBlock
+                                            x:Uid="intervalLabel" Text="Interval" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                Style="{StaticResource SliderStyle}"
+                                                x:Name="indexIntervalSlider"
+                                                Minimum="0" Maximum="12" TickFrequency="3" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.IndexInterval,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind indexIntervalSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--インデックスの長さ-->
@@ -1209,10 +1223,10 @@
                         Visibility="{x:Bind vm.IndexVisible,Mode=OneWay}"
                         Type="{x:Bind vm.DesignConfig.IndexType,Mode=OneWay}"
                         Radius="{x:Bind vm.DesignConfig.IndexRadius,Mode=OneWay}"
+                        Interval="{x:Bind vm.DesignConfig.IndexInterval,Mode=OneWay}"
                         FontSize="{x:Bind vm.DesignConfig.IndexFontSize,Mode=OneWay}"
                         FontFamily="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=OneWay}"
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
-                    <!--Height="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" Width="{x:Bind vm.AppConfig.WindowSize,Mode=TwoWay}" />-->
                     <!-- デイト -->
                     <Border
                         HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -1279,17 +1293,17 @@
                         Stroke="{x:Bind vm.DesignConfig.HandsStrokeColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <!--秒針-->
                     <Path 
-                            x:Name="secondHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
-                            Margin="{x:Bind vm.SecondHand.Margin,Mode=OneWay}"
-                            Width="{x:Bind vm.SecondHand.Width,Mode=OneWay}"
-                            Height="{x:Bind vm.SecondHand.Height,Mode=OneWay}"
-                            Data="{x:Bind vm.SecondHand.Data,Mode=OneWay}"
-                            Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
-                            Fill="{x:Bind vm.DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
+                        x:Name="secondHand" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="Fill"
+                        Margin="{x:Bind vm.SecondHand.Margin,Mode=OneWay}"
+                        Width="{x:Bind vm.SecondHand.Width,Mode=OneWay}"
+                        Height="{x:Bind vm.SecondHand.Height,Mode=OneWay}"
+                        Data="{x:Bind vm.SecondHand.Data,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
+                        Fill="{x:Bind vm.DesignConfig.SecondHandColor,Converter={StaticResource ColorBrush},Mode=OneWay}">
                         <Path.RenderTransform>
                             <RotateTransform x:Name="secondHandAngle"
-                                    CenterX="{x:Bind vm.SecondHand.CenterX,Mode=OneWay}"
-                                    CenterY="{x:Bind vm.SecondHand.CenterY,Mode=OneWay}"/>
+                                CenterX="{x:Bind vm.SecondHand.CenterX,Mode=OneWay}"
+                                CenterY="{x:Bind vm.SecondHand.CenterY,Mode=OneWay}"/>
                         </Path.RenderTransform>
                     </Path>
                     <Ellipse

@@ -90,6 +90,9 @@ namespace iBuki
         public double IndexThickness { get; set; }
 
         [DataMember]
+        public int indexInterval { get; set; }
+
+        [DataMember]
         public string IndexFontFamily { get; set; }
 
         [DataMember]

@@ -106,6 +106,7 @@ namespace iBuki
                 IndexType = (IndexType)Enum.Parse(typeof(IndexType),settings.IndexType);
                 DesignConfig.IndexColor = ConvertHexColor(settings.IndexColor);
                 DesignConfig.IndexRadius = settings.IndexRadius;
+                DesignConfig.IndexInterval = settings.indexInterval;
                 if (DesignConfig.IndexType == IndexType.Bar)
                 {
                     DesignConfig.IndexLength = settings.IndexLength;
@@ -190,6 +191,7 @@ namespace iBuki
                 settings.IndexType = Enum.GetName(typeof(IndexType), DesignConfig.IndexType);
                 settings.IndexColor = DesignConfig.IndexColor.ToString();
                 settings.IndexRadius = DesignConfig.IndexRadius;
+                settings.indexInterval = DesignConfig.IndexInterval;
                 if (DesignConfig.IndexType == IndexType.Bar)
                 {
                     settings.IndexLength = DesignConfig.IndexLength;

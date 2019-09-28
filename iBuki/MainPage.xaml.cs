@@ -152,41 +152,6 @@ namespace iBuki
             }
         }
 
-        #region 設定ファイル関連の操作
-
-        /// <summary>
-        /// Json文字列をSettingsオブジェクトにデシリアライズ
-        /// </summary>
-        private Settings Deserialize(string json)
-        {
-            Settings settings;
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            {
-                var serializer = new DataContractJsonSerializer(typeof(Settings));
-                settings = serializer.ReadObject(stream) as Settings;
-            }
-            //settings.DebugLog("settings");
-            return settings;
-        }
-
-        /// <summary>
-        /// SettingsオブジェクトをJson文字列にシリアライズ
-        /// </summary>
-        private string Serialize(Settings settings)
-        {
-            var serializer = new DataContractJsonSerializer(typeof(Settings));
-            string json;
-            using (var stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, settings);
-                json = Encoding.UTF8.GetString(stream.ToArray());
-                //Debug.WriteLine(json);
-            }
-            return json;
-        }
-
-        #endregion
-
         /// <summary>
         /// （イベント）カラー選択ボタン
         /// </summary>
@@ -202,8 +167,8 @@ namespace iBuki
         /// </summary>
         private void Timer_Tick(object sender, object e)
         {
-            var localDate = DateTime.Now;
-            //var localDate = DateTime.Parse("2019/12/12 10:08:37");
+            //var localDate = DateTime.Now;
+            var localDate = DateTime.Parse("2019/12/12 10:08:37");
             //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
@@ -250,8 +215,52 @@ namespace iBuki
 
         private string CalcDate(DateTime now)
         {
-            var ss = now.ToString(vm.DesignConfig.DateFormat, new CultureInfo("en-US"));
-            return ss;
+            try
+            {
+                var ss = now.ToString(vm.DesignConfig.DateFormat, new CultureInfo("en-US"));
+                return ss;
+            }
+            catch (FormatException e)
+            {
+                Debug.WriteLine(e.Message);
+                vm.DesignConfig.DateFormat = "";
+                return "";
+            }
+        }
+
+        #endregion
+
+        #region 設定ファイル関連の操作
+
+        /// <summary>
+        /// Json文字列をSettingsオブジェクトにデシリアライズ
+        /// </summary>
+        private Settings Deserialize(string json)
+        {
+            Settings settings;
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                var serializer = new DataContractJsonSerializer(typeof(Settings));
+                settings = serializer.ReadObject(stream) as Settings;
+            }
+            //settings.DebugLog("settings");
+            return settings;
+        }
+
+        /// <summary>
+        /// SettingsオブジェクトをJson文字列にシリアライズ
+        /// </summary>
+        private string Serialize(Settings settings)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(Settings));
+            string json;
+            using (var stream = new MemoryStream())
+            {
+                serializer.WriteObject(stream, settings);
+                json = Encoding.UTF8.GetString(stream.ToArray());
+                //Debug.WriteLine(json);
+            }
+            return json;
         }
 
         #endregion
@@ -429,10 +438,17 @@ namespace iBuki
 
                 // サムネイル画像→SettingsObj化
                 var bitmap = new BitmapImage();
-                var thumbFile = await folder.GetFileAsync(Const.FILE_THUMBNAIL);
-                using (var stream = await thumbFile.OpenReadAsync())
+                try
                 {
-                    await bitmap.SetSourceAsync(stream);
+                    var thumbFile = await folder.GetFileAsync(Const.FILE_THUMBNAIL);
+                    using (var stream = await thumbFile.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(folder.Name + "/" + Const.FILE_THUMBNAIL + "not Found");
                 }
                 settings.Thumbnail = bitmap;
                 vm.PresetTemplateList.Add(settings);
@@ -464,7 +480,7 @@ namespace iBuki
             foreach (var folder in folderList)
             {
                 //デフォルトテンプレートはスキップ
-                if (folder.Name == "Japan Black" || folder.Name == "Portofino" || folder.Name == "Station") continue;
+                if (folder.Name == "Japan Black" || folder.Name == "Portofino" || folder.Name == "Station" || folder.Name == "Modern Times Roman") continue;
 
                 // 設定ファイル→SettingsObj化
                 var settingFile = await folder.GetFileAsync(Const.FILE_SETTINGS);
@@ -577,12 +593,6 @@ namespace iBuki
 
             if (newTemplateName == "") return; //テンプレート名は必須
 
-            saveTemplateToggleButton.IsChecked = false;
-
-            inputNameTextBox.Text = "";
-            inputAuthorTextBox.Text = "";
-            inputDescriptionTextBox.Text = "";
-
             //同名のテンプレートが存在したら終わり
             var localFolder = ApplicationData.Current.LocalFolder;
             var existFolder = await localFolder.TryGetItemAsync(newTemplateName);
@@ -618,6 +628,10 @@ namespace iBuki
                     Debug.WriteLine(ex.FileName);
                 }
             }
+
+            inputNameTextBox.Text = "";
+            inputAuthorTextBox.Text = "";
+            inputDescriptionTextBox.Text = "";
         }
 
         /// <summary>
@@ -658,35 +672,45 @@ namespace iBuki
         private async void DebugLocalFolder()
         {
 
-            var localfiles = await ApplicationData.Current.LocalFolder.GetFilesAsync();
-
-
-            Debug.WriteLine("★localFile");
-            foreach (StorageFile file in localfiles)
-            {
-                Debug.WriteLine(file.Name);
-            }
-
-
+            Debug.WriteLine("★Debug LocalFolders");
             var localfolders = await ApplicationData.Current.LocalFolder.GetFoldersAsync();
-
-            Debug.WriteLine("★localFolder");
             foreach (StorageFolder folder in localfolders)
             {
-                Debug.WriteLine(folder.Name);
+                Debug.WriteLine("◇" + folder.Name);
+                var localfolders2 = await folder.GetFoldersAsync();
+                foreach (StorageFolder folder2 in localfolders2)
+                {
+                    Debug.WriteLine("├◇" + folder2.Name);
+
+                    var localfiles3 = await folder2.GetFilesAsync();
+                    foreach (StorageFile file3 in localfiles3)
+                    {
+                        Debug.WriteLine("　├・" + file3.Name);
+                    }
+                }
+                var localfiles2 = await folder.GetFilesAsync();
+                foreach (StorageFile file2 in localfiles2)
+                {
+                    Debug.WriteLine("├・" + file2.Name);
+                }
             }
 
-            StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            StorageFolder assets = await appInstalledFolder.GetFolderAsync("Assets");
-            var assetsfiles = await assets.GetFoldersAsync();
-
-
-            Debug.WriteLine("★AssetsFolder");
-            for (int i = 0; i < assetsfiles.Count; i++)
+            var localfiles = await ApplicationData.Current.LocalFolder.GetFilesAsync();
+            foreach (StorageFile file in localfiles)
             {
-                // do something with the name of each file
-                Debug.WriteLine(assetsfiles[i].Name);
+                Debug.WriteLine("・" + file.Name);
             }
+
+
+            //Debug.WriteLine("★AssetsFolder");
+            //StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            //StorageFolder assets = await appInstalledFolder.GetFolderAsync("Assets");
+            //var assetsfiles = await assets.GetFoldersAsync();
+            //for (int i = 0; i < assetsfiles.Count; i++)
+            //{
+            //    // do something with the name of each file
+            //    Debug.WriteLine(assetsfiles[i].Name);
+            //}
         }
         #endregion
 

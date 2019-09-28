@@ -177,7 +177,7 @@
   <data name="defaultButton.Content" xml:space="preserve">
     <value>Windowsデフォルト</value>
   </data>
-  <data name="dolphinHandEnum" xml:space="preserve">
+  <data name="dauphineHandEnum" xml:space="preserve">
     <value>ドルフィン針</value>
   </data>
   <data name="fontFamilyLabel.Text" xml:space="preserve">
@@ -278,5 +278,11 @@
   </data>
   <data name="saveTemplateTextBlock.Text" xml:space="preserve">
     <value>現在の設定をテンプレートとして保存します。</value>
+  </data>
+  <data name="saveButton.Content" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="thinHandEnum" xml:space="preserve">
+    <value>細針</value>
   </data>
 </root>

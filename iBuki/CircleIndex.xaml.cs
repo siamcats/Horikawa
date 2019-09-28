@@ -55,6 +55,11 @@ namespace iBuki
             get { return (string)GetValue(FontFamilyProperty); }
             set { SetValue(FontFamilyProperty, value); }
         }
+        public int Interval
+        {
+            get { return (int)GetValue(IntervalProperty); }
+            set { SetValue(IntervalProperty, value); }
+        }
 
         public static readonly DependencyProperty TypeProperty = DependencyProperty.Register(
             "Type", // プロパティ名を指定
@@ -92,7 +97,7 @@ namespace iBuki
             "FontSize",
             typeof(double),
             typeof(CircleIndex),
-            new PropertyMetadata((double)10,
+            new PropertyMetadata((double)5,
                 (d, e) => { (d as CircleIndex).OnFontPropertyChanged(e); })
             );
 
@@ -102,6 +107,14 @@ namespace iBuki
             typeof(CircleIndex),
             new PropertyMetadata("Century Gothic",
                 (d, e) => { (d as CircleIndex).OnFontPropertyChanged(e); })
+            );
+
+        public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register(
+            "Interval",
+            typeof(int),
+            typeof(CircleIndex),
+            new PropertyMetadata((int)2,
+                (d, e) => { (d as CircleIndex).OnPropertyChanged(e); })
             );
 
         public CircleIndex()
@@ -149,6 +162,8 @@ namespace iBuki
 
         private void Undraw()
         {
+            ///バーインデックスはCircleScaleで作るからCircleIndexは非表示にしとく
+            // TODO: バーインデックスもCircleIndexにする
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(canvas); i++)
             {
                 var container = (Border)VisualTreeHelper.GetChild(canvas, i);
@@ -167,8 +182,11 @@ namespace iBuki
 
             for (int i = 0; i < index.Length; i++)
             {
+                var mod = Interval == 0 ? 1 : Interval;
                 var container = (Border)VisualTreeHelper.GetChild(canvas, i);
-                container.Visibility = Visibility.Visible;
+                container.Visibility = ((i + 3) % mod == 0) ?
+                    Visibility.Visible :
+                    Visibility.Collapsed ;
 
                 var text = (TextBlock)VisualTreeHelper.GetChild(container, 0);
                 text.Text = index[i];

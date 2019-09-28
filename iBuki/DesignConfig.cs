@@ -69,7 +69,7 @@ namespace iBuki
 
         #endregion
 
-        #region Dial
+        #region Dial Scale
 
         private bool _isScaleDisplay = false;
         public bool IsScaleDisplay
@@ -203,6 +203,10 @@ namespace iBuki
             }
         }
 
+        #endregion
+
+        #region Dial Index
+
         private bool _isIndexDisplay = false;
         public bool IsIndexDisplay
         {
@@ -275,6 +279,18 @@ namespace iBuki
             }
         }
 
+        private int _indexInterval = 1;
+        public int IndexInterval
+        {
+            get { return _indexInterval; }
+            set
+            {
+                if (value == _indexInterval) return;
+                _indexInterval = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _indexFontFamily = "Verdana";
         public string IndexFontFamily
         {
@@ -287,7 +303,7 @@ namespace iBuki
             }
         }
 
-        private double _indexFontSize = 1;
+        private double _indexFontSize = 5;
         public double IndexFontSize
         {
             get { return _indexFontSize; }

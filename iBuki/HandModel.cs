@@ -75,6 +75,41 @@ namespace iBuki
                                 break;
                         }
                         break;
+                    case HandsType.Thin:
+                        switch (_clock)
+                        {
+                            case Clock.Hour:
+                                margin = 100;
+                                Margin = new Thickness(0, margin, 0, 0);
+                                Width = 4;
+                                Height = 150;
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 260,5 z");
+                                CenterX = Width / 2;
+                                CenterY = Height - ((Height + margin) - 250);
+                                Pivot = 15;
+                                break;
+                            case Clock.Minute:
+                                margin = 50;
+                                Margin = new Thickness(0, margin, 0, 0);
+                                Width = 4;
+                                Height = 200;
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 260,5 z");
+                                CenterX = Width / 2;
+                                CenterY = Height - ((Height + margin) - 250);
+                                Pivot = 14;
+                                break;
+                            case Clock.Second:
+                                margin = 50;
+                                Margin = new Thickness(0, margin, 0, 0);
+                                Width = 3;
+                                Height = 220;
+                                Data = (Geometry)XamlBindingHelper.ConvertValue(typeof(Geometry), "M242,5 L240,300 260,300 260,5 z");
+                                CenterX = Width / 2;
+                                CenterY = Height - ((Height + margin) - 250);
+                                Pivot = 10;
+                                break;
+                        }
+                        break;
                     case HandsType.Leaf:
                         switch (_clock)
                         {
@@ -110,7 +145,7 @@ namespace iBuki
                                 break;
                         }
                         break;
-                    case HandsType.Dolphin:
+                    case HandsType.Dauphine:
                         switch (_clock)
                         {
                             case Clock.Hour:

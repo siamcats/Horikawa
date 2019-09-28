@@ -25,10 +25,12 @@ namespace iBuki
     {
         [LocalizeName("barHandEnum")]
         Bar,
+        [LocalizeName("thinHandEnum")]
+        Thin,
         [LocalizeName("leafHandEnum")]
         Leaf,
-        [LocalizeName("dolphinHandEnum")]
-        Dolphin,
+        [LocalizeName("dauphineHandEnum")]
+        Dauphine,
         [LocalizeName("breguetHandEnum")]
         Breguet
     }

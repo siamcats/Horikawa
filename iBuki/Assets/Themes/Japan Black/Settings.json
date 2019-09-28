@@ -24,11 +24,11 @@
   "IndexRadius": 38.8,
   "IndexLength": 9,
   "IndexThickness": 1,
-  "HandsType": "Dolphin",
+  "HandsType": "Dauphine",
   "HandsDisplay": true,
   "HandsColor": "#FFFFFFFF",
   "HandsStrokeColor": "#FFE6E6E6",
-  "HandsStrokeThickness": 7.3,
+  "HandsStrokeThickness": 6.5,
   "SecondHandDisplay": true,
   "SecondHandColor": "#FF0C3F82",
   "DateDisplay": false
