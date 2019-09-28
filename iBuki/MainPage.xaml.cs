@@ -167,8 +167,8 @@ namespace iBuki
         /// </summary>
         private void Timer_Tick(object sender, object e)
         {
-            //var localDate = DateTime.Now;
-            var localDate = DateTime.Parse("2019/12/12 10:08:37");
+            var localDate = DateTime.Now;
+            //var localDate = DateTime.Parse("2019/12/12 10:08:37");
             //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
@@ -479,13 +479,18 @@ namespace iBuki
 
             foreach (var folder in folderList)
             {
-                //デフォルトテンプレートはスキップ
-                if (folder.Name == "Japan Black" || folder.Name == "Portofino" || folder.Name == "Station" || folder.Name == "Modern Times Roman") continue;
-
                 // 設定ファイル→SettingsObj化
-                var settingFile = await folder.GetFileAsync(Const.FILE_SETTINGS);
-                var json = await FileIO.ReadTextAsync(settingFile);
-                var settings = Deserialize(json);
+                try
+                {
+                    var settingFile = await folder.GetFileAsync(Const.FILE_SETTINGS);
+                    var json = await FileIO.ReadTextAsync(settingFile);
+                    var settings = Deserialize(json);
+                    vm.TemplateList.Add(settings);
+                }
+                catch (FileNotFoundException e)
+                {
+                    Debug.WriteLine(e.FileName);
+                }
 
                 // サムネイル画像→SettingsObj化
                 //var bitmap = new BitmapImage();
@@ -495,7 +500,6 @@ namespace iBuki
                 //    await bitmap.SetSourceAsync(stream);
                 //}
                 //settings.Thumbnail = bitmap;
-                vm.TemplateList.Add(settings);
             }
         }
 
