@@ -67,12 +67,15 @@ namespace iBuki
 
         public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings"; //現在の設定値はLoclSettingsにjson文字列で持つ。その項目キー
         public static readonly string URI_CURRENT_BACKGROUND = "ms-appdata:///local/Background.png";
+        public static readonly string URI_ASSETS_MOONPHASE = "ms-appx:///Assets/MoonPhase/";
 
         public static readonly string FOLDER_ASSETS = "Assets";
         public static readonly string FOLDER_TEMPLATES = "Templates";
         public static readonly string FILE_SETTINGS = "Settings.json";
         public static readonly string FILE_BACKGROUND = "Background.png";
         public static readonly string FILE_THUMBNAIL = "Thumbnail.png";
+        public static readonly string FILE_MOONPHASE_BACKGROUND = "MoonPhaseBackground.png";
+        public static readonly string FILE_MOONPHASE_FOREGROUND = "MoonPhaseForeground.png";
 
         public static readonly string StartUpTaskId = "ChronocciStartupId";
 

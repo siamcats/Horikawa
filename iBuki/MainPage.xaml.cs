@@ -103,7 +103,7 @@ namespace iBuki
                 SetInitSettings();
             }
             WindowSizeChange();
-            SetupAutoStartupToggle();
+            SetupStartupToggle();
         }
 
         /// <summary>
@@ -703,7 +703,7 @@ namespace iBuki
 
         #region スタートアップの制御
 
-        private async void SetupAutoStartupToggle()
+        private async void SetupStartupToggle()
         {
             var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
 
@@ -711,38 +711,38 @@ namespace iBuki
             {
                 case StartupTaskState.Disabled:
                     // トグル OFF、変更可能
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = true;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = true;
                     break;
                 case StartupTaskState.DisabledByUser:
                     // トグル OFF、変更不可
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = false;
                     break;
                 case StartupTaskState.DisabledByPolicy:
                     // トグル OFF、変更不可
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = false;
                     break;
                 case StartupTaskState.Enabled:
                     // トグル ON、変更可能
-                    startUpToggle.IsOn = true;
-                    startUpToggle.IsEnabled = true;
+                    startupToggle.IsOn = true;
+                    startupToggle.IsEnabled = true;
                     break;
                 case StartupTaskState.EnabledByPolicy:
                     // トグル ON、変更不可
-                    startUpToggle.IsOn = true;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = true;
+                    startupToggle.IsEnabled = false;
                     break;
                 default:
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = false;
                     break;
             }
         }
 
         // ToggleSwitchを切り替えたときのイベントハンドラー
-        private async void StartUpToggle_Toggled(object sender, RoutedEventArgs e)
+        private async void StartupToggle_Toggled(object sender, RoutedEventArgs e)
         {
             var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
 
@@ -755,7 +755,7 @@ namespace iBuki
                 startupTask.Disable();
             }
 
-            SetupAutoStartupToggle();
+            SetupStartupToggle();
         }
 
         #endregion

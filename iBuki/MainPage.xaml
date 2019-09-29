@@ -163,12 +163,12 @@
                                         <StackPanel Orientation="Horizontal">
                                             <ToggleSwitch 
                                                 x:Uid="StartUpToggle" Header="StartUp"
-                                                x:Name="startUpToggle" OffContent="Off" OnContent="On"
-                                                Toggled="StartUpToggle_Toggled"/>
+                                                x:Name="startupToggle" OffContent="Off" OnContent="On"
+                                                Toggled="StartupToggle_Toggled"/>
                                             <HyperlinkButton
                                                 x:Uid="openSettingButton" Content="Open Settings"
                                                 NavigateUri="ms-settings:startupapps" Margin="0,15,0,0"
-                                                Visibility="{x:Bind startUpToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
+                                                Visibility="{x:Bind startupToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
                                                 <ToolTipService.ToolTip>
                                                     <TextBlock x:Uid="openSettingTextBlock" Text="If disabled, change it from the Windows settings panel."/>
                                                 </ToolTipService.ToolTip>
@@ -1138,17 +1138,15 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--ムーン-->
-                        <!--
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTitle" Text="Lunar Phase"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Lunar Phase"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <TextBlock></TextBlock>
                         </PivotItem>
-                        -->
                         <!--About-->
                         <PivotItem>
                             <PivotItem.Header>
@@ -1218,6 +1216,7 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
+                    <local:MoonPhase Width="100" Height="100"/>
                     <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"

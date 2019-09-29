@@ -225,7 +225,7 @@
   <data name="mechanicalButton.Content" xml:space="preserve">
     <value>Mechanical</value>
   </data>
-  <data name="moonPhaseTitle.Text" xml:space="preserve">
+  <data name="moonPhaseTextBlock.Text" xml:space="preserve">
     <value>Lunar Phase</value>
   </data>
   <data name="movementLabel.Text" xml:space="preserve">

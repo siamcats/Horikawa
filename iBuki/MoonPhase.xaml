@@ -1,0 +1,22 @@
+﻿<UserControl
+    x:Class="iBuki.MoonPhase"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:iBuki"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Viewbox Stretch="UniformToFill">
+        <Canvas x:Name="canvas">
+            <Image
+                x:Name="background" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <CompositeTransform x:Name="angle" Rotation="150"/>
+                </Image.RenderTransform>
+            </Image>
+            <Image
+                x:Name="foreground"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

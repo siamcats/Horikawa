@@ -225,7 +225,7 @@
   <data name="mechanicalButton.Content" xml:space="preserve">
     <value>機械式</value>
   </data>
-  <data name="moonPhaseTitle.Text" xml:space="preserve">
+  <data name="moonPhaseTextBlock.Text" xml:space="preserve">
     <value>ムーンフェーズ</value>
   </data>
   <data name="movementLabel.Text" xml:space="preserve">
