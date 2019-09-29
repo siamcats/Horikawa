@@ -5,8 +5,8 @@
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   IgnorableNamespaces="uap mp">
-  <Identity Name="siamcats.Chronocci" Publisher="CN=7F1F0849-874B-4E18-A8EA-E02AEB9594F1" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="af4e6e1a-a014-4067-a5ec-510843173c6b" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="43028siamcats.Chronocci" Publisher="CN=7F1F0849-874B-4E18-A8EA-E02AEB9594F1" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="57c01981-9b64-4daf-9d19-aaa8e6694ec6" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Chronocci</DisplayName>
     <PublisherDisplayName>siamcats</PublisherDisplayName>
