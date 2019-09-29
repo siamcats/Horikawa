@@ -13,6 +13,7 @@ using Windows.UI.ViewManagement;
 using Windows.Globalization;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
+using Windows.ApplicationModel;
 
 namespace iBuki
 {
@@ -114,17 +115,6 @@ namespace iBuki
             set
             {
                 if (value == Load("en-US")) return;
-                Save(value);
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStartUp
-        {
-            get { return Load(false); }
-            set
-            {
-                if (value == Load(false)) return;
                 Save(value);
                 OnPropertyChanged();
             }

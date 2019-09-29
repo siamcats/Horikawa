@@ -103,7 +103,7 @@ namespace iBuki
                 SetInitSettings();
             }
             WindowSizeChange();
-
+            SetupAutoStartupToggle();
         }
 
         /// <summary>
@@ -701,6 +701,65 @@ namespace iBuki
 
         #endregion
 
+        #region スタートアップの制御
+
+        private async void SetupAutoStartupToggle()
+        {
+            var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+
+            switch (startupTask.State)
+            {
+                case StartupTaskState.Disabled:
+                    // トグル OFF、変更可能
+                    startUpToggle.IsOn = false;
+                    startUpToggle.IsEnabled = true;
+                    break;
+                case StartupTaskState.DisabledByUser:
+                    // トグル OFF、変更不可
+                    startUpToggle.IsOn = false;
+                    startUpToggle.IsEnabled = false;
+                    break;
+                case StartupTaskState.DisabledByPolicy:
+                    // トグル OFF、変更不可
+                    startUpToggle.IsOn = false;
+                    startUpToggle.IsEnabled = false;
+                    break;
+                case StartupTaskState.Enabled:
+                    // トグル ON、変更可能
+                    startUpToggle.IsOn = true;
+                    startUpToggle.IsEnabled = true;
+                    break;
+                case StartupTaskState.EnabledByPolicy:
+                    // トグル ON、変更不可
+                    startUpToggle.IsOn = true;
+                    startUpToggle.IsEnabled = false;
+                    break;
+                default:
+                    startUpToggle.IsOn = false;
+                    startUpToggle.IsEnabled = false;
+                    break;
+            }
+        }
+
+        // ToggleSwitchを切り替えたときのイベントハンドラー
+        private async void StartUpToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+
+            if ((sender as ToggleSwitch).IsOn)
+            {
+                var state = await startupTask.RequestEnableAsync();
+            }
+            else
+            {
+                startupTask.Disable();
+            }
+
+            SetupAutoStartupToggle();
+        }
+
+        #endregion
+
         #region 雑多なprivateメソッド
 
         /// <summary>
@@ -763,25 +822,6 @@ namespace iBuki
         }
         #endregion
 
-        private async void StartUpToggle_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            // StartupTaskオブジェクトを得る
-            StartupTask startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
 
-            // 自動起動を要求する
-            StartupTaskState state = await startupTask.RequestEnableAsync();
-            // 返されたstateを見て、実際に自動起動が有効になったかどうかを判定できる
-        }
-
-        private async void StartUpToggle_Toggled(object sender, RoutedEventArgs e)
-        {
-            // StartupTaskオブジェクトを得る
-            StartupTask startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
-
-            // 自動起動を要求する
-            StartupTaskState state = await startupTask.RequestEnableAsync();
-            // 返されたstateを見て、実際に自動起動が有効になったかどうかを判定できる
-
-        }
     }
 }

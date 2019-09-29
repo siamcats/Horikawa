@@ -13,6 +13,7 @@
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
         <local:BoolAndVisibilityInterConverter x:Key="Visibility" />
+        <local:BoolAndVisibilityInterReverseConverter x:Key="VisibilityReverse" />
         <local:DoubleToThickness x:Key="Thickness" />
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
@@ -156,15 +157,23 @@
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
-                                    <!--画像-->
+                                    <!--スタートアップ-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <ToggleSwitch 
-                                            x:Uid="StartUpToggle" Header="StartUp"
-                                            x:Name="startUpToggle" OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.AppConfig.IsStartUp, Mode=TwoWay}"
-                                            IsEnabledChanged="StartUpToggle_IsEnabledChanged" Toggled="StartUpToggle_Toggled"
-                                            />
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Uid="StartUpToggle" Header="StartUp"
+                                                x:Name="startUpToggle" OffContent="Off" OnContent="On"
+                                                Toggled="StartUpToggle_Toggled"/>
+                                            <HyperlinkButton
+                                                x:Uid="openSettingButton" Content="Open Settings"
+                                                NavigateUri="ms-settings:startupapps" Margin="0,15,0,0"
+                                                Visibility="{x:Bind startUpToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
+                                                <ToolTipService.ToolTip>
+                                                    <TextBlock x:Uid="openSettingTextBlock" Text="If disabled, change it from the Windows settings panel."/>
+                                                </ToolTipService.ToolTip>
+                                            </HyperlinkButton>
+                                        </StackPanel>
                                     </StackPanel>
                                     <!--時計の設定-->
                                     <StackPanel
@@ -1160,7 +1169,9 @@
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Source="{x:Bind vm.AppLogo,Converter={StaticResource UriBitmap},Mode=OneTime}" Margin="0,0,5,0"/>
+                                            <Image
+                                                Source="{x:Bind vm.AppLogo,Converter={StaticResource UriBitmap},Mode=OneTime}"
+                                                Margin="0,0,5,0" Width="50" Height="50"/>
                                             <StackPanel>
                                                 <TextBlock
                                                     Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>

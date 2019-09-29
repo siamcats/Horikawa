@@ -115,5 +115,28 @@ namespace iBuki
             //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
             deferral.Complete();
         }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
+            }
+
+            string payload = string.Empty; // 最初の画面に渡すパラメーター
+            if (args.Kind == ActivationKind.StartupTask)
+            {
+                // 自動起動された
+                // TaskIdを取得する例
+                var startupArgs = args as StartupTaskActivatedEventArgs;
+                payload = startupArgs.TaskId;
+                // 自動起動時に行う処理があればここに
+            }
+
+            rootFrame.Navigate(typeof(MainPage), payload);
+            Window.Current.Activate();
+        }
     }
 }

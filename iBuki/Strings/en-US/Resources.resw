@@ -306,4 +306,13 @@
   <data name="dialogDeleteTemplateReally" xml:space="preserve">
     <value>If you delete this template, you won't be able to recover it. Do you want to delete it?</value>
   </data>
+  <data name="openSettingButton.Content" xml:space="preserve">
+    <value>Open Settings</value>
+  </data>
+  <data name="openSettingTextBlock.Text" xml:space="preserve">
+    <value>If disabled, change it from the Windows settings panel.</value>
+  </data>
+  <data name="StartUpToggle.Header" xml:space="preserve">
+    <value>Startup</value>
+  </data>
 </root>

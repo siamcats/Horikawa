@@ -306,4 +306,13 @@
   <data name="dialogDeleteTemplateReally" xml:space="preserve">
     <value>一度削除したテンプレートを元に戻すことはできません。本当に削除しますか？</value>
   </data>
+  <data name="openSettingButton.Content" xml:space="preserve">
+    <value>"設定"を開く</value>
+  </data>
+  <data name="openSettingTextBlock.Text" xml:space="preserve">
+    <value>変更できない場合は、Windowsの設定パネルから変更します。</value>
+  </data>
+  <data name="StartUpToggle.Header" xml:space="preserve">
+    <value>スタートアップに登録する</value>
+  </data>
 </root>
