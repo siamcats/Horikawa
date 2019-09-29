@@ -68,8 +68,7 @@ namespace iBuki
                 try
                 {
                     var bitmap = new BitmapImage();
-                    //var
-                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_LOCAL + Const.FILE_BACKGROUND));
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_BACKGROUND));
                     using (var stream = await file.OpenReadAsync())
                     {
                         await bitmap.SetSourceAsync(stream);
@@ -78,7 +77,7 @@ namespace iBuki
                 }
                 catch (FileNotFoundException)
                 {
-                    Debug.WriteLine(Const.URI_LOCAL + Const.FILE_BACKGROUND + " Not Found");
+                    Debug.WriteLine(Const.URI_CURRENT_BACKGROUND + " Not Found");
                 }
             }
             // scale
@@ -246,6 +245,8 @@ namespace iBuki
         public string AppName = Const.GetAppName();
 
         public string AppAuthor = Const.GetAppAuthor();
+
+        public Uri AppLogo = Const.APP_LOGO;
 
         #endregion
 

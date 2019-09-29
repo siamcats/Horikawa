@@ -30,6 +30,8 @@ using Windows.UI.Popups;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Resources;
+using System.Text.RegularExpressions;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -78,7 +80,7 @@ namespace iBuki
             _timer.Start();
 
             // プリセットテンプレートの読み取り
-            GetAssetsTheme();
+            GetAssetsTemplate();
 
             GetTemplateList();
 
@@ -98,7 +100,10 @@ namespace iBuki
             {
                 // 保存された設定がなければAssetsのデフォルトテーマを使用
                 Debug.WriteLine("起動時初期値");
+                SetInitSettings();
             }
+            WindowSizeChange();
+
         }
 
         /// <summary>
@@ -413,24 +418,15 @@ namespace iBuki
         /// <summary>
         /// Assetsのテンプレートファイルをテンプレートリストに反映
         /// </summary>
-        private async void GetAssetsTheme()
+        private async void GetAssetsTemplate()
         {
             var installedFolder = Package.Current.InstalledLocation;
             var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
-            var ThemesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_THEMES);
-            var ThemesFolderList = await ThemesFolder.GetFoldersAsync();
+            var templatesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
+            var templateFolderList = await templatesFolder.GetFoldersAsync();
 
-            foreach (var folder in ThemesFolderList)
+            foreach (var folder in templateFolderList)
             {
-                // LocalFolderを作る
-                var localFolder = ApplicationData.Current.LocalFolder;
-                var existFolder = await localFolder.TryGetItemAsync(folder.Name);
-                if (existFolder == null)
-                {
-                    await localFolder.CreateFolderAsync(folder.Name);
-                }
-                var localTemplateFolder = await localFolder.GetFolderAsync(folder.Name);
-
                 // 設定ファイル→SettingsObj化
                 var settingFile = await folder.GetFileAsync(Const.FILE_SETTINGS);
                 var json = await FileIO.ReadTextAsync(settingFile);
@@ -452,20 +448,6 @@ namespace iBuki
                 }
                 settings.Thumbnail = bitmap;
                 vm.PresetTemplateList.Add(settings);
-
-                // 背景画像→LocalFolder/テーマ名/配下に配置する（重いからObj化は駄目）
-                if (settings.BackgroundImageDisplay)
-                {
-                    try
-                    {
-                        var bgFile = await folder.GetFileAsync(Const.FILE_BACKGROUND);
-                        var bgFileCopied = await bgFile.CopyAsync(localTemplateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        Debug.WriteLine(e.FileName);
-                    }
-                }
             }
         }
 
@@ -474,8 +456,8 @@ namespace iBuki
         /// </summary>
         private async void GetTemplateList()
         {
-            var localFolder = ApplicationData.Current.LocalFolder;
-            var folderList = await localFolder.GetFoldersAsync();
+            var templatesFolder = await GetLocalTemplatesFolder();
+            var folderList = await templatesFolder.GetFoldersAsync();
 
             foreach (var folder in folderList)
             {
@@ -503,6 +485,9 @@ namespace iBuki
             }
         }
 
+        /// <summary>
+        /// テンプレート選択（プリセット）
+        /// </summary>
         private async void PresetTemplateList_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var settings = presetTemplateList.SelectedItem as Settings;
@@ -511,15 +496,49 @@ namespace iBuki
             {
                 try
                 {
-                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
-                    var localFolder = ApplicationData.Current.LocalFolder;
-                    var templateFolder = await localFolder.GetFolderAsync(settings.Name);
+                    //Assetフォルダの背景画像を現在設定用にコピー（上書き）
+                    var installedFolder = Package.Current.InstalledLocation;
+                    var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
+                    var templatesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
+                    var templateFolder = await templatesFolder.GetFolderAsync(settings.Name);
                     var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+
+                    var localFolder = ApplicationData.Current.LocalFolder;
                     await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
                 }
-                catch (FileNotFoundException ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine(ex.FileName);
+                    Debug.WriteLine(settings.Name + ":背景画像のコピーに失敗");
+                }
+            }
+            vm.ImportSettingsAsync(settings);
+
+            presetTemplateList.SelectedItem = null;
+        }
+
+        private async void SetInitSettings()
+        {
+            var installedFolder = Package.Current.InstalledLocation;
+            var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
+            var templatesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
+            var defaultTemplateFolder = await templatesFolder.GetFolderAsync("Modern Times Roman");
+            var jsonFile = await defaultTemplateFolder.GetFileAsync(Const.FILE_SETTINGS);
+            var json = await FileIO.ReadTextAsync(jsonFile);
+            var settings = Deserialize(json);
+            if (settings.BackgroundImageDisplay)
+            {
+                try
+                {
+                    //Assetフォルダの背景画像を現在設定用にコピー（上書き）
+                    
+                    var bgFile = await defaultTemplateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine(settings.Name + ":背景画像のコピーに失敗");
                 }
             }
             vm.ImportSettingsAsync(settings);
@@ -540,9 +559,11 @@ namespace iBuki
                 try
                 {
                     //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
-                    var localFolder = ApplicationData.Current.LocalFolder;
-                    var templateFolder = await localFolder.GetFolderAsync(settings.Name);
+                    var templatesFolder = await GetLocalTemplatesFolder();
+                    var templateFolder = await templatesFolder.GetFolderAsync(settings.Name);
                     var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
+
+                    var localFolder = ApplicationData.Current.LocalFolder;
                     await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
                 }
                 catch (FileNotFoundException ex)
@@ -557,38 +578,6 @@ namespace iBuki
         }
 
         /// <summary>
-        /// （イベント）テンプレート選択
-        /// </summary>
-        private async void PresetTemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// （イベント）テンプレート選択
-        /// </summary>
-        //private async void TemplateList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    var settings = templateList.SelectedItem as Settings;
-
-        //    if (settings.BackgroundImageDisplay)
-        //    {
-        //        try
-        //        {
-        //            //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
-        //            var localFolder = ApplicationData.Current.LocalFolder;
-        //            var templateFolder = await localFolder.GetFolderAsync(settings.Name);
-        //            var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
-        //            await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
-        //        }
-        //        catch (FileNotFoundException ex)
-        //        {
-        //            Debug.WriteLine(ex.FileName);
-        //        }
-        //    }
-        //    vm.ImportSettingsAsync(settings);
-        //}
-
-        /// <summary>
         /// （イベント）テンプレート保存ボタン
         /// </summary>
         private async void SaveTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -597,34 +586,59 @@ namespace iBuki
 
             if (newTemplateName == "") return; //テンプレート名は必須
 
-            //同名のテンプレートが存在したら終わり
-            var localFolder = ApplicationData.Current.LocalFolder;
-            var existFolder = await localFolder.TryGetItemAsync(newTemplateName);
-            if (existFolder != null)
+            //禁止文字
+            if (Regex.IsMatch(newTemplateName, "[\\\\\\/:\\*\\?\"<>\\|]"))
             {
-                var dlg = new MessageDialog("同じ名前のテンプレートがもうあるよ");
-                await dlg.ShowAsync();
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogCannotSaveTemplate");
+                var message = loader.GetString("dialogCannotSaveTemplateValidate");
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
                 return;
             }
 
-            //現在の設定値をテンプレートリストに追加反映
+            //同名のテンプレートが存在したらエラー出して終わり
+            var templatesFolder = await GetLocalTemplatesFolder();
+            var existFolder = await templatesFolder.TryGetItemAsync(newTemplateName);
+            if (existFolder != null)
+            {
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogCannotSaveTemplate");
+                var message = loader.GetString("dialogCannotSaveTemplateSameName");
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            //現在の設定値をテンプレートリストに追加
             var settings = vm.ExportSettings(newTemplateName, inputAuthorTextBox.Text, inputDescriptionTextBox.Text);
             vm.TemplateList.Add(settings);
 
-            //LocalFolderに保存
-            var templateFolder = await localFolder.CreateFolderAsync(newTemplateName);
+            //テンプレート用のフォルダを作って、
+            var templateFolder = await templatesFolder.CreateFolderAsync(newTemplateName);
 
-            ///Settings.json
+            ///Settings.jsonを保存
             var json = Serialize(settings);
             var localSettingsFile = await templateFolder.CreateFileAsync(Const.FILE_SETTINGS);
             await FileIO.WriteTextAsync(localSettingsFile, json);
 
-            ///Background.png
+            ///Background.pngを保存
             if (settings.BackgroundImageDisplay)
             {
                 try
                 {
-                    var bgFile = await localFolder.GetFileAsync(Const.FILE_BACKGROUND);
+                    //現在設定をコピーする
+                    var bgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_BACKGROUND));
                     var bgFileCopied = await bgFile.CopyAsync(templateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
                 }
                 catch (FileNotFoundException ex)
@@ -643,28 +657,44 @@ namespace iBuki
         /// </summary>
         private async void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
+
+            var loader = new ResourceLoader();
+            var title = loader.GetString("dialogDeleteTemplate");
+            var message = loader.GetString("dialogDeleteTemplateReally");
+            var primaryText = loader.GetString("dialogDelete");
+            var closeText = loader.GetString("dialogCancel");
+            var dialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                PrimaryButtonText = primaryText,
+                CloseButtonText = closeText,
+                DefaultButton = ContentDialogButton.Primary
+            };
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.None) return; //キャンセルなら抜ける
+
+
             //親のDataContext（＝settings）を拾う
             if (sender is Control ctl && ctl.DataContext is Settings settings)
             {
+                //index指定でリストから削除
                 templateList.SelectedItem = settings;
                 var templateName = settings.Name;
                 var list = (ObservableCollection<Settings>)templateList.ItemsSource;
                 var index = list.IndexOf(settings);
                 vm.TemplateList.RemoveAt(index);
 
-                // LocalFolderを消す
-                var localFolder = ApplicationData.Current.LocalFolder;
-                var existFolder = await localFolder.TryGetItemAsync(templateName);
-                if (existFolder == null)
+                // Localのテンプレートフォルダを消す
+                var templatesFolder = await GetLocalTemplatesFolder();
+                var isExistFolder = await templatesFolder.TryGetItemAsync(templateName);
+                if (isExistFolder == null)
                 {
-                    //テンプレートが存在しない（想定外）
-                    var dlg = new MessageDialog("テンプレートファイルが既になし");
-                    await dlg.ShowAsync();
-                    return;
+                    Debug.WriteLine(templateName + "フォルダが存在しない（想定外）");
                 }
                 else
                 {
-                    await existFolder.DeleteAsync();
+                    await isExistFolder.DeleteAsync();
                 }
             }
         }
@@ -672,6 +702,21 @@ namespace iBuki
         #endregion
 
         #region 雑多なprivateメソッド
+
+        /// <summary>
+        /// テンプレートフォルダを開く（存在してなかったら作る）
+        /// </summary>
+        private async Task<StorageFolder> GetLocalTemplatesFolder()
+        {
+            var localFolder = ApplicationData.Current.LocalFolder;
+            var isExistFolder = await localFolder.TryGetItemAsync(Const.FOLDER_TEMPLATES);
+            if (isExistFolder == null)
+            {
+                await localFolder.CreateFolderAsync(Const.FOLDER_TEMPLATES);
+            }
+            return await localFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
+        }
+
 
         private async void DebugLocalFolder()
         {
@@ -718,5 +763,25 @@ namespace iBuki
         }
         #endregion
 
+        private async void StartUpToggle_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            // StartupTaskオブジェクトを得る
+            StartupTask startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+
+            // 自動起動を要求する
+            StartupTaskState state = await startupTask.RequestEnableAsync();
+            // 返されたstateを見て、実際に自動起動が有効になったかどうかを判定できる
+        }
+
+        private async void StartUpToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            // StartupTaskオブジェクトを得る
+            StartupTask startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+
+            // 自動起動を要求する
+            StartupTaskState state = await startupTask.RequestEnableAsync();
+            // 返されたstateを見て、実際に自動起動が有効になったかどうかを判定できる
+
+        }
     }
 }

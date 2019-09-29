@@ -17,6 +17,7 @@
         <local:ColorAndBrushInterConverter x:Key="ColorBrush" />
         <local:EnumAndIntInterConverter x:Key="EnumInt" />
         <local:DecimalTruncateConveter x:Key="Truncate" />
+        <local:UriToBitmapConverter x:Key="UriBitmap"/>
         <!--ピボットメニュー-->
         <Style TargetType="PivotItem">
             <Setter Property="Margin" Value="0,5,0,0"/>
@@ -155,6 +156,16 @@
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
+                                    <!--画像-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <ToggleSwitch 
+                                            x:Uid="StartUpToggle" Header="StartUp"
+                                            x:Name="startUpToggle" OffContent="Off" OnContent="On"
+                                            IsOn="{x:Bind vm.AppConfig.IsStartUp, Mode=TwoWay}"
+                                            IsEnabledChanged="StartUpToggle_IsEnabledChanged" Toggled="StartUpToggle_Toggled"
+                                            />
+                                    </StackPanel>
                                     <!--時計の設定-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
@@ -200,7 +211,7 @@
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="PresetTextBlock" Text="Presets"/>
+                                            x:Uid="presetTextBlock" Text="Presets"/>
                                     </StackPanel>
                                     <!--リスト-->
                                     <ListView
@@ -1148,13 +1159,16 @@
                                     </StackPanel>
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <StackPanel>
-                                            <TextBlock
-                                                Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>
-                                            <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{x:Bind vm.AppLogo,Converter={StaticResource UriBitmap},Mode=OneTime}" Margin="0,0,5,0"/>
+                                            <StackPanel>
                                                 <TextBlock
-                                                    Style="{StaticResource DescriptionTextBlockStyle}"
-                                                    Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
+                                                    Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Style="{StaticResource DescriptionTextBlockStyle}"
+                                                        Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
+                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>

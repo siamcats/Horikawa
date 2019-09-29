@@ -187,12 +187,12 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
-    <Content Include="Assets\Themes\Japan Black\Thumbnail.png" />
-    <Content Include="Assets\Themes\Modern Times Roman\Background.png" />
-    <Content Include="Assets\Themes\Modern Times Roman\Thumbnail.png" />
-    <Content Include="Assets\Themes\Portofino\Background.png" />
-    <Content Include="Assets\Themes\Portofino\Thumbnail.png" />
-    <Content Include="Assets\Themes\Station\Thumbnail.png" />
+    <Content Include="Assets\Templates\Japan Black\Thumbnail.png" />
+    <Content Include="Assets\Templates\Modern Times Roman\Background.png" />
+    <Content Include="Assets\Templates\Modern Times Roman\Thumbnail.png" />
+    <Content Include="Assets\Templates\Portofino\Background.png" />
+    <Content Include="Assets\Templates\Portofino\Thumbnail.png" />
+    <Content Include="Assets\Templates\Station\Thumbnail.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -244,14 +244,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Themes\Japan Black\Settings.json" />
-    <Content Include="Assets\Themes\Portofino\Settings.json" />
-    <Content Include="Assets\Themes\Station\Settings.json" />
+    <Content Include="Assets\Templates\Japan Black\Settings.json" />
+    <Content Include="Assets\Templates\Portofino\Settings.json" />
+    <Content Include="Assets\Templates\Station\Settings.json" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
     <PRIResource Include="Strings\ja-JP\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Themes\Modern Times Roman\Settings.json" />
+    <Content Include="Assets\Templates\Modern Times Roman\Settings.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

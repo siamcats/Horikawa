@@ -54,7 +54,7 @@ namespace iBuki
                 //Debug.WriteLine("Load - " + key + " : " + DataContainer.Values[key].ToString());
                 return (T)DataContainer.Values[key];
             }
-            Debug.WriteLine("Cannot Load - " + key);
+            //Debug.WriteLine("Cannot Load - " + key);
             // キーがなければ指定したデフォルト値を返す
             if (null != defaultValue)
             {
@@ -114,6 +114,17 @@ namespace iBuki
             set
             {
                 if (value == Load("en-US")) return;
+                Save(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsStartUp
+        {
+            get { return Load(false); }
+            set
+            {
+                if (value == Load(false)) return;
                 Save(value);
                 OnPropertyChanged();
             }

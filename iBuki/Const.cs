@@ -14,7 +14,8 @@ namespace iBuki
             "jp-JP"
         };
 
-        public static string APP_VERSION {
+        public static string APP_VERSION
+        {
             get
             {
                 var package = Package.Current;
@@ -38,15 +39,42 @@ namespace iBuki
             return author;
         }
 
-        public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings";
+        public static Uri APP_LOGO
+        {
+            get
+            {
+                var package = Package.Current;
+                var packageId = package.Id;
+                var logo = package.Logo;
+                return logo;
+            }
+        }
 
-        public static readonly string URI_ASSETS = "ms-appx:///Assets/Themes/";
-        public static readonly string URI_LOCAL = "ms-appdata:///local/";
+        //◆InstalledFolder
+        //┗◇Assets
+        //　┗◇Templates
+        //　　┗◇[Template Name]
+        //　　　┣・Setings.json
+        //　　　┣・Background.png　＊無いかも
+        //　　　┗・Thumbnail.png
+        //◆LocalFolder
+        //┣・Background.png　←現在の背景
+        //┗◇Templates　※無いかも
+        //　┗◇[Template Name]
+        //　　┣・Setings.json
+        //　　┣・Background.png　＊無いかも
+        //　　┗・Thumbnail.png　＊無い TODO:自動サムネイル保存
+
+        public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings"; //現在の設定値はLoclSettingsにjson文字列で持つ。その項目キー
+        public static readonly string URI_CURRENT_BACKGROUND = "ms-appdata:///local/Background.png";
 
         public static readonly string FOLDER_ASSETS = "Assets";
-        public static readonly string FOLDER_THEMES = "Themes";
+        public static readonly string FOLDER_TEMPLATES = "Templates";
         public static readonly string FILE_SETTINGS = "Settings.json";
-        public static readonly string FILE_THUMBNAIL = "Thumbnail.png";
         public static readonly string FILE_BACKGROUND = "Background.png";
+        public static readonly string FILE_THUMBNAIL = "Thumbnail.png";
+
+        public static readonly string StartUpTaskId = "ChronocciStartupId";
+
     }
 }

@@ -231,7 +231,7 @@
   <data name="movementLabel.Text" xml:space="preserve">
     <value>Movement</value>
   </data>
-  <data name="PresetTextBlock.Text" xml:space="preserve">
+  <data name="presetTextBlock.Text" xml:space="preserve">
     <value>Preset</value>
   </data>
   <data name="quartzButton.Content" xml:space="preserve">
@@ -256,7 +256,7 @@
     <value>Template</value>
   </data>
   <data name="themeLabel.Text" xml:space="preserve">
-    <value>Windows Theme</value>
+    <value>Window Theme</value>
   </data>
   <data name="thicknessLabel.Text" xml:space="preserve">
     <value>Thickness</value>
@@ -284,5 +284,26 @@
   </data>
   <data name="thinHandEnum" xml:space="preserve">
     <value>Stick-Thin</value>
+  </data>
+  <data name="dialogCannotSaveTemplateSameName" xml:space="preserve">
+    <value>Sorry, Chronocci can't save two templates with the same name at the same time.</value>
+  </data>
+  <data name="dialogCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="dialogCannotSaveTemplate" xml:space="preserve">
+    <value>Cannot save template</value>
+  </data>
+  <data name="dialogCannotSaveTemplateValidate" xml:space="preserve">
+    <value>Template name cannot contain any of the following characters: \ / : * ? " &lt; &gt; |</value>
+  </data>
+  <data name="dialogDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="dialogDeleteTemplate" xml:space="preserve">
+    <value>Delete template permanently?</value>
+  </data>
+  <data name="dialogDeleteTemplateReally" xml:space="preserve">
+    <value>If you delete this template, you won't be able to recover it. Do you want to delete it?</value>
   </data>
 </root>
