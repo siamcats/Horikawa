@@ -1216,7 +1216,7 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
-                    <local:MoonPhase Width="100" Height="100"/>
+                    <local:MoonPhase Width="300" Height="300"/>
                     <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"

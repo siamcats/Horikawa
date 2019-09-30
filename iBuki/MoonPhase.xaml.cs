@@ -43,7 +43,6 @@ namespace iBuki
             InitializeComponent();
 
             background.Source = new BitmapImage(new Uri(Const.URI_ASSETS_MOONPHASE + Const.FILE_MOONPHASE_BACKGROUND));
-            foreground.Source = new BitmapImage(new Uri(Const.URI_ASSETS_MOONPHASE + Const.FILE_MOONPHASE_FOREGROUND));
         }
 
         private void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
