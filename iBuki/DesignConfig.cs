@@ -579,6 +579,42 @@ namespace iBuki
             }
         }
 
+        private double _moonPhaseCoordinateX = 1;
+        public double MoonPhaseCoordinateX
+        {
+            get { return _moonPhaseCoordinateX; }
+            set
+            {
+                if (value == _moonPhaseCoordinateX) return;
+                _moonPhaseCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseCoordinateY = 1;
+        public double MoonPhaseCoordinateY
+        {
+            get { return _moonPhaseCoordinateY; }
+            set
+            {
+                if (value == _moonPhaseCoordinateY) return;
+                _moonPhaseCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _moonPhaseForegroundColor = Color.FromArgb(255, 255, 255, 255);
+        public Color MoonPhaseForegroundColor
+        {
+            get { return _moonPhaseForegroundColor; }
+            set
+            {
+                if (value == _moonPhaseForegroundColor) return;
+                _moonPhaseForegroundColor = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
     }
 }

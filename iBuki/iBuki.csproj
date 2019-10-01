@@ -126,13 +126,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppConfig.cs" />
-    <Compile Include="MoonPhase.xaml.cs">
+    <Compile Include="Controls\MoonPhase.xaml.cs">
       <DependentUpon>MoonPhase.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CircleIndex.xaml.cs">
+    <Compile Include="Controls\CircleIndex.xaml.cs">
       <DependentUpon>CircleIndex.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CircleScale.xaml.cs">
+    <Compile Include="Controls\CircleScale.xaml.cs">
       <DependentUpon>CircleScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="Const.cs" />
@@ -214,15 +214,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MoonPhase.xaml">
+    <Page Include="Controls\MoonPhase.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CircleIndex.xaml">
+    <Page Include="Controls\CircleIndex.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CircleScale.xaml">
+    <Page Include="Controls\CircleScale.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

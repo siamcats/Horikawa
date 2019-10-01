@@ -1138,7 +1138,7 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
-                        <!--ムーン-->
+                        <!--ムーンフェイズ-->
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
@@ -1178,6 +1178,71 @@
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind moonPhaseSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
                                         </StackPanel>
+                                    </StackPanel>
+                                    <!--座標-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Uid="coordinateLabel" Text="Coordinate"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                            <Slider
+                                                x:Name="moonPhaseXSlider"
+                                                Minimum="-250" Maximum="250" Width="195"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.MoonPhaseCoordinateX,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind moonPhaseXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                            <Slider
+                                                x:Name="moonPhaseYSlider"
+                                                Minimum="-250" Maximum="250" Width="195"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.MoonPhaseCoordinateY,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                            Text="{x:Bind moonPhaseYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--前面-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="foregroundTextBlock" Text="Foreground"/>
+                                    </StackPanel>
+                                    <!--色-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Uid="colorLabel" Text="Color"/>
+                                        <Button
+                                            Style="{StaticResource ColorButtonStyle}"
+                                            IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                            Background="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorButton_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            IsAlphaEnabled="True"
+                                                            Color="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -1251,10 +1316,14 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
+                    <!--ムーンフェーズ-->
                     <local:MoonPhase
                         x:Name="moonPhase"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
                         Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
-                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"/>
+                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.MoonPhaseCoordinate,Mode=OneWay}"
+                        Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"

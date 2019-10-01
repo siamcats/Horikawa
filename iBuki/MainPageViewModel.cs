@@ -147,6 +147,15 @@ namespace iBuki
                 DesignConfig.DateFontFamily = settings.DateFontFamily;
                 DesignConfig.DateFontSize = settings.DateFontSize;
             }
+            // moon phase
+            DesignConfig.IsMoonPhaseDisplay = settings.MoonPhaseDisplay;
+            if (DesignConfig.IsMoonPhaseDisplay)
+            {
+                DesignConfig.MoonPhaseSize = settings.MoonPhaseSize;
+                DesignConfig.MoonPhaseCoordinateX = settings.MoonPhaseCoordinateX;
+                DesignConfig.MoonPhaseCoordinateY = settings.MoonPhaseCoordinateY;
+                DesignConfig.MoonPhaseForegroundColor = ConvertHexColor(settings.MoonPhaseForegroundColor);
+            }
         }
 
         /// <summary>
@@ -232,6 +241,17 @@ namespace iBuki
                 settings.DateFontFamily = DesignConfig.DateFontFamily;
                 settings.DateFontSize = DesignConfig.DateFontSize;
             }
+
+            // moon phase
+            settings.MoonPhaseDisplay = DesignConfig.IsMoonPhaseDisplay;
+            if (DesignConfig.IsMoonPhaseDisplay)
+            {
+                settings.MoonPhaseSize = DesignConfig.MoonPhaseSize;
+                settings.MoonPhaseCoordinateX = DesignConfig.MoonPhaseCoordinateX;
+                settings.MoonPhaseCoordinateY = DesignConfig.MoonPhaseCoordinateY;
+                settings.MoonPhaseForegroundColor = DesignConfig.MoonPhaseForegroundColor.ToString();
+            }
+
 
             return settings;
         }
@@ -388,7 +408,7 @@ namespace iBuki
 
         #endregion
 
-        #region Date
+        #region Day Date
 
         public string[] FontList = CanvasTextFormat.GetSystemFontFamilies();
 
@@ -432,6 +452,54 @@ namespace iBuki
                 var coordinate = new Thickness(X, value, 0, 0);
                 DateCoordinate = coordinate;
                 _dateCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Moon Phase
+
+
+        // CoordinateのX,Y値を、MarginのLeft,Top,Right,Buttom値に変換する
+        private Thickness _moonPhaseCoordinate = new Thickness(0, 0, 0, 0);
+        public Thickness MoonPhaseCoordinate
+        {
+            get => _moonPhaseCoordinate;
+            set
+            {
+                if (value == _moonPhaseCoordinate) return;
+                _moonPhaseCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseCoordinateX = 0;
+        public double MoonPhaseCoordinateX
+        {
+            get { return _moonPhaseCoordinateX; }
+            set
+            {
+                if (value == _moonPhaseCoordinateX) return;
+                DesignConfig.MoonPhaseCoordinateX = value;
+                var coordinate = new Thickness(value, MoonPhaseCoordinate.Top, value * -1, MoonPhaseCoordinate.Bottom);
+                MoonPhaseCoordinate = coordinate;
+                _moonPhaseCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseCoordinateY = 0;
+        public double MoonPhaseCoordinateY
+        {
+            get { return _moonPhaseCoordinateY; }
+            set
+            {
+                if (value == _moonPhaseCoordinateY) return;
+                DesignConfig.MoonPhaseCoordinateY = value;
+                var coordinate = new Thickness(MoonPhaseCoordinate.Left, value * -1, MoonPhaseCoordinate.Right, value);
+                MoonPhaseCoordinate = coordinate;
+                _moonPhaseCoordinateY = value;
                 OnPropertyChanged();
             }
         }
