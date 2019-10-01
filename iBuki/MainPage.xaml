@@ -64,7 +64,7 @@
         </Style>
         <Style x:Key="SliderStyle" TargetType="Slider">
             <Setter Property="Width" Value="210"/>
-            <Setter Property="TickPlacement" Value="Outside"/>
+            <Setter Property="TickPlacement" Value="None"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="0,0,0,5"/>
@@ -478,7 +478,7 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleCountSlider"
-                                                Minimum="1" Maximum="240" TickFrequency="12" SnapsTo="Ticks"
+                                                Minimum="1" Maximum="240" TickFrequency="12" SnapsTo="Ticks" TickPlacement="Outside"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleCount,Mode=TwoWay}" />
                                             <TextBlock
@@ -692,7 +692,7 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="indexIntervalSlider"
-                                                Minimum="0" Maximum="12" TickFrequency="3" SnapsTo="Ticks"
+                                                Minimum="0" Maximum="12" TickFrequency="3" SnapsTo="Ticks" TickPlacement="Outside"
                                                 IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.IndexInterval,Mode=TwoWay}" />
                                             <TextBlock
@@ -911,6 +911,7 @@
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--ON/OFF-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
@@ -1145,7 +1146,41 @@
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Lunar Phase"/>
                                 </StackPanel>
                             </PivotItem.Header>
-                            <TextBlock></TextBlock>
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <!--On/Off-->
+                                    <StackPanel>
+                                        <StackPanel
+                                            Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="moonPhaseTextBlock" Text="Lunar Phase"/>
+                                            <ToggleSwitch 
+                                                x:Uid="moonPhaseToggle"
+                                                x:Name="moonPhaseToggle" 
+                                                OffContent="Off" OnContent="On"
+                                                IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--Size-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                                x:Uid="sizeLabel" Text="Size"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                Style="{StaticResource SliderStyle}"
+                                                x:Name="moonPhaseSizeSlider"
+                                                Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind moonPhaseSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
                         </PivotItem>
                         <!--About-->
                         <PivotItem>
@@ -1216,7 +1251,10 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
-                    <local:MoonPhase Width="300" Height="300"/>
+                    <local:MoonPhase
+                        x:Name="moonPhase"
+                        Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"/>
                     <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"

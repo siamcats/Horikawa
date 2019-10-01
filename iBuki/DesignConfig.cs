@@ -552,5 +552,33 @@ namespace iBuki
         }
 
         #endregion
+
+        #region Moon Phase
+
+        private bool _isMoonPhaseDisplay = false;
+        public bool IsMoonPhaseDisplay
+        {
+            get { return _isMoonPhaseDisplay; }
+            set
+            {
+                if (value == _isMoonPhaseDisplay) return;
+                _isMoonPhaseDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseSize = 100;
+        public double MoonPhaseSize
+        {
+            get { return _moonPhaseSize; }
+            set
+            {
+                if (value == _moonPhaseSize) return;
+                _moonPhaseSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
     }
 }
