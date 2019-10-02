@@ -48,6 +48,7 @@ namespace iBuki
 
         private void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
+
             var moonAge = GetMoonAge(DateTime);
             angle.Rotation = moonAge * 6;
         }

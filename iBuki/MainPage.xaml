@@ -956,10 +956,10 @@
                                                  Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
                                             <Slider
                                                 x:Name="dateXSlider"
-                                                Minimum="1" Maximum="500" Width="195"
+                                                Minimum="-300" Maximum="300" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateCoordinateX,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateCoordinateX,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind dateXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -969,10 +969,10 @@
                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
                                             <Slider
                                                 x:Name="dateYSlider"
-                                                Minimum="1" Maximum="500" Width="195"
+                                                Minimum="-300" Maximum="300" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateCoordinateY,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateCoordinateY,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                             Text="{x:Bind dateYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -1189,10 +1189,10 @@
                                                  Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
                                             <Slider
                                                 x:Name="moonPhaseXSlider"
-                                                Minimum="-250" Maximum="250" Width="195"
+                                                Minimum="-300" Maximum="300" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.MoonPhaseCoordinateX,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.MoonPhaseCoordinateX,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind moonPhaseXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -1202,10 +1202,10 @@
                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
                                             <Slider
                                                 x:Name="moonPhaseYSlider"
-                                                Minimum="-250" Maximum="250" Width="195"
+                                                Minimum="-300" Maximum="300" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.MoonPhaseCoordinateY,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.MoonPhaseCoordinateY,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                             Text="{x:Bind moonPhaseYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -1322,7 +1322,7 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                         Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
                         Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
-                        Margin="{x:Bind vm.MoonPhaseCoordinate,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.MoonPhaseCoordinate,Mode=OneWay}"
                         Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"/>
                     <local:CircleScale
                         x:Name="dialScale"
@@ -1360,8 +1360,8 @@
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
                     <!-- デイト -->
                     <Border
-                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Margin="{x:Bind vm.DateCoordinate,Mode=OneWay}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Margin="{x:Bind vm.DesignConfig.DateCoordinate,Mode=OneWay}"
                         Width="{x:Bind vm.DesignConfig.DateWidth,Mode=OneWay}"
                         Height="{x:Bind vm.DesignConfig.DateHeight,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"

@@ -167,6 +167,9 @@ namespace iBuki
 
         #region 針の描写更新
 
+        DateTime beforeDate; //現在日退避
+        DateTime defaultDate; //比較用の初期値日付
+
         /// <summary>
         /// （イベント）チックで針描画
         /// </summary>
@@ -179,7 +182,14 @@ namespace iBuki
             hourHandAngle.Angle = CalcAngleHour(localDate);
             minuteHandAngle.Angle = CalcAngleMinute(localDate);
             secondHandAngle.Angle = CalcAngleSecond(localDate);
-            dateDisplay.Text = CalcDate(localDate);
+            dateDisplay.Text = CalcDate(localDate); //デイトは秒表示もできるから日替わり処理じゃなくてここでする
+
+            // 退避日と日付が異なれば日替わり処理を起こす
+            if (beforeDate == defaultDate || localDate.Date != beforeDate.Date)
+            {
+                moonPhase.DateTime = localDate;
+                beforeDate = localDate; //現在日退避
+            }
         }
 
         private double CalcAngleHour(DateTime now)

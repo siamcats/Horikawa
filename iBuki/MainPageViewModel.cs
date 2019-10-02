@@ -136,8 +136,8 @@ namespace iBuki
             if (DesignConfig.IsDateDisplay)
             {
                 DesignConfig.DateBackgroundColor = ConvertHexColor(settings.DateBackgroundColor);
-                DateCoordinateX = settings.DateCoordinateX;
-                DateCoordinateY = settings.DateCoordinateY;
+                DesignConfig.DateCoordinateX = settings.DateCoordinateX;
+                DesignConfig.DateCoordinateY = settings.DateCoordinateY;
                 DesignConfig.DateWidth = settings.DateWidth;
                 DesignConfig.DateHeight = settings.DateHeight;
                 DesignConfig.DateBorderColor = ConvertHexColor(settings.DateBorderColor);
@@ -412,97 +412,9 @@ namespace iBuki
 
         public string[] FontList = CanvasTextFormat.GetSystemFontFamilies();
 
-        private Thickness _dateCoordinate = new Thickness(300,300,0,0);
-        public Thickness DateCoordinate
-        {
-            get => _dateCoordinate;
-            set
-            {
-                if (value == _dateCoordinate) return;
-                _dateCoordinate = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _dateCoordinateX = 300;
-        public double DateCoordinateX
-        {
-            get { return _dateCoordinateX; }
-            set
-            {
-                if (value == _dateCoordinateX) return;
-                DesignConfig.DateCoordinateX = value;
-                var Y = DateCoordinate.Top;
-                var coordinate = new Thickness(value, Y, 0, 0);
-                DateCoordinate = coordinate;
-                _dateCoordinateX = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _dateCoordinateY = 300;
-        public double DateCoordinateY
-        {
-            get { return _dateCoordinateY; }
-            set
-            {
-                if (value == _dateCoordinateY) return;
-                DesignConfig.DateCoordinateY = value;
-                var X = DateCoordinate.Left;
-                var coordinate = new Thickness(X, value, 0, 0);
-                DateCoordinate = coordinate;
-                _dateCoordinateY = value;
-                OnPropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Moon Phase
-
-
-        // CoordinateのX,Y値を、MarginのLeft,Top,Right,Buttom値に変換する
-        private Thickness _moonPhaseCoordinate = new Thickness(0, 0, 0, 0);
-        public Thickness MoonPhaseCoordinate
-        {
-            get => _moonPhaseCoordinate;
-            set
-            {
-                if (value == _moonPhaseCoordinate) return;
-                _moonPhaseCoordinate = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _moonPhaseCoordinateX = 0;
-        public double MoonPhaseCoordinateX
-        {
-            get { return _moonPhaseCoordinateX; }
-            set
-            {
-                if (value == _moonPhaseCoordinateX) return;
-                DesignConfig.MoonPhaseCoordinateX = value;
-                var coordinate = new Thickness(value, MoonPhaseCoordinate.Top, value * -1, MoonPhaseCoordinate.Bottom);
-                MoonPhaseCoordinate = coordinate;
-                _moonPhaseCoordinateX = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _moonPhaseCoordinateY = 0;
-        public double MoonPhaseCoordinateY
-        {
-            get { return _moonPhaseCoordinateY; }
-            set
-            {
-                if (value == _moonPhaseCoordinateY) return;
-                DesignConfig.MoonPhaseCoordinateY = value;
-                var coordinate = new Thickness(MoonPhaseCoordinate.Left, value * -1, MoonPhaseCoordinate.Right, value);
-                MoonPhaseCoordinate = coordinate;
-                _moonPhaseCoordinateY = value;
-                OnPropertyChanged();
-            }
-        }
 
         #endregion
 
