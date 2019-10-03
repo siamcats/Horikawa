@@ -32,6 +32,7 @@ using Windows.Storage.Streams;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
 using System.Text.RegularExpressions;
+using Windows.Services.Store;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -43,7 +44,9 @@ namespace iBuki
     public sealed partial class MainPage : Page
     {
         private MainPageViewModel vm = new MainPageViewModel();
-        private DispatcherTimer _timer;
+        private DispatcherTimer timer;
+
+        #region lifecycle
 
         /// <summary>
         /// コンストラクタ
@@ -74,10 +77,10 @@ namespace iBuki
             Application.Current.Suspending += OnSuspending; //アプリ終了イベント
             Application.Current.Resuming += OnResuming; //アプリ復帰イベント
             /// タイマーイベント
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(0.125);
-            _timer.Tick += Timer_Tick;
-            _timer.Start();
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(0.125);
+            timer.Tick += Timer_Tick;
+            timer.Start();
 
             // プリセットテンプレートの読み取り
             GetAssetsTemplate();
@@ -130,6 +133,8 @@ namespace iBuki
             ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS] = json;
         }
 
+        #endregion
+
         /// <summary>
         ///（イベント）画像取り込みボタンタップ
         /// </summary>
@@ -167,8 +172,8 @@ namespace iBuki
 
         #region 針の描写更新
 
-        DateTime beforeDate; //現在日退避
-        DateTime defaultDate; //比較用の初期値日付
+        DateTime beforeDate = new DateTime(); //現在日退避
+        DateTime defaultDate = new DateTime(); //比較用の初期値日付
 
         /// <summary>
         /// （イベント）チックで針描画
@@ -770,6 +775,47 @@ namespace iBuki
 
         #endregion
 
+        #region Microsoftストア関連
+
+        private StoreContext context = null;
+
+        public async void GetAppInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
+            }
+
+            // Get app store product details. Because this might take several moments,   
+            // display a ProgressRing during the operation.
+            //workingProgressRing.IsActive = true;
+            StoreProductResult queryResult = await context.GetStoreProductForCurrentAppAsync();
+            //workingProgressRing.IsActive = false;
+
+            if (queryResult.Product == null)
+            {
+                // The Store catalog returned an unexpected result.
+                licenseTextBlock.Text = "Something went wrong, and the product was not returned.";
+
+                // Show additional error info if it is available.
+                if (queryResult.ExtendedError != null)
+                {
+                    licenseTextBlock.Text += $"\nExtendedError: {queryResult.ExtendedError.Message}";
+                }
+
+                return;
+            }
+
+            // Display the price of the app.
+            licenseTextBlock.Text = $"The price of this app is: {queryResult.Product.Price.FormattedBasePrice}";
+        }
+
+        #endregion
+
+
         #region 雑多なprivateメソッド
 
         /// <summary>
@@ -830,8 +876,8 @@ namespace iBuki
             //    Debug.WriteLine(assetsfiles[i].Name);
             //}
         }
-        #endregion
 
+        #endregion
 
     }
 }

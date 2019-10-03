@@ -1281,6 +1281,20 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
+                                    <!--アドオン-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="creditsTextBlock" Text="Add-on licenses"/>
+                                    </StackPanel>
+                                    <Button x:Name="getAppInfoButton" Content="Get App Info" Tapped="GetAppInfoButton_Tapped"/>
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Name="licenseTextBlock"/>
+                                    </StackPanel>
+                                    
                                     <!--クレジット-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
