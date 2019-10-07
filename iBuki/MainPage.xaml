@@ -1238,7 +1238,8 @@
                                                     Style="{StaticResource ButtonStyle}"
                                                     x:Uid="imageSelectButton" Content="Select Image" 
                                                     x:Name="moonPhaseBackgroundImagePicker" Tapped="MoonPhaseImagePicker_Tapped"
-                                                    Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}">
+                                                    Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="moonPhaseBackgroundTipTextBlock" Text="300*300 Circle"/>
                                                     </ToolTipService.ToolTip>
@@ -1288,26 +1289,28 @@
                                                 <ToggleSwitch 
                                                     x:Uid="imageToggle" Header="Image"
                                                     x:Name="moonPhaseForegroundImageDisplayToggle" OffContent="Off" OnContent="On"
-                                                    IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay, Mode=TwoWay}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom lunar images."/>
+                                                    </ToolTipService.ToolTip>
+                                                </ToggleSwitch>
                                                 <Button
                                                     Style="{StaticResource ButtonStyle}"
                                                     x:Uid="imageSelectButton" Content="Select Image" 
-                                                    x:Name="moonPhaseForegroundImagePicker" Tapped="DialImagePicker_Tapped"
-                                                    IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}">
+                                                    x:Name="moonPhaseForegroundImagePicker" Tapped="MoonPhaseImagePicker_Tapped"
+                                                    Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseForegroundTipTextBlock" Text="300*300 Covering background"/>
+                                                        <TextBlock x:Uid="moonPhaseBackgroundTipTextBlock" Text="300*300 Circle"/>
                                                     </ToolTipService.ToolTip>
                                                 </Button>
                                             </StackPanel>
                                             <Image
                                                 Width="130" Height="130"
-                                                Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
-                                                Visibility="{x:Bind backgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                Source="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
+                                                Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
                                         </StackPanel>
-                                    </StackPanel>
-                                    <!--テスト用-->
-                                    <StackPanel>
-                                        <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -1379,6 +1382,21 @@
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
+                        </PivotItem>
+                        <!--Debug-->
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" Text="DEBUG"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                            <!--テスト用-->
+                            <StackPanel>
+                                <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
+                                <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
+                                <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
+                            </StackPanel>
                         </PivotItem>
                     </Pivot>
                 </Grid>

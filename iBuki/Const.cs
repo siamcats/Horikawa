@@ -78,6 +78,6 @@ namespace iBuki
         public static readonly string FILE_MOONPHASE_BACKGROUND = "MoonPhaseBackground.png";
 
         public static readonly string StartUpTaskId = "ChronocciStartupId";
-
+        
     }
 }

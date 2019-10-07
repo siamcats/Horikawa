@@ -167,7 +167,7 @@ namespace iBuki
         }
 
         /// <summary>
-        ///（イベント）画像取り込みボタンタップ
+        ///（イベント）ムーンフェイズ画像取り込みボタンタップ
         /// </summary>
         private async void MoonPhaseImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -213,8 +213,15 @@ namespace iBuki
         /// </summary>
         private void Timer_Tick(object sender, object e)
         {
-            var localDate = DateTime.Now;
-            //var localDate = DateTime.Parse("2019/12/12 10:08:37");
+            DateTime localDate;
+            if (stopTickToggle.IsOn)
+            {
+                localDate = DateTime.Parse("2019/12/12 10:08:37");
+            }
+            else
+            {
+                localDate = DateTime.Now;
+            }
             //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
@@ -457,6 +464,14 @@ namespace iBuki
             // タイトルバーの左右に確保するスペース
             myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
             ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
+        }
+
+        /// <summary>
+        /// デバッグ機能用、タイトルバーを隠す
+        /// </summary>
+        private void HideTitlebarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            myTitleBar.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -817,9 +832,6 @@ namespace iBuki
             if (context == null)
             {
                 context = StoreContext.GetDefault();
-                // If your app is a desktop app that uses the Desktop Bridge, you
-                // may need additional code to configure the StoreContext object.
-                // For more info, see https://aka.ms/storecontext-for-desktop.
             }
 
             // Get app store product details. Because this might take several moments,   
@@ -851,13 +863,10 @@ namespace iBuki
             if (context == null)
             {
                 context = StoreContext.GetDefault();
-                // If your app is a desktop app that uses the Desktop Bridge, you
-                // may need additional code to configure the StoreContext object.
-                // For more info, see https://aka.ms/storecontext-for-desktop.
             }
 
             // Specify the kinds of add-ons to retrieve.
-            string[] productKinds = { "Durable" };
+            string[] productKinds = { "Durable" };　//永続的(Durable)
             List<String> filterList = new List<string>(productKinds);
 
             // Specify the Store IDs of the products to retrieve.
@@ -949,6 +958,5 @@ namespace iBuki
         }
 
         #endregion
-
     }
 }
