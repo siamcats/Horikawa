@@ -1387,12 +1387,12 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" Text="DEBUG"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <!--テスト用-->
-                            <StackPanel>
+                            <StackPanel Style="{StaticResource SettingPanelStyle}">
                                 <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
                                 <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
                                 <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
