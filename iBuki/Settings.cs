@@ -168,7 +168,13 @@ namespace iBuki
         public double MoonPhaseCoordinateY { get; set; }
 
         [DataMember]
+        public bool MoonPhaseBackgroundImageDisplay { get; set; }
+
+        [DataMember]
         public string MoonPhaseForegroundColor { get; set; }
+
+        [DataMember]
+        public bool MoonPhaseForegroundImageDisplay { get; set; }
 
         public BitmapSource Thumbnail { get; set; }
 

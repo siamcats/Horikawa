@@ -33,6 +33,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
 using System.Text.RegularExpressions;
 using Windows.Services.Store;
+using System.Collections.Generic;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -135,6 +136,9 @@ namespace iBuki
 
         #endregion
 
+
+        #region 画像関連
+
         /// <summary>
         ///（イベント）画像取り込みボタンタップ
         /// </summary>
@@ -163,6 +167,33 @@ namespace iBuki
         }
 
         /// <summary>
+        ///（イベント）画像取り込みボタンタップ
+        /// </summary>
+        private async void MoonPhaseImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            //filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                //LocalFolder/MoonPhaseBackground.pngに配置
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_MOONPHASE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.MoonPhaseBackgroundImage = bitmap;
+            }
+        }
+
+        /// <summary>
         /// （イベント）カラー選択ボタン
         /// </summary>
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -170,10 +201,12 @@ namespace iBuki
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
+        #endregion
+
         #region 針の描写更新
 
         DateTime beforeDate = new DateTime(); //現在日退避
-        DateTime defaultDate = new DateTime(); //比較用の初期値日付
+        readonly DateTime defaultDate = new DateTime(); //比較用の初期値日付
 
         /// <summary>
         /// （イベント）チックで針描画
@@ -779,7 +812,7 @@ namespace iBuki
 
         private StoreContext context = null;
 
-        public async void GetAppInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        public async void bk(object sender, TappedRoutedEventArgs e)
         {
             if (context == null)
             {
@@ -811,6 +844,44 @@ namespace iBuki
 
             // Display the price of the app.
             licenseTextBlock.Text = $"The price of this app is: {queryResult.Product.Price.FormattedBasePrice}";
+        }
+
+        public async void GetAppInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
+            }
+
+            // Specify the kinds of add-ons to retrieve.
+            string[] productKinds = { "Durable" };
+            List<String> filterList = new List<string>(productKinds);
+
+            // Specify the Store IDs of the products to retrieve.
+            string[] storeIds = new string[] { "9N2670BTRV8R", "9NBLGGH4TNMN" };
+
+            //workingProgressRing.IsActive = true;
+            StoreProductQueryResult queryResult =
+                await context.GetStoreProductsAsync(filterList, storeIds);
+            //workingProgressRing.IsActive = false;
+
+            if (queryResult.ExtendedError != null)
+            {
+                // The user may be offline or there might be some other server failure.
+                licenseTextBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
+                return;
+            }
+
+            foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
+            {
+                // Access the Store info for the product.
+                StoreProduct product = item.Value;
+
+                // Use members of the product object to access info for the product...
+            }
         }
 
         #endregion

@@ -624,6 +624,30 @@ namespace iBuki
             }
         }
 
+        private bool _isMoonPhaseBackgroundImageDisplay = false;
+        public bool IsMoonPhaseBackgroundImageDisplay
+        {
+            get { return _isMoonPhaseBackgroundImageDisplay; }
+            set
+            {
+                if (value == _isMoonPhaseBackgroundImageDisplay) return;
+                _isMoonPhaseBackgroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _moonPhaseBackgroundImage;
+        public BitmapImage MoonPhaseBackgroundImage
+        {
+            get { return _moonPhaseBackgroundImage; }
+            set
+            {
+                if (value == _moonPhaseBackgroundImage) return;
+                _moonPhaseBackgroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Color _moonPhaseForegroundColor = Color.FromArgb(255, 255, 255, 255);
         public Color MoonPhaseForegroundColor
         {

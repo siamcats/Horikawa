@@ -38,10 +38,45 @@ namespace iBuki
                 (d, e) => { (d as MoonPhase).OnPropertyChanged(e); })
             );
 
+        public bool IsBackgroundImageDisplay
+        {
+            get { return (bool)GetValue(IsBackgroundImageDisplayProperty); }
+            set { SetValue(IsBackgroundImageDisplayProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsBackgroundImageDisplayProperty = DependencyProperty.Register(
+            "IsBackgroundImageDisplay",
+            typeof(bool),
+            typeof(MoonPhase),
+            new PropertyMetadata(false,
+                (d, e) => { (d as MoonPhase).OnImagePropertyChanged(e); })
+            );
+
+        public BitmapImage BackgroundImage
+        {
+            get { return (BitmapImage)GetValue(BackgroundImageProperty); }
+            set { SetValue(BackgroundImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register(
+            "BackgroundImage",
+            typeof(BitmapImage),
+            typeof(MoonPhase),
+            new PropertyMetadata(new BitmapImage(),
+                (d, e) => { (d as MoonPhase).OnImagePropertyChanged(e); })
+            );
+
         public MoonPhase()
         {
             InitializeComponent();
-            background.Source = new BitmapImage(new Uri(Const.URI_ASSETS_MOONPHASE + Const.FILE_MOONPHASE_BACKGROUND));
+            if (IsBackgroundImageDisplay)
+            {
+                background.Source = BackgroundImage;
+            }
+            else
+            {
+                background.Source = new BitmapImage(new Uri(Const.URI_ASSETS_MOONPHASE + Const.FILE_MOONPHASE_BACKGROUND));
+            }
             var moonAge = GetMoonAge(DateTime);
             angle.Rotation = moonAge * 6;
         }
@@ -51,6 +86,18 @@ namespace iBuki
 
             var moonAge = GetMoonAge(DateTime);
             angle.Rotation = moonAge * 6;
+        }
+
+        private void OnImagePropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (IsBackgroundImageDisplay)
+            {
+                background.Source = BackgroundImage;
+            }
+            else
+            {
+                background.Source = new BitmapImage(new Uri(Const.URI_ASSETS_MOONPHASE + Const.FILE_MOONPHASE_BACKGROUND));
+            }
         }
 
 
