@@ -1319,12 +1319,79 @@
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
+                                    <!--E7BF	ShoppingCart-->
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
                                     <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="aboutAppTitle" Text="About App"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--アドオン-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="addOnTextBlock" Text="Add-On Licenses"/>
+                                    </StackPanel>
+                                    <!--リスト-->
+                                    <TextBlock x:Name="addOnText" />
+                                    <ListView
+                                        x:Name="addOnList"
+                                        ItemsSource="{x:Bind vm.AddOnList, Mode=OneWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Height="64">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="50"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Rectangle
+                                                        Grid.Column="0"
+                                                        Height="50" Width="50" VerticalAlignment="Center">
+                                                        <Rectangle.Fill>
+                                                            <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Converter={StaticResource UriBitmap},Mode=OneWay}"/>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                    <StackPanel
+                                                        Grid.Column="1"
+                                                        Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                        <TextBlock
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Title}"/>
+                                                        <TextBlock
+                                                            TextWrapping="WrapWholeWords" Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Price.FormattedPrice}"
+                                                                Padding="0,0,8,0"/>
+                                                            <TextBlock
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Price.CurrencyCode}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                    <StackPanel
+                                                        Grid.Column="0" Margin="-12,0,0,0"
+                                                        HorizontalAlignment="left" VerticalAlignment="Top" >
+                                                        <!--delete-->
+                                                        <!--<Button
+                                                            x:Name="templateDeleteButton"
+                                                            Width="20" Height="20" Padding="0" Tapped="TemplateDeleteButton_Tapped">
+                                                            <Button.Content>
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" />
+                                                            </Button.Content>
+                                                        </Button>-->
+                                                        <!--export-->
+                                                        <!--<Button
+                                                            Width="20" Height="20" Padding="0" Visibility="Collapsed">
+                                                            <Button.Content>
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" />
+                                                            </Button.Content>
+                                                        </Button>-->
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
                                     <!--アプリバージョン-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
@@ -1349,20 +1416,6 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                    <!--アドオン-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingTitlePanelStyle}">
-                                        <TextBlock
-                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
-                                            x:Uid="creditsTextBlock" Text="Add-on licenses"/>
-                                    </StackPanel>
-                                    <Button x:Name="getAppInfoButton" Content="Get App Info" Tapped="GetAppInfoButton_Tapped"/>
-                                    <StackPanel
-                                        Style="{StaticResource SettingWhitePanelStyle}">
-                                        <TextBlock
-                                            x:Name="licenseTextBlock"/>
-                                    </StackPanel>
-                                    
                                     <!--クレジット-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
@@ -1396,6 +1449,12 @@
                                 <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
                                 <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
                                 <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
+                                <Button x:Name="getAppInfoButton" Content="get app info" Tapped="GetAppInfoButton_Tapped"/>
+                                <TextBlock x:Name="licenseTextBlock"/>
+                                <Button x:Name="getAddOnInfoButton" Content="get add-on info" Tapped="GetAddOnInfoButton_Tapped"/>
+                                <TextBlock x:Name="addOnTextBlock"/>
+                                <Button x:Name="purchaseAddOnButton" Content="purchase" Tapped="PurchaseAddOnButton_Tapped" />
+                                <TextBlock x:Name="puchaseTextBlock"/>
                             </StackPanel>
                         </PivotItem>
                     </Pivot>

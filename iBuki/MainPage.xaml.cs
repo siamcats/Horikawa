@@ -827,7 +827,11 @@ namespace iBuki
 
         private StoreContext context = null;
 
-        public async void bk(object sender, TappedRoutedEventArgs e)
+        //const string storeId = "9PKSFMB2T97N"; //アプリ本体
+        const string storeId = "9N2670BTRV8R"; //MoonPhase
+
+        //アプリ情報取得
+        public async void GetAppInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (context == null)
             {
@@ -854,45 +858,147 @@ namespace iBuki
                 return;
             }
 
+            licenseTextBlock.Text = queryResult.Product.StoreId;
+
             // Display the price of the app.
-            licenseTextBlock.Text = $"The price of this app is: {queryResult.Product.Price.FormattedBasePrice}";
+            //licenseTextBlock.Text = $"The price of this app is: {queryResult.Product.Price.FormattedBasePrice}";
         }
 
-        public async void GetAppInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void GetAddOnInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            GetAddOnInfo();
+            GetAddOnInfoPurchased();
+        }
+
+        private async void PurchaseAddOnButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Purchase();
+        }
+
+        public async void GetAddOnInfo()
         {
             if (context == null)
             {
                 context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
             }
 
             // Specify the kinds of add-ons to retrieve.
-            string[] productKinds = { "Durable" };　//永続的(Durable)
+            string[] productKinds = { "Durable", "Consumable", "UnmanagedConsumable" };
             List<String> filterList = new List<string>(productKinds);
 
-            // Specify the Store IDs of the products to retrieve.
-            string[] storeIds = new string[] { "9N2670BTRV8R", "9NBLGGH4TNMN" };
-
             //workingProgressRing.IsActive = true;
-            StoreProductQueryResult queryResult =
-                await context.GetStoreProductsAsync(filterList, storeIds);
+            StoreProductQueryResult queryResult = await context.GetAssociatedStoreProductsAsync(filterList);
             //workingProgressRing.IsActive = false;
 
             if (queryResult.ExtendedError != null)
             {
                 // The user may be offline or there might be some other server failure.
-                licenseTextBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
+                addOnTextBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
                 return;
             }
 
+            Debug.WriteLine("未購入:");
             foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
             {
-                // Access the Store info for the product.
+                // Access the Store product info for the add-on.
                 StoreProduct product = item.Value;
+                Debug.WriteLine(" - " + product.Title + "/" + product.Description);
+                Debug.WriteLine(product.Images[0].Uri.AbsoluteUri);
+                // Use members of the product object to access listing info for the add-on...
+                vm.AddOnList.Add(product);
+                addOnText.Text = vm.AddOnList.Count.ToString();
+            }
+        }
 
+        public async void GetAddOnInfoPurchased()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
+            }
+
+            // Specify the kinds of add-ons to retrieve.
+            string[] productKinds = { "Durable" };
+            List<String> filterList = new List<string>(productKinds);
+
+            //workingProgressRing.IsActive = true;
+            StoreProductQueryResult queryResult = await context.GetUserCollectionAsync(filterList);
+            //workingProgressRing.IsActive = false;
+
+            if (queryResult.ExtendedError != null)
+            {
+                // The user may be offline or there might be some other server failure.
+                addOnTextBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
+                return;
+            }
+
+            Debug.WriteLine("購入済:");
+            foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
+            {
+                StoreProduct product = item.Value;
+                Debug.WriteLine(" - " + product.Title + "/" + product.Description);
                 // Use members of the product object to access info for the product...
             }
         }
 
+        private async void Purchase()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
+            }
+
+            //workingProgressRing.IsActive = true;
+            StorePurchaseResult result = await context.RequestPurchaseAsync(storeId);
+            //workingProgressRing.IsActive = false;
+
+            // Capture the error message for the operation, if any.
+            string extendedError = string.Empty;
+            if (result.ExtendedError != null)
+            {
+                extendedError = result.ExtendedError.Message;
+            }
+
+            switch (result.Status)
+            {
+                case StorePurchaseStatus.AlreadyPurchased:
+                    puchaseTextBlock.Text = "The user has already purchased the product.";
+                    break;
+
+                case StorePurchaseStatus.Succeeded:
+                    puchaseTextBlock.Text = "The purchase was successful.";
+                    break;
+
+                case StorePurchaseStatus.NotPurchased:
+                    puchaseTextBlock.Text = "The purchase did not complete. " +
+                        "The user may have cancelled the purchase. ExtendedError: " + extendedError;
+                    break;
+
+                case StorePurchaseStatus.NetworkError:
+                    puchaseTextBlock.Text = "The purchase was unsuccessful due to a network error. " +
+                        "ExtendedError: " + extendedError;
+                    break;
+
+                case StorePurchaseStatus.ServerError:
+                    puchaseTextBlock.Text = "The purchase was unsuccessful due to a server error. " +
+                        "ExtendedError: " + extendedError;
+                    break;
+
+                default:
+                    puchaseTextBlock.Text = "The purchase was unsuccessful due to an unknown error. " +
+                        "ExtendedError: " + extendedError;
+                    break;
+            }
+        }
         #endregion
 
 
@@ -958,5 +1064,6 @@ namespace iBuki
         }
 
         #endregion
+
     }
 }

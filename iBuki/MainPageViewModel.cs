@@ -19,6 +19,7 @@ using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
 using System.Collections.ObjectModel;
+using Windows.Services.Store;
 
 namespace iBuki
 {
@@ -273,9 +274,11 @@ namespace iBuki
             return settings;
         }
 
-        #region General
+        #region General / About
 
         public List<string> LanguageList = Const.LANGUAGE_LIST;
+
+        public ObservableCollection<StoreProduct> AddOnList = new ObservableCollection<StoreProduct>();
 
         public string AppVersion = Const.APP_VERSION;
 
