@@ -315,4 +315,31 @@
   <data name="StartUpToggle.Header" xml:space="preserve">
     <value>Startup</value>
   </data>
+  <data name="addOnTextBlock.Text" xml:space="preserve">
+    <value>Add-On License</value>
+  </data>
+  <data name="dialogError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="dialogPurchasedAlready" xml:space="preserve">
+    <value>The user has already purchased the product.</value>
+  </data>
+  <data name="dialogPurchasedCancel" xml:space="preserve">
+    <value>The purchase did not complete. The user may have cancelled the purchase.</value>
+  </data>
+  <data name="dialogPurchasedNetworkError" xml:space="preserve">
+    <value>The purchase was unsuccessful due to a network error.</value>
+  </data>
+  <data name="dialogPurchasedServerError" xml:space="preserve">
+    <value>The purchase was unsuccessful due to a server error.</value>
+  </data>
+  <data name="dialogPurchasedUnknownError" xml:space="preserve">
+    <value>The purchase was unsuccessful due to an unknown error.</value>
+  </data>
+  <data name="dialogRetrieveLicenseError" xml:space="preserve">
+    <value>An error occurred while retrieving the license. Add-On is not available.</value>
+  </data>
+  <data name="licensedTextBlock.Text" xml:space="preserve">
+    <value>Licensed</value>
+  </data>
 </root>

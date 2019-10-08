@@ -56,6 +56,18 @@ namespace iBuki
             }
         }
 
+        private bool _isLicensedMoonPhase = false;
+        public bool IsLicensedMoonPhase
+        {
+            get => _isLicensedMoonPhase;
+            set
+            {
+                if (value == _isLicensedMoonPhase) return;
+                _isLicensedMoonPhase = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Settingsオブジェクトをアプリに反映
         /// </summary>
@@ -279,6 +291,8 @@ namespace iBuki
         public List<string> LanguageList = Const.LANGUAGE_LIST;
 
         public ObservableCollection<StoreProduct> AddOnList = new ObservableCollection<StoreProduct>();
+
+        public ObservableCollection<StoreProduct> LicensedAddOnList = new ObservableCollection<StoreProduct>();
 
         public string AppVersion = Const.APP_VERSION;
 

@@ -57,6 +57,8 @@ namespace iBuki
             InitializeComponent();
             DataContext = vm.AppConfig;
 
+            GetLicenseInfo();
+
             // デフォルトサイズは500固定
             var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             ApplicationView.PreferredLaunchViewSize = size;
@@ -864,53 +866,78 @@ namespace iBuki
             //licenseTextBlock.Text = $"The price of this app is: {queryResult.Product.Price.FormattedBasePrice}";
         }
 
-        private async void GetAddOnInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private void GetAddOnInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             GetAddOnInfo();
-            GetAddOnInfoPurchased();
+            //GetAddOnInfoPurchased();
         }
 
-        private async void PurchaseAddOnButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private void LicenseUpdateButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Purchase();
+            GetAddOnInfo();
+        }
+
+        private void AddOnPanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetAddOnInfo();
+        }
+
+        private void AddOnList_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var addOn = addOnList.SelectedItem as StoreProduct;
+            Purchase(addOn.StoreId);
         }
 
         public async void GetAddOnInfo()
         {
+            licenseUpdateProgress.IsActive = true;
+
             if (context == null)
             {
                 context = StoreContext.GetDefault();
-                // If your app is a desktop app that uses the Desktop Bridge, you
-                // may need additional code to configure the StoreContext object.
-                // For more info, see https://aka.ms/storecontext-for-desktop.
             }
 
-            // Specify the kinds of add-ons to retrieve.
             string[] productKinds = { "Durable", "Consumable", "UnmanagedConsumable" };
-            List<String> filterList = new List<string>(productKinds);
-
-            //workingProgressRing.IsActive = true;
-            StoreProductQueryResult queryResult = await context.GetAssociatedStoreProductsAsync(filterList);
-            //workingProgressRing.IsActive = false;
+            var filterList = new List<string>(productKinds);
+            var queryResult = await context.GetAssociatedStoreProductsAsync(filterList);
 
             if (queryResult.ExtendedError != null)
             {
-                // The user may be offline or there might be some other server failure.
-                addOnTextBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
+                Debug.WriteLine($"ExtendedError: {queryResult.ExtendedError.Message}");
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogError");
+                var message = queryResult.ExtendedError.Message;
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                licenseUpdateProgress.IsActive = false;
                 return;
             }
 
-            Debug.WriteLine("未購入:");
+            vm.LicensedAddOnList.Clear();
+            vm.AddOnList.Clear();
+
             foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
             {
-                // Access the Store product info for the add-on.
-                StoreProduct product = item.Value;
-                Debug.WriteLine(" - " + product.Title + "/" + product.Description);
-                Debug.WriteLine(product.Images[0].Uri.AbsoluteUri);
-                // Use members of the product object to access listing info for the add-on...
-                vm.AddOnList.Add(product);
-                addOnText.Text = vm.AddOnList.Count.ToString();
+                var product = item.Value;
+                Debug.WriteLine(product.StoreId + " : " + product.Title + " - " + product.IsInUserCollection);
+
+
+                if (product.IsInUserCollection)
+                {
+                    vm.LicensedAddOnList.Add(product);
+                }
+                else
+                {
+                    vm.AddOnList.Add(product);
+                }
             }
+
+            licenseUpdateProgress.IsActive = false;
         }
 
         public async void GetAddOnInfoPurchased()
@@ -947,58 +974,109 @@ namespace iBuki
             }
         }
 
-        private async void Purchase()
+        private async void Purchase(string storeId)
         {
             if (context == null)
             {
                 context = StoreContext.GetDefault();
-                // If your app is a desktop app that uses the Desktop Bridge, you
-                // may need additional code to configure the StoreContext object.
-                // For more info, see https://aka.ms/storecontext-for-desktop.
             }
 
-            //workingProgressRing.IsActive = true;
-            StorePurchaseResult result = await context.RequestPurchaseAsync(storeId);
-            //workingProgressRing.IsActive = false;
+            var result = await context.RequestPurchaseAsync(storeId);
 
-            // Capture the error message for the operation, if any.
-            string extendedError = string.Empty;
+
+            var loader = new ResourceLoader();
+            var title = string.Empty;
+            var message = string.Empty;
+            var messageEx = string.Empty;
             if (result.ExtendedError != null)
             {
-                extendedError = result.ExtendedError.Message;
+                messageEx = "\n" + result.ExtendedError.Message;
             }
 
             switch (result.Status)
             {
                 case StorePurchaseStatus.AlreadyPurchased:
-                    puchaseTextBlock.Text = "The user has already purchased the product.";
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedAlready");
                     break;
 
                 case StorePurchaseStatus.Succeeded:
-                    puchaseTextBlock.Text = "The purchase was successful.";
+                    message = "The purchase was successful.";
                     break;
 
                 case StorePurchaseStatus.NotPurchased:
-                    puchaseTextBlock.Text = "The purchase did not complete. " +
-                        "The user may have cancelled the purchase. ExtendedError: " + extendedError;
+                    title = loader.GetString("dialogCancel");
+                    message = loader.GetString("dialogPurchasedCancel") + messageEx;
                     break;
 
                 case StorePurchaseStatus.NetworkError:
-                    puchaseTextBlock.Text = "The purchase was unsuccessful due to a network error. " +
-                        "ExtendedError: " + extendedError;
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedNetworkError") + messageEx;
                     break;
 
                 case StorePurchaseStatus.ServerError:
-                    puchaseTextBlock.Text = "The purchase was unsuccessful due to a server error. " +
-                        "ExtendedError: " + extendedError;
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedServerError") + messageEx;
                     break;
 
                 default:
-                    puchaseTextBlock.Text = "The purchase was unsuccessful due to an unknown error. " +
-                        "ExtendedError: " + extendedError;
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedUnknownError") + messageEx;
                     break;
             }
+
+            
+
+
+
+
+
+            var dialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                CloseButtonText = "OK"
+            };
+            await dialog.ShowAsync();
+
         }
+
+        public async void GetLicenseInfo()
+        {
+            vm.IsLicensedMoonPhase = false;
+
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+
+            var appLicense = await context.GetAppLicenseAsync();
+
+            if (appLicense == null)
+            {
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogError");
+                var message = loader.GetString("dialogRetrieveLicenseError");
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            foreach (KeyValuePair<string, StoreLicense> item in appLicense.AddOnLicenses)
+            {
+                var addOnLicense = item.Value;
+                if(addOnLicense.SkuStoreId.Contains(Const.STORE_ID_MOONPHASE)) //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
+                {
+                    vm.IsLicensedMoonPhase = true;
+                }
+            }
+        }
+
         #endregion
 
 
@@ -1062,6 +1140,7 @@ namespace iBuki
             //    Debug.WriteLine(assetsfiles[i].Name);
             //}
         }
+
 
         #endregion
 

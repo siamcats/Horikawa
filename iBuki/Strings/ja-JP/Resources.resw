@@ -315,4 +315,31 @@
   <data name="StartUpToggle.Header" xml:space="preserve">
     <value>スタートアップに登録する</value>
   </data>
+  <data name="addOnTextBlock.Text" xml:space="preserve">
+    <value>アドオン ライセンス情報</value>
+  </data>
+  <data name="dialogError" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="dialogPurchasedAlready" xml:space="preserve">
+    <value>既に購入済みのアドオンです。</value>
+  </data>
+  <data name="dialogPurchasedCancel" xml:space="preserve">
+    <value>アドオンの購入をキャンセルしました。</value>
+  </data>
+  <data name="dialogPurchasedNetworkError" xml:space="preserve">
+    <value>ネットワークエラーのためアドオンの購入に失敗しました。</value>
+  </data>
+  <data name="dialogPurchasedServerError" xml:space="preserve">
+    <value>サーバーエラーのためアドオンの購入に失敗しました。</value>
+  </data>
+  <data name="dialogPurchasedUnknownError" xml:space="preserve">
+    <value>何らかのエラーのためアドオンの購入に失敗しました。</value>
+  </data>
+  <data name="dialogRetrieveLicenseError" xml:space="preserve">
+    <value>ライセンス情報の取得中にエラーが発生したため、アドオン機能が利用できません。</value>
+  </data>
+  <data name="licensedTextBlock.Text" xml:space="preserve">
+    <value>購入済</value>
+  </data>
 </root>
