@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="aboutAppTitle.Text" xml:space="preserve">
-    <value>アプリについて</value>
+  <data name="licenseTextBox.Text" xml:space="preserve">
+    <value>ライセンス</value>
   </data>
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>一部の目盛りを変える</value>
@@ -316,7 +316,7 @@
     <value>スタートアップに登録する</value>
   </data>
   <data name="addOnTextBlock.Text" xml:space="preserve">
-    <value>アドオン ライセンス情報</value>
+    <value>アドオン情報</value>
   </data>
   <data name="dialogError" xml:space="preserve">
     <value>エラー</value>

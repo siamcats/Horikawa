@@ -930,10 +930,12 @@
                                             x:Uid="dateDisplayToggle"
                                             x:Name="dateDisplayToggle" 
                                             OffContent="Off" OnContent="On"
+                                            IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
                                             IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -957,6 +959,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
@@ -989,6 +992,7 @@
                                     </StackPanel>
                                     <!--サイズ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size"/>
@@ -1021,6 +1025,7 @@
                                     </StackPanel>
                                     <!--境界線-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                              Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1028,6 +1033,7 @@
                                     </StackPanel>
                                     <!--境界線の色-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1051,6 +1057,7 @@
                                     </StackPanel>
                                     <!--境界線の太さ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
@@ -1068,6 +1075,7 @@
                                     </StackPanel>
                                     <!--フォント-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1075,6 +1083,7 @@
                                     </StackPanel>
                                     <!--フォントの色-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1099,6 +1108,7 @@
                                     </StackPanel>
                                     <!--フォーマット-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="formatLabel" Text="Format"/>
@@ -1118,6 +1128,7 @@
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
@@ -1129,6 +1140,7 @@
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
@@ -1322,13 +1334,14 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
-                        <!--About-->
+                        <!--App/Add-On-->
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
-                                    <!--E7BF	ShoppingCart-->
-                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="aboutAppTitle" Text="About App"/>
+                                    <!--E7BF ShoppingCart-->
+                                    <!--E897 Questions-->
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BF;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="licenseTextBox" Text="License"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
@@ -1431,7 +1444,7 @@
                                                     </StackPanel>
                                                     <StackPanel
                                                         Grid.Column="2" Orientation="Vertical" Margin="3,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                        <FontIcon Style="{StaticResource TitleTextBlockStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE73E;"/>
+                                                        <FontIcon FontSize="21" FontFamily="Segoe MDL2 Assets" Glyph="&#xE73E;"/>
                                                         <!--E73E / E73A-->
                                                         <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" x:Uid="licensedTextBlock" Text="Licensed" TextAlignment="Center"/>
                                                     </StackPanel>

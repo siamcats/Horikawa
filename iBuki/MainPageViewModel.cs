@@ -56,6 +56,20 @@ namespace iBuki
             }
         }
 
+        #region License
+
+        private bool _isLicensedDayDate = false;
+        public bool IsLicensedDayDate
+        {
+            get => _isLicensedDayDate;
+            set
+            {
+                if (value == _isLicensedDayDate) return;
+                _isLicensedDayDate = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _isLicensedMoonPhase = false;
         public bool IsLicensedMoonPhase
         {
@@ -67,6 +81,21 @@ namespace iBuki
                 OnPropertyChanged();
             }
         }
+
+        public void SetLicense(string storeId)
+        {
+            //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
+            if (storeId.Contains(Const.STORE_ID_DAYDATE)) 
+            {
+                IsLicensedDayDate = true;
+            }
+            else if(storeId.Contains(Const.STORE_ID_MOONPHASE))
+            {
+                IsLicensedMoonPhase = true;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Settingsオブジェクトをアプリに反映

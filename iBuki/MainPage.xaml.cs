@@ -980,9 +980,7 @@ namespace iBuki
             {
                 context = StoreContext.GetDefault();
             }
-
             var result = await context.RequestPurchaseAsync(storeId);
-
 
             var loader = new ResourceLoader();
             var title = string.Empty;
@@ -1025,12 +1023,6 @@ namespace iBuki
                     break;
             }
 
-            
-
-
-
-
-
             var dialog = new ContentDialog
             {
                 Title = title,
@@ -1039,12 +1031,11 @@ namespace iBuki
             };
             await dialog.ShowAsync();
 
+            GetLicenseInfo();
         }
 
         public async void GetLicenseInfo()
         {
-            vm.IsLicensedMoonPhase = false;
-
             if (context == null)
             {
                 context = StoreContext.GetDefault();
@@ -1070,10 +1061,7 @@ namespace iBuki
             foreach (KeyValuePair<string, StoreLicense> item in appLicense.AddOnLicenses)
             {
                 var addOnLicense = item.Value;
-                if(addOnLicense.SkuStoreId.Contains(Const.STORE_ID_MOONPHASE)) //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
-                {
-                    vm.IsLicensedMoonPhase = true;
-                }
+                vm.SetLicense(addOnLicense.SkuStoreId);
             }
         }
 
