@@ -941,7 +941,7 @@ namespace iBuki
             if (queryResult.ExtendedError != null)
             {
                 // The user may be offline or there might be some other server failure.
-                addOnTextBlock.Text = $"ExtendedError: {queryResult.ExtendedError.Message}";
+                Debug.WriteLine($"ExtendedError: {queryResult.ExtendedError.Message}");
                 return;
             }
 
