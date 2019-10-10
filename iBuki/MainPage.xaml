@@ -90,7 +90,6 @@
         </Style>
     </Page.Resources>
 
-
     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
 
         <SplitView
@@ -915,7 +914,7 @@
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEC92;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="dayDateTitle" Text="Day Date"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="dayDateTextBlock" Text="Day Date"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
@@ -925,13 +924,18 @@
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="dateDisplayLabel" Text="Day Date"/>
-                                        <ToggleSwitch 
-                                            x:Uid="dateDisplayToggle"
-                                            x:Name="dateDisplayToggle" 
-                                            OffContent="Off" OnContent="On"
-                                            IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
-                                            IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                            x:Uid="dayDateTextBlock" Text="Day Date"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Uid="dateDisplayToggle"
+                                                x:Name="dateDisplayToggle" 
+                                                OffContent="Off" OnContent="On"
+                                                IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
+                                                IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                            <TextBlock
+                                                x:Uid="licenseRequiredTextBlock" Text="A license is required." Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                Visibility="{x:Bind moonPhaseToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
@@ -1164,7 +1168,7 @@
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Lunar Phase"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Moon Phase"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
@@ -1175,13 +1179,18 @@
                                             Style="{StaticResource SettingTitlePanelStyle}">
                                             <TextBlock
                                                 Style="{StaticResource SettingTitleTextBlockStyle}"
-                                                x:Uid="moonPhaseTextBlock" Text="Lunar Phase"/>
-                                            <ToggleSwitch 
-                                                x:Uid="moonPhaseToggle"
-                                                x:Name="moonPhaseToggle" 
-                                                OffContent="Off" OnContent="On"
-                                                IsEnabled="{x:Bind vm.IsLicensedMoonPhase,Mode=OneWay}"
-                                                IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=TwoWay}" />
+                                                x:Uid="moonPhaseTextBlock" Text="Moon Phase"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="moonPhaseToggle"
+                                                    x:Name="moonPhaseToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind vm.IsLicensedMoonPhase,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=TwoWay}" />
+                                                <TextBlock
+                                                    x:Uid="licenseRequired" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                    Visibility="{x:Bind moonPhaseToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--Size-->
@@ -1334,7 +1343,7 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
-                        <!--App/Add-On-->
+                        <!--ライセンス-->
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
@@ -1457,7 +1466,7 @@
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="appVersion" Text="App Version"/>
+                                            x:Uid="aboutAppTextBlock" Text="About App"/>
                                     </StackPanel>
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
@@ -1469,6 +1478,9 @@
                                                 <TextBlock
                                                     Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>
                                                 <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Style="{StaticResource DescriptionTextBlockStyle}"
+                                                        x:Uid="versionTextBlock"  Text="Version" Margin="0,0,5,0"/>
                                                     <TextBlock
                                                         Style="{StaticResource DescriptionTextBlockStyle}"
                                                         Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
@@ -1497,7 +1509,8 @@
                             </ScrollViewer>
                         </PivotItem>
                         <!--Debug-->
-                        <PivotItem>
+                        <PivotItem
+                            Visibility="{x:Bind local:Const.VISIBLE_ON_DEBUG,Mode=OneTime}">
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;" />
@@ -1509,10 +1522,6 @@
                                 <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
                                 <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
                                 <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
-                                <Button x:Name="getAppInfoButton" Content="get app info" Tapped="GetAppInfoButton_Tapped"/>
-                                <TextBlock x:Name="licenseTextBlock"/>
-                                <Button x:Name="getAddOnInfoButton" Content="get add-on info" Tapped="GetAddOnInfoButton_Tapped"/>
-                                <TextBlock x:Name="addOnTextBlock"/>
                             </StackPanel>
                         </PivotItem>
                     </Pivot>

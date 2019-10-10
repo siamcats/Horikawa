@@ -829,49 +829,6 @@ namespace iBuki
 
         private StoreContext context = null;
 
-        //const string storeId = "9PKSFMB2T97N"; //アプリ本体
-        const string storeId = "9N2670BTRV8R"; //MoonPhase
-
-        //アプリ情報取得
-        public async void GetAppInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (context == null)
-            {
-                context = StoreContext.GetDefault();
-            }
-
-            // Get app store product details. Because this might take several moments,   
-            // display a ProgressRing during the operation.
-            //workingProgressRing.IsActive = true;
-            StoreProductResult queryResult = await context.GetStoreProductForCurrentAppAsync();
-            //workingProgressRing.IsActive = false;
-
-            if (queryResult.Product == null)
-            {
-                // The Store catalog returned an unexpected result.
-                licenseTextBlock.Text = "Something went wrong, and the product was not returned.";
-
-                // Show additional error info if it is available.
-                if (queryResult.ExtendedError != null)
-                {
-                    licenseTextBlock.Text += $"\nExtendedError: {queryResult.ExtendedError.Message}";
-                }
-
-                return;
-            }
-
-            licenseTextBlock.Text = queryResult.Product.StoreId;
-
-            // Display the price of the app.
-            //licenseTextBlock.Text = $"The price of this app is: {queryResult.Product.Price.FormattedBasePrice}";
-        }
-
-        private void GetAddOnInfoButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            GetAddOnInfo();
-            //GetAddOnInfoPurchased();
-        }
-
         private void LicenseUpdateButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             GetAddOnInfo();
@@ -888,6 +845,30 @@ namespace iBuki
             Purchase(addOn.StoreId);
         }
 
+        //アプリ情報取得
+        public async void GetAppInfo()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+            StoreProductResult queryResult = await context.GetStoreProductForCurrentAppAsync();
+
+            if (queryResult.Product == null)
+            {
+                // The Store catalog returned an unexpected result.
+                Debug.WriteLine("Something went wrong, and the product was not returned.");
+
+                // Show additional error info if it is available.
+                if (queryResult.ExtendedError != null)
+                {
+                    Debug.WriteLine(queryResult.ExtendedError.Message);
+                }
+                return;
+            }
+        }
+
+        //アプリアドオン情報取得
         public async void GetAddOnInfo()
         {
             licenseUpdateProgress.IsActive = true;
@@ -925,7 +906,6 @@ namespace iBuki
             {
                 var product = item.Value;
                 Debug.WriteLine(product.StoreId + " : " + product.Title + " - " + product.IsInUserCollection);
-
 
                 if (product.IsInUserCollection)
                 {

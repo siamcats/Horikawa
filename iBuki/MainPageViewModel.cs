@@ -325,9 +325,9 @@ namespace iBuki
 
         public string AppVersion = Const.APP_VERSION;
 
-        public string AppName = Const.GetAppName();
+        public string AppName = Const.APP_NAME();
 
-        public string AppAuthor = Const.GetAppAuthor();
+        public string AppAuthor = Const.APP_AUTHOR();
 
         public Uri AppLogo = Const.APP_LOGO;
 

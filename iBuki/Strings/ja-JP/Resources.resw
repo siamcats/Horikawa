@@ -124,10 +124,10 @@
     <value>一部の目盛りを変える</value>
   </data>
   <data name="appConfigTextBlock.Text" xml:space="preserve">
-    <value>アプリ</value>
+    <value>アプリの構成</value>
   </data>
-  <data name="appVersion.Text" xml:space="preserve">
-    <value>バージョン情報</value>
+  <data name="aboutAppTextBlock.Text" xml:space="preserve">
+    <value>このアプリについて</value>
   </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>アラビア数字</value>
@@ -148,7 +148,7 @@
     <value>ブレゲ針</value>
   </data>
   <data name="clockConfigTextBlock.Text" xml:space="preserve">
-    <value>時計</value>
+    <value>時計の設定</value>
   </data>
   <data name="clockFaceTitle.Text" xml:space="preserve">
     <value>文字盤</value>
@@ -168,11 +168,8 @@
   <data name="darkButton.Content" xml:space="preserve">
     <value>ダーク</value>
   </data>
-  <data name="dateDisplayLabel.Text" xml:space="preserve">
-    <value>デイト表示</value>
-  </data>
-  <data name="dayDateTitle.Text" xml:space="preserve">
-    <value>デイト</value>
+  <data name="dayDateTextBlock.Text" xml:space="preserve">
+    <value>デイ・デイト</value>
   </data>
   <data name="defaultButton.Content" xml:space="preserve">
     <value>Windowsデフォルト</value>
@@ -300,9 +297,6 @@
   <data name="dialogDelete" xml:space="preserve">
     <value>削除</value>
   </data>
-  <data name="dialogDeleteTemplate" xml:space="preserve">
-    <value>テンプレートを削除しますか？</value>
-  </data>
   <data name="dialogDeleteTemplateReally" xml:space="preserve">
     <value>一度削除したテンプレートを元に戻すことはできません。本当に削除しますか？</value>
   </data>
@@ -341,5 +335,11 @@
   </data>
   <data name="licensedTextBlock.Text" xml:space="preserve">
     <value>購入済</value>
+  </data>
+  <data name="licenseRequiredTextBlock.Text" xml:space="preserve">
+    <value>ライセンスが必要です。</value>
+  </data>
+  <data name="versionTextBlock.Text" xml:space="preserve">
+    <value>バージョン</value>
   </data>
 </root>

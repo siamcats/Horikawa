@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.UI.Xaml;
 
 namespace iBuki
 {
@@ -25,14 +26,14 @@ namespace iBuki
             }
         }
 
-        public static string GetAppName()
+        public static string APP_NAME()
         {
             var package = Package.Current;
             var name = package.DisplayName;
             return name;
         }
 
-        public static string GetAppAuthor()
+        public static string APP_AUTHOR()
         {
             var package = Package.Current;
             var author = package.PublisherDisplayName;
@@ -52,13 +53,16 @@ namespace iBuki
 
         //◆InstalledFolder
         //┗◇Assets
-        //　┗◇Templates
-        //　　┗◇[Template Name]
-        //　　　┣・Setings.json
-        //　　　┣・Background.png　＊無いかも
-        //　　　┗・Thumbnail.png
+        //　┣◇Templates
+        //　┃┗◇[Template Name]
+        //　┃　┣・Setings.json
+        //　┃　┣・Background.png　＊無いかも
+        //　┃　┗・Thumbnail.png
+        //　┗◇MoonPhase
+        //　　┗・MoonPhaseBackground.png
         //◆LocalFolder
         //┣・Background.png　←現在の背景
+        //┣・MoonPhaseBackground.png　←現在のムーンフェイズの背景
         //┗◇Templates　※無いかも
         //　┗◇[Template Name]
         //　　┣・Setings.json
@@ -83,5 +87,16 @@ namespace iBuki
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";
+
+
+        public static Visibility VISIBLE_ON_DEBUG
+        {
+#if DEBUG
+            get { return Visibility.Visible; }
+#else
+            get { return Visibility.Collapsed; }
+#endif
+        }
+
     }
 }
