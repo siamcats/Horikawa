@@ -169,10 +169,10 @@
     <value>ダーク</value>
   </data>
   <data name="dayDateTextBlock.Text" xml:space="preserve">
-    <value>デイ・デイト</value>
+    <value>デイデイト</value>
   </data>
   <data name="defaultButton.Content" xml:space="preserve">
-    <value>Windowsデフォルト</value>
+    <value>Windowsテーマに合わせる</value>
   </data>
   <data name="dauphineHandEnum" xml:space="preserve">
     <value>ドルフィン針</value>

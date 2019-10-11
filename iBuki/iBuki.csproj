@@ -193,8 +193,9 @@
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\Templates\Japan Black\Thumbnail.png" />
-    <Content Include="Assets\Templates\Modern Times Roman\Background.png" />
-    <Content Include="Assets\Templates\Modern Times Roman\Thumbnail.png" />
+    <Content Include="Assets\Templates\Lunar Phase\Thumbnail.png" />
+    <Content Include="Assets\Templates\Chronocci\Background.png" />
+    <Content Include="Assets\Templates\Chronocci\Thumbnail.png" />
     <Content Include="Assets\Templates\Portofino\Background.png" />
     <Content Include="Assets\Templates\Portofino\Thumbnail.png" />
     <Content Include="Assets\Templates\Station\Thumbnail.png" />
@@ -202,6 +203,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\Templates\Lunar Phase\Settings.json" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -260,7 +262,7 @@
     <PRIResource Include="Strings\ja-JP\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Templates\Modern Times Roman\Settings.json" />
+    <Content Include="Assets\Templates\Chronocci\Settings.json" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -9,6 +9,7 @@
     SizeChanged="Page_SizeChanged"
     HorizontalAlignment="Left" VerticalAlignment="Top"
     RequestedTheme="{x:Bind vm.AppConfig.SystemTheme,Mode=TwoWay}"
+    MaxHeight="500" MaxWidth="500" Height="500" Width="500"
     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
@@ -240,14 +241,15 @@
                                                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
                                                         <TextBlock
                                                             Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
-                                                        <StackPanel Orientation="Horizontal">
+                                                        <!--<StackPanel Orientation="Horizontal">
                                                             <TextBlock
                                                                 Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
                                                                 Padding="0,0,8,0"/>
                                                             <TextBlock
                                                                 Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
-                                                        </StackPanel>
+                                                        </StackPanel>-->
                                                         <TextBlock
+                                                            TextWrapping="Wrap" Width="240"
                                                             Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
                                                     </StackPanel>
                                                 </StackPanel>
@@ -1531,10 +1533,11 @@
             <!-- コンテンツビュー -->
 
             <SplitView.Content>
-                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" >
+                <Grid
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500"
+                    Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
                     <!-- 文字盤 -->
                     <Image
-                        x:Name="backgroundImage"
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
