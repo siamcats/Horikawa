@@ -342,4 +342,13 @@
   <data name="versionTextBlock.Text" xml:space="preserve">
     <value>バージョン</value>
   </data>
+  <data name="dialogDeleteTemplate" xml:space="preserve">
+    <value>テンプレートを削除しますか？</value>
+  </data>
+  <data name="dialogPurchasedSucceeded" xml:space="preserve">
+    <value>購入が完了しました。</value>
+  </data>
+  <data name="foregroundTextBlock.Text" xml:space="preserve">
+    <value>前面</value>
+  </data>
 </root>

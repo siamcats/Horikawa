@@ -66,6 +66,34 @@ namespace iBuki
                 (d, e) => { (d as MoonPhase).OnImagePropertyChanged(e); })
             );
 
+        public bool IsForegroundImageDisplay
+        {
+            get { return (bool)GetValue(IsForegroundImageDisplayProperty); }
+            set { SetValue(IsForegroundImageDisplayProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsForegroundImageDisplayProperty = DependencyProperty.Register(
+            "IsForegroundImageDisplay",
+            typeof(bool),
+            typeof(MoonPhase),
+            new PropertyMetadata(false,
+                (d, e) => { (d as MoonPhase).OnImagePropertyChanged(e); })
+            );
+
+        public BitmapImage ForegroundImage
+        {
+            get { return (BitmapImage)GetValue(ForegroundImageProperty); }
+            set { SetValue(ForegroundImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ForegroundImageProperty = DependencyProperty.Register(
+            "ForegroundImage",
+            typeof(BitmapImage),
+            typeof(MoonPhase),
+            new PropertyMetadata(new BitmapImage(),
+                (d, e) => { (d as MoonPhase).OnImagePropertyChanged(e); })
+            );
+
         public MoonPhase()
         {
             InitializeComponent();
@@ -83,7 +111,6 @@ namespace iBuki
 
         private void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-
             var moonAge = GetMoonAge(DateTime);
             angle.Rotation = moonAge * 6;
         }
@@ -97,6 +124,18 @@ namespace iBuki
             else
             {
                 background.Source = new BitmapImage(new Uri(Const.URI_ASSETS_MOONPHASE + Const.FILE_MOONPHASE_BACKGROUND));
+            }
+
+            if (IsForegroundImageDisplay)
+            {
+                foregroundImage.Visibility = Visibility.Visible;
+                foregroundImage.Source = ForegroundImage;
+                foregroundPath.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                foregroundImage.Visibility = Visibility.Collapsed;
+                foregroundPath.Visibility = Visibility.Visible;
             }
         }
 

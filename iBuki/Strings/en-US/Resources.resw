@@ -345,4 +345,10 @@
   <data name="versionTextBlock.Text" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="dialogPurchasedSucceeded" xml:space="preserve">
+    <value>The purchase was successful.</value>
+  </data>
+  <data name="foregroundTextBlock.Text" xml:space="preserve">
+    <value>Foreground</value>
+  </data>
 </root>

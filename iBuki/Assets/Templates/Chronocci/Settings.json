@@ -1,6 +1,6 @@
 {
   "Name": "Chronocci",
-  "Description": "Simple & Modern Roman Indices.",
+  "Description": "Simple & Modern Indices.",
   "Author": "siamcats",
   "CreatedAt": "2019-09-29T02:52:45+09:00",
   "Version": null,
@@ -34,9 +34,10 @@
   "IndexFontFamily": "Century Gothic",
   "IndexFontSize": 7,
   "IndexLength": 0,
-  "IndexRadius": 38,
+  "IndexRadius": 37,
   "IndexThickness": 0,
-  "IndexType": "Roman",
+  "IndexType": "Arabic",
+  "indexInterval": 3,
   "ScaleColor": "#FFFEFFF8",
   "ScaleCount": 60,
   "ScaleDisplay": true,
@@ -44,6 +45,5 @@
   "ScaleRadius": 44.5,
   "ScaleThickness": 0.7,
   "SecondHandColor": "#FF963F14",
-  "SecondHandDisplay": true,
-  "indexInterval": 6
+  "SecondHandDisplay": true
 }

@@ -196,6 +196,33 @@ namespace iBuki
         }
 
         /// <summary>
+        ///（イベント）ムーンフェイズ画像取り込みボタンタップ
+        /// </summary>
+        private async void MoonPhaseForegroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            //filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                //LocalFolder/MoonPhaseBackground.pngに配置
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_MOONPHASE_FOREGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.MoonPhaseForegroundImage = bitmap;
+            }
+        }
+
+        /// <summary>
         /// （イベント）カラー選択ボタン
         /// </summary>
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -843,6 +870,7 @@ namespace iBuki
         {
             var addOn = addOnList.SelectedItem as StoreProduct;
             Purchase(addOn.StoreId);
+            GetAddOnInfo();
         }
 
         //アプリ情報取得
@@ -868,7 +896,7 @@ namespace iBuki
             }
         }
 
-        //アプリアドオン情報取得
+        //アドオン情報取得
         public async void GetAddOnInfo()
         {
             licenseUpdateProgress.IsActive = true;
@@ -920,6 +948,7 @@ namespace iBuki
             licenseUpdateProgress.IsActive = false;
         }
 
+        //アドオン情報取得（購入済みのみ）
         public async void GetAddOnInfoPurchased()
         {
             if (context == null)
@@ -953,7 +982,8 @@ namespace iBuki
                 // Use members of the product object to access info for the product...
             }
         }
-
+        
+        //アドオン購入
         private async void Purchase(string storeId)
         {
             if (context == null)
@@ -979,7 +1009,7 @@ namespace iBuki
                     break;
 
                 case StorePurchaseStatus.Succeeded:
-                    message = "The purchase was successful.";
+                    message = loader.GetString("dialogPurchasedSucceeded");
                     break;
 
                 case StorePurchaseStatus.NotPurchased:
@@ -1010,10 +1040,9 @@ namespace iBuki
                 CloseButtonText = "OK"
             };
             await dialog.ShowAsync();
-
-            GetLicenseInfo();
         }
 
+        //ライセンス情報取得
         public async void GetLicenseInfo()
         {
             if (context == null)

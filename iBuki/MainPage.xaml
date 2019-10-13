@@ -936,7 +936,7 @@
                                                 IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
                                             <TextBlock
                                                 x:Uid="licenseRequiredTextBlock" Text="A license is required." Margin="-20,0,0,0" VerticalAlignment="Center"
-                                                Visibility="{x:Bind moonPhaseToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                                Visibility="{x:Bind dateDisplayToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--色-->
@@ -1320,26 +1320,26 @@
                                                     x:Uid="imageToggle" Header="Image"
                                                     x:Name="moonPhaseForegroundImageDisplayToggle" OffContent="Off" OnContent="On"
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
-                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay, Mode=TwoWay}">
+                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom lunar images."/>
+                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom cover images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
                                                     Style="{StaticResource ButtonStyle}"
                                                     x:Uid="imageSelectButton" Content="Select Image" 
-                                                    x:Name="moonPhaseForegroundImagePicker" Tapped="MoonPhaseImagePicker_Tapped"
-                                                    Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                    x:Name="moonPhaseForegroundImagePicker" Tapped="MoonPhaseForegroundImagePicker_Tapped"
+                                                    Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseBackgroundTipTextBlock" Text="300*300 Circle"/>
+                                                        <TextBlock x:Uid="moonPhaseForegroundTipTextBlock" Text="300*300"/>
                                                     </ToolTipService.ToolTip>
                                                 </Button>
                                             </StackPanel>
                                             <Image
                                                 Width="130" Height="130"
-                                                Source="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
-                                                Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                Source="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
+                                                Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -1397,12 +1397,12 @@
                                                     Grid.Column="0"
                                                     IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="63"/>
+                                                        <ColumnDefinition Width="74"/>
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="60"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Rectangle
-                                                        Grid.Column="0" Height="60" Width="60" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
+                                                        Grid.Column="0" Height="70" Width="70" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
                                                         <Rectangle.Fill>
                                                             <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Mode=OneWay}"/>
                                                         </Rectangle.Fill>
@@ -1417,7 +1417,11 @@
                                                     <StackPanel
                                                         Grid.Column="2" Orientation="Vertical" Margin="3,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
                                                         <!--<TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="\100" TextAlignment="Center"/>-->
-                                                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Price.FormattedPrice}" TextAlignment="Center"/> 
+                                                        <TextBlock 
+                                                            Style="{StaticResource SettingSubTitleTextBlockStyle}" Text="{Binding Price.FormattedBasePrice}"
+                                                            Visibility="{Binding Price.IsOnSale,Converter={StaticResource Visibility}}"
+                                                            TextAlignment="Center" TextDecorations="Strikethrough"/>
+                                                        <TextBlock Style="{StaticResource SettingTitleTextBlockStyle}" Text="{Binding Price.FormattedPrice}" TextAlignment="Center"/>
                                                         <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Price.CurrencyCode}" TextAlignment="Center"/>
                                                     </StackPanel>
                                                 </Grid>
@@ -1436,12 +1440,12 @@
                                                     Grid.Column="0"
                                                     IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="63"/>
+                                                        <ColumnDefinition Width="74"/>
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="60"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Rectangle
-                                                        Grid.Column="0" Height="60" Width="60" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
+                                                        Grid.Column="0" Height="70" Width="70" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
                                                         <Rectangle.Fill>
                                                             <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Mode=OneWay}"/>
                                                         </Rectangle.Fill>
@@ -1455,8 +1459,8 @@
                                                     </StackPanel>
                                                     <StackPanel
                                                         Grid.Column="2" Orientation="Vertical" Margin="3,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                        <FontIcon FontSize="21" FontFamily="Segoe MDL2 Assets" Glyph="&#xE73E;"/>
-                                                        <!--E73E / E73A-->
+                                                        <FontIcon FontSize="21" FontFamily="Segoe MDL2 Assets" Glyph="&#xEB52;"/>
+                                                        <!--check E73E / checkfill E73A / heart EB51 -->
                                                         <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" x:Uid="licensedTextBlock" Text="Licensed" TextAlignment="Center"/>
                                                     </StackPanel>
                                                 </Grid>
@@ -1552,6 +1556,8 @@
                         Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
                         IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay,Mode=OneWay}"
                         BackgroundImage="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
+                        IsForegroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay,Mode=OneWay}"
+                        ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
                         >
                     </local:MoonPhase>
                     <local:CircleScale

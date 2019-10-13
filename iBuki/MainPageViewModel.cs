@@ -198,7 +198,6 @@ namespace iBuki
                 DesignConfig.MoonPhaseCoordinateY = settings.MoonPhaseCoordinateY;
                 DesignConfig.MoonPhaseForegroundColor = ConvertHexColor(settings.MoonPhaseForegroundColor);
                 DesignConfig.IsMoonPhaseBackgroundImageDisplay = settings.MoonPhaseBackgroundImageDisplay;
-
                 try
                 {
                     var bitmap = new BitmapImage();
@@ -212,6 +211,22 @@ namespace iBuki
                 catch (FileNotFoundException)
                 {
                     Debug.WriteLine(Const.URI_CURRENT_BACKGROUND + " Not Found");
+                }
+
+                DesignConfig.IsMoonPhaseForegroundImageDisplay = settings.MoonPhaseForegroundImageDisplay;
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_FOREGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.MoonPhaseForegroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_MOONPHASE_FOREGROUND + " Not Found");
                 }
             }
         }
@@ -309,6 +324,7 @@ namespace iBuki
                 settings.MoonPhaseCoordinateY = DesignConfig.MoonPhaseCoordinateY;
                 settings.MoonPhaseForegroundColor = DesignConfig.MoonPhaseForegroundColor.ToString();
                 settings.MoonPhaseBackgroundImageDisplay = DesignConfig.IsMoonPhaseBackgroundImageDisplay;
+                settings.MoonPhaseForegroundImageDisplay = DesignConfig.IsMoonPhaseForegroundImageDisplay;
             }
 
 
