@@ -1,6 +1,6 @@
 ﻿{
   "Name": "Station",
-  "Description": "Like a Swiss train station",
+  "Description": "Day Date Add-On Demo.",
   "Author": "siamcats",
   "CreatedAt": "2019-04-01T00:00Z",
   "Version": "0.01",
@@ -27,8 +27,8 @@
   "SecondHandColor": "#FFD10000",
   "DateDisplay": true,
   "DateBackgroundColor": "#FFFFFFFF",
-  "DateCoordinateX": 302,
-  "DateCoordinateY": 223,
+  "DateCoordinateX": 125,
+  "DateCoordinateY": 0,
   "DateWidth": 160,
   "DateHeight": 53,
   "DateBorderColor": "#FF111111",

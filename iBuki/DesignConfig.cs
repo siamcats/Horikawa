@@ -431,25 +431,29 @@ namespace iBuki
             }
         }
 
-        private double _dateCoordinateX = 1;
+        private double _dateCoordinateX = 0;
         public double DateCoordinateX
         {
             get { return _dateCoordinateX; }
             set
             {
                 if (value == _dateCoordinateX) return;
+                var coordinate = new Thickness(value, DateCoordinate.Top, value * -1, DateCoordinate.Bottom);
+                DateCoordinate = coordinate;
                 _dateCoordinateX = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _dateCoordinateY = 1;
+        private double _dateCoordinateY = 0;
         public double DateCoordinateY
         {
             get { return _dateCoordinateY; }
             set
             {
                 if (value == _dateCoordinateY) return;
+                var coordinate = new Thickness(DateCoordinate.Left, value * -1, DateCoordinate.Right, value);
+                DateCoordinate = coordinate;
                 _dateCoordinateY = value;
                 OnPropertyChanged();
             }
@@ -547,6 +551,148 @@ namespace iBuki
             {
                 if (value == _dateFontSize) return;
                 _dateFontSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _dateCoordinate = new Thickness(300, 300, 0, 0);
+        public Thickness DateCoordinate
+        {
+            get => _dateCoordinate;
+            set
+            {
+                if (value == _dateCoordinate) return;
+                _dateCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Moon Phase
+
+        private bool _isMoonPhaseDisplay = false;
+        public bool IsMoonPhaseDisplay
+        {
+            get { return _isMoonPhaseDisplay; }
+            set
+            {
+                if (value == _isMoonPhaseDisplay) return;
+                _isMoonPhaseDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseSize = 100;
+        public double MoonPhaseSize
+        {
+            get { return _moonPhaseSize; }
+            set
+            {
+                if (value == _moonPhaseSize) return;
+                _moonPhaseSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseCoordinateX = 0;
+        public double MoonPhaseCoordinateX
+        {
+            get { return _moonPhaseCoordinateX; }
+            set
+            {
+                if (value == _moonPhaseCoordinateX) return;
+                var coordinate = new Thickness(value, MoonPhaseCoordinate.Top, value * -1, MoonPhaseCoordinate.Bottom);
+                MoonPhaseCoordinate = coordinate;
+                _moonPhaseCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _moonPhaseCoordinateY = 0;
+        public double MoonPhaseCoordinateY
+        {
+            get { return _moonPhaseCoordinateY; }
+            set
+            {
+                if (value == _moonPhaseCoordinateY) return;
+                var coordinate = new Thickness(MoonPhaseCoordinate.Left, value * -1, MoonPhaseCoordinate.Right, value);
+                MoonPhaseCoordinate = coordinate;
+                _moonPhaseCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isMoonPhaseBackgroundImageDisplay = false;
+        public bool IsMoonPhaseBackgroundImageDisplay
+        {
+            get { return _isMoonPhaseBackgroundImageDisplay; }
+            set
+            {
+                if (value == _isMoonPhaseBackgroundImageDisplay) return;
+                _isMoonPhaseBackgroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _moonPhaseBackgroundImage;
+        public BitmapImage MoonPhaseBackgroundImage
+        {
+            get { return _moonPhaseBackgroundImage; }
+            set
+            {
+                if (value == _moonPhaseBackgroundImage) return;
+                _moonPhaseBackgroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isMoonPhaseForegroundImageDisplay = false;
+        public bool IsMoonPhaseForegroundImageDisplay
+        {
+            get { return _isMoonPhaseForegroundImageDisplay; }
+            set
+            {
+                if (value == _isMoonPhaseForegroundImageDisplay) return;
+                _isMoonPhaseForegroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _moonPhaseForegroundImage;
+        public BitmapImage MoonPhaseForegroundImage
+        {
+            get { return _moonPhaseForegroundImage; }
+            set
+            {
+                if (value == _moonPhaseForegroundImage) return;
+                _moonPhaseForegroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Color _moonPhaseForegroundColor = Color.FromArgb(255, 255, 255, 255);
+        public Color MoonPhaseForegroundColor
+        {
+            get { return _moonPhaseForegroundColor; }
+            set
+            {
+                if (value == _moonPhaseForegroundColor) return;
+                _moonPhaseForegroundColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _moonPhaseCoordinate = new Thickness(0, 0, 0, 0);
+        public Thickness MoonPhaseCoordinate
+        {
+            get => _moonPhaseCoordinate;
+            set
+            {
+                if (value == _moonPhaseCoordinate) return;
+                _moonPhaseCoordinate = value;
                 OnPropertyChanged();
             }
         }

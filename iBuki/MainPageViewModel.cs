@@ -19,6 +19,7 @@ using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
 using System.Collections.ObjectModel;
+using Windows.Services.Store;
 
 namespace iBuki
 {
@@ -54,6 +55,47 @@ namespace iBuki
                 OnPropertyChanged();
             }
         }
+
+        #region License
+
+        private bool _isLicensedDayDate = false;
+        public bool IsLicensedDayDate
+        {
+            get => _isLicensedDayDate;
+            set
+            {
+                if (value == _isLicensedDayDate) return;
+                _isLicensedDayDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isLicensedMoonPhase = false;
+        public bool IsLicensedMoonPhase
+        {
+            get => _isLicensedMoonPhase;
+            set
+            {
+                if (value == _isLicensedMoonPhase) return;
+                _isLicensedMoonPhase = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void SetLicense(string storeId)
+        {
+            //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
+            if (storeId.Contains(Const.STORE_ID_DAYDATE)) 
+            {
+                IsLicensedDayDate = true;
+            }
+            else if(storeId.Contains(Const.STORE_ID_MOONPHASE))
+            {
+                IsLicensedMoonPhase = true;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Settingsオブジェクトをアプリに反映
@@ -136,8 +178,8 @@ namespace iBuki
             if (DesignConfig.IsDateDisplay)
             {
                 DesignConfig.DateBackgroundColor = ConvertHexColor(settings.DateBackgroundColor);
-                DateCoordinateX = settings.DateCoordinateX;
-                DateCoordinateY = settings.DateCoordinateY;
+                DesignConfig.DateCoordinateX = settings.DateCoordinateX;
+                DesignConfig.DateCoordinateY = settings.DateCoordinateY;
                 DesignConfig.DateWidth = settings.DateWidth;
                 DesignConfig.DateHeight = settings.DateHeight;
                 DesignConfig.DateBorderColor = ConvertHexColor(settings.DateBorderColor);
@@ -146,6 +188,46 @@ namespace iBuki
                 DesignConfig.DateFormat = settings.DateFormat;
                 DesignConfig.DateFontFamily = settings.DateFontFamily;
                 DesignConfig.DateFontSize = settings.DateFontSize;
+            }
+            // moon phase
+            DesignConfig.IsMoonPhaseDisplay = settings.MoonPhaseDisplay;
+            if (DesignConfig.IsMoonPhaseDisplay)
+            {
+                DesignConfig.MoonPhaseSize = settings.MoonPhaseSize;
+                DesignConfig.MoonPhaseCoordinateX = settings.MoonPhaseCoordinateX;
+                DesignConfig.MoonPhaseCoordinateY = settings.MoonPhaseCoordinateY;
+                DesignConfig.MoonPhaseForegroundColor = ConvertHexColor(settings.MoonPhaseForegroundColor);
+                DesignConfig.IsMoonPhaseBackgroundImageDisplay = settings.MoonPhaseBackgroundImageDisplay;
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_BACKGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.MoonPhaseBackgroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_BACKGROUND + " Not Found");
+                }
+
+                DesignConfig.IsMoonPhaseForegroundImageDisplay = settings.MoonPhaseForegroundImageDisplay;
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_FOREGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.MoonPhaseForegroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_MOONPHASE_FOREGROUND + " Not Found");
+                }
             }
         }
 
@@ -233,18 +315,35 @@ namespace iBuki
                 settings.DateFontSize = DesignConfig.DateFontSize;
             }
 
+            // moon phase
+            settings.MoonPhaseDisplay = DesignConfig.IsMoonPhaseDisplay;
+            if (DesignConfig.IsMoonPhaseDisplay)
+            {
+                settings.MoonPhaseSize = DesignConfig.MoonPhaseSize;
+                settings.MoonPhaseCoordinateX = DesignConfig.MoonPhaseCoordinateX;
+                settings.MoonPhaseCoordinateY = DesignConfig.MoonPhaseCoordinateY;
+                settings.MoonPhaseForegroundColor = DesignConfig.MoonPhaseForegroundColor.ToString();
+                settings.MoonPhaseBackgroundImageDisplay = DesignConfig.IsMoonPhaseBackgroundImageDisplay;
+                settings.MoonPhaseForegroundImageDisplay = DesignConfig.IsMoonPhaseForegroundImageDisplay;
+            }
+
+
             return settings;
         }
 
-        #region General
+        #region General / About
 
         public List<string> LanguageList = Const.LANGUAGE_LIST;
 
+        public ObservableCollection<StoreProduct> AddOnList = new ObservableCollection<StoreProduct>();
+
+        public ObservableCollection<StoreProduct> LicensedAddOnList = new ObservableCollection<StoreProduct>();
+
         public string AppVersion = Const.APP_VERSION;
 
-        public string AppName = Const.GetAppName();
+        public string AppName = Const.APP_NAME();
 
-        public string AppAuthor = Const.GetAppAuthor();
+        public string AppAuthor = Const.APP_AUTHOR();
 
         public Uri AppLogo = Const.APP_LOGO;
 
@@ -388,53 +487,13 @@ namespace iBuki
 
         #endregion
 
-        #region Date
+        #region Day Date
 
         public string[] FontList = CanvasTextFormat.GetSystemFontFamilies();
 
-        private Thickness _dateCoordinate = new Thickness(300,300,0,0);
-        public Thickness DateCoordinate
-        {
-            get => _dateCoordinate;
-            set
-            {
-                if (value == _dateCoordinate) return;
-                _dateCoordinate = value;
-                OnPropertyChanged();
-            }
-        }
+        #endregion
 
-        private double _dateCoordinateX = 300;
-        public double DateCoordinateX
-        {
-            get { return _dateCoordinateX; }
-            set
-            {
-                if (value == _dateCoordinateX) return;
-                DesignConfig.DateCoordinateX = value;
-                var Y = DateCoordinate.Top;
-                var coordinate = new Thickness(value, Y, 0, 0);
-                DateCoordinate = coordinate;
-                _dateCoordinateX = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _dateCoordinateY = 300;
-        public double DateCoordinateY
-        {
-            get { return _dateCoordinateY; }
-            set
-            {
-                if (value == _dateCoordinateY) return;
-                DesignConfig.DateCoordinateY = value;
-                var X = DateCoordinate.Left;
-                var coordinate = new Thickness(X, value, 0, 0);
-                DateCoordinate = coordinate;
-                _dateCoordinateY = value;
-                OnPropertyChanged();
-            }
-        }
+        #region Moon Phase
 
         #endregion
 

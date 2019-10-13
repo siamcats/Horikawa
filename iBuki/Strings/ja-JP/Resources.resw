@@ -117,17 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="aboutAppTitle.Text" xml:space="preserve">
-    <value>アプリについて</value>
+  <data name="licenseTextBox.Text" xml:space="preserve">
+    <value>ライセンス</value>
   </data>
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>一部の目盛りを変える</value>
   </data>
   <data name="appConfigTextBlock.Text" xml:space="preserve">
-    <value>アプリ</value>
+    <value>アプリの構成</value>
   </data>
-  <data name="appVersion.Text" xml:space="preserve">
-    <value>バージョン情報</value>
+  <data name="aboutAppTextBlock.Text" xml:space="preserve">
+    <value>このアプリについて</value>
   </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>アラビア数字</value>
@@ -148,7 +148,7 @@
     <value>ブレゲ針</value>
   </data>
   <data name="clockConfigTextBlock.Text" xml:space="preserve">
-    <value>時計</value>
+    <value>時計の設定</value>
   </data>
   <data name="clockFaceTitle.Text" xml:space="preserve">
     <value>文字盤</value>
@@ -168,14 +168,11 @@
   <data name="darkButton.Content" xml:space="preserve">
     <value>ダーク</value>
   </data>
-  <data name="dateDisplayLabel.Text" xml:space="preserve">
-    <value>デイト表示</value>
-  </data>
-  <data name="dayDateTitle.Text" xml:space="preserve">
-    <value>デイト</value>
+  <data name="dayDateTextBlock.Text" xml:space="preserve">
+    <value>デイデイト</value>
   </data>
   <data name="defaultButton.Content" xml:space="preserve">
-    <value>Windowsデフォルト</value>
+    <value>Windowsテーマに合わせる</value>
   </data>
   <data name="dauphineHandEnum" xml:space="preserve">
     <value>ドルフィン針</value>
@@ -225,7 +222,7 @@
   <data name="mechanicalButton.Content" xml:space="preserve">
     <value>機械式</value>
   </data>
-  <data name="moonPhaseTitle.Text" xml:space="preserve">
+  <data name="moonPhaseTextBlock.Text" xml:space="preserve">
     <value>ムーンフェーズ</value>
   </data>
   <data name="movementLabel.Text" xml:space="preserve">
@@ -300,9 +297,6 @@
   <data name="dialogDelete" xml:space="preserve">
     <value>削除</value>
   </data>
-  <data name="dialogDeleteTemplate" xml:space="preserve">
-    <value>テンプレートを削除しますか？</value>
-  </data>
   <data name="dialogDeleteTemplateReally" xml:space="preserve">
     <value>一度削除したテンプレートを元に戻すことはできません。本当に削除しますか？</value>
   </data>
@@ -314,5 +308,51 @@
   </data>
   <data name="StartUpToggle.Header" xml:space="preserve">
     <value>スタートアップに登録する</value>
+  </data>
+  <data name="addOnTextBlock.Text" xml:space="preserve">
+    <value>アドオン情報</value>
+  </data>
+  <data name="dialogError" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="dialogPurchasedAlready" xml:space="preserve">
+    <value>既に購入済みのアドオンです。</value>
+  </data>
+  <data name="dialogPurchasedCancel" xml:space="preserve">
+    <value>アドオンの購入をキャンセルしました。</value>
+  </data>
+  <data name="dialogPurchasedNetworkError" xml:space="preserve">
+    <value>ネットワークエラーのためアドオンの購入に失敗しました。</value>
+  </data>
+  <data name="dialogPurchasedServerError" xml:space="preserve">
+    <value>サーバーエラーのためアドオンの購入に失敗しました。</value>
+  </data>
+  <data name="dialogPurchasedUnknownError" xml:space="preserve">
+    <value>何らかのエラーのためアドオンの購入に失敗しました。</value>
+  </data>
+  <data name="dialogRetrieveLicenseError" xml:space="preserve">
+    <value>ライセンス情報の取得中にエラーが発生したため、アドオン機能が利用できません。</value>
+  </data>
+  <data name="licensedTextBlock.Text" xml:space="preserve">
+    <value>購入済</value>
+  </data>
+  <data name="licenseRequiredTextBlock.Text" xml:space="preserve">
+    <value>ライセンスが必要です。</value>
+  </data>
+  <data name="versionTextBlock.Text" xml:space="preserve">
+    <value>バージョン</value>
+  </data>
+  <data name="dialogDeleteTemplate" xml:space="preserve">
+    <value>テンプレートを削除しますか？</value>
+  </data>
+  <data name="dialogPurchasedSucceeded" xml:space="preserve">
+    <value>購入が完了しました。</value>
+  </data>
+  <data name="dialogRetrieveAddOnError" xml:space="preserve">
+    <value>アドオン情報の取得中にエラーが発生しました。
+インターネットに接続されていない可能性があります。</value>
+  </data>
+  <data name="foregroundTextBlock.Text" xml:space="preserve">
+    <value>前面</value>
   </data>
 </root>

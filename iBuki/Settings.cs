@@ -155,6 +155,27 @@ namespace iBuki
         [DataMember]
         public double DateFontSize { get; set; }
 
+        [DataMember]
+        public bool MoonPhaseDisplay { get; set; }
+
+        [DataMember]
+        public double MoonPhaseSize { get; set; }
+
+        [DataMember]
+        public double MoonPhaseCoordinateX { get; set; }
+
+        [DataMember]
+        public double MoonPhaseCoordinateY { get; set; }
+
+        [DataMember]
+        public bool MoonPhaseBackgroundImageDisplay { get; set; }
+
+        [DataMember]
+        public string MoonPhaseForegroundColor { get; set; }
+
+        [DataMember]
+        public bool MoonPhaseForegroundImageDisplay { get; set; }
+
         public BitmapSource Thumbnail { get; set; }
 
         public string CreatedAtDateFormat { get

@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="aboutAppTitle.Text" xml:space="preserve">
-    <value>About</value>
+  <data name="licenseTextBox.Text" xml:space="preserve">
+    <value>License</value>
   </data>
   <data name="alterScaleLabel.Text" xml:space="preserve">
     <value>Alter Scale</value>
@@ -126,8 +126,8 @@
   <data name="appConfigTextBlock.Text" xml:space="preserve">
     <value>App Config</value>
   </data>
-  <data name="appVersion.Text" xml:space="preserve">
-    <value>App Version</value>
+  <data name="aboutAppTextBlock.Text" xml:space="preserve">
+    <value>About App</value>
   </data>
   <data name="arabicIndexEnum" xml:space="preserve">
     <value>Arabic</value>
@@ -168,10 +168,7 @@
   <data name="darkButton.Content" xml:space="preserve">
     <value>Dark</value>
   </data>
-  <data name="dateDisplayLabel.Text" xml:space="preserve">
-    <value>Day Date</value>
-  </data>
-  <data name="dayDateTitle.Text" xml:space="preserve">
+  <data name="dayDateTextBlock.Text" xml:space="preserve">
     <value>Day Date</value>
   </data>
   <data name="defaultButton.Content" xml:space="preserve">
@@ -225,8 +222,8 @@
   <data name="mechanicalButton.Content" xml:space="preserve">
     <value>Mechanical</value>
   </data>
-  <data name="moonPhaseTitle.Text" xml:space="preserve">
-    <value>Lunar Phase</value>
+  <data name="moonPhaseTextBlock.Text" xml:space="preserve">
+    <value>Moon Phase</value>
   </data>
   <data name="movementLabel.Text" xml:space="preserve">
     <value>Movement</value>
@@ -314,5 +311,48 @@
   </data>
   <data name="StartUpToggle.Header" xml:space="preserve">
     <value>Startup</value>
+  </data>
+  <data name="addOnTextBlock.Text" xml:space="preserve">
+    <value>Add-On License</value>
+  </data>
+  <data name="dialogError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="dialogPurchasedAlready" xml:space="preserve">
+    <value>The user has already purchased the product.</value>
+  </data>
+  <data name="dialogPurchasedCancel" xml:space="preserve">
+    <value>The purchase did not complete. The user may have cancelled the purchase.</value>
+  </data>
+  <data name="dialogPurchasedNetworkError" xml:space="preserve">
+    <value>The purchase was unsuccessful due to a network error.</value>
+  </data>
+  <data name="dialogPurchasedServerError" xml:space="preserve">
+    <value>The purchase was unsuccessful due to a server error.</value>
+  </data>
+  <data name="dialogPurchasedUnknownError" xml:space="preserve">
+    <value>The purchase was unsuccessful due to an unknown error.</value>
+  </data>
+  <data name="dialogRetrieveLicenseError" xml:space="preserve">
+    <value>An error occurred while retrieving the license. Add-On is not available.</value>
+  </data>
+  <data name="licensedTextBlock.Text" xml:space="preserve">
+    <value>Licensed</value>
+  </data>
+  <data name="licenseRequiredTextBlock.Text" xml:space="preserve">
+    <value>A license is required.</value>
+  </data>
+  <data name="versionTextBlock.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="dialogPurchasedSucceeded" xml:space="preserve">
+    <value>The purchase was successful.</value>
+  </data>
+  <data name="dialogRetrieveAddOnError" xml:space="preserve">
+    <value>An error occurred while retrieving Add-Ons info. 
+You may not be connected to the Internet.</value>
+  </data>
+  <data name="foregroundTextBlock.Text" xml:space="preserve">
+    <value>Foreground</value>
   </data>
 </root>

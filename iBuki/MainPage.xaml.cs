@@ -32,6 +32,8 @@ using Windows.Storage.Streams;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
 using System.Text.RegularExpressions;
+using Windows.Services.Store;
+using System.Collections.Generic;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -43,7 +45,9 @@ namespace iBuki
     public sealed partial class MainPage : Page
     {
         private MainPageViewModel vm = new MainPageViewModel();
-        private DispatcherTimer _timer;
+        private DispatcherTimer timer;
+
+        #region lifecycle
 
         /// <summary>
         /// コンストラクタ
@@ -52,6 +56,8 @@ namespace iBuki
         {
             InitializeComponent();
             DataContext = vm.AppConfig;
+
+            GetLicenseInfo();
 
             // デフォルトサイズは500固定
             var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
@@ -74,10 +80,10 @@ namespace iBuki
             Application.Current.Suspending += OnSuspending; //アプリ終了イベント
             Application.Current.Resuming += OnResuming; //アプリ復帰イベント
             /// タイマーイベント
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(0.125);
-            _timer.Tick += Timer_Tick;
-            _timer.Start();
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(0.125);
+            timer.Tick += Timer_Tick;
+            timer.Start();
 
             // プリセットテンプレートの読み取り
             GetAssetsTemplate();
@@ -103,7 +109,7 @@ namespace iBuki
                 SetInitSettings();
             }
             WindowSizeChange();
-            SetupAutoStartupToggle();
+            SetupStartupToggle();
         }
 
         /// <summary>
@@ -129,6 +135,11 @@ namespace iBuki
             Debug.WriteLine("終了時保存 - " + json);
             ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS] = json;
         }
+
+        #endregion
+
+
+        #region 画像関連
 
         /// <summary>
         ///（イベント）画像取り込みボタンタップ
@@ -158,6 +169,60 @@ namespace iBuki
         }
 
         /// <summary>
+        ///（イベント）ムーンフェイズ画像取り込みボタンタップ
+        /// </summary>
+        private async void MoonPhaseImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            //filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                //LocalFolder/MoonPhaseBackground.pngに配置
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_MOONPHASE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.MoonPhaseBackgroundImage = bitmap;
+            }
+        }
+
+        /// <summary>
+        ///（イベント）ムーンフェイズ画像取り込みボタンタップ
+        /// </summary>
+        private async void MoonPhaseForegroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            //filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".png");
+            //filePicker.FileTypeFilter.Add("*");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                //LocalFolder/MoonPhaseBackground.pngに配置
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_MOONPHASE_FOREGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.MoonPhaseForegroundImage = bitmap;
+            }
+        }
+
+        /// <summary>
         /// （イベント）カラー選択ボタン
         /// </summary>
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -165,21 +230,40 @@ namespace iBuki
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
+        #endregion
+
         #region 針の描写更新
+
+        DateTime beforeDate = new DateTime(); //現在日退避
+        readonly DateTime defaultDate = new DateTime(); //比較用の初期値日付
 
         /// <summary>
         /// （イベント）チックで針描画
         /// </summary>
         private void Timer_Tick(object sender, object e)
         {
-            var localDate = DateTime.Now;
-            //var localDate = DateTime.Parse("2019/12/12 10:08:37");
+            DateTime localDate;
+            if (stopTickToggle.IsOn)
+            {
+                localDate = DateTime.Parse("2019/12/12 10:08:37");
+            }
+            else
+            {
+                localDate = DateTime.Now;
+            }
             //textBlock.Text = localDate.ToString("hh:mm:ss.fff");
 
             hourHandAngle.Angle = CalcAngleHour(localDate);
             minuteHandAngle.Angle = CalcAngleMinute(localDate);
             secondHandAngle.Angle = CalcAngleSecond(localDate);
-            dateDisplay.Text = CalcDate(localDate);
+            dateDisplay.Text = CalcDate(localDate); //デイトは秒表示もできるから日替わり処理じゃなくてここでする
+
+            // 退避日と日付が異なれば日替わり処理を起こす
+            if (beforeDate == defaultDate || localDate.Date != beforeDate.Date)
+            {
+                moonPhase.DateTime = localDate;
+                beforeDate = localDate; //現在日退避
+            }
         }
 
         private double CalcAngleHour(DateTime now)
@@ -409,6 +493,14 @@ namespace iBuki
             // タイトルバーの左右に確保するスペース
             myTitleBar.Padding = new Thickness(sender.SystemOverlayLeftInset, 0.0, sender.SystemOverlayRightInset, 0.0);
             ConfigPanel.Margin = new Thickness(0, sender.Height, 0, 0);
+        }
+
+        /// <summary>
+        /// デバッグ機能用、タイトルバーを隠す
+        /// </summary>
+        private void HideTitlebarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            myTitleBar.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -703,7 +795,7 @@ namespace iBuki
 
         #region スタートアップの制御
 
-        private async void SetupAutoStartupToggle()
+        private async void SetupStartupToggle()
         {
             var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
 
@@ -711,38 +803,38 @@ namespace iBuki
             {
                 case StartupTaskState.Disabled:
                     // トグル OFF、変更可能
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = true;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = true;
                     break;
                 case StartupTaskState.DisabledByUser:
                     // トグル OFF、変更不可
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = false;
                     break;
                 case StartupTaskState.DisabledByPolicy:
                     // トグル OFF、変更不可
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = false;
                     break;
                 case StartupTaskState.Enabled:
                     // トグル ON、変更可能
-                    startUpToggle.IsOn = true;
-                    startUpToggle.IsEnabled = true;
+                    startupToggle.IsOn = true;
+                    startupToggle.IsEnabled = true;
                     break;
                 case StartupTaskState.EnabledByPolicy:
                     // トグル ON、変更不可
-                    startUpToggle.IsOn = true;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = true;
+                    startupToggle.IsEnabled = false;
                     break;
                 default:
-                    startUpToggle.IsOn = false;
-                    startUpToggle.IsEnabled = false;
+                    startupToggle.IsOn = false;
+                    startupToggle.IsEnabled = false;
                     break;
             }
         }
 
         // ToggleSwitchを切り替えたときのイベントハンドラー
-        private async void StartUpToggle_Toggled(object sender, RoutedEventArgs e)
+        private async void StartupToggle_Toggled(object sender, RoutedEventArgs e)
         {
             var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
 
@@ -755,10 +847,238 @@ namespace iBuki
                 startupTask.Disable();
             }
 
-            SetupAutoStartupToggle();
+            SetupStartupToggle();
         }
 
         #endregion
+
+        #region Microsoftストア関連
+
+        private StoreContext context = null;
+
+        private void LicenseUpdateButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            GetAddOnInfo();
+        }
+
+        private void AddOnPanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetAddOnInfo();
+        }
+
+        private void AddOnList_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var addOn = addOnList.SelectedItem as StoreProduct;
+            Purchase(addOn.StoreId);
+            GetAddOnInfo();
+        }
+
+        //アプリ情報取得
+        public async void GetAppInfo()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+            StoreProductResult queryResult = await context.GetStoreProductForCurrentAppAsync();
+
+            if (queryResult.Product == null)
+            {
+                // The Store catalog returned an unexpected result.
+                Debug.WriteLine("Something went wrong, and the product was not returned.");
+
+                // Show additional error info if it is available.
+                if (queryResult.ExtendedError != null)
+                {
+                    Debug.WriteLine(queryResult.ExtendedError.Message);
+                }
+                return;
+            }
+        }
+
+        //アドオン情報取得
+        public async void GetAddOnInfo()
+        {
+            licenseUpdateProgress.IsActive = true;
+
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+
+            //これはオフラインだとエラーになる
+            string[] productKinds = { "Durable", "Consumable", "UnmanagedConsumable" };
+            var filterList = new List<string>(productKinds);
+            var queryResult = await context.GetAssociatedStoreProductsAsync(filterList);
+
+            if (queryResult.ExtendedError != null)
+            {
+                Debug.WriteLine($"ExtendedError: {queryResult.ExtendedError.Message}");
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogError");
+                var message = loader.GetString("dialogRetrieveAddOnError");
+                //var message = queryResult.ExtendedError.Message;
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                licenseUpdateProgress.IsActive = false;
+                return;
+            }
+
+            vm.LicensedAddOnList.Clear();
+            vm.AddOnList.Clear();
+
+            foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
+            {
+                var product = item.Value;
+                Debug.WriteLine(product.StoreId + " : " + product.Title + " - " + product.IsInUserCollection);
+
+                if (product.IsInUserCollection)
+                {
+                    vm.LicensedAddOnList.Add(product);
+                }
+                else
+                {
+                    vm.AddOnList.Add(product);
+                }
+            }
+
+            licenseUpdateProgress.IsActive = false;
+        }
+
+        //アドオン情報取得（購入済みのみ）
+        public async void GetAddOnInfoPurchased()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+                // If your app is a desktop app that uses the Desktop Bridge, you
+                // may need additional code to configure the StoreContext object.
+                // For more info, see https://aka.ms/storecontext-for-desktop.
+            }
+
+            // Specify the kinds of add-ons to retrieve.
+            string[] productKinds = { "Durable" };
+            List<String> filterList = new List<string>(productKinds);
+
+            //workingProgressRing.IsActive = true;
+            StoreProductQueryResult queryResult = await context.GetUserCollectionAsync(filterList);
+            //workingProgressRing.IsActive = false;
+
+            if (queryResult.ExtendedError != null)
+            {
+                // The user may be offline or there might be some other server failure.
+                Debug.WriteLine($"ExtendedError: {queryResult.ExtendedError.Message}");
+                return;
+            }
+
+            Debug.WriteLine("購入済:");
+            foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
+            {
+                StoreProduct product = item.Value;
+                Debug.WriteLine(" - " + product.Title + "/" + product.Description);
+                // Use members of the product object to access info for the product...
+            }
+        }
+        
+        //アドオン購入
+        private async void Purchase(string storeId)
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+            var result = await context.RequestPurchaseAsync(storeId);
+
+            var loader = new ResourceLoader();
+            var title = string.Empty;
+            var message = string.Empty;
+            var messageEx = string.Empty;
+            if (result.ExtendedError != null)
+            {
+                messageEx = "\n" + result.ExtendedError.Message;
+            }
+
+            switch (result.Status)
+            {
+                case StorePurchaseStatus.AlreadyPurchased:
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedAlready");
+                    break;
+
+                case StorePurchaseStatus.Succeeded:
+                    message = loader.GetString("dialogPurchasedSucceeded");
+                    break;
+
+                case StorePurchaseStatus.NotPurchased:
+                    title = loader.GetString("dialogCancel");
+                    message = loader.GetString("dialogPurchasedCancel") + messageEx;
+                    break;
+
+                case StorePurchaseStatus.NetworkError:
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedNetworkError") + messageEx;
+                    break;
+
+                case StorePurchaseStatus.ServerError:
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedServerError") + messageEx;
+                    break;
+
+                default:
+                    title = loader.GetString("dialogError");
+                    message = loader.GetString("dialogPurchasedUnknownError") + messageEx;
+                    break;
+            }
+
+            var dialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                CloseButtonText = "OK"
+            };
+            await dialog.ShowAsync();
+        }
+
+        //ライセンス情報取得
+        public async void GetLicenseInfo()
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+
+            //これはオフラインでもＯＫ
+            var appLicense = await context.GetAppLicenseAsync();
+
+            if (appLicense == null)
+            {
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogError");
+                var message = loader.GetString("dialogRetrieveLicenseError");
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            foreach (KeyValuePair<string, StoreLicense> item in appLicense.AddOnLicenses)
+            {
+                var addOnLicense = item.Value;
+                vm.SetLicense(addOnLicense.SkuStoreId);
+            }
+        }
+
+        #endregion
+
 
         #region 雑多なprivateメソッド
 
@@ -820,8 +1140,9 @@ namespace iBuki
             //    Debug.WriteLine(assetsfiles[i].Name);
             //}
         }
-        #endregion
 
+
+        #endregion
 
     }
 }

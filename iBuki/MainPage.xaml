@@ -9,6 +9,7 @@
     SizeChanged="Page_SizeChanged"
     HorizontalAlignment="Left" VerticalAlignment="Top"
     RequestedTheme="{x:Bind vm.AppConfig.SystemTheme,Mode=TwoWay}"
+    MaxHeight="500" MaxWidth="500" Height="500" Width="500"
     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
     <Page.Resources>
         <local:BoolToEnumConverter x:Key="Enum" />
@@ -31,10 +32,10 @@
         </Style>
         <!--設定項目-->
         <Style x:Key="SettingTitleTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontSize" Value="21"/>
         </Style>
         <Style x:Key="SettingSubTitleTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontSize" Value="16"/>
         </Style>
         <Style x:Key="SettingPanelStyle" TargetType="StackPanel">
             <Setter Property="Width" Value="300"/>
@@ -51,6 +52,7 @@
         <!--設定項目コントロール-->
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Width" Value="120"/>
         </Style>
         <Style x:Key="ColorButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Height" Value="32"/>
@@ -64,7 +66,7 @@
         </Style>
         <Style x:Key="SliderStyle" TargetType="Slider">
             <Setter Property="Width" Value="210"/>
-            <Setter Property="TickPlacement" Value="Outside"/>
+            <Setter Property="TickPlacement" Value="None"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="0,0,0,5"/>
@@ -88,7 +90,6 @@
             <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
     </Page.Resources>
-
 
     <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
 
@@ -163,12 +164,12 @@
                                         <StackPanel Orientation="Horizontal">
                                             <ToggleSwitch 
                                                 x:Uid="StartUpToggle" Header="StartUp"
-                                                x:Name="startUpToggle" OffContent="Off" OnContent="On"
-                                                Toggled="StartUpToggle_Toggled"/>
+                                                x:Name="startupToggle" OffContent="Off" OnContent="On"
+                                                Toggled="StartupToggle_Toggled"/>
                                             <HyperlinkButton
                                                 x:Uid="openSettingButton" Content="Open Settings"
                                                 NavigateUri="ms-settings:startupapps" Margin="0,15,0,0"
-                                                Visibility="{x:Bind startUpToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
+                                                Visibility="{x:Bind startupToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
                                                 <ToolTipService.ToolTip>
                                                     <TextBlock x:Uid="openSettingTextBlock" Text="If disabled, change it from the Windows settings panel."/>
                                                 </ToolTipService.ToolTip>
@@ -215,46 +216,7 @@
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
-                                    <!--Preset-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingTitlePanelStyle}">
-                                        <TextBlock
-                                            Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="presetTextBlock" Text="Presets"/>
-                                    </StackPanel>
-                                    <!--リスト-->
-                                    <ListView
-                                        x:Name="presetTemplateList"
-                                        ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
-                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                        Tapped="PresetTemplateList_Tapped">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel
-                                                    Orientation="Horizontal" Height="64">
-                                                    <Ellipse Height="50" Width="50" VerticalAlignment="Center">
-                                                        <Ellipse.Fill>
-                                                            <ImageBrush ImageSource="{Binding Thumbnail}"/>
-                                                        </Ellipse.Fill>
-                                                    </Ellipse>
-                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
-                                                        <TextBlock
-                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock
-                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
-                                                                Padding="0,0,8,0"/>
-                                                            <TextBlock
-                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
-                                                        </StackPanel>
-                                                        <TextBlock
-                                                            Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                    <!--My Template-->
+                                    <!--マイセット-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <Grid Height="Auto" Grid.Row="1">
@@ -310,7 +272,7 @@
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
-                                    <!--リスト-->
+                                    <!--マイセットリスト-->
                                     <ListView
                                         x:Name="templateList"
                                         ItemsSource="{x:Bind vm.TemplateList, Mode=OneWay}"
@@ -368,6 +330,46 @@
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
+                                    <!--プリセット-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="presetTextBlock" Text="Presets"/>
+                                    </StackPanel>
+                                    <!--プリセットリスト-->
+                                    <ListView
+                                        x:Name="presetTemplateList"
+                                        ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        Tapped="PresetTemplateList_Tapped">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel
+                                                    Orientation="Horizontal" Height="64">
+                                                    <Ellipse Height="50" Width="50" VerticalAlignment="Center">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource="{Binding Thumbnail}"/>
+                                                        </Ellipse.Fill>
+                                                    </Ellipse>
+                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                        <TextBlock
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
+                                                        <!--<StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
+                                                                Padding="0,0,8,0"/>
+                                                            <TextBlock
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
+                                                        </StackPanel>-->
+                                                        <TextBlock
+                                                            TextWrapping="Wrap" Width="240"
+                                                            Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
@@ -412,15 +414,23 @@
                                     <!--画像-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <ToggleSwitch 
-                                            x:Uid="imageToggle" Header="Image"
-                                            x:Name="backgroundImageDisplayToggle" OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
-                                        <Button
-                                            Style="{StaticResource ButtonStyle}"
-                                            x:Uid="imageSelectButton" Content="Select Image" 
-                                            x:Name="DialImagePicker" Tapped="DialImagePicker_Tapped"
-                                            IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel>
+                                                <ToggleSwitch 
+                                                    x:Uid="imageToggle" Header="Image"
+                                                    x:Name="backgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay, Mode=TwoWay}" />
+                                                <Button
+                                                    Style="{StaticResource ButtonStyle}"
+                                                    x:Uid="imageSelectButton" Content="Select Image" 
+                                                    x:Name="DialImagePicker" Tapped="DialImagePicker_Tapped"
+                                                    IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}" />
+                                            </StackPanel>
+                                            <Image
+                                                Width="130" Height="130"
+                                                Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
+                                                Visibility="{x:Bind backgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -478,7 +488,7 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="scaleCountSlider"
-                                                Minimum="1" Maximum="240" TickFrequency="12" SnapsTo="Ticks"
+                                                Minimum="1" Maximum="240" TickFrequency="12" SnapsTo="Ticks" TickPlacement="Outside"
                                                 IsEnabled="{x:Bind scaleDisplayToggle.IsOn,Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.ScaleCount,Mode=TwoWay}" />
                                             <TextBlock
@@ -692,7 +702,7 @@
                                             <Slider
                                                 Style="{StaticResource SliderStyle}"
                                                 x:Name="indexIntervalSlider"
-                                                Minimum="0" Maximum="12" TickFrequency="3" SnapsTo="Ticks"
+                                                Minimum="0" Maximum="12" TickFrequency="3" SnapsTo="Ticks" TickPlacement="Outside"
                                                 IsEnabled="{x:Bind vm.IndexVisible,Converter={StaticResource Visibility},Mode=OneWay}"
                                                 Value="{x:Bind vm.DesignConfig.IndexInterval,Mode=TwoWay}" />
                                             <TextBlock
@@ -906,24 +916,32 @@
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEC92;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="dayDateTitle" Text="Day Date"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="dayDateTextBlock" Text="Day Date"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--ON/OFF-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="dateDisplayLabel" Text="Day Date"/>
-                                        <ToggleSwitch 
-                                            x:Uid="dateDisplayToggle"
-                                            x:Name="dateDisplayToggle" 
-                                            OffContent="Off" OnContent="On"
-                                            IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                            x:Uid="dayDateTextBlock" Text="Day Date"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Uid="dateDisplayToggle"
+                                                x:Name="dateDisplayToggle" 
+                                                OffContent="Off" OnContent="On"
+                                                IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
+                                                IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
+                                            <TextBlock
+                                                x:Uid="licenseRequiredTextBlock" Text="A license is required." Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                Visibility="{x:Bind dateDisplayToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -947,6 +965,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
@@ -955,10 +974,10 @@
                                                  Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
                                             <Slider
                                                 x:Name="dateXSlider"
-                                                Minimum="1" Maximum="500" Width="195"
+                                                Minimum="-300" Maximum="300" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateCoordinateX,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateCoordinateX,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                                 Text="{x:Bind dateXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -968,10 +987,10 @@
                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
                                             <Slider
                                                 x:Name="dateYSlider"
-                                                Minimum="1" Maximum="500" Width="195"
+                                                Minimum="-300" Maximum="300" Width="195"
                                                 TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
                                                 IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
-                                                Value="{x:Bind vm.DateCoordinateY,Mode=TwoWay}" />
+                                                Value="{x:Bind vm.DesignConfig.DateCoordinateY,Mode=TwoWay}" />
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                             Text="{x:Bind dateYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
@@ -979,6 +998,7 @@
                                     </StackPanel>
                                     <!--サイズ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size"/>
@@ -1011,6 +1031,7 @@
                                     </StackPanel>
                                     <!--境界線-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                              Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1018,6 +1039,7 @@
                                     </StackPanel>
                                     <!--境界線の色-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1041,6 +1063,7 @@
                                     </StackPanel>
                                     <!--境界線の太さ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
@@ -1058,6 +1081,7 @@
                                     </StackPanel>
                                     <!--フォント-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1065,6 +1089,7 @@
                                     </StackPanel>
                                     <!--フォントの色-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1089,6 +1114,7 @@
                                     </StackPanel>
                                     <!--フォーマット-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="formatLabel" Text="Format"/>
@@ -1108,6 +1134,7 @@
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
@@ -1119,6 +1146,7 @@
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
@@ -1137,34 +1165,314 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
-                        <!--ムーン-->
-                        <!--
+                        <!--ムーンフェイズ-->
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTitle" Text="Lunar Phase"/>
-                                </StackPanel>
-                            </PivotItem.Header>
-                            <TextBlock></TextBlock>
-                        </PivotItem>
-                        -->
-                        <!--About-->
-                        <PivotItem>
-                            <PivotItem.Header>
-                                <StackPanel>
-                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE897;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="aboutAppTitle" Text="About App"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Moon Phase"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
+                                    <!--On/Off-->
+                                    <StackPanel>
+                                        <StackPanel
+                                            Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="moonPhaseTextBlock" Text="Moon Phase"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="moonPhaseToggle"
+                                                    x:Name="moonPhaseToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind vm.IsLicensedMoonPhase,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=TwoWay}" />
+                                                <TextBlock
+                                                    x:Uid="licenseRequired" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                    Visibility="{x:Bind moonPhaseToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--Size-->
+                                    <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                                x:Uid="sizeLabel" Text="Size"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider
+                                                Style="{StaticResource SliderStyle}"
+                                                x:Name="moonPhaseSizeSlider"
+                                                Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind moonPhaseSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--座標-->
+                                    <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Uid="coordinateLabel" Text="Coordinate"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                            <Slider
+                                                x:Name="moonPhaseXSlider"
+                                                Minimum="-300" Maximum="300" Width="195"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.MoonPhaseCoordinateX,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind moonPhaseXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                            <Slider
+                                                x:Name="moonPhaseYSlider"
+                                                Minimum="-300" Maximum="300" Width="195"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.MoonPhaseCoordinateY,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                            Text="{x:Bind moonPhaseYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--画像-->
+                                    <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel>
+                                                <ToggleSwitch 
+                                                    x:Uid="imageToggle" Header="Image"
+                                                    x:Name="moonPhaseBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay, Mode=TwoWay}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom lunar images."/>
+                                                    </ToolTipService.ToolTip>
+                                                </ToggleSwitch>
+                                                <Button
+                                                    Style="{StaticResource ButtonStyle}"
+                                                    x:Uid="imageSelectButton" Content="Select Image" 
+                                                    x:Name="moonPhaseBackgroundImagePicker" Tapped="MoonPhaseImagePicker_Tapped"
+                                                    Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="moonPhaseBackgroundTipTextBlock" Text="300*300 Circle"/>
+                                                    </ToolTipService.ToolTip>
+                                                </Button>
+                                            </StackPanel>
+                                            <Image
+                                                Width="130" Height="130"
+                                                Source="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
+                                                Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--前面-->
+                                    <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingSubTitleTextBlockStyle}"
+                                            x:Uid="foregroundTextBlock" Text="Foreground"/>
+                                    </StackPanel>
+                                    <!--色-->
+                                    <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Uid="colorLabel" Text="Color"/>
+                                        <Button
+                                            Style="{StaticResource ColorButtonStyle}"
+                                            IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                            Background="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                            Tapped="ColorButton_Tapped">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <Flyout Placement="Right">
+                                                    <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                        <ColorPicker
+                                                            IsColorChannelTextInputVisible="False"
+                                                            IsColorSliderVisible="True"
+                                                            IsAlphaEnabled="True"
+                                                            Color="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Mode=TwoWay}"/>
+                                                    </Viewbox>
+                                                </Flyout>
+                                            </FlyoutBase.AttachedFlyout>
+                                        </Button>
+                                    </StackPanel>
+                                    <!--画像-->
+                                    <StackPanel
+                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel>
+                                                <ToggleSwitch 
+                                                    x:Uid="imageToggle" Header="Image"
+                                                    x:Name="moonPhaseForegroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay, Mode=TwoWay}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom cover images."/>
+                                                    </ToolTipService.ToolTip>
+                                                </ToggleSwitch>
+                                                <Button
+                                                    Style="{StaticResource ButtonStyle}"
+                                                    x:Uid="imageSelectButton" Content="Select Image" 
+                                                    x:Name="moonPhaseForegroundImagePicker" Tapped="MoonPhaseForegroundImagePicker_Tapped"
+                                                    Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                    IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
+                                                    <ToolTipService.ToolTip>
+                                                        <TextBlock x:Uid="moonPhaseForegroundTipTextBlock" Text="300*300"/>
+                                                    </ToolTipService.ToolTip>
+                                                </Button>
+                                            </StackPanel>
+                                            <Image
+                                                Width="130" Height="130"
+                                                Source="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
+                                                Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </PivotItem>
+                        <!--ライセンス-->
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <!--E7BF ShoppingCart-->
+                                    <!--E897 Questions-->
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BF;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="licenseTextBox" Text="License"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <!--アドオン-->
+                                    <StackPanel
+                                        x:Name="addOnPanel" Style="{StaticResource SettingTitlePanelStyle}" Loaded="AddOnPanel_Loaded">
+                                        <Grid Height="Auto" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="addOnTextBlock" Text="Add-On Licenses"
+                                                Padding="0" Grid.Column="0"/>
+                                            <!--add template button-->
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+                                                <Button
+                                                    x:Name="licenseUpdateButton"
+                                                    Visibility="{x:Bind licenseUpdateProgress.IsActive,Converter={StaticResource VisibilityReverse},Mode=OneWay}"
+                                                    Style="{ThemeResource TextBlockButtonStyle}" Tapped="LicenseUpdateButton_Tapped">
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" />
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+                                                <ProgressRing
+                                                    x:Name="licenseUpdateProgress" IsActive="false"
+                                                    Visibility="{x:Bind licenseUpdateProgress.IsActive,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                    <!--アドオンリスト-->
+                                    <ListView
+                                        x:Name="addOnList"
+                                        ItemsSource="{x:Bind vm.AddOnList, Mode=OneWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        Tapped="AddOnList_Tapped" >
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid
+                                                    Grid.Column="0"
+                                                    IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="74"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="60"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Rectangle
+                                                        Grid.Column="0" Height="70" Width="70" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
+                                                        <Rectangle.Fill>
+                                                            <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Mode=OneWay}"/>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                    <StackPanel
+                                                        Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="3,5,3,5">
+                                                        <TextBlock
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Title}"/>
+                                                        <TextBlock
+                                                            TextWrapping="Wrap" Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
+                                                    </StackPanel>
+                                                    <StackPanel
+                                                        Grid.Column="2" Orientation="Vertical" Margin="3,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                        <TextBlock 
+                                                            Style="{StaticResource SettingSubTitleTextBlockStyle}" Text="{Binding Price.FormattedBasePrice}"
+                                                            Visibility="{Binding Price.IsOnSale,Converter={StaticResource Visibility}}"
+                                                            TextAlignment="Center" TextDecorations="Strikethrough"/>
+                                                        <!--<TextBlock Style="{StaticResource SettingTitleTextBlockStyle}" Text="\100" TextAlignment="Center"/>-->
+                                                        <TextBlock Style="{StaticResource SettingTitleTextBlockStyle}" Text="{Binding Price.FormattedPrice}" TextAlignment="Center"/>
+                                                        <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Price.CurrencyCode}" TextAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <!--購入済みアドオンリスト-->
+                                    <ListView
+                                        x:Name="licensedAddOnList"
+                                        ItemsSource="{x:Bind vm.LicensedAddOnList, Mode=OneWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        IsEnabled="false">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid
+                                                    Grid.Column="0"
+                                                    IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="74"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="60"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Rectangle
+                                                        Grid.Column="0" Height="70" Width="70" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
+                                                        <Rectangle.Fill>
+                                                            <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Mode=OneWay}"/>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                    <StackPanel
+                                                        Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="3,5,3,5">
+                                                        <TextBlock
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Title}"/>
+                                                        <TextBlock
+                                                            TextWrapping="Wrap" Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
+                                                    </StackPanel>
+                                                    <StackPanel
+                                                        Grid.Column="2" Orientation="Vertical" Margin="3,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                        <FontIcon FontSize="21" FontFamily="Segoe MDL2 Assets" Glyph="&#xEB52;"/>
+                                                        <!--check E73E / checkfill E73A / heart EB51 -->
+                                                        <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" x:Uid="licensedTextBlock" Text="Licensed" TextAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
                                     <!--アプリバージョン-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="appVersion" Text="App Version"/>
+                                            x:Uid="aboutAppTextBlock" Text="About App"/>
                                     </StackPanel>
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
@@ -1176,6 +1484,9 @@
                                                 <TextBlock
                                                     Text="{x:Bind vm.AppName,Mode=OneTime}" Padding="0,0,5,0"/>
                                                 <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Style="{StaticResource DescriptionTextBlockStyle}"
+                                                        x:Uid="versionTextBlock"  Text="Version" Margin="0,0,5,0"/>
                                                     <TextBlock
                                                         Style="{StaticResource DescriptionTextBlockStyle}"
                                                         Text="{x:Bind vm.AppVersion,Mode=OneTime}"/>
@@ -1203,6 +1514,22 @@
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
+                        <!--Debug-->
+                        <PivotItem
+                            Visibility="{x:Bind local:Const.VISIBLE_ON_DEBUG,Mode=OneTime}">
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" Text="DEBUG"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                            <!--テスト用-->
+                            <StackPanel Style="{StaticResource SettingPanelStyle}">
+                                <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
+                                <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
+                                <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
+                            </StackPanel>
+                        </PivotItem>
                     </Pivot>
                 </Grid>
             </SplitView.Pane>
@@ -1210,14 +1537,29 @@
             <!-- コンテンツビュー -->
 
             <SplitView.Content>
-                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" >
+                <Grid
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500"
+                    Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
                     <!-- 文字盤 -->
                     <Image
-                        x:Name="backgroundImage"
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
+                    <!--ムーンフェーズ-->
+                    <local:MoonPhase
+                        x:Name="moonPhase"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.MoonPhaseCoordinate,Mode=OneWay}"
+                        Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
+                        IsForegroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay,Mode=OneWay}"
+                        ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
+                        >
+                    </local:MoonPhase>
                     <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"
@@ -1254,8 +1596,8 @@
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
                     <!-- デイト -->
                     <Border
-                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Margin="{x:Bind vm.DateCoordinate,Mode=OneWay}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Margin="{x:Bind vm.DesignConfig.DateCoordinate,Mode=OneWay}"
                         Width="{x:Bind vm.DesignConfig.DateWidth,Mode=OneWay}"
                         Height="{x:Bind vm.DesignConfig.DateHeight,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsDateDisplay,Converter={StaticResource Visibility},Mode=OneWay}"

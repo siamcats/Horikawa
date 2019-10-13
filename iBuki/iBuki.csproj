@@ -126,10 +126,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppConfig.cs" />
-    <Compile Include="CircleIndex.xaml.cs">
+    <Compile Include="Controls\MoonPhase.xaml.cs">
+      <DependentUpon>MoonPhase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CircleIndex.xaml.cs">
       <DependentUpon>CircleIndex.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CircleScale.xaml.cs">
+    <Compile Include="Controls\CircleScale.xaml.cs">
       <DependentUpon>CircleScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="Const.cs" />
@@ -156,6 +159,7 @@
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\MoonPhase\MoonPhaseBackground.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />
@@ -188,8 +192,9 @@
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\Templates\Japan Black\Thumbnail.png" />
-    <Content Include="Assets\Templates\Modern Times Roman\Background.png" />
-    <Content Include="Assets\Templates\Modern Times Roman\Thumbnail.png" />
+    <Content Include="Assets\Templates\Lunar\Thumbnail.png" />
+    <Content Include="Assets\Templates\Chronocci\Background.png" />
+    <Content Include="Assets\Templates\Chronocci\Thumbnail.png" />
     <Content Include="Assets\Templates\Portofino\Background.png" />
     <Content Include="Assets\Templates\Portofino\Thumbnail.png" />
     <Content Include="Assets\Templates\Station\Thumbnail.png" />
@@ -197,6 +202,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\Templates\Lunar\Settings.json" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -210,11 +216,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CircleIndex.xaml">
+    <Page Include="Controls\MoonPhase.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CircleScale.xaml">
+    <Page Include="Controls\CircleIndex.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CircleScale.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,8 +261,9 @@
     <PRIResource Include="Strings\ja-JP\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Templates\Modern Times Roman\Settings.json" />
+    <Content Include="Assets\Templates\Chronocci\Settings.json" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
