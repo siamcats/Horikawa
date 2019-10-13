@@ -216,47 +216,7 @@
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
-                                    <!--Preset-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingTitlePanelStyle}">
-                                        <TextBlock
-                                            Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="presetTextBlock" Text="Presets"/>
-                                    </StackPanel>
-                                    <!--リスト-->
-                                    <ListView
-                                        x:Name="presetTemplateList"
-                                        ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
-                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                        Tapped="PresetTemplateList_Tapped">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel
-                                                    Orientation="Horizontal" Height="64">
-                                                    <Ellipse Height="50" Width="50" VerticalAlignment="Center">
-                                                        <Ellipse.Fill>
-                                                            <ImageBrush ImageSource="{Binding Thumbnail}"/>
-                                                        </Ellipse.Fill>
-                                                    </Ellipse>
-                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
-                                                        <TextBlock
-                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
-                                                        <!--<StackPanel Orientation="Horizontal">
-                                                            <TextBlock
-                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
-                                                                Padding="0,0,8,0"/>
-                                                            <TextBlock
-                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
-                                                        </StackPanel>-->
-                                                        <TextBlock
-                                                            TextWrapping="Wrap" Width="240"
-                                                            Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                    <!--Stock-->
+                                    <!--マイセット-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <Grid Height="Auto" Grid.Row="1">
@@ -312,7 +272,7 @@
                                             </StackPanel>
                                         </Grid>
                                     </StackPanel>
-                                    <!--リスト-->
+                                    <!--マイセットリスト-->
                                     <ListView
                                         x:Name="templateList"
                                         ItemsSource="{x:Bind vm.TemplateList, Mode=OneWay}"
@@ -367,6 +327,46 @@
                                                         </Button>
                                                     </StackPanel>
                                                 </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <!--プリセット-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="presetTextBlock" Text="Presets"/>
+                                    </StackPanel>
+                                    <!--プリセットリスト-->
+                                    <ListView
+                                        x:Name="presetTemplateList"
+                                        ItemsSource="{x:Bind vm.PresetTemplateList, Mode=OneWay}"
+                                        Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        Tapped="PresetTemplateList_Tapped">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel
+                                                    Orientation="Horizontal" Height="64">
+                                                    <Ellipse Height="50" Width="50" VerticalAlignment="Center">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource="{Binding Thumbnail}"/>
+                                                        </Ellipse.Fill>
+                                                    </Ellipse>
+                                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                        <TextBlock
+                                                            Style="{StaticResource NameTextBlockStyle}" Text="{Binding Name}"/>
+                                                        <!--<StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding CreatedAtDateFormat}"
+                                                                Padding="0,0,8,0"/>
+                                                            <TextBlock
+                                                                Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Author}"/>
+                                                        </StackPanel>-->
+                                                        <TextBlock
+                                                            TextWrapping="Wrap" Width="240"
+                                                            Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Description}" />
+                                                    </StackPanel>
+                                                </StackPanel>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
@@ -1416,11 +1416,11 @@
                                                     </StackPanel>
                                                     <StackPanel
                                                         Grid.Column="2" Orientation="Vertical" Margin="3,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                        <!--<TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="\100" TextAlignment="Center"/>-->
                                                         <TextBlock 
                                                             Style="{StaticResource SettingSubTitleTextBlockStyle}" Text="{Binding Price.FormattedBasePrice}"
                                                             Visibility="{Binding Price.IsOnSale,Converter={StaticResource Visibility}}"
                                                             TextAlignment="Center" TextDecorations="Strikethrough"/>
+                                                        <!--<TextBlock Style="{StaticResource SettingTitleTextBlockStyle}" Text="\100" TextAlignment="Center"/>-->
                                                         <TextBlock Style="{StaticResource SettingTitleTextBlockStyle}" Text="{Binding Price.FormattedPrice}" TextAlignment="Center"/>
                                                         <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Price.CurrencyCode}" TextAlignment="Center"/>
                                                     </StackPanel>

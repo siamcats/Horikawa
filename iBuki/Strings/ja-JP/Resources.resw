@@ -348,6 +348,10 @@
   <data name="dialogPurchasedSucceeded" xml:space="preserve">
     <value>購入が完了しました。</value>
   </data>
+  <data name="dialogRetrieveAddOnError" xml:space="preserve">
+    <value>アドオン情報の取得中にエラーが発生しました。
+インターネットに接続されていない可能性があります。</value>
+  </data>
   <data name="foregroundTextBlock.Text" xml:space="preserve">
     <value>前面</value>
   </data>

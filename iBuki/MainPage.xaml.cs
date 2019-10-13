@@ -906,6 +906,7 @@ namespace iBuki
                 context = StoreContext.GetDefault();
             }
 
+            //これはオフラインだとエラーになる
             string[] productKinds = { "Durable", "Consumable", "UnmanagedConsumable" };
             var filterList = new List<string>(productKinds);
             var queryResult = await context.GetAssociatedStoreProductsAsync(filterList);
@@ -915,7 +916,8 @@ namespace iBuki
                 Debug.WriteLine($"ExtendedError: {queryResult.ExtendedError.Message}");
                 var loader = new ResourceLoader();
                 var title = loader.GetString("dialogError");
-                var message = queryResult.ExtendedError.Message;
+                var message = loader.GetString("dialogRetrieveAddOnError");
+                //var message = queryResult.ExtendedError.Message;
                 var dialog = new ContentDialog
                 {
                     Title = title,
@@ -1050,6 +1052,7 @@ namespace iBuki
                 context = StoreContext.GetDefault();
             }
 
+            //これはオフラインでもＯＫ
             var appLicense = await context.GetAppLicenseAsync();
 
             if (appLicense == null)

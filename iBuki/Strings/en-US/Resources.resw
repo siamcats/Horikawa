@@ -348,6 +348,10 @@
   <data name="dialogPurchasedSucceeded" xml:space="preserve">
     <value>The purchase was successful.</value>
   </data>
+  <data name="dialogRetrieveAddOnError" xml:space="preserve">
+    <value>An error occurred while retrieving Add-Ons info. 
+You may not be connected to the Internet.</value>
+  </data>
   <data name="foregroundTextBlock.Text" xml:space="preserve">
     <value>Foreground</value>
   </data>
