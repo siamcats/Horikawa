@@ -51,7 +51,7 @@ namespace iBuki
             }
         }
 
-        //◆InstalledFolder
+        //◆InstalledFolder(ms-appx:///)
         //┗◇Assets
         //　┣◇Templates
         //　┃┗◇[Template Name]
@@ -60,7 +60,7 @@ namespace iBuki
         //　┃　┗・Thumbnail.png
         //　┗◇MoonPhase
         //　　┗・MoonPhaseBackground.png
-        //◆LocalFolder
+        //◆LocalFolder(ms-appdata:///)
         //┣・Background.png　←現在の背景
         //┣・MoonPhaseBackground.png　←現在のムーンフェイズの背景
         //┗◇Templates　※無いかも
@@ -83,13 +83,14 @@ namespace iBuki
         public static readonly string FILE_MOONPHASE_BACKGROUND = "MoonPhaseBackground.png";
         public static readonly string FILE_MOONPHASE_FOREGROUND = "MoonPhaseForeground.png";
 
+        public static readonly string DEFAULT_TEMPLATE_NAME = "Chronocci";
+
         public static readonly string StartUpTaskId = "ChronocciStartupId";
 
         public const string ADDON_TOKEN_MOONPHASE = "MoonPhase";
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";
-
 
         public static Visibility VISIBLE_ON_DEBUG
         {

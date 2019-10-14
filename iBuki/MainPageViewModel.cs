@@ -198,35 +198,40 @@ namespace iBuki
                 DesignConfig.MoonPhaseCoordinateY = settings.MoonPhaseCoordinateY;
                 DesignConfig.MoonPhaseForegroundColor = ConvertHexColor(settings.MoonPhaseForegroundColor);
                 DesignConfig.IsMoonPhaseBackgroundImageDisplay = settings.MoonPhaseBackgroundImageDisplay;
-                try
+                if (DesignConfig.IsMoonPhaseBackgroundImageDisplay)
                 {
-                    var bitmap = new BitmapImage();
-                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_BACKGROUND));
-                    using (var stream = await file.OpenReadAsync())
+                    try
                     {
-                        await bitmap.SetSourceAsync(stream);
+                        var bitmap = new BitmapImage();
+                        var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_BACKGROUND));
+                        using (var stream = await file.OpenReadAsync())
+                        {
+                            await bitmap.SetSourceAsync(stream);
+                        }
+                        DesignConfig.MoonPhaseBackgroundImage = bitmap;
                     }
-                    DesignConfig.MoonPhaseBackgroundImage = bitmap;
+                    catch (FileNotFoundException)
+                    {
+                        Debug.WriteLine(Const.URI_CURRENT_MOONPHASE_BACKGROUND + " Not Found");
+                    }
                 }
-                catch (FileNotFoundException)
-                {
-                    Debug.WriteLine(Const.URI_CURRENT_BACKGROUND + " Not Found");
-                }
-
                 DesignConfig.IsMoonPhaseForegroundImageDisplay = settings.MoonPhaseForegroundImageDisplay;
-                try
+                if (DesignConfig.IsMoonPhaseForegroundImageDisplay)
                 {
-                    var bitmap = new BitmapImage();
-                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_FOREGROUND));
-                    using (var stream = await file.OpenReadAsync())
+                    try
                     {
-                        await bitmap.SetSourceAsync(stream);
+                        var bitmap = new BitmapImage();
+                        var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_MOONPHASE_FOREGROUND));
+                        using (var stream = await file.OpenReadAsync())
+                        {
+                            await bitmap.SetSourceAsync(stream);
+                        }
+                        DesignConfig.MoonPhaseForegroundImage = bitmap;
                     }
-                    DesignConfig.MoonPhaseForegroundImage = bitmap;
-                }
-                catch (FileNotFoundException)
-                {
-                    Debug.WriteLine(Const.URI_CURRENT_MOONPHASE_FOREGROUND + " Not Found");
+                    catch (FileNotFoundException)
+                    {
+                        Debug.WriteLine(Const.URI_CURRENT_MOONPHASE_FOREGROUND + " Not Found");
+                    }
                 }
             }
         }

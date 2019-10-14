@@ -613,7 +613,7 @@ namespace iBuki
             var installedFolder = Package.Current.InstalledLocation;
             var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
             var templatesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
-            var defaultTemplateFolder = await templatesFolder.GetFolderAsync("Modern Times Roman");
+            var defaultTemplateFolder = await templatesFolder.GetFolderAsync(Const.DEFAULT_TEMPLATE_NAME);
             var jsonFile = await defaultTemplateFolder.GetFileAsync(Const.FILE_SETTINGS);
             var json = await FileIO.ReadTextAsync(jsonFile);
             var settings = Deserialize(json);
@@ -1099,8 +1099,6 @@ namespace iBuki
 
         private async void DebugLocalFolder()
         {
-
-            Debug.WriteLine("★Debug LocalFolders");
             var localfolders = await ApplicationData.Current.LocalFolder.GetFoldersAsync();
             foreach (StorageFolder folder in localfolders)
             {
