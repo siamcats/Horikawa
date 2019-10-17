@@ -67,6 +67,18 @@ namespace iBuki
             }
         }
 
+        private Stretch _backgroundImageStrech = Stretch.Fill;
+        public Stretch BackgroundImageStrech
+        {
+            get { return _backgroundImageStrech; }
+            set
+            {
+                if (value == _backgroundImageStrech) return;
+                _backgroundImageStrech = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Dial Scale

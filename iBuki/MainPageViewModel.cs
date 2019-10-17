@@ -39,11 +39,11 @@ namespace iBuki
             {
                 if (value == _appConfig) return;
                 _appConfig = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
 
             }
         }
-        
+
         private DesignConfig _designConfig = new DesignConfig();
         public DesignConfig DesignConfig
         {
@@ -85,11 +85,11 @@ namespace iBuki
         public void SetLicense(string storeId)
         {
             //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
-            if (storeId.Contains(Const.STORE_ID_DAYDATE)) 
+            if (storeId.Contains(Const.STORE_ID_DAYDATE))
             {
                 IsLicensedDayDate = true;
             }
-            else if(storeId.Contains(Const.STORE_ID_MOONPHASE))
+            else if (storeId.Contains(Const.STORE_ID_MOONPHASE))
             {
                 IsLicensedMoonPhase = true;
             }
@@ -144,7 +144,7 @@ namespace iBuki
             IsIndexDisplay = settings.IndexDisplay;
             if (IsIndexDisplay)
             {
-                IndexType = (IndexType)Enum.Parse(typeof(IndexType),settings.IndexType);
+                IndexType = (IndexType)Enum.Parse(typeof(IndexType), settings.IndexType);
                 DesignConfig.IndexColor = ConvertHexColor(settings.IndexColor);
                 DesignConfig.IndexRadius = settings.IndexRadius;
                 DesignConfig.IndexInterval = settings.indexInterval;
@@ -160,7 +160,7 @@ namespace iBuki
                 }
             }
             // hands
-            HandsType = (HandsType)Enum.Parse(typeof(HandsType),settings.HandsType);
+            HandsType = (HandsType)Enum.Parse(typeof(HandsType), settings.HandsType);
             DesignConfig.IsHandsDisplay = settings.HandsDisplay;
             if (DesignConfig.IsHandsDisplay)
             {
@@ -239,7 +239,7 @@ namespace iBuki
         /// <summary>
         /// 現在のアプリの設定をSettingsオブジェクトへ書き出し
         /// </summary>
-        public Settings ExportSettings(string name, string author, string description = "" )
+        public Settings ExportSettings(string name, string author, string description = "")
         {
             var settings = new Settings();
             settings.Name = name;
@@ -290,11 +290,11 @@ namespace iBuki
                 }
             }
             // hands
-            settings.HandsType = Enum.GetName(typeof(HandsType),DesignConfig.HandsType);
+            settings.HandsType = Enum.GetName(typeof(HandsType), DesignConfig.HandsType);
             settings.HandsDisplay = DesignConfig.IsHandsDisplay;
             if (DesignConfig.IsHandsDisplay)
             {
-                settings.HandsColor =DesignConfig.HandsColor.ToString();
+                settings.HandsColor = DesignConfig.HandsColor.ToString();
                 settings.HandsStrokeColor = DesignConfig.HandsStrokeColor.ToString();
                 settings.HandsStrokeThickness = DesignConfig.HandsStrokeThickness;
             }
@@ -362,6 +362,24 @@ namespace iBuki
 
         #endregion
 
+        #region Background
+
+        public List<string> BackgroundImageStretchList = EnumExtension.GetLocalizeList<StretchLocalize>();
+        public Stretch SelectedBackgroundImageStretch
+        {
+            get => DesignConfig.BackgroundImageStrech;
+            set
+            {
+                if (value == DesignConfig.BackgroundImageStrech) return;
+                {
+                    DesignConfig.BackgroundImageStrech = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        #endregion
+
         #region Dial
 
         public bool IsScaleDisplay
@@ -400,7 +418,6 @@ namespace iBuki
                 return false;
             }
         }
-
 
         public List<string> IndexTypeList = EnumExtension.GetLocalizeList<IndexType>();
         public IndexType IndexType

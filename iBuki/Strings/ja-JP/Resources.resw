@@ -355,4 +355,19 @@
   <data name="foregroundTextBlock.Text" xml:space="preserve">
     <value>前面</value>
   </data>
+  <data name="stretchEnumFill" xml:space="preserve">
+    <value>する</value>
+  </data>
+  <data name="stretchEnumNone" xml:space="preserve">
+    <value>しない</value>
+  </data>
+  <data name="stretchEnumUniform" xml:space="preserve">
+    <value>する（長辺に合わせて縦横比を保持）</value>
+  </data>
+  <data name="stretchEnumUniformToFill" xml:space="preserve">
+    <value>する（短辺に合わせて縦横比を保持）</value>
+  </data>
+  <data name="stretchTextBlock.Text" xml:space="preserve">
+    <value>拡大・縮小</value>
+  </data>
 </root>

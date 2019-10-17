@@ -45,6 +45,18 @@ namespace iBuki
         Roman
     }
 
+    public enum StretchLocalize
+    {
+        [LocalizeName("stretchEnumNone")]
+        None,
+        [LocalizeName("stretchEnumFill")]
+        Fill,
+        [LocalizeName("stretchEnumUniform")]
+        Uniform,
+        [LocalizeName("stretchEnumUniformToFill")]
+        UniformToFill
+    }
+
     [AttributeUsage(AttributeTargets.Field)]
     public class LocalizeNameAttribute : Attribute
     {
@@ -79,7 +91,14 @@ namespace iBuki
             {
                 var value = values[i];
                 var str = value.GetLocalizeName();
-                list.Add(str);
+                if (string.IsNullOrEmpty(str))
+                {
+                    list.Add(value.ToString());
+                }
+                else
+                {
+                    list.Add(str);
+                }
             }
             return list;
         }

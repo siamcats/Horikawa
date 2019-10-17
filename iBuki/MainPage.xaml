@@ -432,6 +432,16 @@
                                                 Visibility="{x:Bind backgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>
+                                    <!--拡大・縮小-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Uid="stretchTextBlock" Text="Stretch" />
+                                        <ComboBox
+                                            x:Name="backgroundImageStretch" Width="280" Margin="0,0,0,8"
+                                            ItemsSource="{x:Bind vm.BackgroundImageStretchList}"
+                                            SelectedIndex="{x:Bind vm.SelectedBackgroundImageStretch,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
+                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
                         </PivotItem>
@@ -1545,6 +1555,7 @@
                         Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
+                        Stretch="{x:Bind vm.DesignConfig.BackgroundImageStrech,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
                     <!--ムーンフェーズ-->
                     <local:MoonPhase

@@ -355,4 +355,19 @@ You may not be connected to the Internet.</value>
   <data name="foregroundTextBlock.Text" xml:space="preserve">
     <value>Foreground</value>
   </data>
+  <data name="stretchEnumFill" xml:space="preserve">
+    <value>Fill</value>
+  </data>
+  <data name="stretchEnumNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="stretchEnumUniform" xml:space="preserve">
+    <value>Fit on long edge</value>
+  </data>
+  <data name="stretchEnumUniformToFill" xml:space="preserve">
+    <value>Fit on short edge</value>
+  </data>
+  <data name="stretchTextBlock.Text" xml:space="preserve">
+    <value>Stretch</value>
+  </data>
 </root>

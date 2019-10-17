@@ -138,7 +138,6 @@ namespace iBuki
 
         #endregion
 
-
         #region 画像関連
 
         /// <summary>
@@ -151,7 +150,7 @@ namespace iBuki
             //filePicker.FileTypeFilter.Add(".jpg");
             filePicker.FileTypeFilter.Add(".png");
             //filePicker.FileTypeFilter.Add("*");
-
+            
             // 単一ファイルの選択
             var file = await filePicker.PickSingleFileAsync();
             if (file != null)
