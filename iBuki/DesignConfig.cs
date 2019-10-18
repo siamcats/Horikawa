@@ -67,14 +67,55 @@ namespace iBuki
             }
         }
 
-        private Stretch _backgroundImageStrech = Stretch.Fill;
-        public Stretch BackgroundImageStrech
+        private Stretch _backgroundImageStretch = Stretch.Fill;
+        public Stretch BackgroundImageStretch
         {
-            get { return _backgroundImageStrech; }
+            get { return _backgroundImageStretch; }
             set
             {
-                if (value == _backgroundImageStrech) return;
-                _backgroundImageStrech = value;
+                if (value == _backgroundImageStretch) return;
+                _backgroundImageStretch = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _backgroundImageCoordinateX = 0;
+        public double BackgroundImageCoordinateX
+        {
+            get { return _backgroundImageCoordinateX; }
+            set
+            {
+                if (value == _backgroundImageCoordinateX) return;
+                var coordinate = new Thickness(value, BackgroundImageCoordinate.Top, value * -1, BackgroundImageCoordinate.Bottom);
+                BackgroundImageCoordinate = coordinate;
+                _backgroundImageCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _backgroundImageCoordinateY = 0;
+        public double BackgroundImageCoordinateY
+        {
+            get { return _backgroundImageCoordinateY; }
+            set
+            {
+                if (value == _backgroundImageCoordinateY) return;
+                var coordinate = new Thickness(BackgroundImageCoordinate.Left, value * -1, BackgroundImageCoordinate.Right, value);
+                BackgroundImageCoordinate = coordinate;
+                _backgroundImageCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _backgroundImageCoordinate = new Thickness();
+        public Thickness BackgroundImageCoordinate
+        {
+            get => _backgroundImageCoordinate;
+            set
+            {
+                if (value == _backgroundImageCoordinate) return;
+                _backgroundImageCoordinate = value;
                 OnPropertyChanged();
             }
         }

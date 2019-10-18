@@ -412,7 +412,7 @@
                                         </Button>
                                     </StackPanel>
                                     <!--画像-->
-                                    <StackPanel
+                                    <StackPanel Height="130"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
@@ -439,8 +439,43 @@
                                             x:Uid="stretchTextBlock" Text="Stretch" />
                                         <ComboBox
                                             x:Name="backgroundImageStretch" Width="280" Margin="0,0,0,8"
+                                            IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.BackgroundImageStretchList}"
                                             SelectedIndex="{x:Bind vm.SelectedBackgroundImageStretch,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <!--座標-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Height="20" Padding="0,0,10,0" x:Uid="coordinateLabel" Text="Coordinate"/>
+                                            <HyperlinkButton x:Name="positionResetLink" Height="20"  Margin="0" Padding="0" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="PositionResetLink_Tapped" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                 Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                            <Slider
+                                                x:Name="bgXSlider"
+                                                Minimum="-500" Maximum="500" Width="195"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.BackgroundImageCoordinateX,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                Text="{x:Bind bgXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                            <Slider
+                                                x:Name="bgYSlider"
+                                                Minimum="-500" Maximum="500" Width="195"
+                                                TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
+                                                Value="{x:Bind vm.DesignConfig.BackgroundImageCoordinateY,Mode=TwoWay}" />
+                                            <TextBlock
+                                                TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                            Text="{x:Bind bgYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
@@ -1526,7 +1561,7 @@
                         </PivotItem>
                         <!--Debug-->
                         <PivotItem
-                            Visibility="{x:Bind local:Const.VISIBLE_ON_DEBUG,Mode=OneTime}">
+                           Visibility="{x:Bind local:Const.VISIBLE_ON_DEBUG,Mode=OneTime}">
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;" />
@@ -1552,10 +1587,11 @@
                     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
                     <!-- 文字盤 -->
                     <Image
-                        Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Margin="{x:Bind vm.DesignConfig.BackgroundImageCoordinate,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
-                        Stretch="{x:Bind vm.DesignConfig.BackgroundImageStrech,Mode=OneWay}"
+                        Stretch="{x:Bind vm.SelectedBackgroundImageStretch,Mode=OneWay}"
                         Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
                     <!--ムーンフェーズ-->
                     <local:MoonPhase

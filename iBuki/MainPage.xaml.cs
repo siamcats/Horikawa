@@ -1141,5 +1141,10 @@ namespace iBuki
 
         #endregion
 
+        private void PositionResetLink_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            vm.DesignConfig.BackgroundImageCoordinateX = 0;
+            vm.DesignConfig.BackgroundImageCoordinateY = 0;
+        }
     }
 }

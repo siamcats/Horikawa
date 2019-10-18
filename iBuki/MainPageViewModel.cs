@@ -121,6 +121,9 @@ namespace iBuki
                 {
                     Debug.WriteLine(Const.URI_CURRENT_BACKGROUND + " Not Found");
                 }
+                SelectedBackgroundImageStretch = ConvertEnum<Stretch>(settings.BackgroundImageStretch);
+                DesignConfig.BackgroundImageCoordinateX = settings.BackgroundImageCoordinateX;
+                DesignConfig.BackgroundImageCoordinateY = settings.BackgroundImageCoordinateY;
             }
             // scale
             IsScaleDisplay = settings.ScaleDisplay;
@@ -251,7 +254,9 @@ namespace iBuki
             settings.BackgroundImageDisplay = DesignConfig.IsBackgroundImageDisplay;
             if (DesignConfig.IsBackgroundImageDisplay)
             {
-
+                settings.BackgroundImageStretch = Enum.GetName(typeof(Stretch), DesignConfig.BackgroundImageStretch);
+                settings.BackgroundImageCoordinateX = DesignConfig.BackgroundImageCoordinateX;
+                settings.BackgroundImageCoordinateY = DesignConfig.BackgroundImageCoordinateY;
             }
             settings.ScaleDisplay = DesignConfig.IsScaleDisplay;
             if (DesignConfig.IsScaleDisplay)
@@ -367,12 +372,12 @@ namespace iBuki
         public List<string> BackgroundImageStretchList = EnumExtension.GetLocalizeList<StretchLocalize>();
         public Stretch SelectedBackgroundImageStretch
         {
-            get => DesignConfig.BackgroundImageStrech;
+            get => DesignConfig.BackgroundImageStretch;
             set
             {
-                if (value == DesignConfig.BackgroundImageStrech) return;
+                if (value == DesignConfig.BackgroundImageStretch) return;
                 {
-                    DesignConfig.BackgroundImageStrech = value;
+                    DesignConfig.BackgroundImageStretch = value;
                     OnPropertyChanged();
                 }
             }
@@ -531,5 +536,10 @@ namespace iBuki
             return Color.FromArgb(a, r, g, b);
         }
 
+        private T ConvertEnum<T>(string enumStr)
+        {
+            if (string.IsNullOrEmpty(enumStr)) return default(T);
+            return (T)Enum.Parse(typeof(T), enumStr);
+        }
     }
 }

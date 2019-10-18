@@ -39,6 +39,15 @@ namespace iBuki
         public bool BackgroundImageDisplay { get; set; }
 
         [DataMember]
+        public string BackgroundImageStretch { get; set; }
+
+        [DataMember]
+        public double BackgroundImageCoordinateX { get; set; }
+
+        [DataMember]
+        public double BackgroundImageCoordinateY { get; set; }
+
+        [DataMember]
         public bool ScaleDisplay { get; set; }
 
         [DataMember]
