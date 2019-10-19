@@ -103,7 +103,7 @@
 
             <SplitView.Pane>
                 <Grid x:Name="ConfigPanel">
-                    <Pivot>
+                    <Pivot x:Name="menuPivot">
                         <!--全般-->
                         <PivotItem>
                             <PivotItem.Header>
@@ -1599,24 +1599,19 @@
                                         </StackPanel>
                                         <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="thank you for using this app."/>
                                     </StackPanel>
+                                    <!--Debug-->
+                                    <StackPanel Visibility="{x:Bind local:Const.VISIBLE_ON_DEBUG,Mode=OneTime}">
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock Style="{StaticResource SettingTitleTextBlockStyle}" Text="DEBUG"/>
+                                        </StackPanel>
+                                        <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                            <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
+                                            <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
+                                            <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
                             </ScrollViewer>
-                        </PivotItem>
-                        <!--Debug-->
-                        <PivotItem
-                           Visibility="{x:Bind local:Const.VISIBLE_ON_DEBUG,Mode=OneTime}">
-                            <PivotItem.Header>
-                                <StackPanel>
-                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" Text="DEBUG"/>
-                                </StackPanel>
-                            </PivotItem.Header>
-                            <!--テスト用-->
-                            <StackPanel Style="{StaticResource SettingPanelStyle}">
-                                <ToggleSwitch x:Name="stopTickToggle" Header="stop tick"/>
-                                <CalendarDatePicker Date="{x:Bind moonPhase.DateTime,Mode=TwoWay}"/>
-                                <Button x:Name="hideTitlebarButton" Content="hide title bar" Tapped="HideTitlebarButton_Tapped" />
-                            </StackPanel>
                         </PivotItem>
                     </Pivot>
                 </Grid>
