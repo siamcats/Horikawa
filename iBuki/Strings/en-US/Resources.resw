@@ -362,12 +362,15 @@ You may not be connected to the Internet.</value>
     <value>None</value>
   </data>
   <data name="stretchEnumUniform" xml:space="preserve">
-    <value>Fit on long edge</value>
+    <value>Keep aspect ratio</value>
   </data>
   <data name="stretchEnumUniformToFill" xml:space="preserve">
-    <value>Fit on short edge</value>
+    <value>Keep aspect ratio and fill</value>
   </data>
   <data name="stretchTextBlock.Text" xml:space="preserve">
     <value>Stretch</value>
+  </data>
+  <data name="resetButton.Content" xml:space="preserve">
+    <value>Reset</value>
   </data>
 </root>

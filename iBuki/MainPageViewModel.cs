@@ -125,6 +125,25 @@ namespace iBuki
                 DesignConfig.BackgroundImageCoordinateX = settings.BackgroundImageCoordinateX;
                 DesignConfig.BackgroundImageCoordinateY = settings.BackgroundImageCoordinateY;
             }
+            // foreground
+            DesignConfig.IsForegroundImageDisplay = settings.ForegroundImageDisplay;
+            if (DesignConfig.IsForegroundImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_FOREGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.ForegroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_FOREGROUND + " Not Found");
+                }
+            }
             // scale
             IsScaleDisplay = settings.ScaleDisplay;
             if (IsScaleDisplay)
@@ -181,10 +200,10 @@ namespace iBuki
             if (DesignConfig.IsDateDisplay)
             {
                 DesignConfig.DateBackgroundColor = ConvertHexColor(settings.DateBackgroundColor);
-                DesignConfig.DateCoordinateX = settings.DateCoordinateX;
-                DesignConfig.DateCoordinateY = settings.DateCoordinateY;
                 DesignConfig.DateWidth = settings.DateWidth;
                 DesignConfig.DateHeight = settings.DateHeight;
+                DesignConfig.DateCoordinateX = settings.DateCoordinateX;
+                DesignConfig.DateCoordinateY = settings.DateCoordinateY;
                 DesignConfig.DateBorderColor = ConvertHexColor(settings.DateBorderColor);
                 DesignConfig.DateBorderThickness = settings.DateBorderThickness;
                 DesignConfig.DateFontColor = ConvertHexColor(settings.DateFontColor);
@@ -250,6 +269,7 @@ namespace iBuki
             settings.Description = description;
             settings.CreatedAt = DateTime.Now.ToString("yyyy-MM-dd'T'HH:mm:sszzz");
             settings.TargetAppVersion = Const.APP_VERSION;
+            // background
             settings.BackgroundColor = DesignConfig.BackgroundColor.ToString();
             settings.BackgroundImageDisplay = DesignConfig.IsBackgroundImageDisplay;
             if (DesignConfig.IsBackgroundImageDisplay)
@@ -258,6 +278,9 @@ namespace iBuki
                 settings.BackgroundImageCoordinateX = DesignConfig.BackgroundImageCoordinateX;
                 settings.BackgroundImageCoordinateY = DesignConfig.BackgroundImageCoordinateY;
             }
+            settings.ForegroundImageDisplay = DesignConfig.IsForegroundImageDisplay;
+
+            // scale
             settings.ScaleDisplay = DesignConfig.IsScaleDisplay;
             if (DesignConfig.IsScaleDisplay)
             {
@@ -524,6 +547,9 @@ namespace iBuki
 
         #endregion
 
+        /// <summary>
+        /// 16進数カラーコード文字列をColorに変換
+        /// </summary>
         private Color ConvertHexColor(string hexCode)
         {
             if(string.IsNullOrEmpty(hexCode)||!hexCode.Contains("#")) return Color.FromArgb(255, 255, 255, 255);
@@ -536,9 +562,12 @@ namespace iBuki
             return Color.FromArgb(a, r, g, b);
         }
 
+        /// <summary>
+        /// Enum名称をEnumに変換
+        /// </summary>
         private T ConvertEnum<T>(string enumStr)
         {
-            if (string.IsNullOrEmpty(enumStr)) return default(T);
+            if (string.IsNullOrEmpty(enumStr)) return default(T); //設定なし
             return (T)Enum.Parse(typeof(T), enumStr);
         }
     }

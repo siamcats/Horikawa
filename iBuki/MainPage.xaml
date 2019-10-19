@@ -412,8 +412,7 @@
                                         </Button>
                                     </StackPanel>
                                     <!--画像-->
-                                    <StackPanel Height="130"
-                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                    <StackPanel Height="130" Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
                                                 <ToggleSwitch 
@@ -425,6 +424,10 @@
                                                     x:Uid="imageSelectButton" Content="Select Image" 
                                                     x:Name="DialImagePicker" Tapped="DialImagePicker_Tapped"
                                                     IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}" />
+                                                <TextBlock Style="{StaticResource DescriptionTextBlockStyle}"></TextBlock>
+                                                <ToolTipService.ToolTip>
+                                                    <TextBlock x:Uid="backgroundTipTextBlock" Text="500x500 pixels or less, png"/>
+                                                </ToolTipService.ToolTip>
                                             </StackPanel>
                                             <Image
                                                 Width="130" Height="130"
@@ -438,7 +441,7 @@
                                         <TextBlock
                                             x:Uid="stretchTextBlock" Text="Stretch" />
                                         <ComboBox
-                                            x:Name="backgroundImageStretch" Width="280" Margin="0,0,0,8"
+                                            x:Name="backgroundImageStretch" Width="270" Margin="0,0,0,8"
                                             IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
                                             ItemsSource="{x:Bind vm.BackgroundImageStretchList}"
                                             SelectedIndex="{x:Bind vm.SelectedBackgroundImageStretch,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
@@ -446,10 +449,20 @@
                                     <!--座標-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Height="20" Padding="0,0,10,0" x:Uid="coordinateLabel" Text="Coordinate"/>
-                                            <HyperlinkButton x:Name="positionResetLink" Height="20"  Margin="0" Padding="0" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Center" Tapped="PositionResetLink_Tapped" />
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Height="20" Padding="0,0,100,0" x:Uid="coordinateLabel" Text="Coordinate"/>
+                                            <HyperlinkButton
+                                                Grid.Column="1" x:Uid="resetButton" x:Name="positionResetLink"
+                                                Height="20" Margin="0" Padding="0" Content="Reset" HorizontalAlignment="Right"
+                                                Tapped="PositionResetLink_Tapped"
+                                                IsEnabled="{x:Bind backgroundImageDisplayToggle.IsOn,Mode=OneWay}"
+                                                />
+                                        </Grid>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
                                                  Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
@@ -475,6 +488,36 @@
                                             <TextBlock
                                                 TextAlignment="Center" VerticalAlignment="Center" Width="40"
                                             Text="{x:Bind bgYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!-- 前景 -->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="foregroundTextBlock" Text="Foreground"/>
+                                    </StackPanel>
+                                    <!--画像-->
+                                    <StackPanel Height="130" Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel>
+                                                <ToggleSwitch 
+                                                    x:Uid="imageToggle" Header="Image"
+                                                    x:Name="foregroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsForegroundImageDisplay, Mode=TwoWay}" />
+                                                <Button
+                                                    Style="{StaticResource ButtonStyle}"
+                                                    x:Uid="imageSelectButton" Content="Select Image" 
+                                                    x:Name="dialImagePicker" Tapped="ForegroundImagePicker_Tapped"
+                                                    IsEnabled="{x:Bind foregroundImageDisplayToggle.IsOn,Mode=OneWay}" />
+                                            </StackPanel>
+                                            <Image
+                                                Width="130" Height="130"
+                                                Source="{x:Bind vm.DesignConfig.ForegroundImage,Mode=OneWay}"
+                                                Visibility="{x:Bind foregroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock x:Uid="foregroundTipTextBlock" Text="500x500 pixels or less, transparent png"/>
+                                            </ToolTipService.ToolTip>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -1303,7 +1346,7 @@
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom lunar images."/>
+                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="When using custom lunar images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
@@ -1313,7 +1356,7 @@
                                                     Visibility="{x:Bind moonPhaseBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseBackgroundTipTextBlock" Text="300*300 Circle"/>
+                                                        <TextBlock x:Uid="moonPhaseBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                     </ToolTipService.ToolTip>
                                                 </Button>
                                             </StackPanel>
@@ -1367,7 +1410,7 @@
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="Using custom cover images."/>
+                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="When using custom cover images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
@@ -1377,7 +1420,7 @@
                                                     Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseForegroundTipTextBlock" Text="300*300"/>
+                                                        <TextBlock x:Uid="moonPhaseForegroundTipTextBlock" Text="300x300 pixels, transparent png"/>
                                                     </ToolTipService.ToolTip>
                                                 </Button>
                                             </StackPanel>
@@ -1585,14 +1628,14 @@
                 <Grid
                     HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500"
                     Background="{x:Bind vm.DesignConfig.BackgroundColor, Converter={StaticResource ColorBrush}, Mode=OneWay}">
-                    <!-- 文字盤 -->
+                    <!--背景-->
                     <Image
+                        x:Name="backgroundImage"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
                         Margin="{x:Bind vm.DesignConfig.BackgroundImageCoordinate,Mode=OneWay}"
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
-                        Stretch="{x:Bind vm.SelectedBackgroundImageStretch,Mode=OneWay}"
-                        Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
+                        Stretch="{x:Bind vm.SelectedBackgroundImageStretch,Mode=OneWay}"/>
                     <!--ムーンフェーズ-->
                     <local:MoonPhase
                         x:Name="moonPhase"
@@ -1607,6 +1650,7 @@
                         ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
                         >
                     </local:MoonPhase>
+                    <!-- 文字盤 -->
                     <local:CircleScale
                         x:Name="dialScale"
                         HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"
@@ -1724,6 +1768,12 @@
                         Visibility="{x:Bind vm.DesignConfig.IsSecondHandDisplay,Converter={StaticResource Visibility},Mode=OneWay}"
                         Width="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}" Height="{x:Bind vm.SecondHand.Pivot,Mode=OneWay}"
                         Fill="{x:Bind secondHand.Fill,Mode=OneWay}"/>
+                    <!-- 前景 -->
+                    <Image
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="{x:Bind vm.DesignConfig.IsForegroundImageDisplay,Mode=OneWay}"
+                        Source="{x:Bind vm.DesignConfig.ForegroundImage,Mode=OneWay}"
+                        Height="{x:Bind vm.AppConfig.WindowSize}" Width="{x:Bind vm.AppConfig.WindowSize}" />
                 </Grid>
             </SplitView.Content>
         </SplitView>

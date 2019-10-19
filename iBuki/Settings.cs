@@ -48,6 +48,9 @@ namespace iBuki
         public double BackgroundImageCoordinateY { get; set; }
 
         [DataMember]
+        public bool ForegroundImageDisplay { get; set; }
+
+        [DataMember]
         public bool ScaleDisplay { get; set; }
 
         [DataMember]

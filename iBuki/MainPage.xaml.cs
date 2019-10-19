@@ -166,6 +166,26 @@ namespace iBuki
                 vm.DesignConfig.BackgroundImage = bitmap;
             }
         }
+        private async void ForegroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                //LocalFolder/Background.pngに配置
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_FOREGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.ForegroundImage = bitmap;
+            }
+        }
 
         /// <summary>
         ///（イベント）ムーンフェイズ画像取り込みボタンタップ
@@ -173,10 +193,7 @@ namespace iBuki
         private async void MoonPhaseImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var filePicker = new FileOpenPicker();
-
-            //filePicker.FileTypeFilter.Add(".jpg");
             filePicker.FileTypeFilter.Add(".png");
-            //filePicker.FileTypeFilter.Add("*");
 
             // 単一ファイルの選択
             var file = await filePicker.PickSingleFileAsync();
@@ -582,16 +599,16 @@ namespace iBuki
         private async void PresetTemplateList_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var settings = presetTemplateList.SelectedItem as Settings;
+            var installedFolder = Package.Current.InstalledLocation;
+            var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
+            var templatesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
+            var templateFolder = await templatesFolder.GetFolderAsync(settings.Name);
 
+            //Assetフォルダの背景画像を現在設定用にコピー（上書き）
             if (settings.BackgroundImageDisplay)
             {
                 try
                 {
-                    //Assetフォルダの背景画像を現在設定用にコピー（上書き）
-                    var installedFolder = Package.Current.InstalledLocation;
-                    var assetsFolder = await installedFolder.GetFolderAsync(Const.FOLDER_ASSETS);
-                    var templatesFolder = await assetsFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
-                    var templateFolder = await templatesFolder.GetFolderAsync(settings.Name);
                     var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
 
                     var localFolder = ApplicationData.Current.LocalFolder;
@@ -600,6 +617,21 @@ namespace iBuki
                 catch (Exception)
                 {
                     Debug.WriteLine(settings.Name + ":背景画像のコピーに失敗");
+                }
+            }
+            //前景画像も同様
+            if (settings.ForegroundImageDisplay)
+            {
+                try
+                {
+                    var fgFile = await templateFolder.GetFileAsync(Const.FILE_FOREGROUND);
+
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    await fgFile.CopyAsync(localFolder, Const.FILE_FOREGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine(settings.Name + ":前景画像のコピーに失敗");
                 }
             }
             vm.ImportSettingsAsync(settings);
@@ -644,22 +676,38 @@ namespace iBuki
         {
             var settings = templateList.SelectedItem as Settings;
             if (settings == null) return; //deleteした後もこのイベントが走るのでここで抜ける
-  
+
+            var templatesFolder = await GetLocalTemplatesFolder();
+            var templateFolder = await templatesFolder.GetFolderAsync(settings.Name);
+            //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
             if (settings.BackgroundImageDisplay)
             {
                 try
                 {
-                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
-                    var templatesFolder = await GetLocalTemplatesFolder();
-                    var templateFolder = await templatesFolder.GetFolderAsync(settings.Name);
                     var bgFile = await templateFolder.GetFileAsync(Const.FILE_BACKGROUND);
 
                     var localFolder = ApplicationData.Current.LocalFolder;
                     await bgFile.CopyAsync(localFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
                 }
-                catch (FileNotFoundException ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine(ex.FileName);
+                    Debug.WriteLine(settings.Name + ":背景/前景画像のコピーに失敗");
+                }
+            }
+            //前景画像も同様
+            if (settings.ForegroundImageDisplay)
+            {
+                try
+                {
+                    //テンプレートフォルダの背景画像を現在設定用にコピー（上書き）
+                    var fgFile = await templateFolder.GetFileAsync(Const.FILE_FOREGROUND);
+
+                    var localFolder = ApplicationData.Current.LocalFolder;
+                    await fgFile.CopyAsync(localFolder, Const.FILE_FOREGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine(settings.Name + ":背景/前景画像のコピーに失敗");
                 }
             }
             vm.ImportSettingsAsync(settings);
@@ -723,7 +771,7 @@ namespace iBuki
             var localSettingsFile = await templateFolder.CreateFileAsync(Const.FILE_SETTINGS);
             await FileIO.WriteTextAsync(localSettingsFile, json);
 
-            ///Background.pngを保存
+            ///画像を保存
             if (settings.BackgroundImageDisplay)
             {
                 try
@@ -731,6 +779,19 @@ namespace iBuki
                     //現在設定をコピーする
                     var bgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_BACKGROUND));
                     var bgFileCopied = await bgFile.CopyAsync(templateFolder, Const.FILE_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Debug.WriteLine(ex.FileName);
+                }
+            }
+            if (settings.ForegroundImageDisplay)
+            {
+                try
+                {
+                    //現在設定をコピーする
+                    var fgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_FOREGROUND));
+                    var fgFileCopied = await fgFile.CopyAsync(templateFolder, Const.FILE_FOREGROUND, NameCollisionOption.ReplaceExisting);
                 }
                 catch (FileNotFoundException ex)
                 {
@@ -1146,5 +1207,13 @@ namespace iBuki
             vm.DesignConfig.BackgroundImageCoordinateX = 0;
             vm.DesignConfig.BackgroundImageCoordinateY = 0;
         }
+
+        //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)
+        //{
+        //    backgroundImage.Height = backgroundImage.ActualHeight;
+        //    backgroundImage.Width = backgroundImage.ActualWidth;
+        //    Debug.WriteLine(backgroundImage.ActualHeight);
+        //    Debug.WriteLine(backgroundImage.ActualWidth);
+        //}
     }
 }

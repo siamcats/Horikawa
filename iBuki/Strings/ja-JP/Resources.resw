@@ -370,4 +370,7 @@
   <data name="stretchTextBlock.Text" xml:space="preserve">
     <value>拡大・縮小</value>
   </data>
+  <data name="resetButton.Content" xml:space="preserve">
+    <value>リセット</value>
+  </data>
 </root>

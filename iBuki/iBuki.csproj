@@ -199,6 +199,7 @@
     <Content Include="Assets\Templates\Chronocci\Thumbnail.png" />
     <Content Include="Assets\Templates\Portofino\Background.png" />
     <Content Include="Assets\Templates\Portofino\Thumbnail.png" />
+    <Content Include="Assets\Templates\Station\Foreground.png" />
     <Content Include="Assets\Templates\Station\Thumbnail.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />

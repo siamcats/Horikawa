@@ -122,6 +122,34 @@ namespace iBuki
 
         #endregion
 
+        #region Foreground
+
+        private bool _isForegroundImageDisplay = false;
+        public bool IsForegroundImageDisplay
+        {
+            get { return _isForegroundImageDisplay; }
+            set
+            {
+                if (value == _isForegroundImageDisplay) return;
+                _isForegroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _ForegroundImage;
+        public BitmapImage ForegroundImage
+        {
+            get { return _ForegroundImage; }
+            set
+            {
+                if (value == _ForegroundImage) return;
+                _ForegroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Dial Scale
 
         private bool _isScaleDisplay = false;
@@ -512,6 +540,19 @@ namespace iBuki
             }
         }
 
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _dateCoordinate = new Thickness(0,0,0,0);
+        public Thickness DateCoordinate
+        {
+            get => _dateCoordinate;
+            set
+            {
+                if (value == _dateCoordinate) return;
+                _dateCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
         private double _dateWidth = 1;
         public double DateWidth
         {
@@ -608,19 +649,6 @@ namespace iBuki
             }
         }
 
-        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
-        private Thickness _dateCoordinate = new Thickness(300, 300, 0, 0);
-        public Thickness DateCoordinate
-        {
-            get => _dateCoordinate;
-            set
-            {
-                if (value == _dateCoordinate) return;
-                _dateCoordinate = value;
-                OnPropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Moon Phase
@@ -673,6 +701,19 @@ namespace iBuki
                 var coordinate = new Thickness(MoonPhaseCoordinate.Left, value * -1, MoonPhaseCoordinate.Right, value);
                 MoonPhaseCoordinate = coordinate;
                 _moonPhaseCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _moonPhaseCoordinate = new Thickness(0, 0, 0, 0);
+        public Thickness MoonPhaseCoordinate
+        {
+            get => _moonPhaseCoordinate;
+            set
+            {
+                if (value == _moonPhaseCoordinate) return;
+                _moonPhaseCoordinate = value;
                 OnPropertyChanged();
             }
         }
@@ -733,19 +774,6 @@ namespace iBuki
             {
                 if (value == _moonPhaseForegroundColor) return;
                 _moonPhaseForegroundColor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
-        private Thickness _moonPhaseCoordinate = new Thickness(0, 0, 0, 0);
-        public Thickness MoonPhaseCoordinate
-        {
-            get => _moonPhaseCoordinate;
-            set
-            {
-                if (value == _moonPhaseCoordinate) return;
-                _moonPhaseCoordinate = value;
                 OnPropertyChanged();
             }
         }
