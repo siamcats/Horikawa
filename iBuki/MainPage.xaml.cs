@@ -108,8 +108,8 @@ namespace iBuki
                 Debug.WriteLine("起動時初期値");
                 SetInitSettings();
             }
-            WindowSizeChange();
             SetupStartupToggle();
+            WindowSizeChange();
         }
 
         /// <summary>
@@ -122,13 +122,12 @@ namespace iBuki
                 var json = (string)ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS];
                 vm.ImportSettingsAsync(Deserialize(json));
             }
-            // 設定がなければAssetsのデフォルトテーマを使用
         }
 
         /// <summary>
         /// （イベント）停止
         /// </summary>
-        private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var settings = vm.ExportSettings(Const.KEY_CURRENT_SETTINGS, Const.KEY_CURRENT_SETTINGS, "Description");
             var json = Serialize(settings);
@@ -374,7 +373,7 @@ namespace iBuki
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WindowSizeChange();
+            //WindowSizeChange();
         }
 
         private void WindowSizeChange()
@@ -383,8 +382,13 @@ namespace iBuki
             var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             if (!view.TryResizeView(size))
             {
-                Debug.WriteLine("Try Resize Window 失敗");
+                Debug.WriteLine("TryResizeWindow 失敗");
             }
+            else
+            {
+                Debug.WriteLine("TryResizeWindow : " + vm.AppConfig.WindowSize);
+            }
+            
         }
 
         #endregion

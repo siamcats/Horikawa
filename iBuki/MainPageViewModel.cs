@@ -1,5 +1,4 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -20,6 +19,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
 using System.Collections.ObjectModel;
 using Windows.Services.Store;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace iBuki
 {
@@ -374,9 +374,9 @@ namespace iBuki
 
         public string AppVersion = Const.APP_VERSION;
 
-        public string AppName = Const.APP_NAME();
+        public string AppName = Const.APP_NAME;
 
-        public string AppAuthor = Const.APP_AUTHOR();
+        public string AppAuthor = Const.APP_AUTHOR;
 
         public Uri AppLogo = Const.APP_LOGO;
 

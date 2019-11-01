@@ -26,18 +26,24 @@ namespace iBuki
             }
         }
 
-        public static string APP_NAME()
+        public static string APP_NAME
         {
-            var package = Package.Current;
-            var name = package.DisplayName;
-            return name;
+            get
+            {
+                var package = Package.Current;
+                var name = package.DisplayName;
+                return name;
+            }
         }
 
-        public static string APP_AUTHOR()
+        public static string APP_AUTHOR
         {
-            var package = Package.Current;
-            var author = package.PublisherDisplayName;
-            return author;
+            get
+            {
+                var package = Package.Current;
+                var author = package.PublisherDisplayName;
+                return author;
+            }
         }
 
         public static Uri APP_LOGO
@@ -89,7 +95,6 @@ namespace iBuki
 
         public static readonly string StartUpTaskId = "ChronocciStartupId";
 
-        public const string ADDON_TOKEN_MOONPHASE = "MoonPhase";
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";

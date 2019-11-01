@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Markup;
 
 namespace iBuki
@@ -77,7 +78,7 @@ namespace iBuki
             var attribute = Attribute.GetCustomAttribute(field, attrType);
             var key = (attribute as LocalizeNameAttribute)?.Name;
             if (string.IsNullOrEmpty(key)) return null; //LocalizeNameの定義が無ければnull文字を返却
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+            var resourceLoader = ResourceLoader.GetForCurrentView();
             return resourceLoader.GetString(key);
         }
 
