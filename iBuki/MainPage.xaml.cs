@@ -813,7 +813,6 @@ namespace iBuki
         /// </summary>
         private async void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
             var loader = new ResourceLoader();
             var title = loader.GetString("dialogDeleteTemplate");
             var message = loader.GetString("dialogDeleteTemplateReally");
@@ -854,6 +853,44 @@ namespace iBuki
                 }
             }
         }
+        
+        /// <summary>
+        /// テンプレートファイルをエクスポート
+        /// </summary>
+        private async void TemplateExportButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (sender is Control ctl && ctl.DataContext is Settings settings) //親のDataContext（＝settings）を拾う
+            {
+                // 名前を付けて保存ダイアログを表示
+                var filePicker = new FileSavePicker();
+                filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                filePicker.FileTypeChoices.Add("デザインテンプレートファイル", new List<string>() { Const.TEMPLATE_FILE_EXTENSION });
+                filePicker.SuggestedFileName = settings.Name;
+                var file = await filePicker.PickSaveFileAsync();
+                if (file == null) return; // ファイル選択無し→抜ける
+
+                // テンプレートフォルダをtemp.zipに圧縮する
+                var templatesFolder = await GetLocalTemplatesFolder();
+                var templateFolder = await templatesFolder.TryGetItemAsync(settings.Name);
+                if (templateFolder == null) return; //テンプレートフォルダ存在しない→抜ける（想定外）
+
+                // 既にtemp.zipがあれば消しておく（次のzip作成で落ちるため）
+                var temporaryFile = await templatesFolder.TryGetItemAsync("temp.zip");
+                if (temporaryFile != null) await temporaryFile.DeleteAsync();
+
+                var temporaryFilePath = templatesFolder.Path + "\\temp.zip";
+                ZipFile.CreateFromDirectory(templateFolder.Path, temporaryFilePath);
+
+                // LocalDirectoryに出来上がったzipを、Pickerで選択したファイルに置き換える
+                using (Stream fromStream = File.OpenRead(temporaryFilePath))
+                {
+                    using (var stream = await file.OpenStreamForWriteAsync())
+                    {
+                        fromStream.CopyTo(stream);
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -861,7 +898,7 @@ namespace iBuki
 
         private async void SetupStartupToggle()
         {
-            var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+            var startupTask = await StartupTask.GetAsync(Const.START_UP_TAST_ID);
 
             switch (startupTask.State)
             {
@@ -900,7 +937,7 @@ namespace iBuki
         // ToggleSwitchを切り替えたときのイベントハンドラー
         private async void StartupToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+            var startupTask = await StartupTask.GetAsync(Const.START_UP_TAST_ID);
 
             if ((sender as ToggleSwitch).IsOn)
             {
@@ -1142,7 +1179,6 @@ namespace iBuki
         }
 
         #endregion
-
 
         #region 雑多なprivateメソッド
 

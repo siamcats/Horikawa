@@ -373,4 +373,7 @@
   <data name="resetButton.Content" xml:space="preserve">
     <value>リセット</value>
   </data>
+  <data name="templateFileExtension" xml:space="preserve">
+    <value>テンプレートファイル</value>
+  </data>
 </root>

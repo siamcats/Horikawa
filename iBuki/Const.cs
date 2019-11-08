@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 
 namespace iBuki
@@ -93,8 +94,18 @@ namespace iBuki
 
         public static readonly string DEFAULT_TEMPLATE_NAME = "Chronocci";
 
-        public static readonly string StartUpTaskId = "ChronocciStartupId";
+        public static readonly string START_UP_TAST_ID = "ChronocciStartupId";
+        public static readonly string TEMPLATE_FILE_EXTENSION = ".Chronocci";
 
+        public static string TEMPLATE_FILE_EXTENSION_DISCRIPTION
+        {
+            get
+            {
+                var loader = new ResourceLoader();
+                return loader.GetString("templateFileExtension");
+            }
+        }
+ 
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";

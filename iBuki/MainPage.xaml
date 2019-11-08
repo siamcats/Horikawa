@@ -262,7 +262,7 @@
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
                                                 </Button>
                                                 <Button
-                                                    x:Name="importTemplateButton" Visibility="Collapsed"
+                                                    x:Name="importTemplateButton"
                                                     Style="{ThemeResource TextBlockButtonStyle}">
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="importTemplateTextBlock" Text="Import template file."/>
@@ -320,9 +320,10 @@
                                                         </Button>
                                                         <!--export-->
                                                         <Button
-                                                            Width="20" Height="20" Padding="0" Visibility="Collapsed">
+                                                            x:Name="templateExportButton"
+                                                            Width="20" Height="20" Padding="0" Tapped="TemplateExportButton_Tapped">
                                                             <Button.Content>
-                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" />
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" />
                                                             </Button.Content>
                                                         </Button>
                                                     </StackPanel>

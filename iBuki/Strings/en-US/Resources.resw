@@ -373,4 +373,7 @@ You may not be connected to the Internet.</value>
   <data name="resetButton.Content" xml:space="preserve">
     <value>Reset</value>
   </data>
+  <data name="templateFileExtension" xml:space="preserve">
+    <value>Template File</value>
+  </data>
 </root>
