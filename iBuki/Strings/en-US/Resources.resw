@@ -309,7 +309,7 @@
   <data name="openSettingTextBlock.Text" xml:space="preserve">
     <value>If disabled, change it from the Windows settings panel.</value>
   </data>
-  <data name="StartUpToggle.Header" xml:space="preserve">
+  <data name="startUpToggle.Header" xml:space="preserve">
     <value>Startup</value>
   </data>
   <data name="addOnTextBlock.Text" xml:space="preserve">
@@ -375,5 +375,11 @@ You may not be connected to the Internet.</value>
   </data>
   <data name="templateFileExtension" xml:space="preserve">
     <value>Template File</value>
+  </data>
+  <data name="deleteTextBlock" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="exportTextBlock" xml:space="preserve">
+    <value>Export</value>
   </data>
 </root>

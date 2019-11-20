@@ -97,8 +97,9 @@ namespace iBuki
         public static readonly string DEFAULT_TEMPLATE_NAME = "Chronocci";
 
         public static readonly string START_UP_TAST_ID = "ChronocciStartupId";
-        public static readonly string TEMPLATE_FILE_EXTENSION = ".Chronocci";
+        public static readonly string TEMPLATE_FILE_EXTENSION = ".chronocci";
 
+        public static readonly string VALIDATE_REGEX_FILENAME = "[\\\\\\/:\\*\\?\"<>\\|]";
         public static string TEMPLATE_FILE_EXTENSION_DISCRIPTION
         {
             get

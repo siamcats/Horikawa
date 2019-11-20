@@ -163,7 +163,7 @@
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <ToggleSwitch 
-                                                x:Uid="StartUpToggle" Header="StartUp"
+                                                x:Uid="startUpToggle" Header="StartUp"
                                                 x:Name="startupToggle" OffContent="Off" OnContent="On"
                                                 Toggled="StartupToggle_Toggled"/>
                                             <HyperlinkButton
@@ -229,6 +229,16 @@
                                                 x:Uid="mysetTextBlock" Text="Stock"
                                                 Padding="0,0,80,0" Grid.Column="0"/>
                                             <!--add template button-->
+                                            <!--E8B5 Import-->
+                                            <!--EDE1 Export-->
+                                            <!--E896 ダウンロード-->
+                                            <!--E898 Upload-->
+                                            <!--E74E Save-->
+                                            <!--E74D 削除-->
+                                            <!--E711 Cancel × -->
+                                            <!--E710 Add ＋ -->
+                                            <!--ED25 OpenFolderHorizontal-->
+                                            <!--EE71 ImageExport-->
                                             <StackPanel
                                                 Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
                                                 <Button
@@ -259,7 +269,7 @@
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
                                                     </ToolTipService.ToolTip>
-                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
                                                 </Button>
                                                 <Button
                                                     x:Name="importTemplateButton"
@@ -317,14 +327,20 @@
                                                             <Button.Content>
                                                                 <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" />
                                                             </Button.Content>
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="deleteTextBlock" Text="Delete"/>
+                                                            </ToolTipService.ToolTip>
                                                         </Button>
                                                         <!--export-->
                                                         <Button
                                                             x:Name="templateExportButton"
                                                             Width="20" Height="20" Padding="0" Tapped="TemplateExportButton_Tapped">
                                                             <Button.Content>
-                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" />
+                                                                <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xEE71;" />
                                                             </Button.Content>
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="exportTextBlock" Text="Export"/>
+                                                            </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
                                                 </Grid>
@@ -1024,7 +1040,7 @@
                                                 IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
                                                 IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
                                             <TextBlock
-                                                x:Uid="licenseRequiredTextBlock" Text="A license is required." Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                x:Uid="licenseRequiredTextBlock" Margin="-20,0,0,0" VerticalAlignment="Center"
                                                 Visibility="{x:Bind dateDisplayToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
                                         </StackPanel>
                                     </StackPanel>

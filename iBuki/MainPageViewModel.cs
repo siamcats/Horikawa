@@ -100,7 +100,7 @@ namespace iBuki
         /// <summary>
         /// Settingsオブジェクトをアプリに反映
         /// </summary>
-        public async void ImportSettingsAsync(Settings settings)
+        public async void ImportSettingsAsync(Settings settings, bool isAsset = false)
         {
             // background
             DesignConfig.BackgroundColor = ConvertHexColor(settings.BackgroundColor);
@@ -196,6 +196,10 @@ namespace iBuki
                 DesignConfig.SecondHandColor = ConvertHexColor(settings.SecondHandColor);
             }
             // day date
+            if (!isAsset && settings.DateDisplay) ///ライセンスチェック
+            {
+                if (!IsLicensedDayDate) settings.DateDisplay = false;
+            }
             DesignConfig.IsDateDisplay = settings.DateDisplay;
             if (DesignConfig.IsDateDisplay)
             {
@@ -212,6 +216,10 @@ namespace iBuki
                 DesignConfig.DateFontSize = settings.DateFontSize;
             }
             // moon phase
+            if (!isAsset && settings.MoonPhaseDisplay) ///ライセンスチェック
+            {
+                if (!IsLicensedMoonPhase) settings.MoonPhaseDisplay = false;
+            }
             DesignConfig.IsMoonPhaseDisplay = settings.MoonPhaseDisplay;
             if (DesignConfig.IsMoonPhaseDisplay)
             {

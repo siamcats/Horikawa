@@ -306,7 +306,7 @@
   <data name="openSettingTextBlock.Text" xml:space="preserve">
     <value>変更できない場合は、Windowsの設定パネルから変更します。</value>
   </data>
-  <data name="StartUpToggle.Header" xml:space="preserve">
+  <data name="startUpToggle.Header" xml:space="preserve">
     <value>スタートアップに登録する</value>
   </data>
   <data name="addOnTextBlock.Text" xml:space="preserve">
@@ -375,5 +375,11 @@
   </data>
   <data name="templateFileExtension" xml:space="preserve">
     <value>テンプレートファイル</value>
+  </data>
+  <data name="deleteTextBlock" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="exportTextBlock" xml:space="preserve">
+    <value>エクスポート</value>
   </data>
 </root>
