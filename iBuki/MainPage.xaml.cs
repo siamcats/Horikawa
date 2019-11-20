@@ -643,6 +643,9 @@ namespace iBuki
             presetTemplateList.SelectedItem = null;
         }
 
+        /// <summary>
+        /// テンプレートの選択（初回起動時）
+        /// </summary>
         private async void SetInitSettings()
         {
             var installedFolder = Package.Current.InstalledLocation;
@@ -674,7 +677,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// （イベント）テンプレート選択
+        /// テンプレート選択
         /// </summary>
         private async void TemplateList_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -861,6 +864,11 @@ namespace iBuki
         {
             if (sender is Control ctl && ctl.DataContext is Settings settings) //親のDataContext（＝settings）を拾う
             {
+                // 対象のテンプレートフォルダ取得
+                var templatesFolder = await GetLocalTemplatesFolder();
+                var templateFolder = await templatesFolder.TryGetItemAsync(settings.Name);
+                if (templateFolder == null) return; //テンプレートフォルダ存在しない→抜ける（想定外）
+
                 // 名前を付けて保存ダイアログを表示
                 var filePicker = new FileSavePicker();
                 filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -869,15 +877,14 @@ namespace iBuki
                 var file = await filePicker.PickSaveFileAsync();
                 if (file == null) return; // ファイル選択無し→抜ける
 
-                // テンプレートフォルダをtemp.zipに圧縮する
-                var templatesFolder = await GetLocalTemplatesFolder();
-                var templateFolder = await templatesFolder.TryGetItemAsync(settings.Name);
-                if (templateFolder == null) return; //テンプレートフォルダ存在しない→抜ける（想定外）
-
+                // ※Pickerで選択したFileを直接ZipFileで操作することができないため、
+                // ※一旦LocalDirectoryで作成した後にstreamでFileへ書き出す。
+                
                 // 既にtemp.zipがあれば消しておく（次のzip作成で落ちるため）
                 var temporaryFile = await templatesFolder.TryGetItemAsync("temp.zip");
                 if (temporaryFile != null) await temporaryFile.DeleteAsync();
 
+                // テンプレートフォルダをtemp.zipに圧縮してLocalDirectoryに配置する
                 var temporaryFilePath = templatesFolder.Path + "\\temp.zip";
                 ZipFile.CreateFromDirectory(templateFolder.Path, temporaryFilePath);
 
@@ -890,6 +897,32 @@ namespace iBuki
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// テンプレートファイルをインポート
+        /// </summary>
+        private async void ImportTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+            filePicker.FileTypeFilter.Add(".chronocci");
+            var file = await filePicker.PickSingleFileAsync();
+            if (file == null) return; // ファイル選択無し→抜ける
+
+            var templatesFolder = await GetLocalTemplatesFolder();
+            var temporaryFile = await templatesFolder.TryGetItemAsync("temp.zip");
+            if (temporaryFile == null) await templatesFolder.CreateFileAsync("temp.zip");
+
+            // Pickerで選択したファイルをLocalDirectoryのzipに置き換える
+            var temporaryFilePath = templatesFolder.Path + "\\temp.zip";
+            using (Stream toStream = File.OpenWrite(temporaryFilePath))
+            {
+                using (var stream = await file.OpenStreamForReadAsync())
+                {
+                    stream.CopyTo(toStream);
+                }
+            }
+
         }
 
         #endregion

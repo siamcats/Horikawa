@@ -70,11 +70,12 @@ namespace iBuki
         //◆LocalFolder(ms-appdata:///)
         //┣・Background.png　←現在の背景
         //┣・MoonPhaseBackground.png　←現在のムーンフェイズの背景
-        //┗◇Templates　※無いかも
-        //　┗◇[Template Name]
-        //　　┣・Setings.json
-        //　　┣・Background.png　＊無いかも
-        //　　┗・Thumbnail.png　＊無い TODO:自動サムネイル保存
+        //┣◇Templates　※無いかも
+        //┃┗◇[Template Name]
+        //┃　┣・Setings.json
+        //┃　┣・Background.png　＊無いかも
+        //┃　┗・Thumbnail.png　＊無い TODO:自動サムネイル保存
+        //┗☆Temporary
 
         public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings"; //現在の設定値はLoclSettingsにjson文字列で持つ。その項目キー
         public static readonly string URI_CURRENT_BACKGROUND = "ms-appdata:///local/Background.png";
@@ -85,6 +86,7 @@ namespace iBuki
 
         public static readonly string FOLDER_ASSETS = "Assets";
         public static readonly string FOLDER_TEMPLATES = "Templates";
+        public static readonly string FOLDER_TEMPORARY = "Temporary";
         public static readonly string FILE_SETTINGS = "Settings.json";
         public static readonly string FILE_BACKGROUND = "Background.png";
         public static readonly string FILE_FOREGROUND = "Foreground.png";

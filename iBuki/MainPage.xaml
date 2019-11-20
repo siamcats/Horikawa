@@ -263,7 +263,7 @@
                                                 </Button>
                                                 <Button
                                                     x:Name="importTemplateButton"
-                                                    Style="{ThemeResource TextBlockButtonStyle}">
+                                                    Style="{ThemeResource TextBlockButtonStyle}" Tapped="ImportTemplateButton_Tapped">
                                                     <ToolTipService.ToolTip>
                                                         <TextBlock x:Uid="importTemplateTextBlock" Text="Import template file."/>
                                                     </ToolTipService.ToolTip>
