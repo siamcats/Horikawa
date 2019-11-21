@@ -555,6 +555,8 @@ namespace iBuki
 
         #endregion
 
+        #region 雑多なprivateメソッド
+
         /// <summary>
         /// 16進数カラーコード文字列をColorに変換
         /// </summary>
@@ -578,5 +580,7 @@ namespace iBuki
             if (string.IsNullOrEmpty(enumStr)) return default(T); //設定なし
             return (T)Enum.Parse(typeof(T), enumStr);
         }
+
+        #endregion
     }
 }
