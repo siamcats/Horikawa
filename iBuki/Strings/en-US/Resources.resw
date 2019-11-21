@@ -274,7 +274,7 @@
     <value>Import from template file.</value>
   </data>
   <data name="saveTemplateTextBlock.Text" xml:space="preserve">
-    <value>Save current setting as template.</value>
+    <value>Save current settings.</value>
   </data>
   <data name="saveButton.Content" xml:space="preserve">
     <value>Add</value>
@@ -380,6 +380,9 @@ You may not be connected to the Internet.</value>
     <value>Delete</value>
   </data>
   <data name="exportTextBlock" xml:space="preserve">
-    <value>Export</value>
+    <value>Export this template.</value>
+  </data>
+  <data name="addTextBlock.Text" xml:space="preserve">
+    <value>Add</value>
   </data>
 </root>
