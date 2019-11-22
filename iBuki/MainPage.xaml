@@ -81,12 +81,8 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
-        <Style x:Key="AuthorTextBoxStyle" TargetType="TextBox">
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="MinHeight" Value="14"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="5,1,5,2"/>
-            <Setter Property="Margin" Value="1"/>
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
         </Style>
     </Page.Resources>
@@ -216,7 +212,7 @@
                             </PivotItem.Header>
                             <ScrollViewer>
                                 <StackPanel>
-                                    <!--マイセット-->
+                                    <!--オリジナルテンプレート-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <Grid Height="Auto" Grid.Row="1">
@@ -228,17 +224,12 @@
                                                 Style="{StaticResource SettingTitleTextBlockStyle}"
                                                 x:Uid="mysetTextBlock" Text="Stock"
                                                 Padding="0,0,80,0" Grid.Column="0"/>
-                                            <!--add template button-->
-                                            <!--E8B5 Import-->
-                                            <!--EDE1 Export-->
-                                            <!--E896 ダウンロード-->
-                                            <!--E898 Upload-->
-                                            <!--E74E Save-->
-                                            <!--E74D 削除-->
-                                            <!--E711 Cancel × -->
-                                            <!--E710 Add ＋ -->
-                                            <!--ED25 OpenFolderHorizontal-->
-                                            <!--EE71 ImageExport-->
+                                            <!--E8B5 EDE1 : Import / Export-->
+                                            <!--E896 E898 : Donwload / Upload-->
+                                            <!--E74E E74D : Save / Delete-->
+                                            <!--E711 E710 : × / ＋ -->
+                                            <!--ED25 EE71 : Folder / ImageExport-->
+                                            <!--追加ボタン-->
                                             <StackPanel
                                                 Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
                                                 <Button
@@ -247,47 +238,49 @@
                                                         <TextBlock x:Uid="addTextBlock" Text="Add"/>
                                                     </ToolTipService.ToolTip>
                                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;" />
+                                                    <!--保存orインポート選択フライアウト-->
                                                     <Button.Flyout>
                                                         <Flyout Placement="BottomEdgeAlignedLeft">
                                                             <StackPanel>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Button
-                                                                        x:Name="importTemplateButton"
-                                                                        Style="{ThemeResource TextBlockButtonStyle}" Tapped="ImportTemplateButton_Tapped">
+                                                                <Button
+                                                                    x:Name="importTemplateButton"
+                                                                    Style="{ThemeResource TextBlockButtonStyle}" Tapped="ImportTemplateButton_Tapped">
+                                                                    <StackPanel Orientation="Horizontal">
                                                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED25;" />
-                                                                    </Button>
-                                                                    <TextBlock x:Uid="importTemplateTextBlock" Text="Import template file."/>
-                                                                </StackPanel>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Button
-                                                                        x:Name="saveTemplateToggleButton"
-                                                                        Style="{ThemeResource TextBlockButtonStyle}">
+                                                                        <TextBlock Padding="3,0,0,0" x:Uid="importTemplateTextBlock" Text="Import template file."/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                                <Button
+                                                                    x:Name="saveTemplateToggleButton"
+                                                                    Style="{ThemeResource TextBlockButtonStyle}">
+                                                                    <StackPanel Orientation="Horizontal">
                                                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
-                                                                        <Button.Flyout>
-                                                                            <Flyout Placement="BottomEdgeAlignedLeft">
-                                                                                <StackPanel
-                                                                                    Orientation="Horizontal">
-                                                                                    <StackPanel Width="180" Margin="0,0,10,0">
-                                                                                        <TextBox
-                                                                                            x:Name="inputNameTextBox" PlaceholderText="Template Name(*)"
-                                                                                            Style="{StaticResource AuthorTextBoxStyle}"/>
-                                                                                        <TextBox
-                                                                                            x:Name="inputAuthorTextBox" PlaceholderText="Author"
-                                                                                            Style="{StaticResource AuthorTextBoxStyle}"/>
-                                                                                        <TextBox
-                                                                                            x:Name="inputDescriptionTextBox" PlaceholderText="Description"
-                                                                                            Style="{StaticResource AuthorTextBoxStyle}"/>
-                                                                                    </StackPanel>
-                                                                                    <Button
-                                                                                        x:Name="saveTemplateButton" x:Uid="saveButton" Content="Add" 
-                                                                                        VerticalAlignment="Bottom"
-                                                                                        Style="{ThemeResource AccentButtonStyle}" Tapped="SaveTemplateButton_Tapped" />
+                                                                        <TextBlock Padding="3,0,0,0" x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
+                                                                    </StackPanel>
+                                                                    <!--保存詳細フライアウト-->
+                                                                    <Button.Flyout>
+                                                                        <Flyout Placement="BottomEdgeAlignedLeft">
+                                                                            <StackPanel
+                                                                                Orientation="Horizontal">
+                                                                                <StackPanel Width="180" Margin="0,0,10,0">
+                                                                                    <TextBox
+                                                                                        x:Uid="inputNameTextBox" x:Name="inputNameTextBox" PlaceholderText="Template Name *"
+                                                                                        Style="{StaticResource InputTextBoxStyle}"/>
+                                                                                    <TextBox
+                                                                                        x:Uid="inputDescriptionTextBox" x:Name="inputDescriptionTextBox" PlaceholderText="Description"
+                                                                                        Style="{StaticResource InputTextBoxStyle}"/>
+                                                                                    <TextBox
+                                                                                        x:Uid="inputAuthorTextBox" x:Name="inputAuthorTextBox" PlaceholderText="Author"
+                                                                                        Style="{StaticResource InputTextBoxStyle}"/>
                                                                                 </StackPanel>
-                                                                            </Flyout>
-                                                                        </Button.Flyout>
-                                                                    </Button>
-                                                                    <TextBlock x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
-                                                                </StackPanel>
+                                                                                <Button
+                                                                                    x:Name="saveTemplateButton" x:Uid="saveButton" Content="Add" 
+                                                                                    VerticalAlignment="Bottom"
+                                                                                    Style="{ThemeResource AccentButtonStyle}" Tapped="SaveTemplateButton_Tapped" />
+                                                                            </StackPanel>
+                                                                        </Flyout>
+                                                                    </Button.Flyout>
+                                                                </Button>
                                                             </StackPanel>
                                                         </Flyout>
                                                     </Button.Flyout>
@@ -326,7 +319,7 @@
                                                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEE71;" />
                                                             </Button.Content>
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="exportTextBlock" Text="Export"/>
+                                                                <TextBlock x:Uid="exportTextBlock"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -355,7 +348,7 @@
                                                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" />
                                                             </Button.Content>
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="deleteTextBlock" Text="Delete"/>
+                                                                <TextBlock x:Uid="deleteTextBlock"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>

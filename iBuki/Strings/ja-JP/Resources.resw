@@ -376,13 +376,22 @@
   <data name="templateFileExtension" xml:space="preserve">
     <value>テンプレートファイル</value>
   </data>
-  <data name="deleteTextBlock" xml:space="preserve">
+  <data name="deleteTextBlock.Text" xml:space="preserve">
     <value>削除</value>
-  </data>
-  <data name="exportTextBlock" xml:space="preserve">
-    <value>このテンプレートをエクスポートします。</value>
   </data>
   <data name="addTextBlock.Text" xml:space="preserve">
     <value>追加</value>
+  </data>
+  <data name="exportTextBlock.Text" xml:space="preserve">
+    <value>このテンプレートをエクスポートします。</value>
+  </data>
+  <data name="inputAuthorTextBox.PlaceholderText" xml:space="preserve">
+    <value>作成者</value>
+  </data>
+  <data name="inputDescriptionTextBox.PlaceholderText" xml:space="preserve">
+    <value>説明</value>
+  </data>
+  <data name="inputNameTextBox.PlaceholderText" xml:space="preserve">
+    <value>テンプレート名</value>
   </data>
 </root>

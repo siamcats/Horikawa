@@ -376,13 +376,22 @@ You may not be connected to the Internet.</value>
   <data name="templateFileExtension" xml:space="preserve">
     <value>Template File</value>
   </data>
-  <data name="deleteTextBlock" xml:space="preserve">
+  <data name="deleteTextBlock.Text" xml:space="preserve">
     <value>Delete</value>
-  </data>
-  <data name="exportTextBlock" xml:space="preserve">
-    <value>Export this template.</value>
   </data>
   <data name="addTextBlock.Text" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="exportTextBlock.Text" xml:space="preserve">
+    <value>Export this template.</value>
+  </data>
+  <data name="inputAuthorTextBox.PlaceholderText" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="inputDescriptionTextBox.PlaceholderText" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="inputNameTextBox.PlaceholderText" xml:space="preserve">
+    <value>Template Name</value>
   </data>
 </root>
