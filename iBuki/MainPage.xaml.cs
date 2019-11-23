@@ -108,8 +108,8 @@ namespace iBuki
                 Debug.WriteLine("起動時初期値");
                 SetInitSettings();
             }
-            WindowSizeChange();
             SetupStartupToggle();
+            WindowSizeChange();
         }
 
         /// <summary>
@@ -122,13 +122,12 @@ namespace iBuki
                 var json = (string)ApplicationData.Current.LocalSettings.Values[Const.KEY_CURRENT_SETTINGS];
                 vm.ImportSettingsAsync(Deserialize(json));
             }
-            // 設定がなければAssetsのデフォルトテーマを使用
         }
 
         /// <summary>
         /// （イベント）停止
         /// </summary>
-        private void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var settings = vm.ExportSettings(Const.KEY_CURRENT_SETTINGS, Const.KEY_CURRENT_SETTINGS, "Description");
             var json = Serialize(settings);
@@ -374,7 +373,7 @@ namespace iBuki
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WindowSizeChange();
+            //WindowSizeChange();
         }
 
         private void WindowSizeChange()
@@ -383,8 +382,13 @@ namespace iBuki
             var size = new Size(vm.AppConfig.WindowSize, vm.AppConfig.WindowSize);
             if (!view.TryResizeView(size))
             {
-                Debug.WriteLine("Try Resize Window 失敗");
+                Debug.WriteLine("TryResizeWindow 失敗");
             }
+            else
+            {
+                Debug.WriteLine("TryResizeWindow : " + vm.AppConfig.WindowSize);
+            }
+            
         }
 
         #endregion
@@ -634,11 +638,14 @@ namespace iBuki
                     Debug.WriteLine(settings.Name + ":前景画像のコピーに失敗");
                 }
             }
-            vm.ImportSettingsAsync(settings);
+            vm.ImportSettingsAsync(settings,true);
 
             presetTemplateList.SelectedItem = null;
         }
 
+        /// <summary>
+        /// テンプレートの選択（初回起動時）
+        /// </summary>
         private async void SetInitSettings()
         {
             var installedFolder = Package.Current.InstalledLocation;
@@ -670,7 +677,7 @@ namespace iBuki
         }
 
         /// <summary>
-        /// （イベント）テンプレート選択
+        /// テンプレート選択
         /// </summary>
         private async void TemplateList_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -726,7 +733,7 @@ namespace iBuki
             if (newTemplateName == "") return; //テンプレート名は必須
 
             //禁止文字
-            if (Regex.IsMatch(newTemplateName, "[\\\\\\/:\\*\\?\"<>\\|]"))
+            if (Regex.IsMatch(newTemplateName, Const.VALIDATE_REGEX_FILENAME))
             {
                 var loader = new ResourceLoader();
                 var title = loader.GetString("dialogCannotSaveTemplate");
@@ -809,7 +816,6 @@ namespace iBuki
         /// </summary>
         private async void TemplateDeleteButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
             var loader = new ResourceLoader();
             var title = loader.GetString("dialogDeleteTemplate");
             var message = loader.GetString("dialogDeleteTemplateReally");
@@ -850,6 +856,150 @@ namespace iBuki
                 }
             }
         }
+        
+        /// <summary>
+        /// テンプレートファイルをエクスポート
+        /// </summary>
+        private async void TemplateExportButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (sender is Control ctl && ctl.DataContext is Settings settings) //親のDataContext（＝settings）を拾う
+            {
+                // 対象のテンプレートフォルダ取得
+                var templatesFolder = await GetLocalTemplatesFolder();
+                var templateFolder = await templatesFolder.TryGetItemAsync(settings.Name);
+                if (templateFolder == null) return; //テンプレートフォルダ存在しない→抜ける（想定外）
+
+                // 名前を付けて保存ダイアログを表示
+                var filePicker = new FileSavePicker();
+                filePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                filePicker.FileTypeChoices.Add("デザインテンプレートファイル", new List<string>() { Const.TEMPLATE_FILE_EXTENSION });
+                filePicker.SuggestedFileName = settings.Name;
+                var file = await filePicker.PickSaveFileAsync();
+                if (file == null) return; // ファイル選択無し→抜ける
+
+                // Pickerで選択したFileを直接ZipFileで操作することができないため、一旦LocalDirectoryの一時ファイルを生成した後にstreamでFileへ書き出す。
+
+                ///一時ファイルを生成し
+                var temporaryName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var temporaryFolder = await GetLocalTemporaryFolder();
+                var temporaryFile = await temporaryFolder.TryGetItemAsync(temporaryName);//既存だと次のzip生成で死ぬので念のため存否チェック→あれば消す
+                if (temporaryFile != null) await temporaryFile.DeleteAsync();
+
+                ///テンプレートフォルダをtemp.zipに圧縮してLocalDirectoryに配置する
+                var temporaryFilePath = templatesFolder.Path + "\\" + temporaryName;
+                ZipFile.CreateFromDirectory(templateFolder.Path, temporaryFilePath);
+
+                // LocalDirectoryに出来上がったzipを、Pickerで選択したファイルに置き換える
+                using (Stream fromStream = File.OpenRead(temporaryFilePath))
+                {
+                    using (var stream = await file.OpenStreamForWriteAsync())
+                    {
+                        fromStream.CopyTo(stream);
+                    }
+                }
+
+                await temporaryFolder.DeleteAsync();
+            }
+        }
+
+        /// <summary>
+        /// テンプレートファイルをインポート
+        /// </summary>
+        private async void ImportTemplateButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+            filePicker.FileTypeFilter.Add(Const.TEMPLATE_FILE_EXTENSION);
+            var file = await filePicker.PickSingleFileAsync();
+            if (file == null) return; // ファイル選択無し→抜ける
+
+            //禁止文字
+            if (Regex.IsMatch(file.DisplayName, Const.VALIDATE_REGEX_FILENAME))
+            {
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogCannotSaveTemplate");
+                var message = loader.GetString("dialogCannotSaveTemplateValidate");
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            //同名のテンプレートが存在したらエラー出して終わり
+            var templatesFolder = await GetLocalTemplatesFolder();
+            var existFolder = await templatesFolder.TryGetItemAsync(file.DisplayName);
+            if (existFolder != null)
+            {
+                var loader = new ResourceLoader();
+                var title = loader.GetString("dialogCannotSaveTemplate");
+                var message = loader.GetString("dialogCannotSaveTemplateSameName");
+                var dialog = new ContentDialog
+                {
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Pickerで選択したファイルを一時フォルダに置く
+
+            ///一時ファイルを生成し
+            var temporaryName = DateTime.Now.ToString("yyyyMMddHHmmss");
+            var temporaryFolder = await GetLocalTemporaryFolder();
+            var temporaryFile = await temporaryFolder.TryGetItemAsync(temporaryName);// 既存だと死ぬので存否チェック
+            if (temporaryFile == null)
+            {
+                temporaryFile = await temporaryFolder.CreateFileAsync(temporaryName);
+            }
+
+            ///Pickerで選択したファイルを一時ファイルへストリームで複製する
+            using (Stream toStream = File.OpenWrite(temporaryFile.Path))
+            {
+                using (var stream = await file.OpenStreamForReadAsync())
+                {
+                    stream.CopyTo(toStream);
+                }
+            }
+
+            // 一時フォルダに置いたファイルを解凍してテンプレートフォルダに配置する
+            ZipFile.ExtractToDirectory(temporaryFile.Path, templatesFolder.Path + "\\" + file.DisplayName);
+
+            // フォルダ名が正しいテンプレート名かチェックしておく
+            var templateFolder = await templatesFolder.GetFolderAsync(file.DisplayName);
+            var jsonFile = await templateFolder.GetFileAsync(Const.FILE_SETTINGS);
+            var json = await FileIO.ReadTextAsync(jsonFile);
+            var settings = Deserialize(json);
+            ///もし違ったらフォルダを正しいテンプレート名にリネームする
+            if (templateFolder.Name != settings.Name)
+            {
+                ///同名のテンプレートが存在したらエラー出して消して終わり
+                var existFolder2 = await templatesFolder.TryGetItemAsync(settings.Name);
+                if (existFolder2 != null)
+                {
+                    var loader = new ResourceLoader();
+                    var title = loader.GetString("dialogCannotSaveTemplate");
+                    var message = loader.GetString("dialogCannotSaveTemplateSameName");
+                    var dialog = new ContentDialog
+                    {
+                        Title = title,
+                        Content = message,
+                        CloseButtonText = "OK"
+                    };
+                    await dialog.ShowAsync();
+                    await templateFolder.DeleteAsync();
+                    return;
+                }
+                await templateFolder.RenameAsync(settings.Name);
+            }
+
+            vm.TemplateList.Add(settings);
+            await temporaryFolder.DeleteAsync();
+        }
 
         #endregion
 
@@ -857,7 +1007,7 @@ namespace iBuki
 
         private async void SetupStartupToggle()
         {
-            var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+            var startupTask = await StartupTask.GetAsync(Const.START_UP_TAST_ID);
 
             switch (startupTask.State)
             {
@@ -896,7 +1046,7 @@ namespace iBuki
         // ToggleSwitchを切り替えたときのイベントハンドラー
         private async void StartupToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            var startupTask = await StartupTask.GetAsync(Const.StartUpTaskId);
+            var startupTask = await StartupTask.GetAsync(Const.START_UP_TAST_ID);
 
             if ((sender as ToggleSwitch).IsOn)
             {
@@ -1139,7 +1289,6 @@ namespace iBuki
 
         #endregion
 
-
         #region 雑多なprivateメソッド
 
         /// <summary>
@@ -1154,6 +1303,20 @@ namespace iBuki
                 await localFolder.CreateFolderAsync(Const.FOLDER_TEMPLATES);
             }
             return await localFolder.GetFolderAsync(Const.FOLDER_TEMPLATES);
+        }
+
+        /// <summary>
+        /// テンポラリフォルダを開く（存在してなかったら作る）
+        /// </summary>
+        private async Task<StorageFolder> GetLocalTemporaryFolder()
+        {
+            var localFolder = ApplicationData.Current.LocalFolder;
+            var isExistFolder = await localFolder.TryGetItemAsync(Const.FOLDER_TEMPORARY);
+            if (isExistFolder == null)
+            {
+                await localFolder.CreateFolderAsync(Const.FOLDER_TEMPORARY);
+            }
+            return await localFolder.GetFolderAsync(Const.FOLDER_TEMPORARY);
         }
 
 

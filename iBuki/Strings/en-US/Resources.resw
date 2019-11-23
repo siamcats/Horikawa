@@ -274,7 +274,7 @@
     <value>Import from template file.</value>
   </data>
   <data name="saveTemplateTextBlock.Text" xml:space="preserve">
-    <value>Save current setting as template.</value>
+    <value>Save current settings.</value>
   </data>
   <data name="saveButton.Content" xml:space="preserve">
     <value>Add</value>
@@ -309,7 +309,7 @@
   <data name="openSettingTextBlock.Text" xml:space="preserve">
     <value>If disabled, change it from the Windows settings panel.</value>
   </data>
-  <data name="StartUpToggle.Header" xml:space="preserve">
+  <data name="startUpToggle.Header" xml:space="preserve">
     <value>Startup</value>
   </data>
   <data name="addOnTextBlock.Text" xml:space="preserve">
@@ -372,5 +372,26 @@ You may not be connected to the Internet.</value>
   </data>
   <data name="resetButton.Content" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="templateFileExtension" xml:space="preserve">
+    <value>Template File</value>
+  </data>
+  <data name="deleteTextBlock.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="addTextBlock.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="exportTextBlock.Text" xml:space="preserve">
+    <value>Export this template.</value>
+  </data>
+  <data name="inputAuthorTextBox.PlaceholderText" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="inputDescriptionTextBox.PlaceholderText" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="inputNameTextBox.PlaceholderText" xml:space="preserve">
+    <value>Template Name</value>
   </data>
 </root>

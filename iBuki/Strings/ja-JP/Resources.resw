@@ -271,10 +271,10 @@
     <value>クレジット</value>
   </data>
   <data name="importTemplateTextBlock.Text" xml:space="preserve">
-    <value>テンプレートファイルをインポートします。</value>
+    <value>テンプレートをインポートします。</value>
   </data>
   <data name="saveTemplateTextBlock.Text" xml:space="preserve">
-    <value>現在の設定をテンプレートとして保存します。</value>
+    <value>現在の設定を保存します。</value>
   </data>
   <data name="saveButton.Content" xml:space="preserve">
     <value>保存</value>
@@ -306,7 +306,7 @@
   <data name="openSettingTextBlock.Text" xml:space="preserve">
     <value>変更できない場合は、Windowsの設定パネルから変更します。</value>
   </data>
-  <data name="StartUpToggle.Header" xml:space="preserve">
+  <data name="startUpToggle.Header" xml:space="preserve">
     <value>スタートアップに登録する</value>
   </data>
   <data name="addOnTextBlock.Text" xml:space="preserve">
@@ -372,5 +372,26 @@
   </data>
   <data name="resetButton.Content" xml:space="preserve">
     <value>リセット</value>
+  </data>
+  <data name="templateFileExtension" xml:space="preserve">
+    <value>テンプレートファイル</value>
+  </data>
+  <data name="deleteTextBlock.Text" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="addTextBlock.Text" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="exportTextBlock.Text" xml:space="preserve">
+    <value>このテンプレートをエクスポートします。</value>
+  </data>
+  <data name="inputAuthorTextBox.PlaceholderText" xml:space="preserve">
+    <value>作成者</value>
+  </data>
+  <data name="inputDescriptionTextBox.PlaceholderText" xml:space="preserve">
+    <value>説明</value>
+  </data>
+  <data name="inputNameTextBox.PlaceholderText" xml:space="preserve">
+    <value>テンプレート名</value>
   </data>
 </root>

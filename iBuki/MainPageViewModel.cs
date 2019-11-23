@@ -1,5 +1,4 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -20,6 +19,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.IO;
 using System.Collections.ObjectModel;
 using Windows.Services.Store;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace iBuki
 {
@@ -100,7 +100,7 @@ namespace iBuki
         /// <summary>
         /// Settingsオブジェクトをアプリに反映
         /// </summary>
-        public async void ImportSettingsAsync(Settings settings)
+        public async void ImportSettingsAsync(Settings settings, bool isAsset = false)
         {
             // background
             DesignConfig.BackgroundColor = ConvertHexColor(settings.BackgroundColor);
@@ -196,6 +196,10 @@ namespace iBuki
                 DesignConfig.SecondHandColor = ConvertHexColor(settings.SecondHandColor);
             }
             // day date
+            if (!isAsset && settings.DateDisplay) ///ライセンスチェック
+            {
+                if (!IsLicensedDayDate) settings.DateDisplay = false;
+            }
             DesignConfig.IsDateDisplay = settings.DateDisplay;
             if (DesignConfig.IsDateDisplay)
             {
@@ -212,6 +216,10 @@ namespace iBuki
                 DesignConfig.DateFontSize = settings.DateFontSize;
             }
             // moon phase
+            if (!isAsset && settings.MoonPhaseDisplay) ///ライセンスチェック
+            {
+                if (!IsLicensedMoonPhase) settings.MoonPhaseDisplay = false;
+            }
             DesignConfig.IsMoonPhaseDisplay = settings.MoonPhaseDisplay;
             if (DesignConfig.IsMoonPhaseDisplay)
             {
@@ -374,9 +382,9 @@ namespace iBuki
 
         public string AppVersion = Const.APP_VERSION;
 
-        public string AppName = Const.APP_NAME();
+        public string AppName = Const.APP_NAME;
 
-        public string AppAuthor = Const.APP_AUTHOR();
+        public string AppAuthor = Const.APP_AUTHOR;
 
         public Uri AppLogo = Const.APP_LOGO;
 
@@ -547,6 +555,8 @@ namespace iBuki
 
         #endregion
 
+        #region 雑多なprivateメソッド
+
         /// <summary>
         /// 16進数カラーコード文字列をColorに変換
         /// </summary>
@@ -570,5 +580,7 @@ namespace iBuki
             if (string.IsNullOrEmpty(enumStr)) return default(T); //設定なし
             return (T)Enum.Parse(typeof(T), enumStr);
         }
+
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 
 namespace iBuki
@@ -26,18 +27,24 @@ namespace iBuki
             }
         }
 
-        public static string APP_NAME()
+        public static string APP_NAME
         {
-            var package = Package.Current;
-            var name = package.DisplayName;
-            return name;
+            get
+            {
+                var package = Package.Current;
+                var name = package.DisplayName;
+                return name;
+            }
         }
 
-        public static string APP_AUTHOR()
+        public static string APP_AUTHOR
         {
-            var package = Package.Current;
-            var author = package.PublisherDisplayName;
-            return author;
+            get
+            {
+                var package = Package.Current;
+                var author = package.PublisherDisplayName;
+                return author;
+            }
         }
 
         public static Uri APP_LOGO
@@ -63,11 +70,12 @@ namespace iBuki
         //◆LocalFolder(ms-appdata:///)
         //┣・Background.png　←現在の背景
         //┣・MoonPhaseBackground.png　←現在のムーンフェイズの背景
-        //┗◇Templates　※無いかも
-        //　┗◇[Template Name]
-        //　　┣・Setings.json
-        //　　┣・Background.png　＊無いかも
-        //　　┗・Thumbnail.png　＊無い TODO:自動サムネイル保存
+        //┣◇Templates　※無いかも
+        //┃┗◇[Template Name]
+        //┃　┣・Setings.json
+        //┃　┣・Background.png　＊無いかも
+        //┃　┗・Thumbnail.png　＊無い TODO:自動サムネイル保存
+        //┗☆Temporary
 
         public static readonly string KEY_CURRENT_SETTINGS = "CurrentSettings"; //現在の設定値はLoclSettingsにjson文字列で持つ。その項目キー
         public static readonly string URI_CURRENT_BACKGROUND = "ms-appdata:///local/Background.png";
@@ -78,6 +86,7 @@ namespace iBuki
 
         public static readonly string FOLDER_ASSETS = "Assets";
         public static readonly string FOLDER_TEMPLATES = "Templates";
+        public static readonly string FOLDER_TEMPORARY = "Temporary";
         public static readonly string FILE_SETTINGS = "Settings.json";
         public static readonly string FILE_BACKGROUND = "Background.png";
         public static readonly string FILE_FOREGROUND = "Foreground.png";
@@ -87,9 +96,19 @@ namespace iBuki
 
         public static readonly string DEFAULT_TEMPLATE_NAME = "Chronocci";
 
-        public static readonly string StartUpTaskId = "ChronocciStartupId";
+        public static readonly string START_UP_TAST_ID = "ChronocciStartupId";
+        public static readonly string TEMPLATE_FILE_EXTENSION = ".chronocci";
 
-        public const string ADDON_TOKEN_MOONPHASE = "MoonPhase";
+        public static readonly string VALIDATE_REGEX_FILENAME = "[\\\\\\/:\\*\\?\"<>\\|]";
+        public static string TEMPLATE_FILE_EXTENSION_DISCRIPTION
+        {
+            get
+            {
+                var loader = new ResourceLoader();
+                return loader.GetString("templateFileExtension");
+            }
+        }
+ 
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";
