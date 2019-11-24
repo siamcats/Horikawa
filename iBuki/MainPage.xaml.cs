@@ -915,16 +915,7 @@ namespace iBuki
             //禁止文字
             if (Regex.IsMatch(file.DisplayName, Const.VALIDATE_REGEX_FILENAME))
             {
-                var loader = new ResourceLoader();
-                var title = loader.GetString("dialogCannotSaveTemplate");
-                var message = loader.GetString("dialogCannotSaveTemplateValidate");
-                var dialog = new ContentDialog
-                {
-                    Title = title,
-                    Content = message,
-                    CloseButtonText = "OK"
-                };
-                await dialog.ShowAsync();
+                PopupDialog("dialogCannotSaveTemplate", "dialogCannotSaveTemplateValidate", "OK");
                 return;
             }
 
@@ -933,16 +924,7 @@ namespace iBuki
             var existFolder = await templatesFolder.TryGetItemAsync(file.DisplayName);
             if (existFolder != null)
             {
-                var loader = new ResourceLoader();
-                var title = loader.GetString("dialogCannotSaveTemplate");
-                var message = loader.GetString("dialogCannotSaveTemplateSameName");
-                var dialog = new ContentDialog
-                {
-                    Title = title,
-                    Content = message,
-                    CloseButtonText = "OK"
-                };
-                await dialog.ShowAsync();
+                PopupDialog("dialogCannotSaveTemplate", "dialogCannotSaveTemplateSameName", "OK");
                 return;
             }
 
@@ -967,12 +949,32 @@ namespace iBuki
             }
 
             // 一時フォルダに置いたファイルを解凍してテンプレートフォルダに配置する
-            ZipFile.ExtractToDirectory(temporaryFile.Path, templatesFolder.Path + "\\" + file.DisplayName);
+            try
+            {
+                ZipFile.ExtractToDirectory(temporaryFile.Path, templatesFolder.Path + "\\" + file.DisplayName);
+            }
+            catch (InvalidDataException)
+            {
+                PopupDialog("dialogCannotSaveTemplate", "dialogCannotSaveTemplateInvalidFile", "OK");
+                await temporaryFolder.DeleteAsync();
+                return;
+            }
 
-            // フォルダ名が正しいテンプレート名かチェックしておく
             var templateFolder = await templatesFolder.GetFolderAsync(file.DisplayName);
-            var jsonFile = await templateFolder.GetFileAsync(Const.FILE_SETTINGS);
-            var json = await FileIO.ReadTextAsync(jsonFile);
+            string json;
+            // フォルダ名が正しいテンプレート名かチェックしておく
+            try
+            {
+                json = await FileIO.ReadTextAsync(await templateFolder.GetFileAsync(Const.FILE_SETTINGS));
+            }
+            catch (FileNotFoundException)
+            {
+                PopupDialog("dialogCannotSaveTemplate", "dialogCannotSaveTemplateInvalidFile", "OK");
+                await templateFolder.DeleteAsync();
+                await temporaryFolder.DeleteAsync();
+                return;
+            }
+
             var settings = Deserialize(json);
             ///もし違ったらフォルダを正しいテンプレート名にリネームする
             if (templateFolder.Name != settings.Name)
@@ -981,17 +983,9 @@ namespace iBuki
                 var existFolder2 = await templatesFolder.TryGetItemAsync(settings.Name);
                 if (existFolder2 != null)
                 {
-                    var loader = new ResourceLoader();
-                    var title = loader.GetString("dialogCannotSaveTemplate");
-                    var message = loader.GetString("dialogCannotSaveTemplateSameName");
-                    var dialog = new ContentDialog
-                    {
-                        Title = title,
-                        Content = message,
-                        CloseButtonText = "OK"
-                    };
-                    await dialog.ShowAsync();
+                    PopupDialog("dialogCannotSaveTemplate", "dialogCannotSaveTemplateSameName", "OK");
                     await templateFolder.DeleteAsync();
+                    await temporaryFolder.DeleteAsync();
                     return;
                 }
                 await templateFolder.RenameAsync(settings.Name);
@@ -1319,6 +1313,19 @@ namespace iBuki
             return await localFolder.GetFolderAsync(Const.FOLDER_TEMPORARY);
         }
 
+        private async void PopupDialog(string titleKey, string messageKey, string ButtonText)
+        {
+            var loader = new ResourceLoader();
+            var title = loader.GetString(titleKey);
+            var message = loader.GetString(messageKey);
+            var dialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                CloseButtonText = ButtonText
+            };
+            await dialog.ShowAsync();
+        }
 
         private async void DebugLocalFolder()
         {

@@ -392,6 +392,9 @@
     <value>説明</value>
   </data>
   <data name="inputNameTextBox.PlaceholderText" xml:space="preserve">
-    <value>テンプレート名</value>
+    <value>テンプレート名 *</value>
+  </data>
+  <data name="dialogCannotSaveTemplateInvalidFile" xml:space="preserve">
+    <value>テンプレートファイルの形式またはファイル拡張子が正しくないため、読み込めませんでした。</value>
   </data>
 </root>
