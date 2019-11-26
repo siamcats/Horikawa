@@ -247,7 +247,7 @@
                                                                     Style="{ThemeResource TextBlockButtonStyle}" Tapped="ImportTemplateButton_Tapped">
                                                                     <StackPanel Orientation="Horizontal">
                                                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED25;" />
-                                                                        <TextBlock Padding="3,0,0,0" x:Uid="importTemplateTextBlock" Text="Import template file."/>
+                                                                        <TextBlock Padding="6,0,0,0" x:Uid="importTemplateTextBlock" Text="Import template file."/>
                                                                     </StackPanel>
                                                                 </Button>
                                                                 <Button
@@ -255,7 +255,7 @@
                                                                     Style="{ThemeResource TextBlockButtonStyle}">
                                                                     <StackPanel Orientation="Horizontal">
                                                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
-                                                                        <TextBlock Padding="3,0,0,0" x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
+                                                                        <TextBlock Padding="6,0,0,0" x:Uid="saveTemplateTextBlock" Text="Save current settings."/>
                                                                     </StackPanel>
                                                                     <!--保存詳細フライアウト-->
                                                                     <Button.Flyout>

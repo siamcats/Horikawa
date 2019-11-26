@@ -392,6 +392,9 @@ You may not be connected to the Internet.</value>
     <value>Description</value>
   </data>
   <data name="inputNameTextBox.PlaceholderText" xml:space="preserve">
-    <value>Template Name</value>
+    <value>Template Name *</value>
+  </data>
+  <data name="dialogCannotSaveTemplateInvalidFile" xml:space="preserve">
+    <value>The template file format or file extension is not valid.</value>
   </data>
 </root>
