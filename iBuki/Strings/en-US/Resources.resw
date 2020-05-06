@@ -411,4 +411,10 @@ You may not be connected to the Internet.</value>
 [Single tap] Start/Stop
 [Double tap] Reset</value>
   </data>
+  <data name="titlebarTipPin.Text" xml:space="preserve">
+    <value>Display window on top.</value>
+  </data>
+  <data name="titlebarTipSettings.Text" xml:space="preserve">
+    <value>Open settings menu.</value>
+  </data>
 </root>

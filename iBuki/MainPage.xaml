@@ -1489,7 +1489,7 @@
                                             </StackPanel>
                                             <StackPanel>
                                                 <TextBlock
-                                                    x:Uid="chronographTipTextBlock" Text="Tap the titlebar button. &#10;[Single tap] Start/Stop &#10;[Double tap] Reset"
+                                                    x:Uid="chronographTipTextBlock" Text="Tap the stapwatch button on the titlebar. &#10;[Single tap] Start/Stop &#10;[Double tap] Reset"
                                                     Visibility="{x:Bind chronographToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -1856,6 +1856,9 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
                     </ToggleButton.Content>
                 </ToggleButton>
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="titlebarTipSettings" Text="Open settings menu."/>
+                </ToolTipService.ToolTip>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <ToggleButton
@@ -1865,6 +1868,9 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
                     </ToggleButton.Content>
                 </ToggleButton>
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="titlebarTipPin" Text="Display window on top"/>
+                </ToolTipService.ToolTip>
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <Button
@@ -1875,6 +1881,9 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
                     </Button.Content>
                 </Button>
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="chronographTipTextBlock" Text="[Single tap] Start/Stop &#10;[Double tap] Reset"/>
+                </ToolTipService.ToolTip>
             </StackPanel>
             <StackPanel Grid.Column="3" x:Name="moveButton" Height="30" Background="Transparent"/>
         </Grid>
