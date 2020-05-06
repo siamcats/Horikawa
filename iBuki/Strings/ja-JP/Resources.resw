@@ -406,4 +406,9 @@
   <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
     <value>ムーン</value>
   </data>
+  <data name="chronographTipTextBlock.Text" xml:space="preserve">
+    <value>タイトルバーのストップウォッチをタップします。
+[シングルタップ] スタート/ストップ
+[ダブルタップ] リセット</value>
+  </data>
 </root>

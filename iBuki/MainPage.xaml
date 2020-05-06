@@ -1046,7 +1046,7 @@
                                                 x:Uid="dateDisplayToggle"
                                                 x:Name="dateDisplayToggle" 
                                                 OffContent="Off" OnContent="On"
-                                                IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
+                                                IsEnabled="{x:Bind vm.AppConfig.IsLicensedDayDate,Mode=OneWay}"
                                                 IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
                                             <TextBlock
                                                 x:Uid="licenseRequiredTextBlock" Margin="-20,0,0,0" VerticalAlignment="Center"
@@ -1055,7 +1055,7 @@
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1079,7 +1079,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
@@ -1112,7 +1112,7 @@
                                     </StackPanel>
                                     <!--サイズ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size"/>
@@ -1145,7 +1145,7 @@
                                     </StackPanel>
                                     <!--境界線-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                              Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1153,7 +1153,7 @@
                                     </StackPanel>
                                     <!--境界線の色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1177,7 +1177,7 @@
                                     </StackPanel>
                                     <!--境界線の太さ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
@@ -1195,7 +1195,7 @@
                                     </StackPanel>
                                     <!--フォント-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1203,7 +1203,7 @@
                                     </StackPanel>
                                     <!--フォントの色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1228,7 +1228,7 @@
                                     </StackPanel>
                                     <!--フォーマット-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="formatLabel" Text="Format"/>
@@ -1248,7 +1248,7 @@
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
@@ -1260,7 +1260,7 @@
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
@@ -1301,7 +1301,7 @@
                                                     x:Uid="moonPhaseToggle"
                                                     x:Name="moonPhaseToggle" 
                                                     OffContent="Off" OnContent="On"
-                                                    IsEnabled="{x:Bind vm.IsLicensedMoonPhase,Mode=OneWay}"
+                                                    IsEnabled="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=TwoWay}" />
                                                 <TextBlock
                                                     x:Uid="licenseRequired" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
@@ -1311,7 +1311,7 @@
                                     </StackPanel>
                                     <!--Size-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="sizeLabel" Text="Size"/>
@@ -1329,7 +1329,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
@@ -1362,7 +1362,7 @@
                                     </StackPanel>
                                     <!--画像-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
@@ -1394,7 +1394,7 @@
                                     </StackPanel>
                                     <!--前面-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1402,7 +1402,7 @@
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1426,7 +1426,7 @@
                                     </StackPanel>
                                     <!--画像-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
@@ -1472,20 +1472,25 @@
                                     <!--On/Off-->
                                     <StackPanel>
                                         <StackPanel
-                                                Style="{StaticResource SettingTitlePanelStyle}">
+                                            Style="{StaticResource SettingTitlePanelStyle}">
                                             <TextBlock
-                                                    Style="{StaticResource SettingTitleTextBlockStyle}"
-                                                    x:Uid="chronographTextBlock" Text="Chronograph"/>
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="chronographTextBlock" Text="Chronograph"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <ToggleSwitch 
-                                                        x:Uid="chronographToggle"
-                                                        x:Name="chronographToggle" 
-                                                        OffContent="Off" OnContent="On"
-                                                        IsEnabled="{x:Bind vm.IsLicensedChronograph,Mode=OneWay}"
-                                                        IsOn="{x:Bind vm.DesignConfig.IsChronographDisplay,Mode=TwoWay}" />
+                                                    x:Uid="chronographToggle"
+                                                    x:Name="chronographToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind vm.AppConfig.IsLicensedChronograph,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsChronographDisplay,Mode=TwoWay}" />
                                                 <TextBlock
-                                                        x:Uid="licenseRequired" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
-                                                        Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                                    x:Uid="licenseRequiredTextBlock" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                    Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock
+                                                    x:Uid="chronographTipTextBlock" Text="Tap the titlebar button. &#10;[Single tap] Start/Stop &#10;[Double tap] Reset"
+                                                    Visibility="{x:Bind chronographToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
@@ -1864,7 +1869,8 @@
             <StackPanel Grid.Column="2">
                 <Button
                     x:Name="chronoButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
-                    Tapped="ClipButton_Tapped">
+                    Tapped="chronoButton_Tapped"  DoubleTapped="chronoButton_DoubleTapped"
+                    Visibility="{x:Bind vm.DesignConfig.IsChronographDisplay, Mode=OneWay, Converter={StaticResource Visibility}}" >
                     <Button.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
                     </Button.Content>

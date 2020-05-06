@@ -406,4 +406,9 @@ You may not be connected to the Internet.</value>
   <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
     <value>Moon</value>
   </data>
+  <data name="chronographTipTextBlock.Text" xml:space="preserve">
+    <value>Tap the stopwatch button on the titlebar
+[Single tap] Start/Stop
+[Double tap] Reset</value>
+  </data>
 </root>

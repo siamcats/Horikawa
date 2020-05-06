@@ -302,11 +302,21 @@ namespace iBuki
 
         private double CalcAngleSecond(DateTime now)
         {
-            var movement = vm.AppConfig.Movement;
-            //if (movement == Movement.Chronograph) return 0;
+            Decimal ss;
+            Decimal fff;
 
-            var ss = Convert.ToDecimal(now.ToString("ss"));
-            var fff = Convert.ToDecimal(now.ToString("fff"));
+            if (vm.DesignConfig.IsChronographDisplay)
+            {
+                //return 0;
+                ss = vm.stopwatch.Elapsed.Seconds;
+                fff = vm.stopwatch.Elapsed.Milliseconds;
+            }
+            else
+            {
+                ss = Convert.ToDecimal(now.ToString("ss"));
+                fff = Convert.ToDecimal(now.ToString("fff"));
+            }
+
             //var angle = 6 * ss;
             //var angle2 = Convert.ToDouble(fff)/1000*6;
             //Debug.WriteLine(angle + angle2);
@@ -1256,7 +1266,7 @@ namespace iBuki
                 context = StoreContext.GetDefault();
             }
 
-            //これはオフラインでもＯＫ
+            //これはオフラインでも例外にはならない
             var appLicense = await context.GetAppLicenseAsync();
 
             if (appLicense == null)
@@ -1279,6 +1289,9 @@ namespace iBuki
                 var addOnLicense = item.Value;
                 vm.SetLicense(addOnLicense.SkuStoreId);
             }
+
+            //通信速度が遅いと、vmのライセンス情報に反映される前にconfigの読み込みが完了してしまうため、
+            //ライセンスが必要な設定（ムーンフェイズなど）が反映されない可能性がある
         }
 
         #endregion
@@ -1376,6 +1389,22 @@ namespace iBuki
         {
             vm.DesignConfig.BackgroundImageCoordinateX = 0;
             vm.DesignConfig.BackgroundImageCoordinateY = 0;
+        }
+
+        private void chronoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (vm.stopwatch.IsRunning)
+            {
+                vm.stopwatch.Stop();
+            }
+            else
+            {
+                vm.stopwatch.Start();
+            }
+        }
+        private void chronoButton_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            vm.stopwatch.Reset();
         }
 
         //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)

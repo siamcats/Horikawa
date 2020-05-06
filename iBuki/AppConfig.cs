@@ -119,5 +119,49 @@ namespace iBuki
                 OnPropertyChanged();
             }
         }
+
+        public bool IsLicensedDayDate
+        {
+            get { return Load(false); }
+            set
+            {
+                if (value == Load(false)) return;
+                Save(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLicensedMoonPhase
+        {
+            get { return Load(false); }
+            set
+            {
+                if (value == Load(false)) return;
+                Save(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLicensedPowerReserve
+        {
+            get { return Load(false); }
+            set
+            {
+                if (value == Load(false)) return;
+                Save(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLicensedChronograph
+        {
+            get { return Load(false); }
+            set
+            {
+                if (value == Load(false)) return;
+                Save(value);
+                OnPropertyChanged();
+            }
+        }
     }
 }

@@ -112,7 +112,7 @@ namespace iBuki
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";
-        public const string STORE_ID_CHRONOGRAPH  = "xxxxxxxxxxxx";
+        public const string STORE_ID_CHRONOGRAPH  = "9NRN57BWR5N0";
 
         public static Visibility VISIBLE_ON_DEBUG
         {

@@ -25,5 +25,6 @@
   "HandsColor": "#FF153555",
   "SecondHandDisplay": true,
   "SecondHandColor": "#FF153555",
-  "DateDisplay": false
+  "DateDisplay": false,
+  "ChronographDisplay": true
 }

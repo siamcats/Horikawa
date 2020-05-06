@@ -188,6 +188,9 @@ namespace iBuki
         [DataMember]
         public bool MoonPhaseForegroundImageDisplay { get; set; }
 
+        [DataMember]
+        public bool ChronographDisplay { get; set; }
+
         public BitmapSource Thumbnail { get; set; }
 
         public string CreatedAtDateFormat { get

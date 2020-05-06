@@ -58,73 +58,74 @@ namespace iBuki
 
         #region License
 
-        private bool _isLicensedDayDate = false;
-        public bool IsLicensedDayDate
-        {
-            get => _isLicensedDayDate;
-            set
-            {
-                if (value == _isLicensedDayDate) return;
-                _isLicensedDayDate = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool _isLicensedDayDate = false;
+        //public bool IsLicensedDayDate
+        //{
+        //    get => _isLicensedDayDate;
+        //    set
+        //    {
+        //        if (value == _isLicensedDayDate) return;
+        //        _isLicensedDayDate = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        private bool _isLicensedMoonPhase = false;
-        public bool IsLicensedMoonPhase
-        {
-            get => _isLicensedMoonPhase;
-            set
-            {
-                if (value == _isLicensedMoonPhase) return;
-                _isLicensedMoonPhase = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool _isLicensedMoonPhase = false;
+        //public bool IsLicensedMoonPhase
+        //{
+        //    get => _isLicensedMoonPhase;
+        //    set
+        //    {
+        //        if (value == _isLicensedMoonPhase) return;
+        //        _isLicensedMoonPhase = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        private bool _isLicensedPowerReserve = false;
-        public bool IsLicensedPowerReserve
-        {
-            get => _isLicensedPowerReserve;
-            set
-            {
-                if (value == _isLicensedPowerReserve) return;
-                _isLicensedPowerReserve = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool _isLicensedPowerReserve = false;
+        //public bool IsLicensedPowerReserve
+        //{
+        //    get => _isLicensedPowerReserve;
+        //    set
+        //    {
+        //        if (value == _isLicensedPowerReserve) return;
+        //        _isLicensedPowerReserve = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
-        private bool _isLicensedChronograph = false;
-        public bool IsLicensedChronograph
-        {
-            get => _isLicensedChronograph;
-            set
-            {
-                if (value == _isLicensedChronograph) return;
-                _isLicensedChronograph = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool _isLicensedChronograph = false;
+        //public bool IsLicensedChronograph
+        //{
+        //    get => _isLicensedChronograph;
+        //    set
+        //    {
+        //        if (value == _isLicensedChronograph) return;
+        //        _isLicensedChronograph = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         public void SetLicense(string storeId)
         {
             //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
             if (storeId.Contains(Const.STORE_ID_DAYDATE))
             {
-                IsLicensedDayDate = true;
+                AppConfig.IsLicensedDayDate = true;
             }
             else if (storeId.Contains(Const.STORE_ID_MOONPHASE))
             {
-                IsLicensedMoonPhase = true;
+                AppConfig.IsLicensedMoonPhase = true;
             }
             else if (storeId.Contains(Const.STORE_ID_POWERRESERVE))
             {
-                IsLicensedPowerReserve = true;
+                AppConfig.IsLicensedPowerReserve = true;
             }
             else if (storeId.Contains(Const.STORE_ID_CHRONOGRAPH))
             {
-                IsLicensedChronograph = true;
+                AppConfig.IsLicensedChronograph = true;
             }
+            AppConfig.IsLicensedChronograph = true;
         }
 
         #endregion
@@ -230,7 +231,7 @@ namespace iBuki
             // day date
             if (!isAsset && settings.DateDisplay) ///ライセンスチェック
             {
-                if (!IsLicensedDayDate) settings.DateDisplay = false;
+                if (!AppConfig.IsLicensedDayDate) settings.DateDisplay = false;
             }
             DesignConfig.IsDateDisplay = settings.DateDisplay;
             if (DesignConfig.IsDateDisplay)
@@ -250,7 +251,7 @@ namespace iBuki
             // moon phase
             if (!isAsset && settings.MoonPhaseDisplay) ///ライセンスチェック
             {
-                if (!IsLicensedMoonPhase) settings.MoonPhaseDisplay = false;
+                if (!AppConfig.IsLicensedMoonPhase) settings.MoonPhaseDisplay = false;
             }
             DesignConfig.IsMoonPhaseDisplay = settings.MoonPhaseDisplay;
             if (DesignConfig.IsMoonPhaseDisplay)
@@ -296,6 +297,13 @@ namespace iBuki
                     }
                 }
             }
+            // chronograph
+            if (!isAsset && settings.ChronographDisplay) ///ライセンスチェック
+            {
+                if (!AppConfig.IsLicensedChronograph) settings.ChronographDisplay = false;
+            }
+            DesignConfig.IsChronographDisplay = settings.ChronographDisplay;
+
         }
 
         /// <summary>
@@ -400,6 +408,12 @@ namespace iBuki
                 settings.MoonPhaseForegroundImageDisplay = DesignConfig.IsMoonPhaseForegroundImageDisplay;
             }
 
+            // chronograph
+            settings.ChronographDisplay = DesignConfig.IsChronographDisplay;
+            if (DesignConfig.IsChronographDisplay)
+            {
+
+            }
 
             return settings;
         }
@@ -584,6 +598,12 @@ namespace iBuki
         #endregion
 
         #region Moon Phase
+
+        #endregion
+
+        #region Chronograph
+
+        public Stopwatch stopwatch = new Stopwatch();
 
         #endregion
 
