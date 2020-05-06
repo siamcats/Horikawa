@@ -13,8 +13,7 @@ namespace iBuki
     public enum Movement
     {
         Quartz,
-        Mechanical,
-        Chronograph
+        Mechanical
     }
     
     public enum Clock

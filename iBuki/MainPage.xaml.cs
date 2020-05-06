@@ -303,7 +303,7 @@ namespace iBuki
         private double CalcAngleSecond(DateTime now)
         {
             var movement = vm.AppConfig.Movement;
-            if (movement == Movement.Chronograph) return 0;
+            //if (movement == Movement.Chronograph) return 0;
 
             var ss = Convert.ToDecimal(now.ToString("ss"));
             var fff = Convert.ToDecimal(now.ToString("fff"));

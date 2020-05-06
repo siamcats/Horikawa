@@ -82,6 +82,30 @@ namespace iBuki
             }
         }
 
+        private bool _isLicensedPowerReserve = false;
+        public bool IsLicensedPowerReserve
+        {
+            get => _isLicensedPowerReserve;
+            set
+            {
+                if (value == _isLicensedPowerReserve) return;
+                _isLicensedPowerReserve = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isLicensedChronograph = false;
+        public bool IsLicensedChronograph
+        {
+            get => _isLicensedChronograph;
+            set
+            {
+                if (value == _isLicensedChronograph) return;
+                _isLicensedChronograph = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void SetLicense(string storeId)
         {
             //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
@@ -92,6 +116,14 @@ namespace iBuki
             else if (storeId.Contains(Const.STORE_ID_MOONPHASE))
             {
                 IsLicensedMoonPhase = true;
+            }
+            else if (storeId.Contains(Const.STORE_ID_POWERRESERVE))
+            {
+                IsLicensedPowerReserve = true;
+            }
+            else if (storeId.Contains(Const.STORE_ID_CHRONOGRAPH))
+            {
+                IsLicensedChronograph = true;
             }
         }
 

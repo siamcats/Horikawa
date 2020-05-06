@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace iBuki
 {
+    /// <summary>
+    /// VMのうちSettingへ変換・保存するプロパティはここに持たせる
+    /// </summary>
     public class DesignConfig : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -774,6 +777,22 @@ namespace iBuki
             {
                 if (value == _moonPhaseForegroundColor) return;
                 _moonPhaseForegroundColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Chronograph
+
+        private bool _isChronographDisplay = false;
+        public bool IsChronographDisplay
+        {
+            get { return _isChronographDisplay; }
+            set
+            {
+                if (value == _isChronographDisplay) return;
+                _isChronographDisplay = value;
                 OnPropertyChanged();
             }
         }

@@ -397,4 +397,13 @@ You may not be connected to the Internet.</value>
   <data name="dialogCannotSaveTemplateInvalidFile" xml:space="preserve">
     <value>The template file format or file extension is not valid.</value>
   </data>
+  <data name="chronographOmitTextBlock.Text" xml:space="preserve">
+    <value>Chrono</value>
+  </data>
+  <data name="chronographTextBlock.Text" xml:space="preserve">
+    <value>Chronograph</value>
+  </data>
+  <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
+    <value>Moon</value>
+  </data>
 </root>

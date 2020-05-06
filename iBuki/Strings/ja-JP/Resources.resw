@@ -223,7 +223,7 @@
     <value>機械式</value>
   </data>
   <data name="moonPhaseTextBlock.Text" xml:space="preserve">
-    <value>ムーンフェーズ</value>
+    <value>ムーンフェイズ</value>
   </data>
   <data name="movementLabel.Text" xml:space="preserve">
     <value>ムーブメント</value>
@@ -396,5 +396,14 @@
   </data>
   <data name="dialogCannotSaveTemplateInvalidFile" xml:space="preserve">
     <value>テンプレートファイルの形式またはファイル拡張子が正しくないため、読み込めませんでした。</value>
+  </data>
+  <data name="chronographOmitTextBlock.Text" xml:space="preserve">
+    <value>クロノ</value>
+  </data>
+  <data name="chronographTextBlock.Text" xml:space="preserve">
+    <value>クロノグラフ</value>
+  </data>
+  <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
+    <value>ムーン</value>
   </data>
 </root>

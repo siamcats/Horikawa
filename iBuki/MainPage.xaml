@@ -193,10 +193,10 @@
                                                 GroupName="movement"
                                                 x:Uid="mechanicalButton" Content="Mechanical"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
-                                            <RadioButton
+                                            <!--<RadioButton
                                                 GroupName="movement"
                                                 x:Uid="chronographButton" Content="Chronograph "
-                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Chronograph , Mode=TwoWay}" />
+                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Chronograph , Mode=TwoWay}" />-->
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -1284,7 +1284,7 @@
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Moon Phase"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseOmitTextBlock" Text="Moon"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
@@ -1454,6 +1454,39 @@
                                                 Width="130" Height="130"
                                                 Source="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
                                                 Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </PivotItem>
+                        <!--クロノグラフ-->
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="chronographOmitTextBlock" Text="Chrono"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <!--On/Off-->
+                                    <StackPanel>
+                                        <StackPanel
+                                                Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                    Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                    x:Uid="chronographTextBlock" Text="Chronograph"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                        x:Uid="chronographToggle"
+                                                        x:Name="chronographToggle" 
+                                                        OffContent="Off" OnContent="On"
+                                                        IsEnabled="{x:Bind vm.IsLicensedChronograph,Mode=OneWay}"
+                                                        IsOn="{x:Bind vm.DesignConfig.IsChronographDisplay,Mode=TwoWay}" />
+                                                <TextBlock
+                                                        x:Uid="licenseRequired" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                        Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -1807,6 +1840,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
@@ -1827,7 +1861,16 @@
                     </ToggleButton.Content>
                 </ToggleButton>
             </StackPanel>
-            <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent"/>
+            <StackPanel Grid.Column="2">
+                <Button
+                    x:Name="chronoButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    Tapped="ClipButton_Tapped">
+                    <Button.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="3" x:Name="moveButton" Height="30" Background="Transparent"/>
         </Grid>
 
     </Grid>
