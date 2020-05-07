@@ -60,6 +60,7 @@ namespace iBuki
             var dataContainer = ApplicationData.Current.LocalSettings;
 
             // アクセントカラーの設定反映
+            Current.Resources["DefaultAccentColor"] = Current.Resources["SystemAccentColor"]; //レストア用に退避
             if (dataContainer.Values.ContainsKey("AccentColor"))
             {
                 Current.Resources["SystemAccentColor"] = ConvertHexColor((string)dataContainer.Values["AccentColor"]);

@@ -120,8 +120,20 @@
                                     <!--言語-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <TextBlock
-                                            x:Uid="languageLabel" Text="Language" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Grid.Column="0"
+                                                x:Uid="languageLabel" Text="Language" />
+                                            <StackPanel HorizontalAlignment="Right" Grid.Column="1">
+                                                <Button
+                                                    Style="{ThemeResource TextBlockButtonStyle}" Padding="0"
+                                                    x:Name="restartButton" Visibility="Collapsed" Tapped="RestartButton_Tapped">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" FontSize="13" Margin="10,2,2,0"/>
+                                                        <TextBlock x:Uid="restartTextBlock" Text="Restart app to apply."/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox
                                                 x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
@@ -130,8 +142,7 @@
                                                 SelectionChanged="LanguageComboBox_SelectionChanged" />
                                             <HyperlinkButton
                                                 x:Uid="restartButton" Content="Restart App to Apply"
-                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"
-                                                Tapped="HyperlinkButton_Tapped"/>
+                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--ウィンドウテーマ-->
@@ -157,8 +168,20 @@
                                     <!--アクセントカラー-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <TextBlock
-                                            x:Uid="accentTextBlock" Text="Accent Color"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Grid.Column="0"
+                                                x:Uid="accentTextBlock" Text="Accent Color" Margin="0,0,0,2"/>
+                                            <StackPanel HorizontalAlignment="Right" Grid.Column="1">
+                                                <Button
+                                                    Style="{ThemeResource TextBlockButtonStyle}" Padding="0"
+                                                    x:Name="restartButton2" Visibility="Collapsed" Tapped="RestartButton_Tapped">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" FontSize="13" Margin="10,2,2,0"/>
+                                                        <TextBlock x:Uid="restartTextBlock" Text="Restart app to apply."/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Button
                                                 Style="{StaticResource ColorButtonStyle}"
@@ -177,9 +200,10 @@
                                                 </FlyoutBase.AttachedFlyout>
                                             </Button>
                                             <HyperlinkButton
-                                                x:Uid="restartButton" Content="Restart App to Apply"
-                                                x:Name="restartLink2" Margin="10,0,0,0" Visibility="Collapsed"
-                                                Tapped="HyperlinkButton_Tapped"/>
+                                                x:Uid="restoreSystemDefaultLink" x:Name="restoreSystemDefaultLink"
+                                                Content="Restore default color." Tapped="useSystemDefaultLink_Tapped"
+                                                Margin="10,0,0,0"
+                                                Foreground="{StaticResource DefaultAccentColor}"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--スタートアップ-->
@@ -1555,7 +1579,7 @@
                                                     x:Name="licenseUpdateButton"
                                                     Visibility="{x:Bind licenseUpdateProgress.IsActive,Converter={StaticResource VisibilityReverse},Mode=OneWay}"
                                                     Style="{ThemeResource TextBlockButtonStyle}" Tapped="LicenseUpdateButton_Tapped">
-                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" />
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE895;" />
                                                 </Button>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">

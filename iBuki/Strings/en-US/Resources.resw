@@ -234,8 +234,8 @@
   <data name="quartzButton.Content" xml:space="preserve">
     <value>Quartz</value>
   </data>
-  <data name="restartButton.Content" xml:space="preserve">
-    <value>Restart App to Apply</value>
+  <data name="restartTextBlock.Text" xml:space="preserve">
+    <value>Restart app to apply.</value>
   </data>
   <data name="romanIndexEnum" xml:space="preserve">
     <value>Roman</value>
@@ -304,7 +304,7 @@
     <value>If you delete this template, you won't be able to recover it. Do you want to delete it?</value>
   </data>
   <data name="openSettingButton.Content" xml:space="preserve">
-    <value>Open Settings</value>
+    <value>Open settings.</value>
   </data>
   <data name="openSettingTextBlock.Text" xml:space="preserve">
     <value>If disabled, change it from the Windows settings panel.</value>
@@ -419,5 +419,8 @@ You may not be connected to the Internet.</value>
   </data>
   <data name="titlebarTipSettings.Text" xml:space="preserve">
     <value>Open settings menu.</value>
+  </data>
+  <data name="restoreSystemDefaultLink.Content" xml:space="preserve">
+    <value>Restore default color.</value>
   </data>
 </root>

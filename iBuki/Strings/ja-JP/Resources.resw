@@ -234,8 +234,8 @@
   <data name="quartzButton.Content" xml:space="preserve">
     <value>クォーツ式</value>
   </data>
-  <data name="restartButton.Content" xml:space="preserve">
-    <value>再起動で反映します</value>
+  <data name="restartTextBlock.Text" xml:space="preserve">
+    <value>再起動で反映します。</value>
   </data>
   <data name="romanIndexEnum" xml:space="preserve">
     <value>ローマ数字</value>
@@ -419,5 +419,8 @@
   </data>
   <data name="titlebarTipSettings.Text" xml:space="preserve">
     <value>設定メニューを開く。</value>
+  </data>
+  <data name="restoreSystemDefaultLink.Content" xml:space="preserve">
+    <value>Windowsカラーに合わせる</value>
   </data>
 </root>

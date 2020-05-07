@@ -411,13 +411,13 @@ namespace iBuki
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //言語選択したら再起動を促す
-            restartLink.Visibility = Visibility.Visible;
+            restartButton.Visibility = Visibility.Visible;
         }
 
         /// <summary>
         /// （イベント）言語選択後は再起動でアプリに反映させる
         /// </summary>
-        private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void RestartButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
         }
@@ -428,8 +428,8 @@ namespace iBuki
         private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             //設定パネル押したら再起動しますか？表示は消しとく
-            restartLink.Visibility = Visibility.Collapsed;
-            restartLink2.Visibility = Visibility.Collapsed;
+            restartButton.Visibility = Visibility.Collapsed;
+            restartButton2.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -1410,7 +1410,13 @@ namespace iBuki
 
         private void accentColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
-            restartLink2.Visibility = Visibility.Visible;
+            restartButton2.Visibility = Visibility.Visible;
+        }
+
+        private void useSystemDefaultLink_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var scb = (SolidColorBrush)restoreSystemDefaultLink.Foreground;
+            vm.AppConfig.AccentColor = scb.Color;
         }
 
         //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)
