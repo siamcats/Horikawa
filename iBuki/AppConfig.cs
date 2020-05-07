@@ -14,9 +14,14 @@ using Windows.Globalization;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
 using Windows.ApplicationModel;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 namespace iBuki
 {
+    /// <summary>
+    /// LocalSettingsに保存して保持する情報
+    /// </summary>
     public class AppConfig : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -85,6 +90,38 @@ namespace iBuki
                 Save((int)value);
                 OnPropertyChanged();
             }
+        }
+
+        public Color AccentColor
+        {
+            get
+            {
+                var str = Load("#FFFFFFFF");
+                return ConvertHexColor(str);
+            }
+            set
+            {
+                var str = "#" + value.A.ToString("X2") + value.R.ToString("X2") + value.G.ToString("X2") + value.B.ToString("X2");
+                if (str == Load("#FFFFFFFF")) return;
+                Save(str);
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 16進数カラーコード文字列をBrushに変換
+        /// </summary>
+        private Color ConvertHexColor(string hexCode)
+        {
+
+            if(string.IsNullOrEmpty(hexCode)||!hexCode.Contains("#")) return Color.FromArgb(255, 255, 255, 255);
+            hexCode = hexCode.Replace("#", string.Empty);
+            if (hexCode.Length != 8) return Color.FromArgb(255, 255, 255, 255);
+            byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
+            byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
+            byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
+            byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
+            return Color.FromArgb(a, r, g, b);
         }
 
         public Movement Movement

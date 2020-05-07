@@ -406,10 +406,13 @@ You may not be connected to the Internet.</value>
   <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
     <value>Moon</value>
   </data>
+  <data name="accentTextBlock.Text" xml:space="preserve">
+    <value>Accent Color</value>
+  </data>
   <data name="chronographTipTextBlock.Text" xml:space="preserve">
-    <value>Tap the stopwatch button on the titlebar
-[Single tap] Start/Stop
-[Double tap] Reset</value>
+    <value>Tap the stopwatch button on the titlebar.
+- Single tap : START / STOP
+- Double tap : RESET</value>
   </data>
   <data name="titlebarTipPin.Text" xml:space="preserve">
     <value>Display window on top.</value>

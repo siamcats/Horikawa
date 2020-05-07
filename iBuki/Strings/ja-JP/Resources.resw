@@ -406,10 +406,13 @@
   <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
     <value>ムーン</value>
   </data>
+  <data name="accentTextBlock.Text" xml:space="preserve">
+    <value>アクセントカラー</value>
+  </data>
   <data name="chronographTipTextBlock.Text" xml:space="preserve">
     <value>タイトルバーのストップウォッチをタップします。
-[シングルタップ] スタート/ストップ
-[ダブルタップ] リセット</value>
+・シングルタップ：スタート/ストップ
+・ダブルタップ：リセット</value>
   </data>
   <data name="titlebarTipPin.Text" xml:space="preserve">
     <value>常に最前面に表示する。</value>

@@ -5,7 +5,9 @@
     xmlns:local="using:iBuki">
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="SystemAccentColor">#d98800</Color>
+            <!--<Color x:Key="SystemAccentColor">#d98800</Color>-->
+            <!--<SolidColorBrush x:Key="DefaultAccentColor" Color="{ThemeResource SystemAccentColor}"/>
+            <SolidColorBrush x:Key="MyAccentColor" Color="{ThemeResource SystemAccentColor}"/>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

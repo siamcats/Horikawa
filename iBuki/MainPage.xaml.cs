@@ -429,6 +429,7 @@ namespace iBuki
         {
             //設定パネル押したら再起動しますか？表示は消しとく
             restartLink.Visibility = Visibility.Collapsed;
+            restartLink2.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -1291,7 +1292,7 @@ namespace iBuki
             }
 
             //通信速度が遅いと、vmのライセンス情報に反映される前にconfigの読み込みが完了してしまうため、
-            //ライセンスが必要な設定（ムーンフェイズなど）が反映されない可能性がある
+            //ライセンスが必要な設定（ムーンフェイズなどが反映されない可能性がある
         }
 
         #endregion
@@ -1405,6 +1406,11 @@ namespace iBuki
         private void chronoButton_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             vm.stopwatch.Reset();
+        }
+
+        private void accentColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        {
+            restartLink2.Visibility = Visibility.Visible;
         }
 
         //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)

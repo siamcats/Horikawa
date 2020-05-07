@@ -154,6 +154,34 @@
                                                 IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
+                                    <!--アクセントカラー-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <TextBlock
+                                            x:Uid="accentTextBlock" Text="Accent Color"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Style="{StaticResource ColorButtonStyle}"
+                                                Background="{x:Bind vm.AppConfig.AccentColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                                Tapped="ColorButton_Tapped" >
+                                                <FlyoutBase.AttachedFlyout>
+                                                    <Flyout Placement="Right">
+                                                        <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                            <ColorPicker
+                                                                x:Name="accentColorPicker"
+                                                                IsColorChannelTextInputVisible="False"
+                                                                IsColorSliderVisible="True"
+                                                                Color="{x:Bind vm.AppConfig.AccentColor, Mode=TwoWay}" ColorChanged="accentColorPicker_ColorChanged"/>
+                                                        </Viewbox>
+                                                    </Flyout>
+                                                </FlyoutBase.AttachedFlyout>
+                                            </Button>
+                                            <HyperlinkButton
+                                                x:Uid="restartButton" Content="Restart App to Apply"
+                                                x:Name="restartLink2" Margin="10,0,0,0" Visibility="Collapsed"
+                                                Tapped="HyperlinkButton_Tapped"/>
+                                        </StackPanel>
+                                    </StackPanel>
                                     <!--スタートアップ-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
