@@ -429,8 +429,31 @@ namespace iBuki
         {
             //設定パネル押したら再起動しますか？表示は消しとく
             restartButton.Visibility = Visibility.Collapsed;
-            restartButton2.Visibility = Visibility.Collapsed;
+            switchTheme.Visibility = Visibility.Collapsed;
         }
+
+        #endregion
+
+        #region テーマ・アクセントカラーの制御
+
+        private void accentColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        {
+            //アクセントカラーの変更を反映するにはテーマの切り替えが必要
+            switchTheme.Visibility = Visibility.Visible;
+            Application.Current.Resources["SystemAccentColor"] = accentColorPicker.Color;
+        }
+
+        private void useSystemDefaultLink_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var scb = (SolidColorBrush)restoreSystemDefaultLink.Foreground;
+            vm.AppConfig.AccentColor = scb.Color;
+        }
+
+        private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            switchTheme.Visibility = Visibility.Collapsed;
+        }
+
 
         #endregion
 
@@ -1297,6 +1320,26 @@ namespace iBuki
 
         #endregion
 
+        #region クロノグラフの制御
+
+        private void chronoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (vm.stopwatch.IsRunning)
+            {
+                vm.stopwatch.Stop();
+            }
+            else
+            {
+                vm.stopwatch.Start();
+            }
+        }
+        private void chronoButton_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            vm.stopwatch.Reset();
+        }
+
+        #endregion
+
         #region 雑多なprivateメソッド
 
         /// <summary>
@@ -1391,34 +1434,6 @@ namespace iBuki
             vm.DesignConfig.BackgroundImageCoordinateX = 0;
             vm.DesignConfig.BackgroundImageCoordinateY = 0;
         }
-
-        private void chronoButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (vm.stopwatch.IsRunning)
-            {
-                vm.stopwatch.Stop();
-            }
-            else
-            {
-                vm.stopwatch.Start();
-            }
-        }
-        private void chronoButton_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
-        {
-            vm.stopwatch.Reset();
-        }
-
-        private void accentColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
-        {
-            restartButton2.Visibility = Visibility.Visible;
-        }
-
-        private void useSystemDefaultLink_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var scb = (SolidColorBrush)restoreSystemDefaultLink.Foreground;
-            vm.AppConfig.AccentColor = scb.Color;
-        }
-
         //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)
         //{
         //    backgroundImage.Height = backgroundImage.ActualHeight;

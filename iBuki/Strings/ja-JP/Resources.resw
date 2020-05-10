@@ -252,7 +252,7 @@
   <data name="templateTitle.Text" xml:space="preserve">
     <value>テンプレート</value>
   </data>
-  <data name="themeLabel.Text" xml:space="preserve">
+  <data name="themeTextBlock.Text" xml:space="preserve">
     <value>テーマ</value>
   </data>
   <data name="thicknessLabel.Text" xml:space="preserve">
@@ -420,7 +420,13 @@
   <data name="titlebarTipSettings.Text" xml:space="preserve">
     <value>設定メニューを開く。</value>
   </data>
-  <data name="restoreSystemDefaultLink.Content" xml:space="preserve">
-    <value>Windowsカラーに合わせる</value>
+  <data name="restoreSystemDefaultLink.Text" xml:space="preserve">
+    <value>Windowsのデフォルトカラーに戻します。</value>
+  </data>
+  <data name="switchThemeTextBlock.Text" xml:space="preserve">
+    <value>アクセントカラーはテーマを切り替えると反映されます。</value>
+  </data>
+  <data name="windowTextBlock.Text" xml:space="preserve">
+    <value>ウィンドウ</value>
   </data>
 </root>

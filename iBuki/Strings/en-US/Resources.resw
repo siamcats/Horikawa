@@ -252,8 +252,8 @@
   <data name="templateTitle.Text" xml:space="preserve">
     <value>Template</value>
   </data>
-  <data name="themeLabel.Text" xml:space="preserve">
-    <value>Window Theme</value>
+  <data name="themeTextBlock.Text" xml:space="preserve">
+    <value>Theme</value>
   </data>
   <data name="thicknessLabel.Text" xml:space="preserve">
     <value>Thickness</value>
@@ -420,7 +420,13 @@ You may not be connected to the Internet.</value>
   <data name="titlebarTipSettings.Text" xml:space="preserve">
     <value>Open settings menu.</value>
   </data>
-  <data name="restoreSystemDefaultLink.Content" xml:space="preserve">
+  <data name="restoreSystemDefaultLink.Text" xml:space="preserve">
     <value>Restore default color.</value>
+  </data>
+  <data name="switchThemeTextBlock.Text" xml:space="preserve">
+    <value>Switch the theme to apply accent color.</value>
+  </data>
+  <data name="windowTextBlock.Text" xml:space="preserve">
+    <value>Window</value>
   </data>
 </root>

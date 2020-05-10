@@ -113,9 +113,23 @@
                                     <!--アプリ設定-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
-                                        <TextBlock
-                                            Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="appConfigTextBlock" Text="App Config"/>
+                                        <Grid Height="Auto" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="appConfigTextBlock" Text="App Config"/>
+                                            <Button Grid.Column="1"
+                                                Style="{ThemeResource TextBlockButtonStyle}" Padding="0"
+                                                x:Name="restartButton" Tapped="RestartButton_Tapped">
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;"/>
+                                            </Button>
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock x:Uid="restartTextBlock" Text="Restart app to apply."/>
+                                            </ToolTipService.ToolTip>
+                                        </Grid>
                                     </StackPanel>
                                     <!--言語-->
                                     <StackPanel
@@ -123,46 +137,73 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Grid.Column="0"
                                                 x:Uid="languageLabel" Text="Language" />
-                                            <StackPanel HorizontalAlignment="Right" Grid.Column="1">
-                                                <Button
-                                                    Style="{ThemeResource TextBlockButtonStyle}" Padding="0"
-                                                    x:Name="restartButton" Visibility="Collapsed" Tapped="RestartButton_Tapped">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" FontSize="13" Margin="10,2,2,0"/>
-                                                        <TextBlock x:Uid="restartTextBlock" Text="Restart app to apply."/>
-                                                    </StackPanel>
-                                                </Button>
-                                            </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox
-                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
+                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,0"
                                                 ItemsSource="{x:Bind vm.LanguageList}"
                                                 SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
                                                 SelectionChanged="LanguageComboBox_SelectionChanged" />
-                                            <HyperlinkButton
-                                                x:Uid="restartButton" Content="Restart App to Apply"
-                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <!--ウィンドウテーマ-->
+                                    <!--スタートアップ-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <TextBlock
-                                            x:Uid="themeLabel" Text="Window Theme"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Uid="startUpToggle" Header="StartUp"
+                                                x:Name="startupToggle" OffContent="Off" OnContent="On"
+                                                Toggled="StartupToggle_Toggled"/>
+                                            <HyperlinkButton
+                                                x:Uid="openSettingButton" Content="Open Settings"
+                                                NavigateUri="ms-settings:startupapps" Margin="0,15,0,0"
+                                                Visibility="{x:Bind startupToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
+                                                <ToolTipService.ToolTip>
+                                                    <TextBlock x:Uid="openSettingTextBlock" Text="If disabled, change it from the Windows settings panel."/>
+                                                </ToolTipService.ToolTip>
+                                            </HyperlinkButton>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--ウィンドウ-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <Grid Height="Auto" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="windowTextBlock" Text="Window"/>
+                                            <StackPanel Grid.Column="1"
+                                                x:Name="switchTheme">
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF1CB;" Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock x:Uid="switchThemeTextBlock" Text="Switch the theme to apply accent color."/>
+                                            </ToolTipService.ToolTip>
+                                        </Grid>
+                                    </StackPanel>
+                                    <!--テーマ-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Vertical">
-                                            <RadioButton
-                                                GroupName="theme"
-                                                x:Uid="defaultButton" Content="Default"
-                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Default, Mode=TwoWay}"/>
-                                            <RadioButton
-                                                GroupName="theme"
-                                                x:Uid="darkButton" Content="Dark"
-                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
-                                            <RadioButton
-                                                GroupName="theme"
-                                                x:Uid="lightButton" Content="Light"
-                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
+                                            <TextBlock Grid.Column="0"
+                                                x:Uid="themeTextBlock" Text="Theme" Margin="0,0,0,2"/>
+                                            <StackPanel Orientation="Vertical">
+                                                <RadioButton
+                                                    GroupName="theme"
+                                                    x:Uid="defaultButton" Content="Default" Checked="ThemeRadioButton_Checked"
+                                                    IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Default, Mode=TwoWay}"/>
+                                                <RadioButton
+                                                    GroupName="theme"
+                                                    x:Uid="darkButton" Content="Dark" Checked="ThemeRadioButton_Checked"
+                                                    IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
+                                                <RadioButton
+                                                    GroupName="theme"
+                                                    x:Uid="lightButton" Content="Light" Checked="ThemeRadioButton_Checked"
+                                                    IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--アクセントカラー-->
@@ -172,14 +213,6 @@
                                             <TextBlock Grid.Column="0"
                                                 x:Uid="accentTextBlock" Text="Accent Color" Margin="0,0,0,2"/>
                                             <StackPanel HorizontalAlignment="Right" Grid.Column="1">
-                                                <Button
-                                                    Style="{ThemeResource TextBlockButtonStyle}" Padding="0"
-                                                    x:Name="restartButton2" Visibility="Collapsed" Tapped="RestartButton_Tapped">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" FontSize="13" Margin="10,2,2,0"/>
-                                                        <TextBlock x:Uid="restartTextBlock" Text="Restart app to apply."/>
-                                                    </StackPanel>
-                                                </Button>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
@@ -200,28 +233,15 @@
                                                 </FlyoutBase.AttachedFlyout>
                                             </Button>
                                             <HyperlinkButton
-                                                x:Uid="restoreSystemDefaultLink" x:Name="restoreSystemDefaultLink"
-                                                Content="Restore default color." Tapped="useSystemDefaultLink_Tapped"
+                                                x:Name="restoreSystemDefaultLink"
+                                                Tapped="useSystemDefaultLink_Tapped"
                                                 Margin="10,0,0,0"
-                                                Foreground="{StaticResource DefaultAccentColor}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--スタートアップ-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingWhitePanelStyle}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <ToggleSwitch 
-                                                x:Uid="startUpToggle" Header="StartUp"
-                                                x:Name="startupToggle" OffContent="Off" OnContent="On"
-                                                Toggled="StartupToggle_Toggled"/>
-                                            <HyperlinkButton
-                                                x:Uid="openSettingButton" Content="Open Settings"
-                                                NavigateUri="ms-settings:startupapps" Margin="0,15,0,0"
-                                                Visibility="{x:Bind startupToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
-                                                <ToolTipService.ToolTip>
-                                                    <TextBlock x:Uid="openSettingTextBlock" Text="If disabled, change it from the Windows settings panel."/>
-                                                </ToolTipService.ToolTip>
+                                                Foreground="{StaticResource DefaultAccentColor}">
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7A7;"/>
                                             </HyperlinkButton>
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock x:Uid="restoreSystemDefaultLink"/>
+                                            </ToolTipService.ToolTip>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--時計の設定-->
