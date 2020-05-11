@@ -423,10 +423,34 @@ You may not be connected to the Internet.</value>
   <data name="restoreSystemDefaultLink.Text" xml:space="preserve">
     <value>Restore default color.</value>
   </data>
+  <data name="backgroundImageToggle.Header" xml:space="preserve">
+    <value>Background Image</value>
+  </data>
+  <data name="handImageToggle.Header" xml:space="preserve">
+    <value>Hand Image</value>
+  </data>
+  <data name="SubDialEnumSecond" xml:space="preserve">
+    <value>Second</value>
+  </data>
+  <data name="SubDialEnumTotalizer12H" xml:space="preserve">
+    <value>12 hour Totalizer</value>
+  </data>
+  <data name="SubDialEnumTotalizer30M" xml:space="preserve">
+    <value>30 minutes Totalizer</value>
+  </data>
+  <data name="subDialSecondTextBlock.Text" xml:space="preserve">
+    <value>Seconds Subdial</value>
+  </data>
   <data name="switchThemeTextBlock.Text" xml:space="preserve">
     <value>Switch the theme to apply accent color.</value>
   </data>
   <data name="windowTextBlock.Text" xml:space="preserve">
     <value>Window</value>
+  </data>
+  <data name="subDialTotalizer12hTextBlock.Text" xml:space="preserve">
+    <value>Totalizer Subdial - 12 hours</value>
+  </data>
+  <data name="subDialTotalizer30mTextBlock.Text" xml:space="preserve">
+    <value>Totalizer Subdial - 30 minuts</value>
   </data>
 </root>

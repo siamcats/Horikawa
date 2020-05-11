@@ -423,10 +423,34 @@
   <data name="restoreSystemDefaultLink.Text" xml:space="preserve">
     <value>Windowsのデフォルトカラーに戻します。</value>
   </data>
+  <data name="backgroundImageToggle.Header" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="handImageToggle.Header" xml:space="preserve">
+    <value>メーター針</value>
+  </data>
+  <data name="SubDialEnumSecond" xml:space="preserve">
+    <value>スモールセコンド</value>
+  </data>
+  <data name="SubDialEnumTotalizer12H" xml:space="preserve">
+    <value>12時間積算計</value>
+  </data>
+  <data name="SubDialEnumTotalizer30M" xml:space="preserve">
+    <value>30分積算計</value>
+  </data>
+  <data name="subDialSecondTextBlock.Text" xml:space="preserve">
+    <value>スモールセコンド</value>
+  </data>
   <data name="switchThemeTextBlock.Text" xml:space="preserve">
     <value>アクセントカラーはテーマを切り替えると反映されます。</value>
   </data>
   <data name="windowTextBlock.Text" xml:space="preserve">
     <value>ウィンドウ</value>
+  </data>
+  <data name="subDialTotalizer12hTextBlock.Text" xml:space="preserve">
+    <value>12時間積算計</value>
+  </data>
+  <data name="subDialTotalizer30mTextBlock.Text" xml:space="preserve">
+    <value>30分積算計</value>
   </data>
 </root>

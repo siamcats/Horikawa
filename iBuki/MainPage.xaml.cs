@@ -238,6 +238,133 @@ namespace iBuki
         }
 
         /// <summary>
+        ///（イベント）ダイアル画像取り込みボタン
+        /// </summary>
+        private async void SubDialSecondBackgroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_SECOND_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialSecondBackgroundImage = bitmap;
+            }
+        }
+
+        private async void SubDialSecondHandImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_SECOND_HAND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialSecondHandImage = bitmap;
+            }
+        }
+        private async void SubDialTotalizer12hBackgroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_12H_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer12hBackgroundImage = bitmap;
+            }
+        }
+
+        private async void SubDialTotalizer12hHandImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_12H_HAND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer12hHandImage = bitmap;
+            }
+        }
+        private async void SubDialTotalizer30mBackgroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_30M_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer30mBackgroundImage = bitmap;
+            }
+        }
+
+        private async void SubDialTotalizer30mHandImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_30M_HAND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer30mHandImage = bitmap;
+            }
+        }
+
+        /// <summary>
         /// （イベント）カラー選択ボタン
         /// </summary>
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -273,6 +400,13 @@ namespace iBuki
             secondHandAngle.Angle = CalcAngleSecond(localDate);
             dateDisplay.Text = CalcDate(localDate); //デイトは秒表示もできるから日替わり処理じゃなくてここでする
 
+
+            if (vm.DesignConfig.IsChronographDisplay)
+            {
+                subDial1.TimeSpan = vm.stopwatch.Elapsed;
+                subDial2.TimeSpan = vm.stopwatch.Elapsed;
+                subDial3.DateTime = localDate;
+            }
             // 退避日と日付が異なれば日替わり処理を起こす
             if (beforeDate == defaultDate || localDate.Date != beforeDate.Date)
             {

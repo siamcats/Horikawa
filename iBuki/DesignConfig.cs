@@ -794,6 +794,399 @@ namespace iBuki
                 if (value == _isChronographDisplay) return;
                 _isChronographDisplay = value;
                 OnPropertyChanged();
+                OnPropertyChanged("SubDialSecondVisibility");
+                OnPropertyChanged("SubDialTotalizer30mVisibility");
+                OnPropertyChanged("SubDialTotalizer12hVisibility");
+            }
+        }
+
+        private bool _isSubDialSecondDisplay = false;
+        public bool IsSubDialSecondDisplay
+        {
+            get { return _isSubDialSecondDisplay; }
+            set
+            {
+                if (value == _isSubDialSecondDisplay) return;
+                _isSubDialSecondDisplay = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SubDialSecondVisibility");
+            }
+        }
+
+        //クロノグラフONかつインダイアルONなら表示する
+        public Visibility SubDialSecondVisibility
+        {
+            get
+            {
+                if (IsChronographDisplay == true && IsSubDialSecondDisplay == true)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
+
+        private double _subDialSecondSize = 100;
+        public double SubDialSecondSize
+        {
+            get { return _subDialSecondSize; }
+            set
+            {
+                if (value == _subDialSecondSize) return;
+                _subDialSecondSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _subDialSecondCoordinateX = 0;
+        public double SubDialSecondCoordinateX
+        {
+            get { return _subDialSecondCoordinateX; }
+            set
+            {
+                if (value == _subDialSecondCoordinateX) return;
+                var coordinate = new Thickness(value, SubDialSecondCoordinate.Top, value * -1, SubDialSecondCoordinate.Bottom);
+                SubDialSecondCoordinate = coordinate;
+                _subDialSecondCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _subDialSecondCoordinateY = 0;
+        public double SubDialSecondCoordinateY
+        {
+            get { return _subDialSecondCoordinateY; }
+            set
+            {
+                if (value == _subDialSecondCoordinateY) return;
+                var coordinate = new Thickness(SubDialSecondCoordinate.Left, value * -1, SubDialSecondCoordinate.Right, value);
+                SubDialSecondCoordinate = coordinate;
+                _subDialSecondCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _subDialSecondCoordinate = new Thickness(0, 0, 0, 0);
+        public Thickness SubDialSecondCoordinate
+        {
+            get => _subDialSecondCoordinate;
+            set
+            {
+                if (value == _subDialSecondCoordinate) return;
+                _subDialSecondCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialSecondBackgroundImageDisplay = false;
+        public bool IsSubDialSecondBackgroundImageDisplay
+        {
+            get { return _isSubDialSecondBackgroundImageDisplay; }
+            set
+            {
+                if (value == _isSubDialSecondBackgroundImageDisplay) return;
+                _isSubDialSecondBackgroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _subDialSecondBackgroundImage;
+        public BitmapImage SubDialSecondBackgroundImage
+        {
+            get { return _subDialSecondBackgroundImage; }
+            set
+            {
+                if (value == _subDialSecondBackgroundImage) return;
+                _subDialSecondBackgroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialSecondHandImageDisplay = false;
+        public bool IsSubDialSecondHandImageDisplay
+        {
+            get { return _isSubDialSecondHandImageDisplay; }
+            set
+            {
+                if (value == _isSubDialSecondHandImageDisplay) return;
+                _isSubDialSecondHandImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _subDialSecondHandImage;
+        public BitmapImage SubDialSecondHandImage
+        {
+            get { return _subDialSecondHandImage; }
+            set
+            {
+                if (value == _subDialSecondHandImage) return;
+                _subDialSecondHandImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialTotalizer30mDisplay = false;
+        public bool IsSubDialTotalizer30mDisplay
+        {
+            get { return _isSubDialTotalizer30mDisplay; }
+            set
+            {
+                if (value == _isSubDialTotalizer30mDisplay) return;
+                _isSubDialTotalizer30mDisplay = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SubDialTotalizer30mVisibility");
+            }
+        }
+
+        //クロノグラフONかつインダイアルONなら表示する
+        public Visibility SubDialTotalizer30mVisibility
+        {
+            get
+            {
+                if (IsChronographDisplay == true && IsSubDialTotalizer30mDisplay == true)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
+
+        private double _subDialTotalizer30mSize = 100;
+        public double SubDialTotalizer30mSize
+        {
+            get { return _subDialTotalizer30mSize; }
+            set
+            {
+                if (value == _subDialTotalizer30mSize) return;
+                _subDialTotalizer30mSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _subDialTotalizer30mCoordinateX = 0;
+        public double SubDialTotalizer30mCoordinateX
+        {
+            get { return _subDialTotalizer30mCoordinateX; }
+            set
+            {
+                if (value == _subDialTotalizer30mCoordinateX) return;
+                var coordinate = new Thickness(value, SubDialTotalizer30mCoordinate.Top, value * -1, SubDialTotalizer30mCoordinate.Bottom);
+                SubDialTotalizer30mCoordinate = coordinate;
+                _subDialTotalizer30mCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _subDialTotalizer30mCoordinateY = 0;
+        public double SubDialTotalizer30mCoordinateY
+        {
+            get { return _subDialTotalizer30mCoordinateY; }
+            set
+            {
+                if (value == _subDialTotalizer30mCoordinateY) return;
+                var coordinate = new Thickness(SubDialTotalizer30mCoordinate.Left, value * -1, SubDialTotalizer30mCoordinate.Right, value);
+                SubDialTotalizer30mCoordinate = coordinate;
+                _subDialTotalizer30mCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _subDialTotalizer30mCoordinate = new Thickness(0, 0, 0, 0);
+        public Thickness SubDialTotalizer30mCoordinate
+        {
+            get => _subDialTotalizer30mCoordinate;
+            set
+            {
+                if (value == _subDialTotalizer30mCoordinate) return;
+                _subDialTotalizer30mCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialTotalizer30mBackgroundImageDisplay = false;
+        public bool IsSubDialTotalizer30mBackgroundImageDisplay
+        {
+            get { return _isSubDialTotalizer30mBackgroundImageDisplay; }
+            set
+            {
+                if (value == _isSubDialTotalizer30mBackgroundImageDisplay) return;
+                _isSubDialTotalizer30mBackgroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _subDialTotalizer30mBackgroundImage;
+        public BitmapImage SubDialTotalizer30mBackgroundImage
+        {
+            get { return _subDialTotalizer30mBackgroundImage; }
+            set
+            {
+                if (value == _subDialTotalizer30mBackgroundImage) return;
+                _subDialTotalizer30mBackgroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialTotalizer30mHandImageDisplay = false;
+        public bool IsSubDialTotalizer30mHandImageDisplay
+        {
+            get { return _isSubDialTotalizer30mHandImageDisplay; }
+            set
+            {
+                if (value == _isSubDialTotalizer30mHandImageDisplay) return;
+                _isSubDialTotalizer30mHandImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _subDialTotalizer30mHandImage;
+        public BitmapImage SubDialTotalizer30mHandImage
+        {
+            get { return _subDialTotalizer30mHandImage; }
+            set
+            {
+                if (value == _subDialTotalizer30mHandImage) return;
+                _subDialTotalizer30mHandImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialTotalizer12hDisplay = false;
+        public bool IsSubDialTotalizer12hDisplay
+        {
+            get { return _isSubDialTotalizer12hDisplay; }
+            set
+            {
+                if (value == _isSubDialTotalizer12hDisplay) return;
+                _isSubDialTotalizer12hDisplay = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SubDialTotalizer12hVisibility");
+            }
+        }
+
+        //クロノグラフONかつインダイアルONなら表示する
+        public Visibility SubDialTotalizer12hVisibility
+        {
+            get
+            {
+                if (IsChronographDisplay == true && IsSubDialTotalizer12hDisplay == true)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
+
+        private double _subDialTotalizer12hSize = 100;
+        public double SubDialTotalizer12hSize
+        {
+            get { return _subDialTotalizer12hSize; }
+            set
+            {
+                if (value == _subDialTotalizer12hSize) return;
+                _subDialTotalizer12hSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _subDialTotalizer12hCoordinateX = 0;
+        public double SubDialTotalizer12hCoordinateX
+        {
+            get { return _subDialTotalizer12hCoordinateX; }
+            set
+            {
+                if (value == _subDialTotalizer12hCoordinateX) return;
+                var coordinate = new Thickness(value, SubDialTotalizer12hCoordinate.Top, value * -1, SubDialTotalizer12hCoordinate.Bottom);
+                SubDialTotalizer12hCoordinate = coordinate;
+                _subDialTotalizer12hCoordinateX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _subDialTotalizer12hCoordinateY = 0;
+        public double SubDialTotalizer12hCoordinateY
+        {
+            get { return _subDialTotalizer12hCoordinateY; }
+            set
+            {
+                if (value == _subDialTotalizer12hCoordinateY) return;
+                var coordinate = new Thickness(SubDialTotalizer12hCoordinate.Left, value * -1, SubDialTotalizer12hCoordinate.Right, value);
+                SubDialTotalizer12hCoordinate = coordinate;
+                _subDialTotalizer12hCoordinateY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // CoordinateのX,Y値を、Thickness,Top,Right,Buttom値に変換する（Marginにバインドするため）
+        private Thickness _subDialTotalizer12hCoordinate = new Thickness(0, 0, 0, 0);
+        public Thickness SubDialTotalizer12hCoordinate
+        {
+            get => _subDialTotalizer12hCoordinate;
+            set
+            {
+                if (value == _subDialTotalizer12hCoordinate) return;
+                _subDialTotalizer12hCoordinate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialTotalizer12hBackgroundImageDisplay = false;
+        public bool IsSubDialTotalizer12hBackgroundImageDisplay
+        {
+            get { return _isSubDialTotalizer12hBackgroundImageDisplay; }
+            set
+            {
+                if (value == _isSubDialTotalizer12hBackgroundImageDisplay) return;
+                _isSubDialTotalizer12hBackgroundImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _subDialTotalizer12hBackgroundImage;
+        public BitmapImage SubDialTotalizer12hBackgroundImage
+        {
+            get { return _subDialTotalizer12hBackgroundImage; }
+            set
+            {
+                if (value == _subDialTotalizer12hBackgroundImage) return;
+                _subDialTotalizer12hBackgroundImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSubDialTotalizer12hHandImageDisplay = false;
+        public bool IsSubDialTotalizer12hHandImageDisplay
+        {
+            get { return _isSubDialTotalizer12hHandImageDisplay; }
+            set
+            {
+                if (value == _isSubDialTotalizer12hHandImageDisplay) return;
+                _isSubDialTotalizer12hHandImageDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage _subDialTotalizer12hHandImage;
+        public BitmapImage SubDialTotalizer12hHandImage
+        {
+            get { return _subDialTotalizer12hHandImage; }
+            set
+            {
+                if (value == _subDialTotalizer12hHandImage) return;
+                _subDialTotalizer12hHandImage = value;
+                OnPropertyChanged();
             }
         }
 

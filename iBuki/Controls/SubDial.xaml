@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="iBuki.SubDial"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:iBuki"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="parent"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="300">
+
+    <Viewbox
+        Stretch="UniformToFill" Height="{x:Bind parent.Height,Mode=OneWay}" Width="{x:Bind parent.Width,Mode=OneWay}">
+        <Canvas
+            x:Name="canvas" Height="300" Width="300">
+            <Image
+                x:Name="background" Height="{x:Bind canvas.Height,Mode=OneWay}" Width="{x:Bind canvas.Width,Mode=OneWay}"
+                Source="ms-appx:///Assets/SubDial/SubDialBackground.png">
+            </Image>
+            <!--時針-->
+            <Image
+                x:Name="hand" Height="{x:Bind canvas.Height,Mode=OneWay}" Width="{x:Bind canvas.Width,Mode=OneWay}"
+                Source="ms-appx:///Assets/SubDial/SubDialHand.png"
+                RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <CompositeTransform
+                        x:Name="angle" Rotation="60"/>
+                </Image.RenderTransform>
+            </Image>
+        </Canvas>
+    </Viewbox>
+</UserControl>

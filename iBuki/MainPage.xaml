@@ -1542,27 +1542,392 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <!--On/Off-->
-                                    <StackPanel>
-                                        <StackPanel
-                                            Style="{StaticResource SettingTitlePanelStyle}">
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="chronographTextBlock" Text="Chronograph"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Uid="chronographToggle"
+                                                x:Name="chronographToggle" 
+                                                OffContent="Off" OnContent="On"
+                                                IsEnabled="{x:Bind vm.AppConfig.IsLicensedChronograph,Mode=OneWay}"
+                                                IsOn="{x:Bind vm.DesignConfig.IsChronographDisplay,Mode=TwoWay}"/>
+                                            <TextBlock
+                                                x:Uid="licenseRequiredTextBlock" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--ライセンス無しなら以降は全部見せない-->
+                                    <StackPanel Visibility="{x:Bind vm.AppConfig.IsLicensedChronograph,Mode=OneWay}">
+                                        <!--スモールセコンド On/Off-->
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
                                             <TextBlock
                                                 Style="{StaticResource SettingTitleTextBlockStyle}"
-                                                x:Uid="chronographTextBlock" Text="Chronograph"/>
+                                                x:Uid="subDialSecondTextBlock" Text="Seconds Subdial"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <ToggleSwitch 
-                                                    x:Uid="chronographToggle"
-                                                    x:Name="chronographToggle" 
+                                                    x:Uid="subDialSecondToggle" x:Name="subDialSecondToggle" 
                                                     OffContent="Off" OnContent="On"
-                                                    IsEnabled="{x:Bind vm.AppConfig.IsLicensedChronograph,Mode=OneWay}"
-                                                    IsOn="{x:Bind vm.DesignConfig.IsChronographDisplay,Mode=TwoWay}" />
-                                                <TextBlock
-                                                    x:Uid="licenseRequiredTextBlock" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
-                                                    Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                                    IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondDisplay,Mode=TwoWay}" />
                                             </StackPanel>
-                                            <StackPanel>
+                                        </StackPanel>
+                                        <!--インダイヤルOFFなら以降は全部見せない-->
+                                        <StackPanel Visibility="{x:Bind subDialSecondToggle.IsOn, Mode=OneWay}">
+                                            <!--Size-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
                                                 <TextBlock
-                                                    x:Uid="chronographTipTextBlock" Text="Tap the stapwatch button on the titlebar. &#10;[Single tap] Start/Stop &#10;[Double tap] Reset"
-                                                    Visibility="{x:Bind chronographToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                    x:Uid="sizeLabel" Text="Size"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider
+                                                        Style="{StaticResource SliderStyle}"
+                                                        x:Name="subDialSecondSizeSlider"
+                                                        Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialSecondSize,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialSecondSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--座標-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">    
+                                                <TextBlock
+                                                    x:Uid="coordinateLabel" Text="Coordinate"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                                    <Slider
+                                                        x:Name="subDialSecondXSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialSecondCoordinateX,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialSecondXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                                    <Slider
+                                                        x:Name="subDialSecondYSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialSecondCoordinateY,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialSecondYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--背景画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="backgroundImageToggle" Header="Background Image"
+                                                            x:Name="subDialSecondBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondBackgroundImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialSecondBackgroundTipTextBlock" Text="When using custom background images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialSecondBackgroundImagePicker" Tapped="SubDialSecondBackgroundImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialSecondBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialSecondBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialSecondBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialSecondBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--針画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="handImageToggle" Header="Hand Image"
+                                                            x:Name="subDialSecondHandImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondHandImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialSecondTipTextBlock" Text="When using custom lunar images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialSecondHandImagePicker" Tapped="SubDialSecondHandImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialSecondHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialSecondHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialSecondBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialSecondHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--30分積算計On/Off-->
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="subDialTotalizer30mTextBlock" Text="Totalizer Subdial - 30 minits"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="subDialTotalizer30mToggle" x:Name="subDialTotalizer30mToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mDisplay,Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--インダイヤルOFFなら以降は全部見せない-->
+                                        <StackPanel Visibility="{x:Bind subDialTotalizer30mToggle.IsOn, Mode=OneWay}">
+                                            <!--Size-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="sizeLabel" Text="Size"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider
+                                                        Style="{StaticResource SliderStyle}"
+                                                        x:Name="subDialTotalizer30mSizeSlider"
+                                                        Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer30mSize,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer30mSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--座標-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="coordinateLabel" Text="Coordinate"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer30mXSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer30mCoordinateX,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer30mXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer30mYSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer30mCoordinateY,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer30mYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--背景画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="backgroundImageToggle" Header="Background Image"
+                                                            x:Name="subDialTotalizer30mBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer30mBackgroundTipTextBlock" Text="When using custom background images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer30mBackgroundImagePicker" Tapped="SubDialTotalizer30mBackgroundImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer30mBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer30mBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer30mBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer30mBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--針画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="handImageToggle" Header="Hand Image"
+                                                            x:Name="subDialTotalizer30mHandImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mHandImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer30mTipTextBlock" Text="When using custom lunar images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer30mHandImagePicker" Tapped="SubDialTotalizer30mHandImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer30mHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer30mHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer30mBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer30mHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--12時間積算計On/Off-->
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="subDialTotalizer12hTextBlock" Text="Totalizer Subdial - 12 hours"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="subDialTotalizer12hToggle" x:Name="subDialTotalizer12hToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hDisplay,Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--インダイヤルOFFなら以降は全部見せない-->
+                                        <StackPanel Visibility="{x:Bind subDialTotalizer12hToggle.IsOn, Mode=OneWay}">
+                                            <!--Size-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="sizeLabel" Text="Size"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider
+                                                        Style="{StaticResource SliderStyle}"
+                                                        x:Name="subDialTotalizer12hSizeSlider"
+                                                        Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer12hSize,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer12hSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--座標-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="coordinateLabel" Text="Coordinate"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer12hXSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer12hCoordinateX,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer12hXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer12hYSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer12hCoordinateY,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer12hYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--背景画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="backgroundImageToggle" Header="Background Image"
+                                                            x:Name="subDialTotalizer12hBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer12hBackgroundTipTextBlock" Text="When using custom background images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer12hBackgroundImagePicker" Tapped="SubDialTotalizer12hBackgroundImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer12hBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer12hBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer12hBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer12hBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--針画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="handImageToggle" Header="Hand Image"
+                                                            x:Name="subDialTotalizer12hHandImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hHandImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer12hTipTextBlock" Text="When using custom lunar images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer12hHandImagePicker" Tapped="SubDialTotalizer12hHandImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer12hHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialTotalizer12hHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer12hBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer12hHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
@@ -1767,20 +2132,6 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Stretch="{x:Bind vm.SelectedBackgroundImageStretch,Mode=OneWay}"/>
-                    <!--ムーンフェーズ-->
-                    <local:MoonPhase
-                        x:Name="moonPhase"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
-                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
-                        Margin="{x:Bind vm.DesignConfig.MoonPhaseCoordinate,Mode=OneWay}"
-                        Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
-                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay,Mode=OneWay}"
-                        BackgroundImage="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
-                        IsForegroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay,Mode=OneWay}"
-                        ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
-                        >
-                    </local:MoonPhase>
                     <!-- 文字盤 -->
                     <local:CircleScale
                         x:Name="dialScale"
@@ -1816,6 +2167,63 @@
                         FontSize="{x:Bind vm.DesignConfig.IndexFontSize,Mode=OneWay}"
                         FontFamily="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=OneWay}"
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
+                    <!--ムーンフェーズ-->
+                    <local:MoonPhase
+                        x:Name="moonPhase"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.MoonPhaseCoordinate,Mode=OneWay}"
+                        Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
+                        IsForegroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay,Mode=OneWay}"
+                        ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
+                        >
+                    </local:MoonPhase>
+                    <!--クロノグラフ-->
+                    <!--30分積算計-->
+                    <local:SubDial
+                        x:Name="subDial1"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Type="Totalizer30Minuts"
+                        Movement="{x:Bind vm.AppConfig.Movement,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.SubDialTotalizer30mVisibility,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.SubDialTotalizer30mSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.SubDialTotalizer30mSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.SubDialTotalizer30mCoordinate,Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.SubDialTotalizer30mBackgroundImage,Mode=OneWay}"
+                        IsHandImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mHandImageDisplay,Mode=OneWay}"
+                        HandImage="{x:Bind vm.DesignConfig.SubDialTotalizer30mHandImage,Mode=OneWay}"
+                        >
+                    </local:SubDial>
+                    <!--12時間積算計-->
+                    <local:SubDial
+                        x:Name="subDial2"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Type="Totalizer12Hours"
+                        Movement="{x:Bind vm.AppConfig.Movement,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.SubDialTotalizer12hVisibility,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.SubDialTotalizer12hSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.SubDialTotalizer12hSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.SubDialTotalizer12hCoordinate,Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.SubDialTotalizer12hBackgroundImage,Mode=OneWay}"
+                        IsHandImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hHandImageDisplay,Mode=OneWay}"
+                        HandImage="{x:Bind vm.DesignConfig.SubDialTotalizer12hHandImage,Mode=OneWay}"
+                        >
+                    </local:SubDial>
+                    <!--スモールセコンド-->
+                    <local:SubDial
+                        x:Name="subDial3"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Type="Seconds"
+                        Movement="{x:Bind vm.AppConfig.Movement,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.SubDialSecondVisibility,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.SubDialSecondSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.SubDialSecondSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.SubDialSecondCoordinate,Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsSubDialSecondBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.SubDialSecondBackgroundImage,Mode=OneWay}"
+                        IsHandImageDisplay="{x:Bind vm.DesignConfig.IsSubDialSecondHandImageDisplay,Mode=OneWay}"
+                        HandImage="{x:Bind vm.DesignConfig.SubDialSecondHandImage,Mode=OneWay}"
+                    >
+                    </local:SubDial>
                     <!-- デイト -->
                     <Border
                         HorizontalAlignment="Center" VerticalAlignment="Center"

@@ -57,6 +57,16 @@ namespace iBuki
         UniformToFill
     }
 
+    public enum SubDialType
+    {
+        [LocalizeName("SubDialEnumSecond")]
+        Seconds,
+        [LocalizeName("SubDialEnumTotalizer30M")]
+        Totalizer30Minuts,
+        [LocalizeName("SubDialEnumTotalizer12H")]
+        Totalizer12Hours
+    }
+
     [AttributeUsage(AttributeTargets.Field)]
     public class LocalizeNameAttribute : Attribute
     {

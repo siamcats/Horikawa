@@ -58,54 +58,6 @@ namespace iBuki
 
         #region License
 
-        //private bool _isLicensedDayDate = false;
-        //public bool IsLicensedDayDate
-        //{
-        //    get => _isLicensedDayDate;
-        //    set
-        //    {
-        //        if (value == _isLicensedDayDate) return;
-        //        _isLicensedDayDate = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //private bool _isLicensedMoonPhase = false;
-        //public bool IsLicensedMoonPhase
-        //{
-        //    get => _isLicensedMoonPhase;
-        //    set
-        //    {
-        //        if (value == _isLicensedMoonPhase) return;
-        //        _isLicensedMoonPhase = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //private bool _isLicensedPowerReserve = false;
-        //public bool IsLicensedPowerReserve
-        //{
-        //    get => _isLicensedPowerReserve;
-        //    set
-        //    {
-        //        if (value == _isLicensedPowerReserve) return;
-        //        _isLicensedPowerReserve = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //private bool _isLicensedChronograph = false;
-        //public bool IsLicensedChronograph
-        //{
-        //    get => _isLicensedChronograph;
-        //    set
-        //    {
-        //        if (value == _isLicensedChronograph) return;
-        //        _isLicensedChronograph = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
         public void SetLicense(string storeId)
         {
             //SkuStoreIdは末尾に余分な文字列があるため曖昧比較する
@@ -126,6 +78,7 @@ namespace iBuki
                 AppConfig.IsLicensedChronograph = true;
             }
             AppConfig.IsLicensedChronograph = true;
+            AppConfig.IsLicensedMoonPhase = true;
         }
 
         #endregion
@@ -303,6 +256,128 @@ namespace iBuki
                 if (!AppConfig.IsLicensedChronograph) settings.ChronographDisplay = false;
             }
             DesignConfig.IsChronographDisplay = settings.ChronographDisplay;
+            DesignConfig.IsSubDialSecondDisplay = settings.SubDialSecondDisplay;
+            DesignConfig.SubDialSecondCoordinateX = settings.SubDialSecondCoordinateX;
+            DesignConfig.SubDialSecondCoordinateY = settings.SubDialSecondCoordinateY;
+            DesignConfig.SubDialSecondSize = settings.SubDialSecondSize;
+            DesignConfig.IsSubDialSecondBackgroundImageDisplay = settings.SubDialSecondBackgroundImageDisplay;
+            if (DesignConfig.IsSubDialSecondBackgroundImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_SUBDIAL_SECOND_BACKGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.SubDialSecondBackgroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_SUBDIAL_SECOND_BACKGROUND + " Not Found");
+                }
+            }
+            DesignConfig.IsSubDialSecondHandImageDisplay = settings.SubDialSecondHandImageDisplay;
+            if (DesignConfig.IsSubDialSecondHandImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_SUBDIAL_SECOND_HAND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.SubDialSecondHandImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_SUBDIAL_SECOND_HAND + " Not Found");
+                }
+            }
+
+            DesignConfig.IsSubDialTotalizer30mDisplay = settings.SubDialTotalizer30mDisplay;
+            DesignConfig.SubDialTotalizer30mCoordinateX = settings.SubDialTotalizer30mCoordinateX;
+            DesignConfig.SubDialTotalizer30mCoordinateY = settings.SubDialTotalizer30mCoordinateY;
+            DesignConfig.SubDialTotalizer30mSize = settings.SubDialTotalizer30mSize;
+            DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay = settings.SubDialTotalizer30mBackgroundImageDisplay;
+            if (DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_SUBDIAL_30M_BACKGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.SubDialTotalizer30mBackgroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_SUBDIAL_30M_BACKGROUND + " Not Found");
+                }
+            }
+            DesignConfig.IsSubDialTotalizer30mHandImageDisplay = settings.SubDialTotalizer30mHandImageDisplay;
+            if (DesignConfig.IsSubDialTotalizer30mHandImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_SUBDIAL_30M_HAND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.SubDialTotalizer30mHandImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_SUBDIAL_30M_HAND + " Not Found");
+                }
+            }
+
+            DesignConfig.IsSubDialTotalizer12hDisplay = settings.SubDialTotalizer12hDisplay;
+            DesignConfig.SubDialTotalizer12hCoordinateX = settings.SubDialTotalizer12hCoordinateX;
+            DesignConfig.SubDialTotalizer12hCoordinateY = settings.SubDialTotalizer12hCoordinateY;
+            DesignConfig.SubDialTotalizer12hSize = settings.SubDialTotalizer12hSize;
+            DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay = settings.SubDialTotalizer12hBackgroundImageDisplay;
+            if (DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_SUBDIAL_12H_BACKGROUND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.SubDialTotalizer12hBackgroundImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_SUBDIAL_12H_BACKGROUND + " Not Found");
+                }
+            }
+            DesignConfig.IsSubDialTotalizer12hHandImageDisplay = settings.SubDialTotalizer12hHandImageDisplay;
+            if (DesignConfig.IsSubDialTotalizer12hHandImageDisplay)
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Const.URI_CURRENT_SUBDIAL_12H_HAND));
+                    using (var stream = await file.OpenReadAsync())
+                    {
+                        await bitmap.SetSourceAsync(stream);
+                    }
+                    DesignConfig.SubDialTotalizer12hHandImage = bitmap;
+                }
+                catch (FileNotFoundException)
+                {
+                    Debug.WriteLine(Const.URI_CURRENT_SUBDIAL_12H_HAND + " Not Found");
+                }
+            }
 
         }
 
@@ -412,7 +487,24 @@ namespace iBuki
             settings.ChronographDisplay = DesignConfig.IsChronographDisplay;
             if (DesignConfig.IsChronographDisplay)
             {
-
+                settings.SubDialSecondDisplay = DesignConfig.IsSubDialSecondDisplay;
+                settings.SubDialSecondSize = DesignConfig.SubDialSecondSize;
+                settings.SubDialSecondCoordinateX = DesignConfig.SubDialSecondCoordinateX;
+                settings.SubDialSecondCoordinateY = DesignConfig.SubDialSecondCoordinateY;
+                settings.SubDialSecondBackgroundImageDisplay = DesignConfig.IsSubDialSecondBackgroundImageDisplay;
+                settings.SubDialSecondHandImageDisplay = DesignConfig.IsSubDialSecondHandImageDisplay;
+                settings.SubDialTotalizer30mDisplay = DesignConfig.IsSubDialTotalizer30mDisplay;
+                settings.SubDialTotalizer30mSize = DesignConfig.SubDialTotalizer30mSize;
+                settings.SubDialTotalizer30mCoordinateX = DesignConfig.SubDialTotalizer30mCoordinateX;
+                settings.SubDialTotalizer30mCoordinateY = DesignConfig.SubDialTotalizer30mCoordinateY;
+                settings.SubDialTotalizer30mBackgroundImageDisplay = DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay;
+                settings.SubDialTotalizer30mHandImageDisplay = DesignConfig.IsSubDialTotalizer30mHandImageDisplay;
+                settings.SubDialTotalizer12hDisplay = DesignConfig.IsSubDialTotalizer12hDisplay;
+                settings.SubDialTotalizer12hSize = DesignConfig.SubDialTotalizer12hSize;
+                settings.SubDialTotalizer12hCoordinateX = DesignConfig.SubDialTotalizer12hCoordinateX;
+                settings.SubDialTotalizer12hCoordinateY = DesignConfig.SubDialTotalizer12hCoordinateY;
+                settings.SubDialTotalizer12hBackgroundImageDisplay = DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay;
+                settings.SubDialTotalizer12hHandImageDisplay = DesignConfig.IsSubDialTotalizer12hHandImageDisplay;
             }
 
             return settings;
@@ -432,7 +524,8 @@ namespace iBuki
 
         public string AppAuthor = Const.APP_AUTHOR;
 
-        public Uri AppLogo = Const.APP_LOGO;
+        //public Uri AppLogo = Const.APP_LOGO;
+        public Uri AppLogo = new Uri(Const.URI_ASSETS_MOONPHASE);
 
         #endregion
 
@@ -549,7 +642,7 @@ namespace iBuki
                 return Visibility.Collapsed;
             }
         }
-        
+
         #endregion
 
         #region Hands

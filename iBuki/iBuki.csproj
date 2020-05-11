@@ -130,6 +130,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppConfig.cs" />
+    <Compile Include="Controls\SubDial.xaml.cs">
+      <DependentUpon>SubDial.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MoonPhase.xaml.cs">
       <DependentUpon>MoonPhase.xaml</DependentUpon>
     </Compile>
@@ -194,6 +197,12 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\SubDIal\SubDial30mBackground.png" />
+    <Content Include="Assets\SubDIal\SubDial12hBackground.png" />
+    <Content Include="Assets\SubDIal\SubDial30mHand.png" />
+    <Content Include="Assets\SubDIal\SubDialSecondBackground.png" />
+    <Content Include="Assets\SubDIal\SubDial12hHand.png" />
+    <Content Include="Assets\SubDIal\SubDialSecondHand.png" />
     <Content Include="Assets\Templates\Japan Black\Thumbnail.png" />
     <Content Include="Assets\Templates\Lunar\Thumbnail.png" />
     <Content Include="Assets\Templates\Chronocci\Background.png" />
@@ -220,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\SubDial.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\MoonPhase.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
