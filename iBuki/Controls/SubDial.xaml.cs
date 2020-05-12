@@ -204,19 +204,20 @@ namespace iBuki
 
         private double CalcAngleSecond()
         {
-            var ss = DateTime.Second;
-            var fff = DateTime.Millisecond;
-            var angle = Movement == Movement.Quartz
+            decimal ss = DateTime.Second;
+            decimal fff = DateTime.Millisecond;
+            decimal angle = Movement == Movement.Quartz
                 ? 6 * ss
                 : 6 * ss + fff * 6 / 1000;
+            //Debug.WriteLine(angle);
             return decimal.ToDouble(angle);
         }
 
         private double CalcAngle30M()
         {
-            var mm = TimeSpan.Minutes;
-            var ss = TimeSpan.Seconds;
-            var fff = TimeSpan.Milliseconds;
+            decimal mm = TimeSpan.Minutes;
+            decimal ss = TimeSpan.Seconds;
+            decimal fff = TimeSpan.Milliseconds;
             decimal angle = Movement == Movement.Quartz
                 ? 12 * mm
                 : ss < 59
@@ -228,8 +229,8 @@ namespace iBuki
 
         private double CalcAngle12H()
         {
-            var hh = TimeSpan.Hours;
-            var mm = TimeSpan.Minutes;
+            decimal hh = TimeSpan.Hours;
+            decimal mm = TimeSpan.Minutes;
             decimal angle = Movement == Movement.Quartz
                 ? 30 * hh
                 : mm < 59

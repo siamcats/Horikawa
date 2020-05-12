@@ -26,5 +26,17 @@
   "SecondHandDisplay": true,
   "SecondHandColor": "#FF153555",
   "DateDisplay": false,
-  "ChronographDisplay": true
+  "ChronographDisplay": true,
+  "SubDialSecondDisplay": true,
+  "SubDialSecondSize": 156,
+  "SubDialSecondCoordinateX": 0,
+  "SubDialSecondCoordinateY": -98,
+  "SubDialSecondBackgoroundImageDisplay": false,
+  "SubDialSecondHandImageDisplay": false,
+  "SubDialTotalizer30mDisplay": true,
+  "SubDialTotalizer30mSize": 156,
+  "SubDialTotalizer30mCoordinateX": 0,
+  "SubDialTotalizer30mCoordinateY": 98,
+  "SubDialTotalizer30mBackgoroundImageDisplay": false,
+  "SubDialTotalizer30mHandImageDisplay": false
 }

@@ -52,7 +52,6 @@ namespace iBuki
             get
             {
                 var package = Package.Current;
-                var packageId = package.Id;
                 var logo = package.Logo;
                 return logo;
             }

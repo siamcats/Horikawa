@@ -77,8 +77,8 @@ namespace iBuki
             {
                 AppConfig.IsLicensedChronograph = true;
             }
-            AppConfig.IsLicensedChronograph = true;
-            AppConfig.IsLicensedMoonPhase = true;
+            //AppConfig.IsLicensedChronograph = false;
+            //AppConfig.IsLicensedMoonPhase = true;
         }
 
         #endregion
@@ -524,8 +524,7 @@ namespace iBuki
 
         public string AppAuthor = Const.APP_AUTHOR;
 
-        //public Uri AppLogo = Const.APP_LOGO;
-        public Uri AppLogo = new Uri(Const.URI_ASSETS_MOONPHASE);
+        public Uri AppLogo = Const.APP_LOGO;
 
         #endregion
 
