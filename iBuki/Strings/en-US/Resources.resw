@@ -234,8 +234,8 @@
   <data name="quartzButton.Content" xml:space="preserve">
     <value>Quartz</value>
   </data>
-  <data name="restartButton.Content" xml:space="preserve">
-    <value>Restart App to Apply</value>
+  <data name="restartTextBlock.Text" xml:space="preserve">
+    <value>Restart app to apply.</value>
   </data>
   <data name="romanIndexEnum" xml:space="preserve">
     <value>Roman</value>
@@ -252,8 +252,8 @@
   <data name="templateTitle.Text" xml:space="preserve">
     <value>Template</value>
   </data>
-  <data name="themeLabel.Text" xml:space="preserve">
-    <value>Window Theme</value>
+  <data name="themeTextBlock.Text" xml:space="preserve">
+    <value>Theme</value>
   </data>
   <data name="thicknessLabel.Text" xml:space="preserve">
     <value>Thickness</value>
@@ -304,7 +304,7 @@
     <value>If you delete this template, you won't be able to recover it. Do you want to delete it?</value>
   </data>
   <data name="openSettingButton.Content" xml:space="preserve">
-    <value>Open Settings</value>
+    <value>Open settings.</value>
   </data>
   <data name="openSettingTextBlock.Text" xml:space="preserve">
     <value>If disabled, change it from the Windows settings panel.</value>
@@ -396,5 +396,91 @@ You may not be connected to the Internet.</value>
   </data>
   <data name="dialogCannotSaveTemplateInvalidFile" xml:space="preserve">
     <value>The template file format or file extension is not valid.</value>
+  </data>
+  <data name="chronographOmitTextBlock.Text" xml:space="preserve">
+    <value>Chrono</value>
+  </data>
+  <data name="chronographTextBlock.Text" xml:space="preserve">
+    <value>Chronograph</value>
+  </data>
+  <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
+    <value>Moon</value>
+  </data>
+  <data name="accentTextBlock.Text" xml:space="preserve">
+    <value>Accent Color</value>
+  </data>
+  <data name="chronographTipTextBlock.Text" xml:space="preserve">
+    <value>Tap the stopwatch button on the titlebar.
+- Single tap : START / STOP
+- Double tap : RESET</value>
+  </data>
+  <data name="titlebarTipPin.Text" xml:space="preserve">
+    <value>Display window on top.</value>
+  </data>
+  <data name="titlebarTipSettings.Text" xml:space="preserve">
+    <value>Open settings menu.</value>
+  </data>
+  <data name="restoreSystemDefaultLink.Text" xml:space="preserve">
+    <value>Restore default color.</value>
+  </data>
+  <data name="backgroundImageToggle.Header" xml:space="preserve">
+    <value>Background Image</value>
+  </data>
+  <data name="handImageToggle.Header" xml:space="preserve">
+    <value>Hand Image</value>
+  </data>
+  <data name="SubDialEnumSecond" xml:space="preserve">
+    <value>Second</value>
+  </data>
+  <data name="SubDialEnumTotalizer12H" xml:space="preserve">
+    <value>12 hour Totalizer</value>
+  </data>
+  <data name="SubDialEnumTotalizer30M" xml:space="preserve">
+    <value>30 minutes Totalizer</value>
+  </data>
+  <data name="subDialSecondTextBlock.Text" xml:space="preserve">
+    <value>Seconds Subdial</value>
+  </data>
+  <data name="switchThemeTextBlock.Text" xml:space="preserve">
+    <value>Switch the theme to apply accent color.</value>
+  </data>
+  <data name="windowTextBlock.Text" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="backgroundTipTextBlock.Text" xml:space="preserve">
+    <value>500x500 pixels, png</value>
+  </data>
+  <data name="customImageTipTextBlock.Text" xml:space="preserve">
+    <value>When using custom image.</value>
+  </data>
+  <data name="foregroundTipTextBlock.Text" xml:space="preserve">
+    <value>500x500 pixels, png, Partially transparent / Semi-transparent</value>
+  </data>
+  <data name="moonPhaseBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Circle</value>
+  </data>
+  <data name="moonPhaseForegroundTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Partially transparent</value>
+  </data>
+  <data name="subDialBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Circle</value>
+  </data>
+  <data name="subDialHandTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Partially transparent</value>
+  </data>
+  <data name="subDialTotalizer12hTextBlock.Text" xml:space="preserve">
+    <value>Totalizer Subdial - 12 hours</value>
+  </data>
+  <data name="subDialTotalizer30mTextBlock.Text" xml:space="preserve">
+    <value>Totalizer Subdial - 30 minuts</value>
+  </data>
+  <data name="dateDisplayFormatToolTip.Text" xml:space="preserve">
+    <value>MONTH:[M](1～12) [MM](01～12)
+[MMM](Aug) [MMMM](August)
+DATE:[d](1～31) [dd](01～31)
+DAY:[ddd](Mon) [dddd](Monday)
+HOUR:[h](0～12) [hh](00～12) [tt]AM/PM
+[H](0～23) [HH](00～23)
+MINUTE[m](0～59) [mm](00～59)</value>
   </data>
 </root>

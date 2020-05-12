@@ -21,20 +21,16 @@ namespace iBuki
         /// </summary>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            // ConverterParameterの指定がない
             var stringParam = (string)parameter;
-            if (string.IsNullOrEmpty(stringParam))
-            {
-                return DependencyProperty.UnsetValue;
-            }
-            var intParam = (int)Enum.Parse(value.GetType(), stringParam);
 
-            // Enumでない
-            if (value is null) return DependencyProperty.UnsetValue;
-            if (Enum.IsDefined(value.GetType(), value) == false)
-            {
-                return DependencyProperty.UnsetValue;
-            }
+            // ConverterParameterの指定忘れ
+            if (string.IsNullOrEmpty(stringParam)) return DependencyProperty.UnsetValue; 
+
+            // 値が例外値ならfalseとする
+            if (value is null) return false;
+            if (Enum.IsDefined(value.GetType(), value) == false) return false;
+
+            var intParam = (int)Enum.Parse(value.GetType(), stringParam);
             var intValue = (int)value;
 
             return intParam == intValue;
@@ -42,8 +38,8 @@ namespace iBuki
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            // ConverterParameterの指定がない
             var stringParam = (string)parameter;
+            // ConverterParameterの指定忘れ
             return string.IsNullOrEmpty(stringParam)
                 ? DependencyProperty.UnsetValue
                 : Enum.Parse(targetType, stringParam);

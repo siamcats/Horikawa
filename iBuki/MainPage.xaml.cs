@@ -238,6 +238,133 @@ namespace iBuki
         }
 
         /// <summary>
+        ///（イベント）ダイアル画像取り込みボタン
+        /// </summary>
+        private async void SubDialSecondBackgroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_SECOND_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialSecondBackgroundImage = bitmap;
+            }
+        }
+
+        private async void SubDialSecondHandImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_SECOND_HAND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialSecondHandImage = bitmap;
+            }
+        }
+        private async void SubDialTotalizer12hBackgroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_12H_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer12hBackgroundImage = bitmap;
+            }
+        }
+
+        private async void SubDialTotalizer12hHandImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_12H_HAND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer12hHandImage = bitmap;
+            }
+        }
+        private async void SubDialTotalizer30mBackgroundImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_30M_BACKGROUND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer30mBackgroundImage = bitmap;
+            }
+        }
+
+        private async void SubDialTotalizer30mHandImagePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+
+            // 単一ファイルの選択
+            var file = await filePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                var bitmap = new BitmapImage();
+                using (var stream = await file.OpenReadAsync())
+                {
+                    await bitmap.SetSourceAsync(stream);
+                }
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, Const.FILE_SUBDIAL_30M_HAND, NameCollisionOption.ReplaceExisting);
+                //アプリデザインに反映
+                vm.DesignConfig.SubDialTotalizer30mHandImage = bitmap;
+            }
+        }
+
+        /// <summary>
         /// （イベント）カラー選択ボタン
         /// </summary>
         private void ColorButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -273,6 +400,13 @@ namespace iBuki
             secondHandAngle.Angle = CalcAngleSecond(localDate);
             dateDisplay.Text = CalcDate(localDate); //デイトは秒表示もできるから日替わり処理じゃなくてここでする
 
+
+            if (vm.DesignConfig.IsChronographDisplay)
+            {
+                subDial1.TimeSpan = vm.stopwatch.Elapsed;
+                subDial2.TimeSpan = vm.stopwatch.Elapsed;
+                subDial3.DateTime = localDate;
+            }
             // 退避日と日付が異なれば日替わり処理を起こす
             if (beforeDate == defaultDate || localDate.Date != beforeDate.Date)
             {
@@ -302,11 +436,21 @@ namespace iBuki
 
         private double CalcAngleSecond(DateTime now)
         {
-            var movement = vm.AppConfig.Movement;
-            if (movement == Movement.Chronograph) return 0;
+            Decimal ss;
+            Decimal fff;
 
-            var ss = Convert.ToDecimal(now.ToString("ss"));
-            var fff = Convert.ToDecimal(now.ToString("fff"));
+            if (vm.DesignConfig.IsChronographDisplay)
+            {
+                //return 0;
+                ss = vm.stopwatch.Elapsed.Seconds;
+                fff = vm.stopwatch.Elapsed.Milliseconds;
+            }
+            else
+            {
+                ss = Convert.ToDecimal(now.ToString("ss"));
+                fff = Convert.ToDecimal(now.ToString("fff"));
+            }
+
             //var angle = 6 * ss;
             //var angle2 = Convert.ToDouble(fff)/1000*6;
             //Debug.WriteLine(angle + angle2);
@@ -401,13 +545,13 @@ namespace iBuki
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //言語選択したら再起動を促す
-            restartLink.Visibility = Visibility.Visible;
+            restartButton.Visibility = Visibility.Visible;
         }
 
         /// <summary>
         /// （イベント）言語選択後は再起動でアプリに反映させる
         /// </summary>
-        private async void HyperlinkButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void RestartButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AppRestartFailureReason result = await CoreApplication.RequestRestartAsync("");
         }
@@ -418,8 +562,32 @@ namespace iBuki
         private void ConfigButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             //設定パネル押したら再起動しますか？表示は消しとく
-            restartLink.Visibility = Visibility.Collapsed;
+            restartButton.Visibility = Visibility.Collapsed;
+            switchTheme.Visibility = Visibility.Collapsed;
         }
+
+        #endregion
+
+        #region テーマ・アクセントカラーの制御
+
+        private void accentColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        {
+            //アクセントカラーの変更を反映するにはテーマの切り替えが必要
+            switchTheme.Visibility = Visibility.Visible;
+            Application.Current.Resources["SystemAccentColor"] = accentColorPicker.Color;
+        }
+
+        private void useSystemDefaultLink_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var scb = (SolidColorBrush)restoreSystemDefaultLink.Foreground;
+            vm.AppConfig.AccentColor = scb.Color;
+        }
+
+        private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            switchTheme.Visibility = Visibility.Collapsed;
+        }
+
 
         #endregion
 
@@ -1150,7 +1318,7 @@ namespace iBuki
                     vm.AddOnList.Add(product);
                 }
             }
-
+            GetLicenseInfo();
             licenseUpdateProgress.IsActive = false;
         }
 
@@ -1256,7 +1424,7 @@ namespace iBuki
                 context = StoreContext.GetDefault();
             }
 
-            //これはオフラインでもＯＫ
+            //これはオフラインでも例外にはならない
             var appLicense = await context.GetAppLicenseAsync();
 
             if (appLicense == null)
@@ -1274,11 +1442,37 @@ namespace iBuki
                 return;
             }
 
+            //フラグ最新化するのでいったん全部倒しておく
+            vm.InitLicense();
+
             foreach (KeyValuePair<string, StoreLicense> item in appLicense.AddOnLicenses)
             {
                 var addOnLicense = item.Value;
                 vm.SetLicense(addOnLicense.SkuStoreId);
             }
+
+            //通信速度が遅いと、vmのライセンス情報に反映される前にconfigの読み込みが完了してしまうため、
+            //ライセンスが必要な設定（ムーンフェイズなどが反映されない可能性がある
+        }
+
+        #endregion
+
+        #region クロノグラフの制御
+
+        private void chronoButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (vm.stopwatch.IsRunning)
+            {
+                vm.stopwatch.Stop();
+            }
+            else
+            {
+                vm.stopwatch.Start();
+            }
+        }
+        private void chronoButton_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            vm.stopwatch.Reset();
         }
 
         #endregion

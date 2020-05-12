@@ -52,7 +52,6 @@ namespace iBuki
             get
             {
                 var package = Package.Current;
-                var packageId = package.Id;
                 var logo = package.Logo;
                 return logo;
             }
@@ -82,7 +81,14 @@ namespace iBuki
         public static readonly string URI_CURRENT_FOREGROUND = "ms-appdata:///local/Foreground.png";
         public static readonly string URI_CURRENT_MOONPHASE_BACKGROUND = "ms-appdata:///local/MoonPhaseBackground.png";
         public static readonly string URI_CURRENT_MOONPHASE_FOREGROUND = "ms-appdata:///local/MoonPhaseForeground.png";
+        public static readonly string URI_CURRENT_SUBDIAL_SECOND_BACKGROUND = "ms-appdata:///local/SubDialSecondBackground.png";
+        public static readonly string URI_CURRENT_SUBDIAL_SECOND_HAND = "ms-appdata:///local/SubDialSecondHand.png";
+        public static readonly string URI_CURRENT_SUBDIAL_30M_BACKGROUND = "ms-appdata:///local/SubDial30mBackground.png";
+        public static readonly string URI_CURRENT_SUBDIAL_30M_HAND = "ms-appdata:///local/SubDial30mHand.png";
+        public static readonly string URI_CURRENT_SUBDIAL_12H_BACKGROUND = "ms-appdata:///local/SubDial12hBackground.png";
+        public static readonly string URI_CURRENT_SUBDIAL_12H_HAND = "ms-appdata:///local/SubDial12hHand.png";
         public static readonly string URI_ASSETS_MOONPHASE = "ms-appx:///Assets/MoonPhase/";
+        public static readonly string URI_ASSETS_SUBDIAL = "ms-appx:///Assets/SubDial/";
 
         public static readonly string FOLDER_ASSETS = "Assets";
         public static readonly string FOLDER_TEMPLATES = "Templates";
@@ -93,6 +99,12 @@ namespace iBuki
         public static readonly string FILE_THUMBNAIL = "Thumbnail.png";
         public static readonly string FILE_MOONPHASE_BACKGROUND = "MoonPhaseBackground.png";
         public static readonly string FILE_MOONPHASE_FOREGROUND = "MoonPhaseForeground.png";
+        public static readonly string FILE_SUBDIAL_SECOND_BACKGROUND = "SubDialSecondBackground.png";
+        public static readonly string FILE_SUBDIAL_SECOND_HAND = "SubDialSecondHand.png";
+        public static readonly string FILE_SUBDIAL_30M_BACKGROUND = "SubDial30mBackground.png";
+        public static readonly string FILE_SUBDIAL_30M_HAND = "SubDial30mHand.png";
+        public static readonly string FILE_SUBDIAL_12H_BACKGROUND = "SubDial12hBackground.png";
+        public static readonly string FILE_SUBDIAL_12H_HAND = "SubDial12hHand.png";
 
         public static readonly string DEFAULT_TEMPLATE_NAME = "Chronocci";
 
@@ -112,6 +124,7 @@ namespace iBuki
         public const string STORE_ID_DAYDATE      = "9PC9BV184X42";
         public const string STORE_ID_MOONPHASE    = "9N2670BTRV8R";
         public const string STORE_ID_POWERRESERVE = "9N28RLNQFZPB";
+        public const string STORE_ID_CHRONOGRAPH  = "9NRN57BWR5N0";
 
         public static Visibility VISIBLE_ON_DEBUG
         {

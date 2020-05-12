@@ -113,45 +113,37 @@
                                     <!--アプリ設定-->
                                     <StackPanel
                                         Style="{StaticResource SettingTitlePanelStyle}">
-                                        <TextBlock
-                                            Style="{StaticResource SettingTitleTextBlockStyle}"
-                                            x:Uid="appConfigTextBlock" Text="App Config"/>
+                                        <Grid Height="Auto" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="appConfigTextBlock" Text="App Config"/>
+                                            <Button Grid.Column="1"
+                                                Style="{ThemeResource TextBlockButtonStyle}" Padding="0"
+                                                x:Name="restartButton" Tapped="RestartButton_Tapped">
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;"/>
+                                            </Button>
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock x:Uid="restartTextBlock" Text="Restart app to apply."/>
+                                            </ToolTipService.ToolTip>
+                                        </Grid>
                                     </StackPanel>
                                     <!--言語-->
                                     <StackPanel
                                         Style="{StaticResource SettingWhitePanelStyle}">
-                                        <TextBlock
-                                            x:Uid="languageLabel" Text="Language" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Grid.Column="0"
+                                                x:Uid="languageLabel" Text="Language" />
+                                        </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox
-                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,8"
+                                                x:Name="languageComboBox" Width="100" Margin="0,0,0,0"
                                                 ItemsSource="{x:Bind vm.LanguageList}"
                                                 SelectedItem="{x:Bind vm.AppConfig.Language,Mode=TwoWay}"
                                                 SelectionChanged="LanguageComboBox_SelectionChanged" />
-                                            <HyperlinkButton
-                                                x:Uid="restartButton" Content="Restart App to Apply"
-                                                x:Name="restartLink" Margin="10,0,0,0" Visibility="Collapsed"
-                                                Tapped="HyperlinkButton_Tapped"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <!--ウィンドウテーマ-->
-                                    <StackPanel
-                                        Style="{StaticResource SettingWhitePanelStyle}">
-                                        <TextBlock
-                                            x:Uid="themeLabel" Text="Window Theme"/>
-                                        <StackPanel Orientation="Vertical">
-                                            <RadioButton
-                                                GroupName="theme"
-                                                x:Uid="defaultButton" Content="Default"
-                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Default, Mode=TwoWay}"/>
-                                            <RadioButton
-                                                GroupName="theme"
-                                                x:Uid="darkButton" Content="Dark"
-                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
-                                            <RadioButton
-                                                GroupName="theme"
-                                                x:Uid="lightButton" Content="Light"
-                                                IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
                                         </StackPanel>
                                     </StackPanel>
                                     <!--スタートアップ-->
@@ -168,6 +160,86 @@
                                                 Visibility="{x:Bind startupToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}">
                                                 <ToolTipService.ToolTip>
                                                     <TextBlock x:Uid="openSettingTextBlock" Text="If disabled, change it from the Windows settings panel."/>
+                                                </ToolTipService.ToolTip>
+                                            </HyperlinkButton>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--ウィンドウ-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <Grid Height="Auto" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="windowTextBlock" Text="Window"/>
+                                            <StackPanel Grid.Column="1"
+                                                x:Name="switchTheme">
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF1CB;" Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                            <ToolTipService.ToolTip>
+                                                <TextBlock x:Uid="switchThemeTextBlock" Text="Switch the theme to apply accent color."/>
+                                            </ToolTipService.ToolTip>
+                                        </Grid>
+                                    </StackPanel>
+                                    <!--テーマ-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Grid.Column="0"
+                                                x:Uid="themeTextBlock" Text="Theme" Margin="0,0,0,2"/>
+                                            <StackPanel Orientation="Vertical">
+                                                <RadioButton
+                                                    GroupName="theme"
+                                                    x:Uid="defaultButton" Content="Default" Checked="ThemeRadioButton_Checked"
+                                                    IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Default, Mode=TwoWay}"/>
+                                                <RadioButton
+                                                    GroupName="theme"
+                                                    x:Uid="darkButton" Content="Dark" Checked="ThemeRadioButton_Checked"
+                                                    IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Dark, Mode=TwoWay}" />
+                                                <RadioButton
+                                                    GroupName="theme"
+                                                    x:Uid="lightButton" Content="Light" Checked="ThemeRadioButton_Checked"
+                                                    IsChecked="{x:Bind vm.AppConfig.SystemTheme, Converter={StaticResource Enum}, ConverterParameter=Light, Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--アクセントカラー-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingWhitePanelStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Grid.Column="0"
+                                                x:Uid="accentTextBlock" Text="Accent Color" Margin="0,0,0,2"/>
+                                            <StackPanel HorizontalAlignment="Right" Grid.Column="1">
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Style="{StaticResource ColorButtonStyle}"
+                                                Background="{x:Bind vm.AppConfig.AccentColor, Converter={StaticResource ColorBrush}, Mode=OneWay}"
+                                                Tapped="ColorButton_Tapped" >
+                                                <FlyoutBase.AttachedFlyout>
+                                                    <Flyout Placement="Right">
+                                                        <Viewbox Margin="5" MaxWidth="300" Stretch="Fill">
+                                                            <ColorPicker
+                                                                x:Name="accentColorPicker"
+                                                                IsColorChannelTextInputVisible="False"
+                                                                IsColorSliderVisible="True"
+                                                                Color="{x:Bind vm.AppConfig.AccentColor, Mode=TwoWay}" ColorChanged="accentColorPicker_ColorChanged"/>
+                                                        </Viewbox>
+                                                    </Flyout>
+                                                </FlyoutBase.AttachedFlyout>
+                                            </Button>
+                                            <HyperlinkButton
+                                                x:Name="restoreSystemDefaultLink"
+                                                Tapped="useSystemDefaultLink_Tapped"
+                                                Margin="10,0,0,0"
+                                                Foreground="{StaticResource DefaultAccentColor}">
+                                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7A7;"/>
+                                                <ToolTipService.ToolTip>
+                                                    <TextBlock x:Uid="restoreSystemDefaultLink"/>
                                                 </ToolTipService.ToolTip>
                                             </HyperlinkButton>
                                         </StackPanel>
@@ -193,10 +265,10 @@
                                                 GroupName="movement"
                                                 x:Uid="mechanicalButton" Content="Mechanical"
                                                 IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Mechanical, Mode=TwoWay}" />
-                                            <RadioButton
+                                            <!--<RadioButton
                                                 GroupName="movement"
                                                 x:Uid="chronographButton" Content="Chronograph "
-                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Chronograph , Mode=TwoWay}" />
+                                                IsChecked="{x:Bind vm.AppConfig.Movement, Converter={StaticResource Enum}, ConverterParameter=Chronograph , Mode=TwoWay}" />-->
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -1046,7 +1118,7 @@
                                                 x:Uid="dateDisplayToggle"
                                                 x:Name="dateDisplayToggle" 
                                                 OffContent="Off" OnContent="On"
-                                                IsEnabled="{x:Bind vm.IsLicensedDayDate,Mode=OneWay}"
+                                                IsEnabled="{x:Bind vm.AppConfig.IsLicensedDayDate,Mode=OneWay}"
                                                 IsOn="{x:Bind vm.DesignConfig.IsDateDisplay,Mode=TwoWay}" />
                                             <TextBlock
                                                 x:Uid="licenseRequiredTextBlock" Margin="-20,0,0,0" VerticalAlignment="Center"
@@ -1055,7 +1127,7 @@
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1079,7 +1151,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
@@ -1112,7 +1184,7 @@
                                     </StackPanel>
                                     <!--サイズ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size"/>
@@ -1145,7 +1217,7 @@
                                     </StackPanel>
                                     <!--境界線-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                              Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1153,7 +1225,7 @@
                                     </StackPanel>
                                     <!--境界線の色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1177,7 +1249,7 @@
                                     </StackPanel>
                                     <!--境界線の太さ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="thicknessLabel" Text="Thickness"/>
@@ -1195,7 +1267,7 @@
                                     </StackPanel>
                                     <!--フォント-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1203,7 +1275,7 @@
                                     </StackPanel>
                                     <!--フォントの色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1228,7 +1300,7 @@
                                     </StackPanel>
                                     <!--フォーマット-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="formatLabel" Text="Format"/>
@@ -1237,18 +1309,13 @@
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Text="{x:Bind vm.DesignConfig.DateFormat,Mode=TwoWay}" FontFamily="Segoe UI">
                                             <ToolTipService.ToolTip>
-                                                <TextBlock>
-                                                    d -> 1<LineBreak/>
-                                                    dd -> 01<LineBreak />
-                                                    ddd -> Mon<LineBreak />
-                                                    dddd -> Monday
-                                                </TextBlock>
+                                                <TextBlock x:Uid="dateDisplayFormatToolTip" Text="d=1"/>
                                             </ToolTipService.ToolTip>
                                         </TextBox>
                                     </StackPanel>
                                     <!--フォントファミリ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="fontFamilyLabel" Text="Font Family" />
@@ -1260,7 +1327,7 @@
                                     </StackPanel>
                                     <!--フォントのサイズ-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedDayDate,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="sizeLabel" Text="Size" />
@@ -1284,7 +1351,7 @@
                             <PivotItem.Header>
                                 <StackPanel>
                                     <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0CE;" />
-                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseTextBlock" Text="Moon Phase"/>
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="moonPhaseOmitTextBlock" Text="Moon"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <ScrollViewer>
@@ -1301,7 +1368,7 @@
                                                     x:Uid="moonPhaseToggle"
                                                     x:Name="moonPhaseToggle" 
                                                     OffContent="Off" OnContent="On"
-                                                    IsEnabled="{x:Bind vm.IsLicensedMoonPhase,Mode=OneWay}"
+                                                    IsEnabled="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=TwoWay}" />
                                                 <TextBlock
                                                     x:Uid="licenseRequired" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
@@ -1311,7 +1378,7 @@
                                     </StackPanel>
                                     <!--Size-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                                 x:Uid="sizeLabel" Text="Size"/>
@@ -1329,7 +1396,7 @@
                                     </StackPanel>
                                     <!--座標-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="coordinateLabel" Text="Coordinate"/>
@@ -1362,7 +1429,7 @@
                                     </StackPanel>
                                     <!--画像-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
@@ -1372,7 +1439,7 @@
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="When using custom lunar images."/>
+                                                        <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
@@ -1394,7 +1461,7 @@
                                     </StackPanel>
                                     <!--前面-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingTitlePanelStyle}">
                                         <TextBlock
                                             Style="{StaticResource SettingSubTitleTextBlockStyle}"
@@ -1402,7 +1469,7 @@
                                     </StackPanel>
                                     <!--色-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <TextBlock
                                             x:Uid="colorLabel" Text="Color"/>
@@ -1426,7 +1493,7 @@
                                     </StackPanel>
                                     <!--画像-->
                                     <StackPanel
-                                        Visibility="{x:Bind vm.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
+                                        Visibility="{x:Bind vm.AppConfig.IsLicensedMoonPhase,Converter={StaticResource Visibility},Mode=OneWay}"
                                         Style="{StaticResource SettingWhitePanelStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel>
@@ -1436,7 +1503,7 @@
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="When using custom cover images."/>
+                                                        <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
@@ -1454,6 +1521,409 @@
                                                 Width="130" Height="130"
                                                 Source="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
                                                 Visibility="{x:Bind moonPhaseForegroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </PivotItem>
+                        <!--クロノグラフ-->
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel>
+                                    <FontIcon Style="{StaticResource PivotFontIconStyle}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
+                                    <TextBlock Style="{StaticResource PivotTextBlockStyle}" x:Uid="chronographOmitTextBlock" Text="Chrono"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <!--On/Off-->
+                                    <StackPanel
+                                        Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="chronographTextBlock" Text="Chronograph"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Uid="chronographToggle"
+                                                x:Name="chronographToggle" 
+                                                OffContent="Off" OnContent="On"
+                                                IsEnabled="{x:Bind vm.AppConfig.IsLicensedChronograph,Mode=OneWay}"
+                                                IsOn="{x:Bind vm.DesignConfig.IsChronographDisplay,Mode=TwoWay}"/>
+                                            <TextBlock
+                                                x:Uid="licenseRequiredTextBlock" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
+                                                Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--ライセンス無しなら以降は全部見せない-->
+                                    <StackPanel Visibility="{x:Bind vm.AppConfig.IsLicensedChronograph,Mode=OneWay}">
+                                        <!--スモールセコンド On/Off-->
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="subDialSecondTextBlock" Text="Seconds Subdial"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="subDialSecondToggle" x:Name="subDialSecondToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondDisplay,Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--インダイヤルOFFなら以降は全部見せない-->
+                                        <StackPanel Visibility="{x:Bind subDialSecondToggle.IsOn, Mode=OneWay}">
+                                            <!--Size-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="sizeLabel" Text="Size"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider
+                                                        Style="{StaticResource SliderStyle}"
+                                                        x:Name="subDialSecondSizeSlider"
+                                                        Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialSecondSize,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialSecondSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--座標-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">    
+                                                <TextBlock
+                                                    x:Uid="coordinateLabel" Text="Coordinate"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                                    <Slider
+                                                        x:Name="subDialSecondXSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialSecondCoordinateX,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialSecondXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                                    <Slider
+                                                        x:Name="subDialSecondYSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialSecondCoordinateY,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialSecondYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--背景画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="backgroundImageToggle" Header="Background Image"
+                                                            x:Name="subDialSecondBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondBackgroundImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialSecondBackgroundImagePicker" Tapped="SubDialSecondBackgroundImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialSecondBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialSecondBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialSecondBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--針画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="handImageToggle" Header="Hand Image"
+                                                            x:Name="subDialSecondHandImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondHandImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialSecondHandImagePicker" Tapped="SubDialSecondHandImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialSecondHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialSecondHandImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialSecondHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--30分積算計On/Off-->
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="subDialTotalizer30mTextBlock" Text="Totalizer Subdial - 30 minits"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="subDialTotalizer30mToggle" x:Name="subDialTotalizer30mToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mDisplay,Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--インダイヤルOFFなら以降は全部見せない-->
+                                        <StackPanel Visibility="{x:Bind subDialTotalizer30mToggle.IsOn, Mode=OneWay}">
+                                            <!--Size-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="sizeLabel" Text="Size"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider
+                                                        Style="{StaticResource SliderStyle}"
+                                                        x:Name="subDialTotalizer30mSizeSlider"
+                                                        Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer30mSize,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer30mSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--座標-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="coordinateLabel" Text="Coordinate"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer30mXSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer30mCoordinateX,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer30mXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer30mYSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer30mCoordinateY,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer30mYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--背景画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="backgroundImageToggle" Header="Background Image"
+                                                            x:Name="subDialTotalizer30mBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer30mBackgroundImagePicker" Tapped="SubDialTotalizer30mBackgroundImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer30mBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer30mBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer30mBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--針画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="handImageToggle" Header="Hand Image"
+                                                            x:Name="subDialTotalizer30mHandImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mHandImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer30mHandImagePicker" Tapped="SubDialTotalizer30mHandImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer30mHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer30mHandImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer30mHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--12時間積算計On/Off-->
+                                        <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                            <TextBlock
+                                                Style="{StaticResource SettingTitleTextBlockStyle}"
+                                                x:Uid="subDialTotalizer12hTextBlock" Text="Totalizer Subdial - 12 hours"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ToggleSwitch 
+                                                    x:Uid="subDialTotalizer12hToggle" x:Name="subDialTotalizer12hToggle" 
+                                                    OffContent="Off" OnContent="On"
+                                                    IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hDisplay,Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <!--インダイヤルOFFなら以降は全部見せない-->
+                                        <StackPanel Visibility="{x:Bind subDialTotalizer12hToggle.IsOn, Mode=OneWay}">
+                                            <!--Size-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="sizeLabel" Text="Size"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Slider
+                                                        Style="{StaticResource SliderStyle}"
+                                                        x:Name="subDialTotalizer12hSizeSlider"
+                                                        Minimum="50" Maximum="300" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer12hSize,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer12hSizeSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--座標-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <TextBlock
+                                                    x:Uid="coordinateLabel" Text="Coordinate"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="X"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer12hXSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer12hCoordinateX,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer12hXSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y"/>
+                                                    <Slider
+                                                        x:Name="subDialTotalizer12hYSlider"
+                                                        Minimum="-300" Maximum="300" Width="195"
+                                                        TickPlacement="None" TickFrequency="1" SnapsTo="Ticks"
+                                                        IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                        Value="{x:Bind vm.DesignConfig.SubDialTotalizer12hCoordinateY,Mode=TwoWay}" />
+                                                    <TextBlock
+                                                        TextAlignment="Center" VerticalAlignment="Center" Width="40"
+                                                        Text="{x:Bind subDialTotalizer12hYSlider.Value,Converter={StaticResource Truncate},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--背景画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="backgroundImageToggle" Header="Background Image"
+                                                            x:Name="subDialTotalizer12hBackgroundImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer12hBackgroundImagePicker" Tapped="SubDialTotalizer12hBackgroundImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer12hBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer12hBackgroundImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer12hBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <!--針画像-->
+                                            <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel>
+                                                        <ToggleSwitch 
+                                                            x:Uid="handImageToggle" Header="Hand Image"
+                                                            x:Name="subDialTotalizer12hHandImageDisplayToggle" OffContent="Off" OnContent="On"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                            IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hHandImageDisplay, Mode=TwoWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
+                                                            </ToolTipService.ToolTip>
+                                                        </ToggleSwitch>
+                                                        <Button
+                                                            Style="{StaticResource ButtonStyle}"
+                                                            x:Uid="imageSelectButton" Content="Select Image" 
+                                                            x:Name="subDialTotalizer12hHandImagePicker" Tapped="SubDialTotalizer12hHandImagePicker_Tapped"
+                                                            Visibility="{x:Bind subDialTotalizer12hHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
+                                                            IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
+                                                            <ToolTipService.ToolTip>
+                                                                <TextBlock x:Uid="subDialHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                            </ToolTipService.ToolTip>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <Image
+                                                        Width="130" Height="130"
+                                                        Source="{x:Bind vm.DesignConfig.SubDialTotalizer12hHandImage,Mode=OneWay}"
+                                                        Visibility="{x:Bind subDialTotalizer12hHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -1489,7 +1959,7 @@
                                                     x:Name="licenseUpdateButton"
                                                     Visibility="{x:Bind licenseUpdateProgress.IsActive,Converter={StaticResource VisibilityReverse},Mode=OneWay}"
                                                     Style="{ThemeResource TextBlockButtonStyle}" Tapped="LicenseUpdateButton_Tapped">
-                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" />
+                                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE895;" />
                                                 </Button>
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
@@ -1512,7 +1982,7 @@
                                                     IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="74"/>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="140"/>
                                                         <ColumnDefinition Width="60"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Rectangle
@@ -1555,7 +2025,7 @@
                                                     IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="74"/>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="140"/>
                                                         <ColumnDefinition Width="60"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Rectangle
@@ -1657,20 +2127,6 @@
                         Visibility="{x:Bind vm.DesignConfig.IsBackgroundImageDisplay,Mode=OneWay}"
                         Source="{x:Bind vm.DesignConfig.BackgroundImage,Mode=OneWay}"
                         Stretch="{x:Bind vm.SelectedBackgroundImageStretch,Mode=OneWay}"/>
-                    <!--ムーンフェーズ-->
-                    <local:MoonPhase
-                        x:Name="moonPhase"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
-                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
-                        Margin="{x:Bind vm.DesignConfig.MoonPhaseCoordinate,Mode=OneWay}"
-                        Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
-                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay,Mode=OneWay}"
-                        BackgroundImage="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
-                        IsForegroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay,Mode=OneWay}"
-                        ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
-                        >
-                    </local:MoonPhase>
                     <!-- 文字盤 -->
                     <local:CircleScale
                         x:Name="dialScale"
@@ -1706,6 +2162,63 @@
                         FontSize="{x:Bind vm.DesignConfig.IndexFontSize,Mode=OneWay}"
                         FontFamily="{x:Bind vm.DesignConfig.IndexFontFamily,Mode=OneWay}"
                         Color="{x:Bind vm.DesignConfig.IndexColor,Mode=OneWay}" />
+                    <!--ムーンフェーズ-->
+                    <local:MoonPhase
+                        x:Name="moonPhase"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="{x:Bind vm.DesignConfig.IsMoonPhaseDisplay,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.MoonPhaseSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.MoonPhaseCoordinate,Mode=OneWay}"
+                        Foreground="{x:Bind vm.DesignConfig.MoonPhaseForegroundColor,Converter={StaticResource ColorBrush},Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.MoonPhaseBackgroundImage,Mode=OneWay}"
+                        IsForegroundImageDisplay="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay,Mode=OneWay}"
+                        ForegroundImage="{x:Bind vm.DesignConfig.MoonPhaseForegroundImage,Mode=OneWay}"
+                        >
+                    </local:MoonPhase>
+                    <!--クロノグラフ-->
+                    <!--30分積算計-->
+                    <local:SubDial
+                        x:Name="subDial1"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Type="Totalizer30Minuts"
+                        Movement="{x:Bind vm.AppConfig.Movement,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.SubDialTotalizer30mVisibility,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.SubDialTotalizer30mSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.SubDialTotalizer30mSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.SubDialTotalizer30mCoordinate,Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.SubDialTotalizer30mBackgroundImage,Mode=OneWay}"
+                        IsHandImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mHandImageDisplay,Mode=OneWay}"
+                        HandImage="{x:Bind vm.DesignConfig.SubDialTotalizer30mHandImage,Mode=OneWay}"
+                        >
+                    </local:SubDial>
+                    <!--12時間積算計-->
+                    <local:SubDial
+                        x:Name="subDial2"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Type="Totalizer12Hours"
+                        Movement="{x:Bind vm.AppConfig.Movement,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.SubDialTotalizer12hVisibility,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.SubDialTotalizer12hSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.SubDialTotalizer12hSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.SubDialTotalizer12hCoordinate,Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.SubDialTotalizer12hBackgroundImage,Mode=OneWay}"
+                        IsHandImageDisplay="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hHandImageDisplay,Mode=OneWay}"
+                        HandImage="{x:Bind vm.DesignConfig.SubDialTotalizer12hHandImage,Mode=OneWay}"
+                        >
+                    </local:SubDial>
+                    <!--スモールセコンド-->
+                    <local:SubDial
+                        x:Name="subDial3"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Type="Seconds"
+                        Movement="{x:Bind vm.AppConfig.Movement,Mode=OneWay}"
+                        Visibility="{x:Bind vm.DesignConfig.SubDialSecondVisibility,Mode=OneWay}"
+                        Width="{x:Bind vm.DesignConfig.SubDialSecondSize,Mode=OneWay}" Height="{x:Bind vm.DesignConfig.SubDialSecondSize,Mode=OneWay}"
+                        Margin="{x:Bind vm.DesignConfig.SubDialSecondCoordinate,Mode=OneWay}"
+                        IsBackgroundImageDisplay="{x:Bind vm.DesignConfig.IsSubDialSecondBackgroundImageDisplay,Mode=OneWay}"
+                        BackgroundImage="{x:Bind vm.DesignConfig.SubDialSecondBackgroundImage,Mode=OneWay}"
+                        IsHandImageDisplay="{x:Bind vm.DesignConfig.IsSubDialSecondHandImageDisplay,Mode=OneWay}"
+                        HandImage="{x:Bind vm.DesignConfig.SubDialSecondHandImage,Mode=OneWay}"
+                    >
+                    </local:SubDial>
                     <!-- デイト -->
                     <Border
                         HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -1807,6 +2320,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
@@ -1817,6 +2331,9 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;" />
                     </ToggleButton.Content>
                 </ToggleButton>
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="titlebarTipSettings" Text="Open settings menu."/>
+                </ToolTipService.ToolTip>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <ToggleButton
@@ -1826,8 +2343,24 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE718;" />
                     </ToggleButton.Content>
                 </ToggleButton>
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="titlebarTipPin" Text="Display window on top"/>
+                </ToolTipService.ToolTip>
             </StackPanel>
-            <StackPanel Grid.Column="2" x:Name="moveButton" Height="30" Background="Transparent"/>
+            <StackPanel Grid.Column="2">
+                <Button
+                    x:Name="chronoButton" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background="{x:Null}"
+                    Tapped="chronoButton_Tapped"  DoubleTapped="chronoButton_DoubleTapped"
+                    Visibility="{x:Bind vm.DesignConfig.IsChronographDisplay, Mode=OneWay, Converter={StaticResource Visibility}}" >
+                    <Button.Content>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE916;" />
+                    </Button.Content>
+                </Button>
+                <ToolTipService.ToolTip>
+                    <TextBlock x:Uid="chronographTipTextBlock" Text="[Single tap] Start/Stop &#10;[Double tap] Reset"/>
+                </ToolTipService.ToolTip>
+            </StackPanel>
+            <StackPanel Grid.Column="3" x:Name="moveButton" Height="30" Background="Transparent"/>
         </Grid>
 
     </Grid>

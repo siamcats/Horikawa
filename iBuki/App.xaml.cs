@@ -18,6 +18,7 @@ using Windows.ApplicationModel.Core;
 using System.Globalization;
 using Windows.Globalization;
 using Windows.Storage;
+using Windows.UI;
 
 namespace iBuki
 {
@@ -36,6 +37,19 @@ namespace iBuki
             this.Suspending += OnSuspending;
         }
 
+        private Color ConvertHexColor(string hexCode)
+        {
+
+            if (string.IsNullOrEmpty(hexCode) || !hexCode.Contains("#")) return Color.FromArgb(255, 255, 255, 255);
+            hexCode = hexCode.Replace("#", string.Empty);
+            if (hexCode.Length != 8) return Color.FromArgb(255, 255, 255, 255);
+            byte a = (byte)(Convert.ToUInt32(hexCode.Substring(0, 2), 16));
+            byte r = (byte)(Convert.ToUInt32(hexCode.Substring(2, 2), 16));
+            byte g = (byte)(Convert.ToUInt32(hexCode.Substring(4, 2), 16));
+            byte b = (byte)(Convert.ToUInt32(hexCode.Substring(6, 2), 16));
+            return Color.FromArgb(a, r, g, b);
+        }
+
         /// <summary>
         /// アプリケーションがエンド ユーザーによって正常に起動されたときに呼び出されます。他のエントリ ポイントは、
         /// アプリケーションが特定のファイルを開くために起動されたときなどに使用されます。
@@ -43,9 +57,16 @@ namespace iBuki
         /// <param name="e">起動の要求とプロセスの詳細を表示します。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
-            //ローカライズ設定
             var dataContainer = ApplicationData.Current.LocalSettings;
+
+            // アクセントカラーの設定反映
+            Current.Resources["DefaultAccentColor"] = Current.Resources["SystemAccentColor"]; //レストア用に退避
+            if (dataContainer.Values.ContainsKey("AccentColor"))
+            {
+                Current.Resources["SystemAccentColor"] = ConvertHexColor((string)dataContainer.Values["AccentColor"]);
+            }
+
+            //言語設定反映
             string language;
             if (dataContainer.Values.ContainsKey("Language"))
             {
@@ -56,7 +77,6 @@ namespace iBuki
                 language = "en-US";
             }
             ApplicationLanguages.PrimaryLanguageOverride = language;
-
 
             Frame rootFrame = Window.Current.Content as Frame;
 

@@ -223,7 +223,7 @@
     <value>機械式</value>
   </data>
   <data name="moonPhaseTextBlock.Text" xml:space="preserve">
-    <value>ムーンフェーズ</value>
+    <value>ムーンフェイズ</value>
   </data>
   <data name="movementLabel.Text" xml:space="preserve">
     <value>ムーブメント</value>
@@ -234,8 +234,8 @@
   <data name="quartzButton.Content" xml:space="preserve">
     <value>クォーツ式</value>
   </data>
-  <data name="restartButton.Content" xml:space="preserve">
-    <value>再起動で反映します</value>
+  <data name="restartTextBlock.Text" xml:space="preserve">
+    <value>再起動で反映します。</value>
   </data>
   <data name="romanIndexEnum" xml:space="preserve">
     <value>ローマ数字</value>
@@ -252,7 +252,7 @@
   <data name="templateTitle.Text" xml:space="preserve">
     <value>テンプレート</value>
   </data>
-  <data name="themeLabel.Text" xml:space="preserve">
+  <data name="themeTextBlock.Text" xml:space="preserve">
     <value>テーマ</value>
   </data>
   <data name="thicknessLabel.Text" xml:space="preserve">
@@ -396,5 +396,92 @@
   </data>
   <data name="dialogCannotSaveTemplateInvalidFile" xml:space="preserve">
     <value>テンプレートファイルの形式またはファイル拡張子が正しくないため、読み込めませんでした。</value>
+  </data>
+  <data name="chronographOmitTextBlock.Text" xml:space="preserve">
+    <value>クロノ</value>
+  </data>
+  <data name="chronographTextBlock.Text" xml:space="preserve">
+    <value>クロノグラフ</value>
+  </data>
+  <data name="moonPhaseOmitTextBlock.Text" xml:space="preserve">
+    <value>ムーン</value>
+  </data>
+  <data name="accentTextBlock.Text" xml:space="preserve">
+    <value>アクセントカラー</value>
+  </data>
+  <data name="chronographTipTextBlock.Text" xml:space="preserve">
+    <value>タイトルバーのストップウォッチをタップします。
+・シングルタップ：スタート/ストップ
+・ダブルタップ：リセット</value>
+  </data>
+  <data name="titlebarTipPin.Text" xml:space="preserve">
+    <value>常に最前面に表示する。</value>
+  </data>
+  <data name="titlebarTipSettings.Text" xml:space="preserve">
+    <value>設定メニューを開く。</value>
+  </data>
+  <data name="restoreSystemDefaultLink.Text" xml:space="preserve">
+    <value>Windowsのデフォルトカラーに戻します。</value>
+  </data>
+  <data name="backgroundImageToggle.Header" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="handImageToggle.Header" xml:space="preserve">
+    <value>メーター針</value>
+  </data>
+  <data name="SubDialEnumSecond" xml:space="preserve">
+    <value>スモールセコンド</value>
+  </data>
+  <data name="SubDialEnumTotalizer12H" xml:space="preserve">
+    <value>12時間積算計</value>
+  </data>
+  <data name="SubDialEnumTotalizer30M" xml:space="preserve">
+    <value>30分積算計</value>
+  </data>
+  <data name="subDialSecondTextBlock.Text" xml:space="preserve">
+    <value>スモールセコンド</value>
+  </data>
+  <data name="switchThemeTextBlock.Text" xml:space="preserve">
+    <value>アクセントカラーはテーマを切り替えると反映されます。</value>
+  </data>
+  <data name="windowTextBlock.Text" xml:space="preserve">
+    <value>ウィンドウ</value>
+  </data>
+  <data name="backgroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、500×500ピクセル以下</value>
+  </data>
+  <data name="customImageTipTextBlock.Text" xml:space="preserve">
+    <value>オリジナル画像を使用する場合にONにします。
+OFFでデフォルト画像。</value>
+  </data>
+  <data name="foregroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、500×500ピクセル以下、半透過推奨・半透過推奨</value>
+  </data>
+  <data name="moonPhaseBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、円形</value>
+  </data>
+  <data name="moonPhaseForegroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、部分透過</value>
+  </data>
+  <data name="subDialBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、円形</value>
+  </data>
+  <data name="subDialHandTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、部分透過</value>
+  </data>
+  <data name="subDialTotalizer12hTextBlock.Text" xml:space="preserve">
+    <value>12時間積算計</value>
+  </data>
+  <data name="subDialTotalizer30mTextBlock.Text" xml:space="preserve">
+    <value>30分積算計</value>
+  </data>
+  <data name="dateDisplayFormatToolTip.Text" xml:space="preserve">
+    <value>月:[M](1～12) [MM](01～12)
+[MMM](Aug) [MMMM](August)
+日:[d](1～31) [dd](01～31)
+曜日:[ddd](Mon) [dddd](Monday)
+時間:[h](0～12) [hh](00～12) [tt]AM/PM
+[H](0～23) [HH](00～23)
+分[m](0～59) [mm](00～59)</value>
   </data>
 </root>

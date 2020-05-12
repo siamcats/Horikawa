@@ -13,8 +13,7 @@ namespace iBuki
     public enum Movement
     {
         Quartz,
-        Mechanical,
-        Chronograph
+        Mechanical
     }
     
     public enum Clock
@@ -56,6 +55,16 @@ namespace iBuki
         Uniform,
         [LocalizeName("stretchEnumUniformToFill")]
         UniformToFill
+    }
+
+    public enum SubDialType
+    {
+        [LocalizeName("SubDialEnumSecond")]
+        Seconds,
+        [LocalizeName("SubDialEnumTotalizer30M")]
+        Totalizer30Minuts,
+        [LocalizeName("SubDialEnumTotalizer12H")]
+        Totalizer12Hours
     }
 
     [AttributeUsage(AttributeTargets.Field)]

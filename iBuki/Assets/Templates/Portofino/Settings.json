@@ -1,6 +1,6 @@
 {
   "Name": "Portofino",
-  "Description": "Chronograph Add-On Demo.\n[under construction...]",
+  "Description": "Chronograph Add-On Demo.",
   "Author": "siamcats",
   "CreatedAt": "2019-04-01T00:00Z",
   "Version": "0.0.1",
@@ -25,5 +25,18 @@
   "HandsColor": "#FF153555",
   "SecondHandDisplay": true,
   "SecondHandColor": "#FF153555",
-  "DateDisplay": false
+  "DateDisplay": false,
+  "ChronographDisplay": true,
+  "SubDialSecondDisplay": true,
+  "SubDialSecondSize": 156,
+  "SubDialSecondCoordinateX": 0,
+  "SubDialSecondCoordinateY": -98,
+  "SubDialSecondBackgoroundImageDisplay": false,
+  "SubDialSecondHandImageDisplay": false,
+  "SubDialTotalizer30mDisplay": true,
+  "SubDialTotalizer30mSize": 156,
+  "SubDialTotalizer30mCoordinateX": 0,
+  "SubDialTotalizer30mCoordinateY": 98,
+  "SubDialTotalizer30mBackgoroundImageDisplay": false,
+  "SubDialTotalizer30mHandImageDisplay": false
 }

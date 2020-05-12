@@ -188,6 +188,63 @@ namespace iBuki
         [DataMember]
         public bool MoonPhaseForegroundImageDisplay { get; set; }
 
+        [DataMember]
+        public bool ChronographDisplay { get; set; }
+
+        [DataMember]
+        public bool SubDialSecondDisplay { get; set; }
+
+        [DataMember]
+        public double SubDialSecondSize { get; set; }
+
+        [DataMember]
+        public double SubDialSecondCoordinateX { get; set; }
+
+        [DataMember]
+        public double SubDialSecondCoordinateY { get; set; }
+
+        [DataMember]
+        public bool SubDialSecondBackgroundImageDisplay { get; set; }
+
+        [DataMember]
+        public bool SubDialSecondHandImageDisplay { get; set; }
+
+        [DataMember]
+        public bool SubDialTotalizer30mDisplay { get; set; }
+
+        [DataMember]
+        public double SubDialTotalizer30mSize { get; set; }
+
+        [DataMember]
+        public double SubDialTotalizer30mCoordinateX { get; set; }
+
+        [DataMember]
+        public double SubDialTotalizer30mCoordinateY { get; set; }
+
+        [DataMember]
+        public bool SubDialTotalizer30mBackgroundImageDisplay { get; set; }
+
+        [DataMember]
+        public bool SubDialTotalizer30mHandImageDisplay { get; set; }
+
+        [DataMember]
+        public bool SubDialTotalizer12hDisplay { get; set; }
+
+        [DataMember]
+        public double SubDialTotalizer12hSize { get; set; }
+
+        [DataMember]
+        public double SubDialTotalizer12hCoordinateX { get; set; }
+
+        [DataMember]
+        public double SubDialTotalizer12hCoordinateY { get; set; }
+
+        [DataMember]
+        public bool SubDialTotalizer12hBackgroundImageDisplay { get; set; }
+
+        [DataMember]
+        public bool SubDialTotalizer12hHandImageDisplay { get; set; }
+
         public BitmapSource Thumbnail { get; set; }
 
         public string CreatedAtDateFormat { get
