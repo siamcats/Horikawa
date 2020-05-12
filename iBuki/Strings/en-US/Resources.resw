@@ -447,6 +447,27 @@ You may not be connected to the Internet.</value>
   <data name="windowTextBlock.Text" xml:space="preserve">
     <value>Window</value>
   </data>
+  <data name="backgroundTipTextBlock.Text" xml:space="preserve">
+    <value>500x500 pixels, png</value>
+  </data>
+  <data name="customImageTipTextBlock.Text" xml:space="preserve">
+    <value>When using custom image.</value>
+  </data>
+  <data name="foregroundTipTextBlock.Text" xml:space="preserve">
+    <value>500x500 pixels, png, Partially transparent / Semi-transparent</value>
+  </data>
+  <data name="moonPhaseBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Circle</value>
+  </data>
+  <data name="moonPhaseForegroundTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Partially transparent</value>
+  </data>
+  <data name="subDialBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Circle</value>
+  </data>
+  <data name="subDialHandTipTextBlock.Text" xml:space="preserve">
+    <value>300x300 pixels, png, Partially transparent</value>
+  </data>
   <data name="subDialTotalizer12hTextBlock.Text" xml:space="preserve">
     <value>Totalizer Subdial - 12 hours</value>
   </data>

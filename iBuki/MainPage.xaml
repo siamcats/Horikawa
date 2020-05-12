@@ -1444,7 +1444,7 @@
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseBackgroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="When using custom lunar images."/>
+                                                        <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
@@ -1508,7 +1508,7 @@
                                                     IsEnabled="{x:Bind moonPhaseToggle.IsOn,Mode=OneWay}"
                                                     IsOn="{x:Bind vm.DesignConfig.IsMoonPhaseForegroundImageDisplay, Mode=TwoWay}">
                                                     <ToolTipService.ToolTip>
-                                                        <TextBlock x:Uid="moonPhaseTipTextBlock" Text="When using custom cover images."/>
+                                                        <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                     </ToolTipService.ToolTip>
                                                 </ToggleSwitch>
                                                 <Button
@@ -1633,7 +1633,7 @@
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
                                                             IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondBackgroundImageDisplay, Mode=TwoWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialSecondBackgroundTipTextBlock" Text="When using custom background images."/>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                             </ToolTipService.ToolTip>
                                                         </ToggleSwitch>
                                                         <Button
@@ -1643,7 +1643,7 @@
                                                             Visibility="{x:Bind subDialSecondBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialSecondBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                                <TextBlock x:Uid="subDialBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -1663,7 +1663,7 @@
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
                                                             IsOn="{x:Bind vm.DesignConfig.IsSubDialSecondHandImageDisplay, Mode=TwoWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialSecondTipTextBlock" Text="When using custom lunar images."/>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                             </ToolTipService.ToolTip>
                                                         </ToggleSwitch>
                                                         <Button
@@ -1673,7 +1673,7 @@
                                                             Visibility="{x:Bind subDialSecondHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialSecondHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                                <TextBlock x:Uid="subDialHandTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -1756,7 +1756,7 @@
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
                                                             IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mBackgroundImageDisplay, Mode=TwoWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer30mBackgroundTipTextBlock" Text="When using custom background images."/>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                             </ToolTipService.ToolTip>
                                                         </ToggleSwitch>
                                                         <Button
@@ -1766,7 +1766,7 @@
                                                             Visibility="{x:Bind subDialTotalizer30mBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer30mBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                                <TextBlock x:Uid="subDialBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -1786,7 +1786,7 @@
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
                                                             IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer30mHandImageDisplay, Mode=TwoWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer30mTipTextBlock" Text="When using custom lunar images."/>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                             </ToolTipService.ToolTip>
                                                         </ToggleSwitch>
                                                         <Button
@@ -1796,7 +1796,7 @@
                                                             Visibility="{x:Bind subDialTotalizer30mHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer30mHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                                <TextBlock x:Uid="subDialHandTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -1879,7 +1879,7 @@
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
                                                             IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hBackgroundImageDisplay, Mode=TwoWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer12hBackgroundTipTextBlock" Text="When using custom background images."/>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                             </ToolTipService.ToolTip>
                                                         </ToggleSwitch>
                                                         <Button
@@ -1889,7 +1889,7 @@
                                                             Visibility="{x:Bind subDialTotalizer12hBackgroundImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer12hBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                                <TextBlock x:Uid="subDialBackgroundTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -1909,7 +1909,7 @@
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
                                                             IsOn="{x:Bind vm.DesignConfig.IsSubDialTotalizer12hHandImageDisplay, Mode=TwoWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer12hTipTextBlock" Text="When using custom lunar images."/>
+                                                                <TextBlock x:Uid="customImageTipTextBlock" Text="When using custom images."/>
                                                             </ToolTipService.ToolTip>
                                                         </ToggleSwitch>
                                                         <Button
@@ -1919,7 +1919,7 @@
                                                             Visibility="{x:Bind subDialTotalizer12hHandImageDisplayToggle.IsOn,Converter={StaticResource Visibility},Mode=OneWay}"
                                                             IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}">
                                                             <ToolTipService.ToolTip>
-                                                                <TextBlock x:Uid="subDialTotalizer12hHandTipTextBlock" Text="300x300 pixels, png, circle"/>
+                                                                <TextBlock x:Uid="subDialHandTipTextBlock" Text="300x300 pixels, png, circle"/>
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </StackPanel>
@@ -1987,7 +1987,7 @@
                                                     IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="74"/>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="140"/>
                                                         <ColumnDefinition Width="60"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Rectangle
@@ -2030,7 +2030,7 @@
                                                     IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="74"/>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="140"/>
                                                         <ColumnDefinition Width="60"/>
                                                     </Grid.ColumnDefinitions>
                                                     <Rectangle

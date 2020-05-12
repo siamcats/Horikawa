@@ -447,6 +447,28 @@
   <data name="windowTextBlock.Text" xml:space="preserve">
     <value>ウィンドウ</value>
   </data>
+  <data name="backgroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、500×500ピクセル以下</value>
+  </data>
+  <data name="customImageTipTextBlock.Text" xml:space="preserve">
+    <value>オリジナル画像を使用する場合にONにします。
+OFFでデフォルト画像。</value>
+  </data>
+  <data name="foregroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、500×500ピクセル以下、半透過推奨・半透過推奨</value>
+  </data>
+  <data name="moonPhaseBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、円形</value>
+  </data>
+  <data name="moonPhaseForegroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、部分透過</value>
+  </data>
+  <data name="subDialBackgroundTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、円形</value>
+  </data>
+  <data name="subDialHandTipTextBlock.Text" xml:space="preserve">
+    <value>PNG形式、300×300ピクセル、部分透過</value>
+  </data>
   <data name="subDialTotalizer12hTextBlock.Text" xml:space="preserve">
     <value>12時間積算計</value>
   </data>

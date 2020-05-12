@@ -96,13 +96,13 @@ namespace iBuki
         {
             get
             {
-                var str = Load("#FFFFFFFF");
+                var str = Load("#ffd98800");
                 return ConvertHexColor(str);
             }
             set
             {
                 var str = "#" + value.A.ToString("X2") + value.R.ToString("X2") + value.G.ToString("X2") + value.B.ToString("X2");
-                if (str == Load("#FFFFFFFF")) return;
+                if (str == Load("#ffd98800")) return;
                 Save(str);
                 OnPropertyChanged();
             }

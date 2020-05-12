@@ -1568,6 +1568,7 @@ namespace iBuki
             vm.DesignConfig.BackgroundImageCoordinateX = 0;
             vm.DesignConfig.BackgroundImageCoordinateY = 0;
         }
+
         //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)
         //{
         //    backgroundImage.Height = backgroundImage.ActualHeight;

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Navigation;
 using System.Diagnostics;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Security.Authentication.Identity.Core;
 
 // ユーザー コントロールの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234236 を参照してください
 
@@ -231,11 +232,37 @@ namespace iBuki
         {
             decimal hh = TimeSpan.Hours;
             decimal mm = TimeSpan.Minutes;
-            decimal angle = Movement == Movement.Quartz
-                ? 30 * hh
-                : mm < 59
-                    ? 30 * hh
-                    : 30 * hh + mm * 30 / 60;
+            decimal ss = TimeSpan.Seconds;
+            decimal fff = TimeSpan.Milliseconds;
+            decimal angle;
+            
+            if(Movement == Movement.Quartz)
+            {
+                if (mm < 30)
+                {
+                    angle = 30 * hh;
+                }
+                else
+                {
+                    angle = 30 * hh + 15;
+                }
+            }
+            else
+            {
+                if (mm < 30)
+                {
+                    angle = mm < 29 || ss < 59
+                        ? 30 * hh
+                        : 30 * hh + fff * 15 / 1000;
+                }
+                else
+                {
+                    angle = mm < 59 || ss < 59
+                        ? 30 * hh + 15
+                        : 30 * hh + 15 + fff * 15 / 1000;
+                }
+            }
+
             //Debug.WriteLine(mm + ":" + ss + ":" + fff + "|" + angle);
             return decimal.ToDouble(angle);
         }
