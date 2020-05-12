@@ -475,12 +475,12 @@ You may not be connected to the Internet.</value>
     <value>Totalizer Subdial - 30 minuts</value>
   </data>
   <data name="dateDisplayFormatToolTip.Text" xml:space="preserve">
-    <value>[M]:MONTH(1～12) [MM]:(01～12)
-[MMM]:MONTH(Aug) [MMMM]:(August)
-[d]:DATE(1～31) [dd]:(01～31)
-[ddd]:DAY(Mon) [dddd]:(Monday)
-[h]:HOUR(0～12) [hh]:(00～12) [tt]:AM/PM
-[H]:HOUR(0～23) [HH]:(00～23)
-[m]:MINUTE(0～59) [mm]:(00～59)</value>
+    <value>MONTH:[M](1～12) [MM](01～12)
+[MMM](Aug) [MMMM](August)
+DATE:[d](1～31) [dd](01～31)
+DAY:[ddd](Mon) [dddd](Monday)
+HOUR:[h](0～12) [hh](00～12) [tt]AM/PM
+[H](0～23) [HH](00～23)
+MINUTE[m](0～59) [mm](00～59)</value>
   </data>
 </root>
