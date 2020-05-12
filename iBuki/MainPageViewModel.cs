@@ -77,8 +77,19 @@ namespace iBuki
             {
                 AppConfig.IsLicensedChronograph = true;
             }
-            AppConfig.IsLicensedChronograph = true;
-            AppConfig.IsLicensedMoonPhase = true;
+        }
+
+        public void InitLicense()
+        {
+
+            AppConfig.IsLicensedDayDate = false;
+
+            AppConfig.IsLicensedMoonPhase = false;
+
+            AppConfig.IsLicensedPowerReserve = false;
+
+            AppConfig.IsLicensedChronograph = false;
+
         }
 
         #endregion

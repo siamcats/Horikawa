@@ -1309,12 +1309,7 @@
                                             IsEnabled="{x:Bind dateDisplayToggle.IsOn,Mode=OneWay}"
                                             Text="{x:Bind vm.DesignConfig.DateFormat,Mode=TwoWay}" FontFamily="Segoe UI">
                                             <ToolTipService.ToolTip>
-                                                <TextBlock>
-                                                    d -> 1<LineBreak/>
-                                                    dd -> 01<LineBreak />
-                                                    ddd -> Mon<LineBreak />
-                                                    dddd -> Monday
-                                                </TextBlock>
+                                                <TextBlock x:Uid="dateDisplayFormatToolTip" Text="d=1"/>
                                             </ToolTipService.ToolTip>
                                         </TextBox>
                                     </StackPanel>

@@ -475,4 +475,13 @@ OFFでデフォルト画像。</value>
   <data name="subDialTotalizer30mTextBlock.Text" xml:space="preserve">
     <value>30分積算計</value>
   </data>
+  <data name="dateDisplayFormatToolTip.Text" xml:space="preserve">
+    <value>[M]:月(1～12) [MM]:(01～12)
+[MMM]:曜日(Aug) [MMMM]:(August)
+[d]:日(1～31) [dd]:(01～31)
+[ddd]:曜日(Mon) [dddd]:(Monday)
+[h]:時間(0～12) [hh]:(00～12) [tt]:AM/PM
+[H]:時間(0～23) [HH]:(00～23)
+[m]:分(0～59) [mm]:(00～59)</value>
+  </data>
 </root>

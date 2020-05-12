@@ -1318,7 +1318,7 @@ namespace iBuki
                     vm.AddOnList.Add(product);
                 }
             }
-
+            GetLicenseInfo();
             licenseUpdateProgress.IsActive = false;
         }
 
@@ -1441,6 +1441,9 @@ namespace iBuki
                 await dialog.ShowAsync();
                 return;
             }
+
+            //フラグ最新化するのでいったん全部倒しておく
+            vm.InitLicense();
 
             foreach (KeyValuePair<string, StoreLicense> item in appLicense.AddOnLicenses)
             {
