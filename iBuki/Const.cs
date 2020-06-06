@@ -12,8 +12,8 @@ namespace iBuki
     public static class Const
     {
         public static readonly List<string> LANGUAGE_LIST = new List<string>{
-            "en-US",
-            "jp-JP"
+            "en-us",
+            "jp-jp"
         };
 
         public static string APP_VERSION

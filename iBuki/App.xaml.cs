@@ -74,7 +74,7 @@ namespace iBuki
             }
             else
             {
-                language = "en-US";
+                language = "en-us";
             }
             ApplicationLanguages.PrimaryLanguageOverride = language;
 
