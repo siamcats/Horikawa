@@ -126,10 +126,10 @@ namespace iBuki
 
         public Movement Movement
         {
-            get { return (Movement)Load((int)Movement.Quartz); }
+            get { return (Movement)Load((int)Movement.Mechanical); }
             set
             {
-                if ((int)value == Load((int)Movement.Quartz)) return;
+                if ((int)value == Load((int)Movement.Mechanical)) return;
                 Save((int)value);
                 OnPropertyChanged();
             }
@@ -148,10 +148,10 @@ namespace iBuki
 
         public string Language
         {
-            get { return Load("en-US"); }
+            get { return Load("en-us"); }
             set
             {
-                if (value == Load("en-US")) return;
+                if (value == Load("en-us")) return;
                 Save(value);
                 OnPropertyChanged();
             }
