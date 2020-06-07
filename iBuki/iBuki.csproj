@@ -133,7 +133,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppConfig.cs" />
+    <Compile Include="Models\AppConfig.cs" />
     <Compile Include="Controls\SubDial.xaml.cs">
       <DependentUpon>SubDial.xaml</DependentUpon>
     </Compile>
@@ -148,13 +148,14 @@
     </Compile>
     <Compile Include="Const.cs" />
     <Compile Include="Converters.cs" />
-    <Compile Include="DesignConfig.cs" />
+    <Compile Include="Models\DesignConfig.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="HandModel.cs" />
+    <Compile Include="Models\HandModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPageViewModel.cs" />
+    <Compile Include="Models\Complication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
