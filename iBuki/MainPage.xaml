@@ -1972,7 +1972,7 @@
                                     <!--アドオンリスト-->
                                     <ListView
                                         x:Name="addOnList"
-                                        ItemsSource="{x:Bind vm.AddOnList, Mode=OneWay}"
+                                        ItemsSource="{x:Bind vm.ComplicationsUnpurchased, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                         Tapped="AddOnList_Tapped" >
                                         <ListView.ItemTemplate>
@@ -1988,7 +1988,7 @@
                                                     <Rectangle
                                                         Grid.Column="0" Height="70" Width="70" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
                                                         <Rectangle.Fill>
-                                                            <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Mode=OneWay}"/>
+                                                            <ImageBrush ImageSource="{Binding ImageUrl, Mode=OneWay}"/>
                                                         </Rectangle.Fill>
                                                     </Rectangle>
                                                     <StackPanel
@@ -2015,14 +2015,14 @@
                                     <!--購入済みアドオンリスト-->
                                     <ListView
                                         x:Name="licensedAddOnList"
-                                        ItemsSource="{x:Bind vm.LicensedAddOnList, Mode=OneWay}"
+                                        ItemsSource="{x:Bind vm.ComplicationsPurchased, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                         IsEnabled="false">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid
                                                     Grid.Column="0"
-                                                    IsTapEnabled="{Binding IsInUserCollection,Mode=OneWay}">
+                                                    IsTapEnabled="{Binding IsInUserCollection, Mode=OneWay}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="74"/>
                                                         <ColumnDefinition Width="140"/>
@@ -2031,7 +2031,7 @@
                                                     <Rectangle
                                                         Grid.Column="0" Height="70" Width="70" RadiusX="5" RadiusY="5" HorizontalAlignment="Left" Margin="0,5,3,5" >
                                                         <Rectangle.Fill>
-                                                            <ImageBrush ImageSource="{Binding Images[0].Uri.AbsoluteUri,Mode=OneWay}"/>
+                                                            <ImageBrush ImageSource="{Binding ImageUrl, Mode=OneWay}"/>
                                                         </Rectangle.Fill>
                                                     </Rectangle>
                                                     <StackPanel

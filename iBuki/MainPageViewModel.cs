@@ -525,9 +525,28 @@ namespace iBuki
 
         public List<string> LanguageList = Const.LANGUAGE_LIST;
 
-        public ObservableCollection<StoreProduct> AddOnList = new ObservableCollection<StoreProduct>();
+        private List<Complication> complications = new List<Complication>();
+        public List<Complication> Complications
+        {
+            get => complications;
+            set
+            {
+                if (value == complications) return;
+                complications = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ComplicationsUnpurchased");
+                OnPropertyChanged("ComplicationsPurchased");
+            }
+        }
 
-        public ObservableCollection<StoreProduct> LicensedAddOnList = new ObservableCollection<StoreProduct>();
+        public List<Complication> ComplicationsUnpurchased
+        {
+            get => complications.Where(c => !c.IsInUserCollection).ToList();
+        }
+        public List<Complication> ComplicationsPurchased
+        {
+            get => complications.Where(c => c.IsInUserCollection).ToList();
+        }
 
         public string AppVersion = Const.APP_VERSION;
 
@@ -738,4 +757,5 @@ namespace iBuki
 
         #endregion
     }
+
 }

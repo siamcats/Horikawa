@@ -1301,23 +1301,20 @@ namespace iBuki
                 return;
             }
 
-            vm.LicensedAddOnList.Clear();
-            vm.AddOnList.Clear();
+            var complications = new List<Complication>();
 
             foreach (KeyValuePair<string, StoreProduct> item in queryResult.Products)
             {
+                var complication = new Complication();
                 var product = item.Value;
-                Debug.WriteLine(product.StoreId + " : " + product.Title + " - " + product.IsInUserCollection);
-
-                if (product.IsInUserCollection)
-                {
-                    vm.LicensedAddOnList.Add(product);
-                }
-                else
-                {
-                    vm.AddOnList.Add(product);
-                }
+                complication.Title = product.Title;
+                complication.Description = product.Description;
+                complication.ImageUrl = product.Images[0].Uri.AbsoluteUri;
+                complication.IsInUserCollection = product.IsInUserCollection;
+                complication.Price = product.Price;
+                complications.Add(complication);
             }
+            vm.Complications = complications;
             GetLicenseInfo();
             licenseUpdateProgress.IsActive = false;
         }
