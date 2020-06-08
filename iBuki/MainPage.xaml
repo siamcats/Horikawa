@@ -1943,7 +1943,7 @@
                                 <StackPanel>
                                     <!--アドオン-->
                                     <StackPanel
-                                        x:Name="addOnPanel" Style="{StaticResource SettingTitlePanelStyle}" Loaded="AddOnPanel_Loaded">
+                                        x:Name="complicationPanel" Style="{StaticResource SettingTitlePanelStyle}" Loaded="ComplicationPanel_Loaded">
                                         <Grid Height="Auto" Grid.Row="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -1971,10 +1971,10 @@
                                     </StackPanel>
                                     <!--アドオンリスト-->
                                     <ListView
-                                        x:Name="addOnList"
+                                        x:Name="complicationList"
                                         ItemsSource="{x:Bind vm.ComplicationsUnpurchased, Mode=OneWay}"
                                         Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                        Tapped="AddOnList_Tapped" >
+                                        Tapped="ComplicationList_Tapped" >
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid

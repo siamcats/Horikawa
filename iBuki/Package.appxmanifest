@@ -38,6 +38,5 @@
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="internetClient"/>
-    <Capability Name="internetClientServer"/></Capabilities>
+    <Capability Name="internetClient"/></Capabilities>
 </Package>
