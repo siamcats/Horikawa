@@ -19,6 +19,7 @@ using System.Globalization;
 using Windows.Globalization;
 using Windows.Storage;
 using Windows.UI;
+using System.Diagnostics;
 
 namespace iBuki
 {

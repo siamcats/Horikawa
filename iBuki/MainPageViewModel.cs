@@ -20,6 +20,10 @@ using System.IO;
 using System.Collections.ObjectModel;
 using Windows.Services.Store;
 using Microsoft.Graphics.Canvas.Text;
+using System.Xml.Linq;
+using Windows.UI.Notifications;
+using Windows.ApplicationModel.Resources;
+using System.Security.Cryptography;
 
 namespace iBuki
 {
@@ -163,7 +167,7 @@ namespace iBuki
             IsIndexDisplay = settings.IndexDisplay;
             if (IsIndexDisplay)
             {
-                IndexType = (IndexType)Enum.Parse(typeof(IndexType), settings.IndexType);
+                IndexType = string.IsNullOrEmpty(settings.IndexType) ? IndexType.Arabic : (IndexType)Enum.Parse(typeof(IndexType), settings.IndexType);
                 DesignConfig.IndexColor = ConvertHexColor(settings.IndexColor);
                 DesignConfig.IndexRadius = settings.IndexRadius;
                 DesignConfig.IndexInterval = settings.indexInterval;
@@ -179,7 +183,7 @@ namespace iBuki
                 }
             }
             // hands
-            HandsType = (HandsType)Enum.Parse(typeof(HandsType), settings.HandsType);
+            HandsType = string.IsNullOrEmpty(settings.HandsType) ? HandsType.Bar : (HandsType)Enum.Parse(typeof(HandsType), settings.HandsType);
             DesignConfig.IsHandsDisplay = settings.HandsDisplay;
             if (DesignConfig.IsHandsDisplay)
             {
@@ -267,6 +271,9 @@ namespace iBuki
                 if (!AppConfig.IsLicensedChronograph) settings.ChronographDisplay = false;
             }
             DesignConfig.IsChronographDisplay = settings.ChronographDisplay;
+            DesignConfig.IsNotification = settings.Notification;
+            DesignConfig.NotificationTime = settings.NotificationTime;
+            DesignConfig.NotificationAction = string.IsNullOrEmpty(settings.NotificationAction) ? NotificationAction.None : (NotificationAction)Enum.Parse(typeof(NotificationAction), settings.NotificationAction);
             DesignConfig.IsSubDialSecondDisplay = settings.SubDialSecondDisplay;
             DesignConfig.SubDialSecondCoordinateX = settings.SubDialSecondCoordinateX;
             DesignConfig.SubDialSecondCoordinateY = settings.SubDialSecondCoordinateY;
@@ -498,6 +505,9 @@ namespace iBuki
             settings.ChronographDisplay = DesignConfig.IsChronographDisplay;
             if (DesignConfig.IsChronographDisplay)
             {
+                settings.Notification = DesignConfig.IsNotification;
+                settings.NotificationTime = DesignConfig.NotificationTime;
+                settings.NotificationAction = Enum.GetName(typeof(NotificationAction), DesignConfig.NotificationAction);
                 settings.SubDialSecondDisplay = DesignConfig.IsSubDialSecondDisplay;
                 settings.SubDialSecondSize = DesignConfig.SubDialSecondSize;
                 settings.SubDialSecondCoordinateX = DesignConfig.SubDialSecondCoordinateX;
@@ -726,6 +736,39 @@ namespace iBuki
         #region Chronograph
 
         public Stopwatch stopwatch = new Stopwatch();
+
+        public TimeSpan LastNotificationTime = TimeSpan.Zero;
+
+        public List<string> NotificationActionList = EnumExtension.GetLocalizeList<NotificationAction>();
+
+        public void CreateToast()
+        {
+            var loader = new ResourceLoader();
+            var text = loader.GetString("elapsed");
+            var time = DesignConfig.NotificationTime.ToString();
+            var xmdock = CreateToastXaml(time + text);
+            var toast = new ToastNotification(xmdock);
+            var notifi = ToastNotificationManager.CreateToastNotifier();
+            notifi.Show(toast);
+        }
+
+        public static Windows.Data.Xml.Dom.XmlDocument CreateToastXaml(string text)
+        {
+            var xDoc = new XDocument(
+                new XElement(
+                    "toast", new XElement(
+                        "visual", new XElement(
+                            "binding", new XAttribute("template", "ToastGeneric"),
+                            new XElement("text", text)
+                        )
+                    )
+                )
+            ); ;
+
+            var xmlDoc = new Windows.Data.Xml.Dom.XmlDocument();
+            xmlDoc.LoadXml(xDoc.ToString());
+            return xmlDoc;
+        }
 
         #endregion
 

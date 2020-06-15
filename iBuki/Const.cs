@@ -64,8 +64,9 @@ namespace iBuki
         //　┃　┣・Setings.json
         //　┃　┣・Background.png　＊無いかも
         //　┃　┗・Thumbnail.png
-        //　┗◇MoonPhase
-        //　　┗・MoonPhaseBackground.png
+        //　┣◇MoonPhase
+        //　┃┗・MoonPhaseBackground.png
+        //　┗◇SubDial
         //◆LocalFolder(ms-appdata:///)
         //┣・Background.png　←現在の背景
         //┣・MoonPhaseBackground.png　←現在のムーンフェイズの背景

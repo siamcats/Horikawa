@@ -800,6 +800,42 @@ namespace iBuki
             }
         }
 
+        private bool _isNotification = false;
+        public bool IsNotification
+        {
+            get { return _isNotification; }
+            set
+            {
+                if (value == _isNotification) return;
+                _isNotification = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private TimeSpan _notificationTime = TimeSpan.Zero;
+        public TimeSpan NotificationTime
+        {
+            get { return _notificationTime; }
+            set
+            {
+                if (value == _notificationTime) return;
+                _notificationTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private NotificationAction _notificationAction = NotificationAction.None;
+        public NotificationAction NotificationAction
+        {
+            get { return _notificationAction; }
+            set
+            {
+                if (value == _notificationAction) return;
+                _notificationAction = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _isSubDialSecondDisplay = false;
         public bool IsSubDialSecondDisplay
         {

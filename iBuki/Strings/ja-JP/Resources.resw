@@ -484,4 +484,31 @@ OFFでデフォルト画像。</value>
 [H](0～23) [HH](00～23)
 分[m](0～59) [mm](00～59)</value>
   </data>
+  <data name="appDisplayName" xml:space="preserve">
+    <value>Chronocci</value>
+  </data>
+  <data name="notificationActionEnumNone" xml:space="preserve">
+    <value>なし（ストップウォッチ継続）</value>
+  </data>
+  <data name="notificationActionEnumReset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="notificationActionEnumRestart" xml:space="preserve">
+    <value>リスタート</value>
+  </data>
+  <data name="notificationActionEnumStop" xml:space="preserve">
+    <value>ストップ</value>
+  </data>
+  <data name="notificationActionTextBlock.Text" xml:space="preserve">
+    <value>通知後の動作</value>
+  </data>
+  <data name="notificationTextBlock.Text" xml:space="preserve">
+    <value>トースト通知</value>
+  </data>
+  <data name="notificationTimespanPicker.Header" xml:space="preserve">
+    <value>時間（時：分）</value>
+  </data>
+  <data name="elapsed" xml:space="preserve">
+    <value> 経過しました。</value>
+  </data>
 </root>

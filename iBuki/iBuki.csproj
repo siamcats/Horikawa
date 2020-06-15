@@ -271,8 +271,8 @@
     <Content Include="Assets\Templates\Japan Black\Settings.json" />
     <Content Include="Assets\Templates\Portofino\Settings.json" />
     <Content Include="Assets\Templates\Station\Settings.json" />
-    <PRIResource Include="Strings\en-US\Resources.resw" />
-    <PRIResource Include="Strings\ja-JP\Resources.resw" />
+    <PRIResource Include="Strings\en-us\Resources.resw" />
+    <PRIResource Include="Strings\ja-jp\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Templates\Chronocci\Settings.json" />

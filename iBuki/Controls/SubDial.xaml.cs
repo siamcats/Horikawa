@@ -25,8 +25,6 @@ namespace iBuki
     public sealed partial class SubDial : UserControl
     {
 
-        private HandModel hm = new HandModel(Clock.Second);
-
         public DateTimeOffset DateTime
         {
             get { return (DateTimeOffset)GetValue(DateTimeProperty); }
