@@ -34,6 +34,7 @@ using Windows.ApplicationModel.Resources;
 using System.Text.RegularExpressions;
 using Windows.Services.Store;
 using System.Collections.Generic;
+using Windows.ApplicationModel.Store;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -65,6 +66,9 @@ namespace iBuki
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             var view = ApplicationView.GetForCurrentView();
             view.SetPreferredMinSize(size);
+
+            //xamlエラー対応
+            restoreSystemDefaultLink.Foreground = new SolidColorBrush((Color)Application.Current.Resources["DefaultAccentColor"]);
         }
 
         /// <summary>
@@ -400,13 +404,44 @@ namespace iBuki
             secondHandAngle.Angle = CalcAngleSecond(localDate);
             dateDisplay.Text = CalcDate(localDate); //デイトは秒表示もできるから日替わり処理じゃなくてここでする
 
-
+            //クロノグラフ処理
             if (vm.DesignConfig.IsChronographDisplay)
             {
                 subDial1.TimeSpan = vm.stopwatch.Elapsed;
                 subDial2.TimeSpan = vm.stopwatch.Elapsed;
                 subDial3.DateTime = localDate;
+                
+                //通知
+                if(vm.DesignConfig.NotificationTime!=TimeSpan.Zero
+                    && vm.DesignConfig.NotificationTime <= vm.stopwatch.Elapsed //指定時間を過ぎた
+                    && vm.DesignConfig.NotificationTime > vm.LastNotificationTime //通知済みでない
+                    )
+                {
+                    vm.LastNotificationTime = vm.DesignConfig.NotificationTime;
+                    if (vm.DesignConfig.IsNotification)
+                    {
+                        vm.CreateToast();
+                        switch (vm.DesignConfig.NotificationAction)
+                        {
+                            case NotificationAction.Stop:
+                                vm.stopwatch.Stop();
+                                break;
+                            case NotificationAction.Reset:
+                                vm.stopwatch.Reset();
+                                vm.LastNotificationTime = TimeSpan.Zero;
+                                break;
+                            case NotificationAction.Restart:
+                                vm.stopwatch.Restart();
+                                vm.LastNotificationTime = TimeSpan.Zero;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
+
+
             // 退避日と日付が異なれば日替わり処理を起こす
             if (beforeDate == defaultDate || localDate.Date != beforeDate.Date)
             {
@@ -1471,6 +1506,7 @@ namespace iBuki
         private void chronoButton_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             vm.stopwatch.Reset();
+            vm.LastNotificationTime = TimeSpan.Zero;
         }
 
         #endregion
@@ -1569,13 +1605,5 @@ namespace iBuki
             vm.DesignConfig.BackgroundImageCoordinateX = 0;
             vm.DesignConfig.BackgroundImageCoordinateY = 0;
         }
-
-        //private void BackgroundImage_ImageOpened(object sender, RoutedEventArgs e)
-        //{
-        //    backgroundImage.Height = backgroundImage.ActualHeight;
-        //    backgroundImage.Width = backgroundImage.ActualWidth;
-        //    Debug.WriteLine(backgroundImage.ActualHeight);
-        //    Debug.WriteLine(backgroundImage.ActualWidth);
-        //}
     }
 }

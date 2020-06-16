@@ -57,6 +57,18 @@ namespace iBuki
         UniformToFill
     }
 
+    public enum NotificationAction
+    {
+        [LocalizeName("notificationActionEnumNone")]
+        None,
+        [LocalizeName("notificationActionEnumStop")]
+        Stop,
+        [LocalizeName("notificationActionEnumReset")]
+        Reset,
+        [LocalizeName("notificationActionEnumRestart")]
+        Restart
+    }
+
     public enum SubDialType
     {
         [LocalizeName("SubDialEnumSecond")]

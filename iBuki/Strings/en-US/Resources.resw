@@ -483,4 +483,31 @@ HOUR:[h](0～12) [hh](00～12) [tt]AM/PM
 [H](0～23) [HH](00～23)
 MINUTE[m](0～59) [mm](00～59)</value>
   </data>
+  <data name="appDisplayName" xml:space="preserve">
+    <value>Chronocci</value>
+  </data>
+  <data name="notificationActionEnumNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="notificationActionEnumReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="notificationActionEnumRestart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="notificationActionEnumStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="notificationActionTextBlock.Text" xml:space="preserve">
+    <value>Action after notification</value>
+  </data>
+  <data name="notificationTextBlock.Text" xml:space="preserve">
+    <value>Toast Notification</value>
+  </data>
+  <data name="notificationTimespanPicker.Header" xml:space="preserve">
+    <value>Time [hour : minute]</value>
+  </data>
+  <data name="elapsed" xml:space="preserve">
+    <value> elapsed.</value>
+  </data>
 </root>

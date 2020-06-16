@@ -192,6 +192,15 @@ namespace iBuki
         public bool ChronographDisplay { get; set; }
 
         [DataMember]
+        public bool Notification { get; set; }
+
+        [DataMember]
+        public TimeSpan NotificationTime { get; set; }
+
+        [DataMember]
+        public string NotificationAction { get; set; }
+
+        [DataMember]
         public bool SubDialSecondDisplay { get; set; }
 
         [DataMember]

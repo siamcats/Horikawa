@@ -235,8 +235,7 @@
                                             <HyperlinkButton
                                                 x:Name="restoreSystemDefaultLink"
                                                 Tapped="useSystemDefaultLink_Tapped"
-                                                Margin="10,0,0,0"
-                                                Foreground="{StaticResource DefaultAccentColor}">
+                                                Margin="10,0,0,0">
                                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7A7;"/>
                                                 <ToolTipService.ToolTip>
                                                     <TextBlock x:Uid="restoreSystemDefaultLink"/>
@@ -1552,6 +1551,33 @@
                                             <TextBlock
                                                 x:Uid="licenseRequiredTextBlock" Text="A license is required" Margin="-20,0,0,0" VerticalAlignment="Center"
                                                 Visibility="{x:Bind chronographToggle.IsEnabled,Converter={StaticResource VisibilityReverse},Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <!--トースト通知-->
+                                    <StackPanel Style="{StaticResource SettingTitlePanelStyle}">
+                                        <TextBlock
+                                            Style="{StaticResource SettingTitleTextBlockStyle}"
+                                            x:Uid="notificationTextBlock" Text="Toast Notification"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ToggleSwitch 
+                                                x:Name="notificationToggle" IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                IsOn="{x:Bind vm.DesignConfig.IsNotification,Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Visibility="{x:Bind notificationToggle.IsOn, Mode=OneWay}">
+                                        <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                            <TimePicker
+                                                IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}" SelectedTime="{x:Bind vm.DesignConfig.NotificationTime,Mode=TwoWay}"
+                                                x:Uid="notificationTimespanPicker" ClockIdentifier="24HourClock" Header="Time (hour:minute)"/>
+                                        </StackPanel>
+                                        <StackPanel Style="{StaticResource SettingWhitePanelStyle}">
+                                            <TextBlock x:Uid="notificationActionTextBlock" Text="Action after notification"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox
+                                                    Style="{StaticResource ComboBoxStyle}" IsEnabled="{x:Bind chronographToggle.IsOn,Mode=OneWay}"
+                                                    ItemsSource="{x:Bind vm.NotificationActionList}" Width="240"
+                                                    SelectedIndex="{x:Bind vm.DesignConfig.NotificationAction,Converter={StaticResource EnumInt} ,Mode=TwoWay}" />
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
                                     <!--ライセンス無しなら以降は全部見せない-->
